@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hassanAsarhan@outlook.com>        +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:00:08 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/05/31 11:19:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 15:36:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	*ft_calloc(size_t count, size_t size)
 {
 	unsigned char	*memory;
 
-	if (count != 0 && size != 0 && count > SIZET_MAX / size)
+	if (count != 0 && size != 0 && count > SIZE_T_MAX / size)
 		return (NULL);
 	memory = malloc(count * size);
 	if (memory == NULL)

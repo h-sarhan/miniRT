@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/09/22 23:20:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 15:37:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <math.h>
 # include <stdbool.h>
 # include "get_next_line.h"
 
-# define SIZET_MAX 18446744073709551615UL
 
 void	ft_free(void *memory);
 int		ft_isalpha(int c);
@@ -57,6 +57,7 @@ int		ft_atoi(const char *str);
 long	ft_atol(const char *str, bool *check);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+double	ft_atof(char *str, bool *success);
 
 typedef struct s_list
 {
