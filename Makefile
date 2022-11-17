@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/17 14:01:10 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/17 15:16:58 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRC := $(addprefix src/, $(SRC))
 OBJ_DIR = .obj
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 OBJ += .obj/src/main.o
+
+LIBFT = libft/libft.a
 
 NAME = miniRT
 
@@ -36,16 +38,20 @@ all: $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c -o $@ $< 
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(NAME): $(OBJ)
+$(LIBFT):
+	make -C libft
+
+$(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(CFLAGS)  $(OBJ) -o $(NAME)
 
 clean:
+	make -C libft clean
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(LIBFT)
 
 re: fclean all
 
