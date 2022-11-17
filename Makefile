@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/17 15:16:58 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/17 16:11:41 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,11 +26,11 @@ LIBFT = libft/libft.a
 NAME = miniRT
 
 CC = gcc
-INC = -Iinclude
+INC = -Iinclude -Ilibft
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Werror -Wall -Wextra -g $(OPTIMIZATION_FLAGS) $(INC) \
+CFLAGS = -Wall -Wextra -g $(OPTIMIZATION_FLAGS) $(INC) \
 			-fsanitize=address
 
 
@@ -44,7 +44,7 @@ $(LIBFT):
 	make -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS)  $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 
 clean:
 	make -C libft clean
