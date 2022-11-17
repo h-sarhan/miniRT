@@ -6,14 +6,14 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/17 16:11:41 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/17 17:09:24 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PARSING_SRC = parsing.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
-SRC = $(PARSING_SRC)
+SRC = $(PARSING_SRC) color.c
 
 SRC := $(addprefix src/, $(SRC))
 
@@ -30,7 +30,7 @@ INC = -Iinclude -Ilibft
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Wall -Wextra -g $(OPTIMIZATION_FLAGS) $(INC) \
+CFLAGS = -Wall -Wextra -g3 $(OPTIMIZATION_FLAGS) $(INC) \
 			-fsanitize=address
 
 

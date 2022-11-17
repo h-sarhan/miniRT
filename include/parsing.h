@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:45:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 18:11:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <fcntl.h>
 # include <libft.h>
 # include <scene.h>
+# include <stdio.h>
 
-t_scene	*parse(const char *file_name, bool *success);
+
+t_scene	*parse_map(const char *file_name);
 #endif

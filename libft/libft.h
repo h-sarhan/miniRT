@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:37:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 17:27:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int		ft_atoi(const char *str);
 long	ft_atol(const char *str, bool *check);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-double	ft_atof(char *str, bool *success);
+double	ft_atof(const char *str, bool *success);
+char	**ft_split_whitespace(char const *s);
 
 typedef struct s_list
 {

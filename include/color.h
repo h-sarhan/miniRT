@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:04:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:05:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 17:08:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define COLOR_H
 
 // This might not be necessary
-
+# include <stdio.h>
 /**
  * @brief Represents a color. (This could be represented as 4 chars or even as
  *  1 int)
@@ -26,9 +26,11 @@
 typedef struct s_color	t_color;
 struct s_color
 {
-	float	r;
-	float	g;
-	float	b;
-	float	a;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+	unsigned char	a;
 };
+
+void	print_color(const t_color *color);
 #endif

@@ -6,11 +6,18 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:35:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 16:29:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+static bool	is_whitespace(const char c)
+{
+	return (c == ' ' || c == '\f'
+			|| c == '\n' || c == '\r'
+			|| c == '\t' || c == '\v');
+}
 
 static int	atof_split(char c)
 {
@@ -25,7 +32,7 @@ static int	atof_split(char c)
 	return (i);
 }
 
-double	ft_atof(char *str, bool *success)
+double	ft_atof(const char *str, bool *success)
 {
 	double	i;
 	int		sign;
@@ -48,7 +55,7 @@ double	ft_atof(char *str, bool *success)
 		str++;
 	while (*str != '\0' && ft_isdigit(*str))
 		j = j + atof_split(*str++) / pow(10.0, k++);
-	if (*str != '\0' && !ft_isdigit(*str))
+	if (*str != '\0' && !ft_isdigit(*str) && !is_whitespace(*str))
 		*success = false;
 	return (sign * (i + j));
 }

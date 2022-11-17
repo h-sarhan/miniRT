@@ -1,17 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRT.h                                           :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 17:07:49 by hsarhan          ###   ########.fr       */
+/*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
+/*   Updated: 2022/11/17 18:13:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include <color.h>
 
-# include <parsing.h>
-#endif
+/**
+ * @brief Print the red, green, and blue values of a color
+ * @param color Color to print
+ */
+void	print_color(const t_color *color)
+{
+	printf("R: %u\n", color->r);
+	printf("G: %u\n", color->g);
+	printf("B: %u\n", color->b);
+}

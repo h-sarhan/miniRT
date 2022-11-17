@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:47:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 18:12:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include <miniRT.h>
 
 int	main(int argc, char **argv)
 {
@@ -18,6 +18,5 @@ int	main(int argc, char **argv)
 	{
 		return (1);
 	}
-	bool success = true;
-	t_scene *scene = parse(argv[1], &success);
+	t_scene *scene = parse_map(argv[1]);
 }
