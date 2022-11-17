@@ -1,5 +1,5 @@
 # miniRT
-# My first RayTracer with miniLibX
+# OUR first RayTracer with miniLibX
 
 Summary: This project is an introduction to the beautiful world of Raytracing.
 Once completed you will be able to render simple Computer-Generated-Images and you
