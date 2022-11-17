@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 19:35:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 21:27:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,22 @@ static bool	all_whitespace(const char *str)
 }
 
 /**
- * @brief Returns whether a string is made up of digits only
+ * @brief Returns whether a string is a number
  * @param str Input string
  * @return True if every character is a digit
  */
-static bool	all_digits(const char *str)
+static bool	is_number(const char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (str == NULL)
-		return (false);
 	while (str[i] != '\0')
 	{
-		if (ft_isdigit(str[i]) == false)
+		if (ft_isdigit(str[i]) == false && str[i] != '-' && str[i] != '+')
+			return (false);
+		if ((str[i] == '-' || str[i] == '+') && i != 0)
+			return (false);
+		if ((str[i] == '-' || str[i] == '+') && ft_strlen(str) == 1)
 			return (false);
 		i++;
 	}
@@ -95,9 +97,9 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	long	res;
 
 	color_strs = ft_split(str, ',');
-	if (color_strs == NULL || all_digits(color_strs[0]) == false
-		|| all_digits(color_strs[1]) == false ||
-		all_digits(color_strs[2]) == false || color_strs[3] != NULL)
+	if (color_strs == NULL || is_number(color_strs[0]) == false
+		|| is_number(color_strs[1]) == false ||
+		is_number(color_strs[2]) == false || color_strs[3] != NULL)
 	{
 		*success = false;
 		free_split_array(color_strs);
@@ -117,11 +119,10 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	color->b = res;
 }
 
-// ! COMMENT THIS LATER
-void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
+void	*camera_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
-	printf("Error with parsing ambient light on line #%ld\n%s"
-		"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n", line_count, line);
+	printf("Error with parsing camera on line #%ld\n%s"
+		"Correct syntax is \"C x,y,z [-1.0 -> 1.0],[-1.0 -> 1.0],[-1.0 -> 1.0] [0 - 180]\"\n", line_count, line);
 	free(line);
 	free(scene);
 	free_split_array(splitted);
@@ -131,10 +132,22 @@ void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **
 }
 
 // ! COMMENT THIS LATER
-void	*ambient_parse_error2(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
+void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
 	if (scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
 		printf("Ambient light intensity out of range on line #%ld\n%sRange is [0.0 -> 1.0]\n", line_count, line);
+	else if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255
+		|| scene->ambient.color.g < 0 || scene->ambient.color.g > 255
+		|| scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
+	{
+		printf("Error with parsing ambient light color on line #%ld\n%s\n", line_count, line);
+		if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255)
+			printf("The red value is out of range\n");
+		if (scene->ambient.color.g < 0 || scene->ambient.color.g > 255)
+			printf("The green value is out of range\n");
+		if (scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
+			printf("The blue value is out of range\n");
+	}
 	else
 		printf("Error with parsing ambient light on line #%ld\n%s"
 			"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n", line_count, line);
@@ -210,7 +223,7 @@ t_scene	*parse_scene(const char *file_name)
 				return (ambient_parse_error(line, line_count, scene, splitted, fd));
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
 			if (success == false || scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
-				return (ambient_parse_error2(line, line_count, scene, splitted, fd));
+				return (ambient_parse_error(line, line_count, scene, splitted, fd));
 			// printf("Intensity: %.2f\n", scene->ambient.intensity);
 			parse_color(&scene->ambient.color, splitted[2], &success);
 			if (success == false)
@@ -221,6 +234,8 @@ t_scene	*parse_scene(const char *file_name)
 		else if (ft_strncmp(splitted[0], "C", 1) == 0)
 		{
 			printf("Camera\n");
+			// if (splitted[1] == NULL || splitted[2] == NULL || splitted[3] == NULL || splitted[4] != NULL)
+			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
 		}
 		else if (ft_strncmp(splitted[0], "L", 1) == 0)
 		{
