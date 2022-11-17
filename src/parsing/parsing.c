@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 19:14:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/17 19:35:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **
 	free(line);
 	free(scene);
 	free_split_array(splitted);
+	get_next_line(-1);
 	close(fd);
 	return (NULL);
 }
@@ -139,6 +140,7 @@ void	*ambient_parse_error2(char *line, size_t line_count, t_scene *scene, char *
 			"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n", line_count, line);
 	free(line);
 	free(scene);
+	get_next_line(-1);
 	free_split_array(splitted);
 	close(fd);
 	return (NULL);
@@ -150,6 +152,7 @@ void	*unknown_identifier_error(char *line, size_t line_count, t_scene *scene, ch
 	printf("Unknown identifier \"%s\" on line #%ld\n", splitted[0], line_count);
 	free(line);
 	free(scene);
+	get_next_line(-1);
 	free_split_array(splitted);
 	close(fd);
 	return (NULL);
@@ -202,17 +205,18 @@ t_scene	*parse_scene(const char *file_name)
 		splitted = ft_split_whitespace(line);
 		if (ft_strncmp(splitted[0], "A", 1) == 0)
 		{
-			printf("Ambient light\n");
+			// printf("Ambient light\n");
 			if (splitted[1] == NULL || splitted[2] == NULL || splitted[3] != NULL)
 				return (ambient_parse_error(line, line_count, scene, splitted, fd));
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
 			if (success == false || scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
 				return (ambient_parse_error2(line, line_count, scene, splitted, fd));
-			printf("Intensity: %.2f\n", scene->ambient.intensity);
+			// printf("Intensity: %.2f\n", scene->ambient.intensity);
 			parse_color(&scene->ambient.color, splitted[2], &success);
 			if (success == false)
 				return (ambient_parse_error(line, line_count, scene, splitted, fd));
-			print_color(&scene->ambient.color);
+			// print_color(&scene->ambient.color);
+			scene->count.ambient_count++;
 		}
 		else if (ft_strncmp(splitted[0], "C", 1) == 0)
 		{
@@ -245,6 +249,16 @@ t_scene	*parse_scene(const char *file_name)
 		free_split_array(splitted);
 		line = get_next_line(fd);
 		line_count++;
+	}
+	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
+	{
+		if (scene->count.ambient_count > 1)
+			printf("Error: Scene contains more than one ambient light\n");
+		else
+			printf("Error: Scene contains no ambient lights\n");
+		free(scene);
+		close(fd);
+		return (NULL);
 	}
 	close(fd);
 	return (scene);
