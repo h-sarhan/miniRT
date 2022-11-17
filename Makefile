@@ -1,0 +1,52 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
+#    Updated: 2022/11/17 14:01:10 by hsarhan          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+PARSING_SRC = parsing.c
+PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
+
+SRC = $(PARSING_SRC)
+
+SRC := $(addprefix src/, $(SRC))
+
+OBJ_DIR = .obj
+OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+OBJ += .obj/src/main.o
+
+NAME = miniRT
+
+CC = gcc
+INC = -Iinclude
+
+OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
+
+CFLAGS = -Werror -Wall -Wextra -g $(OPTIMIZATION_FLAGS) $(INC) \
+			-fsanitize=address
+
+
+all: $(NAME)
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c -o $@ $< 
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS)  $(OBJ) -o $(NAME)
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all re fclean clean
