@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/18 14:07:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 14:11:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,9 +323,9 @@ void	parse_orientation(t_vector *orientation, const char *str, bool *success)
  */
 void	print_vector(const t_vector *vector)
 {
-	printf("\tX: %f\n", vector->x);
-	printf("\tY: %f\n", vector->y);
-	printf("\tZ: %f\n", vector->z);
+	printf("\tX: %.2f\n", vector->x);
+	printf("\tY: %.2f\n", vector->y);
+	printf("\tZ: %.2f\n", vector->z);
 }
 
 /**
@@ -343,6 +343,8 @@ void	print_scene(const t_scene *scene)
 	print_vector(&scene->camera.position);
 	printf("  Orientation:\n");
 	print_vector(&scene->camera.orientation);
+	printf("  Fov:\n");
+	printf("\t%d degrees\n", scene->camera.fov);
 }
 
 
