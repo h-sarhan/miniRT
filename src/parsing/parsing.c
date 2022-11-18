@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 02:08:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 02:19:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -429,6 +429,16 @@ void	*shape_parse_error(char *line, size_t line_count, t_scene *scene, char **sp
 {
 	t_shape	*shape;
 
+	if (scene->shapes == NULL)
+	{
+		printf(YELLOW"Error with parsing shape on line #%ld\n"RED"->\t%s"RESET, line_count, line);
+		free(line);
+		free_scene(scene);
+		free_split_array(splitted);
+		get_next_line(-1);
+		close(fd);
+		return (NULL);
+	}
 	shape = &scene->shapes[scene->count.shape_count];
 	if (scene->count.shape_count >= SHAPE_MAX)
 	{
@@ -548,6 +558,17 @@ void	*light_parse_error(char *line, size_t line_count, t_scene *scene, char **sp
 {
 	t_light	*light;
 
+	if (scene->lights == NULL)
+	{
+		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
+			YELLOW"Correct syntax is \"L [origin] [intensity] [color\"\n"RESET, line_count, line);
+		free(line);
+		free_scene(scene);
+		free_split_array(splitted);
+		get_next_line(-1);
+		close(fd);
+		return (NULL);
+	}
 	light = &scene->lights[scene->count.light_count];
 	if (scene->count.light_count >= LIGHT_MAX)
 	{
@@ -842,6 +863,8 @@ t_scene	*parse_scene(const char *file_name)
 		}
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
+			// if (split_count(splitted) != 4)
+			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
 			parse_light(scene, splitted, &success);
 			if (success == false)
 				return (light_parse_error(line, line_count, scene, splitted, fd));

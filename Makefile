@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/18 17:56:07 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/19 02:14:29 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,9 @@ INC = -Iinclude -Ilibft
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Wall -Wextra -g3 $(OPTIMIZATION_FLAGS) $(INC) \
-			-fsanitize=address
+CFLAGS = -Wall -Wextra -g3  $(INC) \
+			-fsanitize=address \
+			# $(OPTIMIZATION_FLAGS) \
 
 
 all: $(NAME)
