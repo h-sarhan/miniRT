@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 21:27:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 11:20:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	color->b = res;
 }
 
+// ! COMMENT THIS LATER
 void	*camera_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
 	printf("Error with parsing camera on line #%ld\n%s"
@@ -172,6 +173,65 @@ void	*unknown_identifier_error(char *line, size_t line_count, t_scene *scene, ch
 }
 
 /**
+ * @brief Counts the number of elements in an array returned by ft_split
+ * @param split An array returned by ft_split
+ * @return Number of elements in the array
+ */
+size_t	split_count(const char **split)
+{
+	size_t	len;
+	
+	if (split == NULL)
+		return (0);
+	len = 0;
+	while (split[len] != NULL)
+		len++;
+	return (len);
+}
+
+/**
+ * @brief Parses given given coordinates into a vector
+ * @param position Pointer to a vector that will be filled with coordinates
+ * @param str Raw string to be parsed
+ * @param success Boolean pointer that will be set to false on error
+ */
+void	parse_coordinates(t_vector *position, const char *str, bool *success)
+{
+	float	res;
+	char	**splitted;
+
+	splitted = ft_split(str, ',');
+	if (splitted == NULL || split_count(splitted) != 3)
+	{
+		free_split_array(splitted);
+		*success = false;
+		return ;
+	}
+	res = ft_atof(splitted[0], success);
+	if (success == false)
+	{
+		free_split_array(splitted);
+		return ;
+	}
+	position->x = res;
+	res = ft_atof(splitted[1], success);
+	if (success == false)
+	{
+		free_split_array(splitted);
+		return ;
+	}
+	position->y = res;
+	res = ft_atof(splitted[2], success);
+	if (success == false)
+	{
+		free_split_array(splitted);
+		return ;
+	}
+	position->z = res;
+	free_split_array(splitted);
+}
+
+/**
  * @brief Parses a .rt file into a scene struct
  * @param file_name Name of the .rt file
  * @return A scene struct with the shapes, lights, and camera configuration
@@ -188,7 +248,8 @@ t_scene	*parse_scene(const char *file_name)
 
 	line_count = 1;
 	success = true;
-	if (ft_strnstr(file_name, ".rt", ft_strlen(file_name)) == NULL || ft_strncmp(&file_name[ft_strlen(file_name) - 3], ".rt", 3) != 0)
+	if (ft_strnstr(file_name, ".rt", ft_strlen(file_name)) == NULL
+		|| ft_strncmp(&file_name[ft_strlen(file_name) - 3], ".rt", 3) != 0)
 	{
 		printf("Can only read .rt files\n");
 		return (NULL);
@@ -216,7 +277,7 @@ t_scene	*parse_scene(const char *file_name)
 			continue;
 		}
 		splitted = ft_split_whitespace(line);
-		if (ft_strncmp(splitted[0], "A", 1) == 0)
+		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
 			// printf("Ambient light\n");
 			if (splitted[1] == NULL || splitted[2] == NULL || splitted[3] != NULL)
@@ -231,29 +292,38 @@ t_scene	*parse_scene(const char *file_name)
 			// print_color(&scene->ambient.color);
 			scene->count.ambient_count++;
 		}
-		else if (ft_strncmp(splitted[0], "C", 1) == 0)
+		else if (ft_strncmp(splitted[0], "C", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Camera\n");
-			// if (splitted[1] == NULL || splitted[2] == NULL || splitted[3] == NULL || splitted[4] != NULL)
+			if (split_count(splitted) != 4)
+				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			parse_coordinates(&scene->camera.position, splitted[1], &success);
+			if (success == false)
+				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			// parse_orientation(&scene->camera.orientation, splitted[2], &success);
+			// if (success == false)
+			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
+			// parse_fov(&scene->camera.fov, splitted[3], &success);
+			// if (success == false)
 			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
 		}
-		else if (ft_strncmp(splitted[0], "L", 1) == 0)
+		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Point Light\n");
 		}
-		else if (ft_strncmp(splitted[0], "sp", 2) == 0)
+		else if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Sphere\n");
 		}
-		else if (ft_strncmp(splitted[0], "pl", 2) == 0)
+		else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Plane\n");
 		}
-		else if (ft_strncmp(splitted[0], "cy", 2) == 0)
+		else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Cylinder\n");
 		}
-		else if (ft_strncmp(splitted[0], "cu", 2) == 0)
+		else if (ft_strncmp(splitted[0], "cu", ft_strlen(splitted[0])) == 0)
 		{
 			printf("Cube\n");
 		}
