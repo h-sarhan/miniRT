@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 18:13:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 13:56:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  */
 void	print_color(const t_color *color)
 {
-	printf("R: %u\n", color->r);
-	printf("G: %u\n", color->g);
-	printf("B: %u\n", color->b);
+	printf("\tR: %d\n", color->r);
+	printf("\tG: %d\n", color->g);
+	printf("\tB: %d\n", color->b);
 }

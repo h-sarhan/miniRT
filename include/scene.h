@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 19:28:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 13:30:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ struct s_scene
 	t_shape		*shapes;
 	t_el_count	count;
 };
+
+void	print_scene(const t_scene *scene);
 
 #endif

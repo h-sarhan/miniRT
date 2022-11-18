@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:33:33 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:07:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 13:37:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ struct s_vector
 	float	z;
 	float	w;
 };
+
+void	print_vector(const t_vector *vector);
 
 #endif

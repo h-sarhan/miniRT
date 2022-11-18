@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/18 13:11:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 14:07:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,35 @@ void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 }
 
 /**
+ * @brief Prints the x, y, z values of a vector
+ * @param vector Vector to be printed
+ */
+void	print_vector(const t_vector *vector)
+{
+	printf("\tX: %f\n", vector->x);
+	printf("\tY: %f\n", vector->y);
+	printf("\tZ: %f\n", vector->z);
+}
+
+/**
+ * @brief Prints the contents of a scene
+ * @param scene Scene to be printed
+ */
+void	print_scene(const t_scene *scene)
+{
+	printf("Ambient light configuration:\n");
+	printf("  Intensity: %.2f\n", scene->ambient.intensity);
+	printf("  Color:\n");
+	print_color(&scene->ambient.color);
+	printf("Camera configuration:\n");
+	printf("  Position:\n");
+	print_vector(&scene->camera.position);
+	printf("  Orientation:\n");
+	print_vector(&scene->camera.orientation);
+}
+
+
+/**
  * @brief Parses a .rt file into a scene struct
  * @param file_name Name of the .rt file
  * @return A scene struct with the shapes, lights, and camera configuration
@@ -365,7 +394,7 @@ t_scene	*parse_scene(const char *file_name)
 		splitted = ft_split_whitespace(line);
 		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Ambient light\n");
+			// printf("Ambient light\n");
 			if (split_count(splitted) != 3)
 				return (ambient_parse_error(line, line_count, scene, splitted, fd));
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
@@ -380,7 +409,7 @@ t_scene	*parse_scene(const char *file_name)
 		}
 		else if (ft_strncmp(splitted[0], "C", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Camera\n");
+			// printf("Camera\n");
 			if (split_count(splitted) != 4)
 				return (camera_parse_error(line, line_count, scene, splitted, fd));
 			parse_coordinates(&scene->camera.position, splitted[1], &success);
@@ -389,33 +418,34 @@ t_scene	*parse_scene(const char *file_name)
 			parse_orientation(&scene->camera.orientation, splitted[2], &success);
 			if (success == false)
 				return (camera_parse_error(line, line_count, scene, splitted, fd));
-			// parse_fov(&scene->camera.fov, splitted[3], &success);
-			// if (success == false)
-			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
+			scene->camera.fov = ft_atol(splitted[3], &success);
+			if (success == false || scene->camera.fov < 0 || scene->camera.fov > 180)
+				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			scene->count.camera_count++;
 		}
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Point Light\n");
+			// printf("Point Light\n");
 		}
 		else if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Sphere\n");
+			// printf("Sphere\n");
 		}
 		else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Plane\n");
+			// printf("Plane\n");
 		}
 		else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Cylinder\n");
+			// printf("Cylinder\n");
 		}
 		else if (ft_strncmp(splitted[0], "cu", ft_strlen(splitted[0])) == 0)
 		{
-			printf("Cube\n");
+			// printf("Cube\n");
 		}
 		else
 			return (unknown_identifier_error(line, line_count, scene, splitted, fd));
-		printf("Original string: %s\n", line);
+		// printf("Original string: %s\n", line);
 		free(line);
 		free_split_array(splitted);
 		line = get_next_line(fd);
@@ -431,6 +461,17 @@ t_scene	*parse_scene(const char *file_name)
 		close(fd);
 		return (NULL);
 	}
+	if (scene->count.camera_count > 1 || scene->count.camera_count == 0)
+	{
+		if (scene->count.camera_count > 1)
+			printf(RED"Error: Scene contains more than one camera\n"RESET);
+		else
+			printf(RED"Error: Scene contains no cameras\n"RESET);
+		free(scene);
+		close(fd);
+		return (NULL);
+	}
 	close(fd);
+	print_scene(scene);
 	return (scene);
 }
