@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 16:29:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 01:49:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ double	ft_atof(const char *str, bool *success)
 	i = 0;
 	j = 0;
 	k = 1;
+	if (str[0] == '.' && str[1] == '\0')
+		*success = false;
 	sign = 1;
 	if (*str == '-' || *str == '+')
 	{
