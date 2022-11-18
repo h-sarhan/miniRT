@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/18 17:12:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 19:22:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,14 @@ void	*light_parse_error(char *line, size_t line_count, t_scene *scene, char **sp
 	t_light	*light;
 
 	light = &scene->lights[scene->count.light_count];
-	if (light->intensity < 0.0 || light->intensity > 1.0)
+	if (scene->count.light_count >= LIGHT_MAX)
+	{
+		printf(RED"Error: Scene contains more than %d lights\n"RESET, LIGHT_MAX);
+		// free_scene(scene);
+		// close(fd);
+		// return (NULL);
+	}
+	else if (light->intensity < 0.0 || light->intensity > 1.0)
 	{
 		printf(YELLOW"Error with parsing light intensity on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
 		printf(YELLOW"The intensity value is out of range\n"RESET);
@@ -445,6 +452,114 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 	if (*success == false)
 	{
 		return ;
+	}
+}
+
+/**
+ * @brief Returns whether an identifier is shape
+ * @param identifier 
+ * @return True if the identifier is a shape
+ */
+static bool	is_shape(const char *identifier)
+{
+	return (ft_strncmp(identifier, "sp", ft_strlen(identifier)) == 0
+			|| ft_strncmp(identifier, "pl", ft_strlen(identifier)) == 0
+			|| ft_strncmp(identifier, "cy", ft_strlen(identifier)) == 0
+			|| ft_strncmp(identifier, "cu", ft_strlen(identifier)) == 0);
+}
+
+void	parse_shape(t_scene *scene, char **splitted, bool *success)
+{
+	t_shape	*shape;
+
+	if (scene->count.shape_count == SHAPE_MAX)
+	{
+		*success = false;
+		return ;
+	}
+	if (scene->shapes == NULL)
+	{
+		scene->shapes = ft_calloc(SHAPE_MAX, sizeof(t_shape));
+		if (scene->shapes == NULL)
+		{
+			*success = false;
+			return ;
+		}
+	}
+	shape = &scene->shapes[scene->count.shape_count];
+	if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])))
+	{
+		shape->type = SPHERE;
+		if (split_count(splitted) != 4)
+		{
+			*success = false;
+			return ;
+		}
+		parse_coordinates(&shape->origin, splitted[1], success);
+		if (*success == false)
+		{
+			return ;
+		}
+		shape->radius = ft_atof(splitted[2], success);
+		shape->radius /= 2;
+		if (*success == false || shape->radius < 0.0 || shape->radius)
+		{
+			return ;
+		}
+		parse_color(&shape->color, splitted[3], success);
+		if (*success == false)
+		{
+			return ;
+		}
+	}
+	else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])))
+	{
+		shape->type = PLANE;
+		if (split_count(splitted) != 4)
+		{
+			*success = false;
+			return ;
+		}
+		parse_coordinates(&shape->origin, splitted[1], success);
+		if (*success == false)
+		{
+			return ;
+		}
+		parse_orientation(&shape->orientation, splitted[2], success);
+		if (*success == false)
+		{
+			return ;
+		}
+		parse_color(&shape->color, splitted[3], success);
+		if (*success == false)
+		{
+			return ;
+		}
+	}
+	else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])))
+	{
+		shape->type = CYLINDER;
+		if (split_count(splitted) != 5)
+		{
+			*success = false;
+			return ;
+		}
+		parse_coordinates(&shape->origin, splitted[1], success);
+		if (*success == false)
+		{
+			return ;
+		}
+		parse_orientation(&shape->orientation, splitted[2], success);
+		if (*success == false)
+		{
+			return ;
+		}
+		shape->radius = ft_atof();
+		parse_color(&shape->color, splitted[3], success);
+		if (*success == false)
+		{
+			return ;
+		}
 	}
 }
 
@@ -527,27 +642,18 @@ t_scene	*parse_scene(const char *file_name)
 		}
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
-			// printf("Point Light\n");
 			parse_light(scene, splitted, &success);
 			if (success == false)
 				return (light_parse_error(line, line_count, scene, splitted, fd));
 			scene->count.light_count++;
 		}
-		else if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])) == 0)
+		else if (is_shape(splitted[0]))
 		{
 			// printf("Sphere\n");
-		}
-		else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
-		{
-			// printf("Plane\n");
-		}
-		else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
-		{
-			// printf("Cylinder\n");
-		}
-		else if (ft_strncmp(splitted[0], "cu", ft_strlen(splitted[0])) == 0)
-		{
-			// printf("Cube\n");
+			parse_shape(scene, splitted, &success);
+			if (success == false)
+				return (shape_parse_error(line, line_count, scene, splitted, fd));
+			scene->count.light_count++;
 		}
 		else
 			return (unknown_identifier_error(line, line_count, scene, splitted, fd));

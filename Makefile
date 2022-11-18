@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/17 17:09:24 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/18 17:56:07 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(LIBFT):
-	make -C libft
+	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
