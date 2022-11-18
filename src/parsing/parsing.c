@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/18 11:20:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 13:11:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,27 @@ static bool	all_whitespace(const char *str)
  */
 static bool	is_number(const char *str)
 {
-	int	i;
+	size_t	i;
+	size_t	dot_count;
 
 	i = 0;
+	dot_count = 0;
 	while (str[i] != '\0')
 	{
-		if (ft_isdigit(str[i]) == false && str[i] != '-' && str[i] != '+')
+		if (ft_isdigit(str[i]) == false && str[i] != '-' && str[i] != '+' && str[i] != '.')
 			return (false);
+		if (str[i] == '.')
+			dot_count++;
 		if ((str[i] == '-' || str[i] == '+') && i != 0)
-			return (false);
-		if ((str[i] == '-' || str[i] == '+') && ft_strlen(str) == 1)
 			return (false);
 		i++;
 	}
+	if (dot_count > 1)
+		return (false);
+	if ((str[0] == '-' || str[0] == '+') && ft_strlen(str) == 1)
+		return (false);
+	if ((str[0] == '-' || str[0] == '+') && str[1] == '.' && ft_strlen(str) == 2)
+		return (false);
 	return (true);
 }
 
@@ -97,33 +105,62 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	long	res;
 
 	color_strs = ft_split(str, ',');
-	if (color_strs == NULL || is_number(color_strs[0]) == false
-		|| is_number(color_strs[1]) == false ||
-		is_number(color_strs[2]) == false || color_strs[3] != NULL)
+	if (color_strs == NULL || split_count(color_strs) != 3
+		|| is_number(color_strs[0]) == false
+		|| is_number(color_strs[1]) == false
+		|| is_number(color_strs[2]) == false)
 	{
 		*success = false;
 		free_split_array(color_strs);
 		return ;
 	}
+	// This can be in a loop
 	res = ft_atol(color_strs[0], success);
-	if (res < 0 || res > 255 || *success == false)
-		*success = false;
 	color->r = res;
+	if (res < 0 || res > 255 || *success == false)
+	{
+		*success = false;
+		return ;
+	}
 	res = ft_atol(color_strs[1], success);
-	if (res < 0 || res > 255 || *success == false)
-		*success = false;
 	color->g = res;
-	res = ft_atol(color_strs[2], success);
 	if (res < 0 || res > 255 || *success == false)
+	{
 		*success = false;
+		return ;
+	}
+	res = ft_atol(color_strs[2], success);
 	color->b = res;
+	if (res < 0 || res > 255 || *success == false)
+	{
+		*success = false;
+		return ;
+	}
 }
 
 // ! COMMENT THIS LATER
 void	*camera_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
-	printf("Error with parsing camera on line #%ld\n%s"
-		"Correct syntax is \"C x,y,z [-1.0 -> 1.0],[-1.0 -> 1.0],[-1.0 -> 1.0] [0 - 180]\"\n", line_count, line);
+	if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0
+		|| scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0
+		|| scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
+	{
+		printf(YELLOW"Error with parsing camera orientation on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
+		if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0)
+			printf(YELLOW"The x value is out of range\n"RESET);
+		if (scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0)
+			printf(YELLOW"The y value is out of range\n"RESET);
+		if (scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
+			printf(YELLOW"The z value is out of range\n"RESET);
+	}
+	else if (scene->camera.fov < 0 || scene->camera.fov > 180)
+	{
+		printf(YELLOW"Error with parsing camera fov on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
+		printf(YELLOW"The fov value is out of range\n"RESET);
+	}
+	else
+		printf(YELLOW"Error with parsing camera on line #%ld\n"RED"->\t%s"RESET
+			YELLOW"Correct syntax is \"C x,y,z [-1.0 -> 1.0],[-1.0 -> 1.0],[-1.0 -> 1.0] [0 - 180]\"\n"RESET, line_count, line);
 	free(line);
 	free(scene);
 	free_split_array(splitted);
@@ -136,22 +173,22 @@ void	*camera_parse_error(char *line, size_t line_count, t_scene *scene, char **s
 void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
 	if (scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
-		printf("Ambient light intensity out of range on line #%ld\n%sRange is [0.0 -> 1.0]\n", line_count, line);
+		printf(YELLOW"Ambient light intensity out of range on line #%ld\n"RED"->\t%s"RESET"Range is [0.0 -> 1.0]\n", line_count, line);
 	else if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255
 		|| scene->ambient.color.g < 0 || scene->ambient.color.g > 255
 		|| scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
 	{
-		printf("Error with parsing ambient light color on line #%ld\n%s\n", line_count, line);
+		printf(YELLOW"Error with parsing ambient light color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
 		if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255)
-			printf("The red value is out of range\n");
+			printf(YELLOW"The red value is out of range\n"RESET);
 		if (scene->ambient.color.g < 0 || scene->ambient.color.g > 255)
-			printf("The green value is out of range\n");
+			printf(YELLOW"The green value is out of range\n"RESET);
 		if (scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
-			printf("The blue value is out of range\n");
+			printf(YELLOW"The blue value is out of range\n"RESET);
 	}
 	else
-		printf("Error with parsing ambient light on line #%ld\n%s"
-			"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n", line_count, line);
+		printf(YELLOW"Error with parsing ambient light on line #%ld\n"RED"->\t%s"
+			YELLOW"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n"RESET, line_count, line);
 	free(line);
 	free(scene);
 	get_next_line(-1);
@@ -163,7 +200,7 @@ void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **
 // ! COMMENT THIS LATER
 void	*unknown_identifier_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
 {
-	printf("Unknown identifier \"%s\" on line #%ld\n", splitted[0], line_count);
+	printf(YELLOW"Unknown identifier \"%s\" on line #%ld\n"RED"->\t%s"RESET, splitted[0], line_count, line);
 	free(line);
 	free(scene);
 	get_next_line(-1);
@@ -177,7 +214,7 @@ void	*unknown_identifier_error(char *line, size_t line_count, t_scene *scene, ch
  * @param split An array returned by ft_split
  * @return Number of elements in the array
  */
-size_t	split_count(const char **split)
+size_t	split_count(char **split)
 {
 	size_t	len;
 	
@@ -190,7 +227,7 @@ size_t	split_count(const char **split)
 }
 
 /**
- * @brief Parses given given coordinates into a vector
+ * @brief Parses given coordinates into a vector
  * @param position Pointer to a vector that will be filled with coordinates
  * @param str Raw string to be parsed
  * @param success Boolean pointer that will be set to false on error
@@ -201,33 +238,82 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
 	char	**splitted;
 
 	splitted = ft_split(str, ',');
-	if (splitted == NULL || split_count(splitted) != 3)
+	if (splitted == NULL || split_count(splitted) != 3
+		|| is_number(splitted[0]) == false || is_number(splitted[1]) == false
+		|| is_number(splitted[2]) == false)
 	{
 		free_split_array(splitted);
 		*success = false;
 		return ;
 	}
+	// this can be in a loop
 	res = ft_atof(splitted[0], success);
-	if (success == false)
-	{
-		free_split_array(splitted);
-		return ;
-	}
 	position->x = res;
+	if (success == false)
+	{
+		free_split_array(splitted);
+		return ;
+	}
 	res = ft_atof(splitted[1], success);
-	if (success == false)
-	{
-		free_split_array(splitted);
-		return ;
-	}
 	position->y = res;
-	res = ft_atof(splitted[2], success);
 	if (success == false)
 	{
 		free_split_array(splitted);
 		return ;
 	}
+	res = ft_atof(splitted[2], success);
 	position->z = res;
+	if (success == false)
+	{
+		free_split_array(splitted);
+		return ;
+	}
+	free_split_array(splitted);
+}
+
+/**
+ * @brief Parses given orientation into a vector
+ * @param position Pointer to a vector that will be filled with orientation
+ * @param str Raw string to be parsed
+ * @param success Boolean pointer that will be set to false on error
+ */
+void	parse_orientation(t_vector *orientation, const char *str, bool *success)
+{
+	float	res;
+	char	**splitted;
+
+	splitted = ft_split(str, ',');
+	if (splitted == NULL || split_count(splitted) != 3)
+	{
+		*success = false;
+		free_split_array(splitted);
+		return ;
+	}
+	// this can be in a loop
+	res = ft_atof(splitted[0], success);
+	orientation->x = res;
+	if (success == false || res < -1.0 || res > 1.0)
+	{
+		*success = false;
+		free_split_array(splitted);
+		return ;
+	}
+	res = ft_atof(splitted[1], success);
+	orientation->y = res;
+	if (success == false || res < -1.0 || res > 1.0)
+	{
+		*success = false;
+		free_split_array(splitted);
+		return ;
+	}
+	res = ft_atof(splitted[2], success);
+	orientation->z = res;
+	if (success == false || res < -1.0 || res > 1.0)
+	{
+		*success = false;
+		free_split_array(splitted);
+		return ;
+	}
 	free_split_array(splitted);
 }
 
@@ -251,13 +337,13 @@ t_scene	*parse_scene(const char *file_name)
 	if (ft_strnstr(file_name, ".rt", ft_strlen(file_name)) == NULL
 		|| ft_strncmp(&file_name[ft_strlen(file_name) - 3], ".rt", 3) != 0)
 	{
-		printf("Can only read .rt files\n");
+		printf(RED"Can only read .rt files\n"RESET);
 		return (NULL);
 	}
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Could not open file \"%s\"\n", file_name);
+		printf(RED"Could not open file \"%s\"\n"RESET, file_name);
 		return (NULL);
 	}
 	scene = ft_calloc(1, sizeof(t_scene));
@@ -279,8 +365,8 @@ t_scene	*parse_scene(const char *file_name)
 		splitted = ft_split_whitespace(line);
 		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
-			// printf("Ambient light\n");
-			if (splitted[1] == NULL || splitted[2] == NULL || splitted[3] != NULL)
+			printf("Ambient light\n");
+			if (split_count(splitted) != 3)
 				return (ambient_parse_error(line, line_count, scene, splitted, fd));
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
 			if (success == false || scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
@@ -300,9 +386,9 @@ t_scene	*parse_scene(const char *file_name)
 			parse_coordinates(&scene->camera.position, splitted[1], &success);
 			if (success == false)
 				return (camera_parse_error(line, line_count, scene, splitted, fd));
-			// parse_orientation(&scene->camera.orientation, splitted[2], &success);
-			// if (success == false)
-			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
+			parse_orientation(&scene->camera.orientation, splitted[2], &success);
+			if (success == false)
+				return (camera_parse_error(line, line_count, scene, splitted, fd));
 			// parse_fov(&scene->camera.fov, splitted[3], &success);
 			// if (success == false)
 			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
@@ -338,9 +424,9 @@ t_scene	*parse_scene(const char *file_name)
 	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
 	{
 		if (scene->count.ambient_count > 1)
-			printf("Error: Scene contains more than one ambient light\n");
+			printf(RED"Error: Scene contains more than one ambient light\n"RESET);
 		else
-			printf("Error: Scene contains no ambient lights\n");
+			printf(RED"Error: Scene contains no ambient lights\n"RESET);
 		free(scene);
 		close(fd);
 		return (NULL);
