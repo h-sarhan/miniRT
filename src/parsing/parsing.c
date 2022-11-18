@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/18 14:11:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/18 17:12:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	*camera_parse_error(char *line, size_t line_count, t_scene *scene, char **s
 		printf(YELLOW"Error with parsing camera on line #%ld\n"RED"->\t%s"RESET
 			YELLOW"Correct syntax is \"C x,y,z [-1.0 -> 1.0],[-1.0 -> 1.0],[-1.0 -> 1.0] [0 - 180]\"\n"RESET, line_count, line);
 	free(line);
-	free(scene);
+	free_scene(scene);
 	free_split_array(splitted);
 	get_next_line(-1);
 	close(fd);
@@ -190,7 +190,7 @@ void	*ambient_parse_error(char *line, size_t line_count, t_scene *scene, char **
 		printf(YELLOW"Error with parsing ambient light on line #%ld\n"RED"->\t%s"
 			YELLOW"Correct syntax is \"A [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n"RESET, line_count, line);
 	free(line);
-	free(scene);
+	free_scene(scene);
 	get_next_line(-1);
 	free_split_array(splitted);
 	close(fd);
@@ -202,7 +202,7 @@ void	*unknown_identifier_error(char *line, size_t line_count, t_scene *scene, ch
 {
 	printf(YELLOW"Unknown identifier \"%s\" on line #%ld\n"RED"->\t%s"RESET, splitted[0], line_count, line);
 	free(line);
-	free(scene);
+	free_scene(scene);
 	get_next_line(-1);
 	free_split_array(splitted);
 	close(fd);
@@ -334,6 +334,8 @@ void	print_vector(const t_vector *vector)
  */
 void	print_scene(const t_scene *scene)
 {
+	size_t	i;
+
 	printf("Ambient light configuration:\n");
 	printf("  Intensity: %.2f\n", scene->ambient.intensity);
 	printf("  Color:\n");
@@ -345,8 +347,106 @@ void	print_scene(const t_scene *scene)
 	print_vector(&scene->camera.orientation);
 	printf("  Fov:\n");
 	printf("\t%d degrees\n", scene->camera.fov);
+	i = 0;
+	while (i < scene->count.light_count)
+	{
+		printf("Light #%lu configuration:\n", i + 1);
+		printf("  Position:\n");
+		print_vector(&scene->lights[i].position);
+		printf("  Light intensity:\n");
+		printf("\t%.2f intenseness\n", scene->lights[i].intensity);
+		printf("  Light color:\n");
+		print_color(&scene->lights[i].color);
+		i++;
+	}
 }
 
+// ! COMMENT THIS LATER
+void	*light_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
+{
+	t_light	*light;
+
+	light = &scene->lights[scene->count.light_count];
+	if (light->intensity < 0.0 || light->intensity > 1.0)
+	{
+		printf(YELLOW"Error with parsing light intensity on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
+		printf(YELLOW"The intensity value is out of range\n"RESET);
+	}
+	else if (light->color.r < 0 || light->color.r > 255
+		|| light->color.g < 0 || light->color.g > 255
+		|| light->color.b < 0 || light->color.b > 255)
+	{
+		printf(YELLOW"Error with parsing light color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
+		if (light->color.r < 0 || light->color.r > 255)
+			printf(YELLOW"The red value is out of range\n"RESET);
+		if (light->color.g < 0 || light->color.g > 255)
+			printf(YELLOW"The green value is out of range\n"RESET);
+		if (light->color.b < 0 || light->color.b > 255)
+			printf(YELLOW"The blue value is out of range\n"RESET);
+	}
+	else
+		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
+			YELLOW"Correct syntax is \"L x,y,z [0.0 -> 1.0] [0 -> 255],[0 -> 255],[0 -> 255]\"\n"RESET, line_count, line);
+	free(line);
+	free_scene(scene);
+	free_split_array(splitted);
+	get_next_line(-1);
+	close(fd);
+	return (NULL);
+}
+
+// ! COMMENT THIS LATER
+void	free_scene(t_scene *scene)
+{
+	if (scene->lights)
+		free(scene->lights);
+	if (scene->shapes)
+		free(scene->shapes);
+	free(scene);
+}
+
+// ! COMMENT THIS LATER
+void	parse_light(t_scene *scene, char **splitted, bool *success)
+{
+	t_light	*light;
+
+	if (scene->count.light_count == LIGHT_MAX)
+	{
+		*success = false;
+		return ;
+	}
+	if (split_count(splitted) != 4)
+	{
+		*success = false;
+		return ;
+	}
+	if (scene->lights == NULL)
+	{
+		scene->lights = ft_calloc(LIGHT_MAX, sizeof(t_light));
+		if (scene->lights == NULL)
+		{
+			*success = false;
+			return ;
+		}
+	}
+	light = &scene->lights[scene->count.light_count];
+	parse_coordinates(&light->position, splitted[1], success);
+	if (*success == false)
+	{
+		return ;
+	}
+	light->intensity = ft_atof(splitted[2], success);
+	if (*success == false || light->intensity < 0.0 || light->intensity > 1.0)
+	{
+		*success = false;
+		return ;
+	}
+	parse_color(&light->color, splitted[3], success);
+	if (*success == false)
+	{
+		return ;
+	}
+}
 
 /**
  * @brief Parses a .rt file into a scene struct
@@ -428,6 +528,10 @@ t_scene	*parse_scene(const char *file_name)
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
 			// printf("Point Light\n");
+			parse_light(scene, splitted, &success);
+			if (success == false)
+				return (light_parse_error(line, line_count, scene, splitted, fd));
+			scene->count.light_count++;
 		}
 		else if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])) == 0)
 		{
@@ -459,7 +563,7 @@ t_scene	*parse_scene(const char *file_name)
 			printf(RED"Error: Scene contains more than one ambient light\n"RESET);
 		else
 			printf(RED"Error: Scene contains no ambient lights\n"RESET);
-		free(scene);
+		free_scene(scene);
 		close(fd);
 		return (NULL);
 	}
@@ -469,11 +573,12 @@ t_scene	*parse_scene(const char *file_name)
 			printf(RED"Error: Scene contains more than one camera\n"RESET);
 		else
 			printf(RED"Error: Scene contains no cameras\n"RESET);
-		free(scene);
+		free_scene(scene);
 		close(fd);
 		return (NULL);
 	}
 	close(fd);
 	print_scene(scene);
+	free_scene(scene);
 	return (scene);
 }
