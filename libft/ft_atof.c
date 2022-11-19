@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 01:49:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 10:22:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static bool	is_whitespace(const char c)
 {
 	return (c == ' ' || c == '\f'
-			|| c == '\n' || c == '\r'
-			|| c == '\t' || c == '\v');
+		|| c == '\n' || c == '\r'
+		|| c == '\t' || c == '\v');
 }
 
 static int	atof_split(char c)

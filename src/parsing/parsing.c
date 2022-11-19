@@ -6,113 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 10:02:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 11:20:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
-
-/**
- * @brief Returns whether a character is whitespace
- * @param c Input character
- * @return True if whitespace
- */
-static bool	is_whitespace(const char c)
-{
-	return (c == ' ' || c == '\f'
-			|| c == '\n' || c == '\r'
-			|| c == '\t' || c == '\v');
-}
-
-/**
- * @brief Returns whether a string is entirely made up of whitespace characters
- * @param str Input string
- * @return True if every character is whitespace
- */
-static bool	all_whitespace(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (is_whitespace(str[i]) == false)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-/**
- * @brief Count the number of commas in a string
- * @param str Input strng
- * @return Number of commas in string
- */
-static size_t	count_commas(const char *str)
-{
-	size_t	i;
-	size_t	comma_count;
-
-	i = 0;
-	comma_count = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ',')
-			comma_count++;
-		i++;
-	}
-	return (comma_count);
-}
-
-/**
- * @brief Returns whether a string is a number
- * @param str Input string
- * @return True if every character is a digit
- */
-static bool	is_number(const char *str)
-{
-	size_t	i;
-	size_t	dot_count;
-
-	i = 0;
-	dot_count = 0;
-	while (str[i] != '\0')
-	{
-		if (ft_isdigit(str[i]) == false && str[i] != '-' && str[i] != '+' && str[i] != '.')
-			return (false);
-		if (str[i] == '.')
-			dot_count++;
-		if ((str[i] == '-' || str[i] == '+') && i != 0)
-			return (false);
-		i++;
-	}
-	if (dot_count > 1)
-		return (false);
-	if ((str[0] == '-' || str[0] == '+') && ft_strlen(str) == 1)
-		return (false);
-	if ((str[0] == '-' || str[0] == '+') && str[1] == '.' && ft_strlen(str) == 2)
-		return (false);
-	return (true);
-}
-
-/**
- * @brief Frees an array allocated by split
- * @param arr Array to free
- */
-void	free_split_array(char **arr)
-{
-	size_t	i;
-
-	if (arr == NULL)
-		return ;
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 /**
  * @brief Parse the red, green, and blue values of a color
@@ -122,41 +20,31 @@ void	free_split_array(char **arr)
  */
 void	parse_color(t_color *color, const char *str, bool *success)
 {
-	char	**color_strs;
-	long	res;
+	char	**rgb;
+	long	res[3];
+	bool	parse_success;
+	size_t	i;
 
-	color_strs = ft_split(str, ',');
-	if (color_strs == NULL || count_commas(str) != 2 || split_count(color_strs) != 3
-		|| is_number(color_strs[0]) == false
-		|| is_number(color_strs[1]) == false
-		|| is_number(color_strs[2]) == false)
+	parse_success = true;
+	rgb = ft_split(str, ',');
+	if (!rgb || count_commas(str) != 2 || split_count(rgb) != 3)
 	{
 		*success = false;
-		free_split_array(color_strs);
+		free_split_array(rgb);
 		return ;
 	}
-	// This can be in a loop
-	res = ft_atol(color_strs[0], success);
-	color->r = res;
-	if (res < 0 || res > 255 || *success == false)
+	i = -1;
+	while (rgb[++i] != NULL)
 	{
-		*success = false;
-		return ;
+		res[i] = ft_atol(rgb[i], success);
+		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 255 || !*success)
+			parse_success = false;
 	}
-	res = ft_atol(color_strs[1], success);
-	color->g = res;
-	if (res < 0 || res > 255 || *success == false)
-	{
-		*success = false;
-		return ;
-	}
-	res = ft_atol(color_strs[2], success);
-	color->b = res;
-	if (res < 0 || res > 255 || *success == false)
-	{
-		*success = false;
-		return ;
-	}
+	color->r = res[0];
+	color->g = res[1];
+	color->b = res[2];
+	*success = parse_success;
+	free_split_array(rgb);
 }
 
 /**
@@ -254,23 +142,6 @@ void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene, char
 }
 
 /**
- * @brief Counts the number of elements in an array returned by ft_split
- * @param split An array returned by ft_split
- * @return Number of elements in the array
- */
-size_t	split_count(char **split)
-{
-	size_t	len;
-	
-	if (split == NULL)
-		return (0);
-	len = 0;
-	while (split[len] != NULL)
-		len++;
-	return (len);
-}
-
-/**
  * @brief Parses given coordinates into a vector
  * @param position Pointer to a vector that will be filled with coordinates
  * @param str Raw string to be parsed
@@ -283,8 +154,8 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
 
 	splitted = ft_split(str, ',');
 	if (splitted == NULL || count_commas(str) != 2 || split_count(splitted) != 3
-		|| is_number(splitted[0]) == false || is_number(splitted[1]) == false
-		|| is_number(splitted[2]) == false)
+		|| is_num(splitted[0], true) == false || is_num(splitted[1], true) == false
+		|| is_num(splitted[2], true) == false)
 	{
 		free_split_array(splitted);
 		*success = false;
@@ -361,81 +232,6 @@ void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 	free_split_array(splitted);
 }
 
-/**
- * @brief Prints the x, y, z values of a vector
- * @param vector Vector to be printed
- */
-void	print_vector(const t_vector *vector)
-{
-	printf("\tX: %.2f\n", vector->x);
-	printf("\tY: %.2f\n", vector->y);
-	printf("\tZ: %.2f\n", vector->z);
-}
-
-/**
- * @brief Prints the contents of a scene
- * @param scene Scene to be printed
- */
-void	print_scene(const t_scene *scene)
-{
-	size_t	i;
-
-	printf("Ambient light configuration:\n");
-	printf("  Intensity: %.2f\n", scene->ambient.intensity);
-	printf("  Color:\n");
-	print_color(&scene->ambient.color);
-	printf("Camera configuration:\n");
-	printf("  Position:\n");
-	print_vector(&scene->camera.position);
-	printf("  Orientation:\n");
-	print_vector(&scene->camera.orientation);
-	printf("  Fov:\n");
-	printf("\t%d degrees\n", scene->camera.fov);
-	i = 0;
-	while (i < scene->count.light_count)
-	{
-		printf("Light #%lu configuration:\n", i + 1);
-		printf("  Position:\n");
-		print_vector(&scene->lights[i].position);
-		printf("  Light intensity:\n");
-		printf("\t%.2f intenseness\n", scene->lights[i].intensity);
-		printf("  Light color:\n");
-		print_color(&scene->lights[i].color);
-		i++;
-	}
-	i = 0;
-	while (i < scene->count.shape_count)
-	{
-		printf("Shape #%lu configuration:\n", i + 1);
-		printf("  Type:\n");
-		if (scene->shapes[i].type == SPHERE)
-			printf("\tSphere\n");
-		else if (scene->shapes[i].type == PLANE)
-			printf("\tPlane\n");
-		else if (scene->shapes[i].type == CYLINDER)
-			printf("\tCylinder\n");
-		printf("  Position:\n");
-		print_vector(&scene->shapes[i].origin);
-		if (scene->shapes[i].type == SPHERE || scene->shapes[i].type == CYLINDER)
-		{
-			printf("  Radius:\n");
-			printf("\t%.2f\n", scene->shapes[i].radius);
-		}
-		if (scene->shapes[i].type == CYLINDER)
-		{
-			printf("  Height:\n");
-			printf("\t%.2f\n", scene->shapes[i].height);
-		}
-		if (scene->shapes[i].type == CYLINDER || scene->shapes[i].type == PLANE)
-		{
-			printf("  Orientation:\n");
-			print_vector(&scene->shapes[i].orientation);
-		}
-		printf("  Color:\n");
-		print_color(&scene->shapes[i].color);
-		i++;
-	}
-}
 
 /**
  * @brief Prints the appropriate error message when an error occurs while
@@ -495,11 +291,11 @@ void	*shape_parse_error(char *line, size_t line_count, t_scene *scene, char **sp
 			|| shape->orientation.z < 0.0 || shape->orientation.z > 1.0)
 		{
 			printf(YELLOW"Error with parsing plane orientation on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0)
+			if (shape->orientation.x < 0.0 || shape->orientation.x > 1.0)
 				printf(YELLOW"The x value is out of range\n"RESET);
-			if (scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0)
+			if (shape->orientation.y < 0.0 || shape->orientation.y > 1.0)
 				printf(YELLOW"The y value is out of range\n"RESET);
-			if (scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
+			if (shape->orientation.z < 0.0 || shape->orientation.z > 1.0)
 				printf(YELLOW"The z value is out of range\n"RESET);
 		}
 		else if (shape->color.r < 0 || shape->color.r > 255
@@ -624,19 +420,6 @@ void	*light_parse_error(char *line, size_t line_count, t_scene *scene, char **sp
 }
 
 /**
- * @brief Frees a scene struct
- * @param scene Pointer to scene struct to be freed
- */
-void	free_scene(t_scene *scene)
-{
-	if (scene->lights)
-		free(scene->lights);
-	if (scene->shapes)
-		free(scene->shapes);
-	free(scene);
-}
-
-/**
  * @brief Parses a point light
  * @param scene Pointer to scene struct
  * @param splitted The line containing the point light configuration split into tokens
@@ -706,9 +489,12 @@ static bool	is_shape(const char *identifier)
 void	parse_shape(t_scene *scene, char **splitted, bool *success)
 {
 	t_shape	*shape;
+	bool	parse_success;
 
+	parse_success = true;
 	if (scene->count.shape_count == SHAPE_MAX)
 	{
+		// parse_success = false;
 		*success = false;
 		return ;
 	}
@@ -733,19 +519,23 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		shape->radius = ft_atof(splitted[2], success) / 2;
 		if (*success == false || shape->radius < 0.0 || shape->radius == 0.0)
 		{
-			*success = false;
-			return ;
+			parse_success = false;
+			// *success = false;
+			// return ;
 		}
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
 		{
-			return ;
+			parse_success = false;
+			// return ;
 		}
 		parse_color(&shape->color, splitted[3], success);
 		if (*success == false)
 		{
-			return ;
+			parse_success = false;
+			// return ;
 		}
+		*success = parse_success;
 	}
 	else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
 	{
@@ -758,18 +548,22 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
 		{
-			return ;
+			parse_success = false;
+			// return ;
 		}
 		parse_orientation(&shape->orientation, splitted[2], success);
 		if (*success == false)
 		{
-			return ;
+			parse_success = false;
+			// return ;
 		}
 		parse_color(&shape->color, splitted[3], success);
 		if (*success == false)
 		{
-			return ;
+			parse_success = false;
+			// return ;
 		}
+		*success = parse_success;
 	}
 	else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
 	{
@@ -782,30 +576,36 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		shape->radius = ft_atof(splitted[3], success) / 2;
 		if (*success == false || shape->radius <= 0.0)
 		{
-			*success = false;
-			return ;
+			// *success = false;
+			parse_success = false;
+			// return ;
 		}
 		shape->height = ft_atof(splitted[4], success);
 		if (*success == false || shape->height <= 0.0)
 		{
-			*success = false;
-			return ;
+			// *success = false;
+			// return ;
+			parse_success = false;
 		}
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
 		{
-			return ;
+			// return ;
+			parse_success = false;
 		}
 		parse_orientation(&shape->orientation, splitted[2], success);
 		if (*success == false)
 		{
-			return ;
+			// return ;
+			parse_success = false;
 		}
 		parse_color(&shape->color, splitted[5], success);
 		if (*success == false)
 		{
-			return ;
+			// return ;
+			parse_success = false;
 		}
+		*success = parse_success;
 	}
 }
 

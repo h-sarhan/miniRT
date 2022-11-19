@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 22:18:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/09/25 18:02:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 11:21:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static long	ft_atol_helper(const char *str, int i, bool *check)
 		if (temp > num)
 		{
 			*check = false;
-			return (-1);
+			return (0);
 		}
 	}
 	return (num);

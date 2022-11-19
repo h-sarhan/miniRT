@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 17:27:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 10:22:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <math.h>
 # include <stdbool.h>
 # include "get_next_line.h"
-
 
 void	ft_free(void *memory);
 int		ft_isalpha(int c);

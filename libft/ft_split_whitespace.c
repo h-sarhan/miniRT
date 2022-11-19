@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:14:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 17:26:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 10:22:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static bool	is_whitespace(const char c)
 {
 	return (c == ' ' || c == '\f'
-			|| c == '\n' || c == '\r'
-			|| c == '\t' || c == '\v');
+		|| c == '\n' || c == '\r'
+		|| c == '\t' || c == '\v');
 }
 
 static int	count_words(char const *str)
