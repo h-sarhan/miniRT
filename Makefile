@@ -6,11 +6,11 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/19 11:25:02 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/19 16:34:05 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-PARSING_SRC = parsing.c parsing_utils.c parse_errors.c
+PARSING_SRC = parsing.c parsing_utils.c parsing_utils2.c shape_errors.c scene_errors.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
 SRC = $(PARSING_SRC) free_utils.c print_utils.c

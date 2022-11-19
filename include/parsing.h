@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 15:12:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:33:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,13 @@ void	*light_parse_error(char *line, size_t line_count, t_scene *scene,
 			char **splitted);
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 			const char *line, const char *element);
-
+bool	check_color(const t_color *color, size_t line_num, const char *line,
+			const char *element);
+bool	check_orientation(const t_vector *orientation, size_t line_num,
+			const char *line, const char *element);
+bool	is_shape(const char *identifier);
+bool	check_color(const t_color *color, size_t line_num, const char *line,
+			const char *element);
+bool	check_orientation(const t_vector *orientation, size_t line_num,
+			const char *line, const char *element);
 #endif

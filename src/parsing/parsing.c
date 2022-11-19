@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 15:26:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:35:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,24 +128,17 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 {
 	t_light	*light;
 
-	if (scene->count.light_count == LIGHT_MAX)
-	{
-		*success = false;
-		return ;
-	}
-	if (split_count(splitted) != 4)
+	if (scene->count.light_count == LIGHT_MAX || split_count(splitted) != 4)
 	{
 		*success = false;
 		return ;
 	}
 	if (scene->lights == NULL)
-	{
 		scene->lights = ft_calloc(LIGHT_MAX, sizeof(t_light));
-		if (scene->lights == NULL)
-		{
-			*success = false;
-			return ;
-		}
+	if (scene->lights == NULL)
+	{
+		*success = false;
+		return ;
 	}
 	light = &scene->lights[scene->count.light_count];
 	parse_coordinates(&light->position, splitted[1], success);
@@ -158,8 +151,6 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 		return ;
 	}
 	parse_color(&light->color, splitted[3], success);
-	if (*success == false)
-		return ;
 }
 
 /**
@@ -270,7 +261,6 @@ t_scene	*parse_scene(int fd)
 
 	line_count = 1;
 	success = true;
-	
 	scene = ft_calloc(1, sizeof(t_scene));
 	if (scene == NULL)
 		return (NULL);

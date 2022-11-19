@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:10:43 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 11:32:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:33:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,4 @@ size_t	split_count(char **split)
 	while (split[len] != NULL)
 		len++;
 	return (len);
-}
-
-/**
- * @brief Returns whether an identifier is shape
- * @param identifier 
- * @return True if the identifier is a shape
- */
-bool	is_shape(const char *identifier)
-{
-	return (ft_strncmp(identifier, "sp", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "pl", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "cy", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "cu", ft_strlen(identifier)) == 0);
 }
