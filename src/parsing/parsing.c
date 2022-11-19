@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 16:49:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 17:50:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,30 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		parse_cylinder(shape, splitted, success);
 }
 
+// ! DOCUMENT LATER
+bool	check_element_count(t_scene *scene)
+{
+	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
+	{
+		if (scene->count.ambient_count > 1)
+			printf(RED"Error: Scene contains multiple ambient light\n"RESET);
+		else
+			printf(RED"Error: Scene contains no ambient lights\n"RESET);
+		free_scene(scene);
+		return (false);
+	}
+	if (scene->count.camera_count > 1 || scene->count.camera_count == 0)
+	{
+		if (scene->count.camera_count > 1)
+			printf(RED"Error: Scene contains more than one camera\n"RESET);
+		else
+			printf(RED"Error: Scene contains no cameras\n"RESET);
+		free_scene(scene);
+		return (false);
+	}
+	return (true);
+}
+
 /**
  * @brief Parses a .rt file into a scene struct
  * @param file_name Name of the .rt file
@@ -283,6 +307,7 @@ t_scene	*parse_scene(int fd)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		// skip_non_element()
 		if (*line == '\0' || all_whitespace(line) == true
 			|| ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0)
 		{
@@ -291,7 +316,9 @@ t_scene	*parse_scene(int fd)
 			line_count++;
 			continue ;
 		}
+		// parse_line()
 		splitted = ft_split_whitespace(line);
+		// parse_ambient()
 		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 3)
@@ -305,6 +332,7 @@ t_scene	*parse_scene(int fd)
 				return (ambient_parse_error(line, line_count, scene, splitted));
 			scene->count.ambient_count++;
 		}
+		// parse_camera()
 		else if (ft_strncmp(splitted[0], "C", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 4)
@@ -344,24 +372,8 @@ t_scene	*parse_scene(int fd)
 		line = get_next_line(fd);
 		line_count++;
 	}
-	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
-	{
-		if (scene->count.ambient_count > 1)
-			printf(RED"Error: Scene contains multiple ambient light\n"RESET);
-		else
-			printf(RED"Error: Scene contains no ambient lights\n"RESET);
-		free_scene(scene);
+	if (check_element_count(scene) == false)
 		return (NULL);
-	}
-	if (scene->count.camera_count > 1 || scene->count.camera_count == 0)
-	{
-		if (scene->count.camera_count > 1)
-			printf(RED"Error: Scene contains more than one camera\n"RESET);
-		else
-			printf(RED"Error: Scene contains no cameras\n"RESET);
-		free_scene(scene);
-		return (NULL);
-	}
 	print_scene(scene);
 	free_scene(scene);
 	return (scene);
