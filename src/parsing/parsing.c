@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 02:19:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 10:02:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,27 @@ static bool	all_whitespace(const char *str)
 		i++;
 	}
 	return (true);
+}
+
+/**
+ * @brief Count the number of commas in a string
+ * @param str Input strng
+ * @return Number of commas in string
+ */
+static size_t	count_commas(const char *str)
+{
+	size_t	i;
+	size_t	comma_count;
+
+	i = 0;
+	comma_count = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == ',')
+			comma_count++;
+		i++;
+	}
+	return (comma_count);
 }
 
 /**
@@ -105,7 +126,7 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	long	res;
 
 	color_strs = ft_split(str, ',');
-	if (color_strs == NULL || split_count(color_strs) != 3
+	if (color_strs == NULL || count_commas(str) != 2 || split_count(color_strs) != 3
 		|| is_number(color_strs[0]) == false
 		|| is_number(color_strs[1]) == false
 		|| is_number(color_strs[2]) == false)
@@ -261,7 +282,7 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
 	char	**splitted;
 
 	splitted = ft_split(str, ',');
-	if (splitted == NULL || split_count(splitted) != 3
+	if (splitted == NULL || count_commas(str) != 2 || split_count(splitted) != 3
 		|| is_number(splitted[0]) == false || is_number(splitted[1]) == false
 		|| is_number(splitted[2]) == false)
 	{
@@ -306,7 +327,7 @@ void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 	char	**splitted;
 
 	splitted = ft_split(str, ',');
-	if (splitted == NULL || split_count(splitted) != 3)
+	if (splitted == NULL || count_commas(str) != 2 || split_count(splitted) != 3)
 	{
 		*success = false;
 		free_split_array(splitted);
