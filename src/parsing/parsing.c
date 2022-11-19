@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 17:50:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 18:20:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	while (rgb[++i] != NULL)
 	{
 		res[i] = ft_atol(rgb[i], success);
-		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 255 || !*success)
+		
+		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 255 || *success == false)
 			parse_success = false;
 	}
+	// printf("success IS |%d|\n", *success);
 	free_split_array(rgb);
 	color->r = res[0];
 	color->g = res[1];
@@ -206,6 +208,7 @@ void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
 
+	parse_success = true;
 	shape->type = CYLINDER;
 	if (split_count(splitted) != 6)
 	{
@@ -285,6 +288,20 @@ bool	check_element_count(t_scene *scene)
 	return (true);
 }
 
+// ! DOCUMENT THIS
+bool	skip_line(char **line, int fd, size_t *line_count)
+{
+	if (ft_strlen(*line) == 0 || all_whitespace(*line) == true
+		|| ft_strncmp(*line, "//", 2) == 0 || ft_strncmp(*line, "#", 1) == 0)
+	{
+		free(*line);
+		*line = get_next_line(fd);
+		*line_count += 1;
+		return (true);
+	}
+	return (false);
+}
+
 /**
  * @brief Parses a .rt file into a scene struct
  * @param file_name Name of the .rt file
@@ -307,15 +324,9 @@ t_scene	*parse_scene(int fd)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		// skip_non_element()
-		if (*line == '\0' || all_whitespace(line) == true
-			|| ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0)
-		{
-			free(line);
-			line = get_next_line(fd);
-			line_count++;
+		success = true;
+		if (skip_line(&line, fd, &line_count) == true)
 			continue ;
-		}
 		// parse_line()
 		splitted = ft_split_whitespace(line);
 		// parse_ambient()
