@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 16:35:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 16:49:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,83 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 	parse_color(&light->color, splitted[3], success);
 }
 
+// ! COMMENT THIS LATER
+void	parse_sphere(t_shape *shape, char **splitted, bool *success)
+{
+	bool	parse_success;
+
+	parse_success = true;
+	shape->type = SPHERE;
+	if (split_count(splitted) != 4)
+	{
+		*success = false;
+		return ;
+	}
+	shape->radius = ft_atof(splitted[2], success) / 2;
+	if (*success == false || shape->radius < 0.0 || shape->radius == 0.0)
+		parse_success = false;
+	parse_coordinates(&shape->origin, splitted[1], success);
+	if (*success == false)
+		parse_success = false;
+	parse_color(&shape->color, splitted[3], success);
+	if (*success == false)
+		parse_success = false;
+	*success = parse_success;
+}
+
+// ! COMMENT THIS LATER
+void	parse_plane(t_shape *shape, char **splitted, bool *success)
+{
+	bool	parse_success;
+
+	parse_success = true;
+	shape->type = PLANE;
+	if (split_count(splitted) != 4)
+	{
+		*success = false;
+		return ;
+	}
+	parse_coordinates(&shape->origin, splitted[1], success);
+	if (*success == false)
+		parse_success = false;
+	parse_orientation(&shape->orientation, splitted[2], success);
+	if (*success == false)
+		parse_success = false;
+	parse_color(&shape->color, splitted[3], success);
+	if (*success == false)
+		parse_success = false;
+	*success = parse_success;
+}
+
+// ! COMMENT THIS LATER
+void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
+{
+	bool	parse_success;
+
+	shape->type = CYLINDER;
+	if (split_count(splitted) != 6)
+	{
+		*success = false;
+		return ;
+	}
+	shape->radius = ft_atof(splitted[3], success) / 2;
+	if (*success == false || shape->radius <= 0.0)
+		parse_success = false;
+	shape->height = ft_atof(splitted[4], success);
+	if (*success == false || shape->height <= 0.0)
+		parse_success = false;
+	parse_coordinates(&shape->origin, splitted[1], success);
+	if (*success == false)
+		parse_success = false;
+	parse_orientation(&shape->orientation, splitted[2], success);
+	if (*success == false)
+		parse_success = false;
+	parse_color(&shape->color, splitted[5], success);
+	if (*success == false)
+		parse_success = false;
+	*success = parse_success;
+}
+
 /**
  * @brief Parses a shape
  * @param scene Pointer to scene struct
@@ -162,87 +239,26 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 void	parse_shape(t_scene *scene, char **splitted, bool *success)
 {
 	t_shape	*shape;
-	bool	parse_success;
 
-	parse_success = true;
 	if (scene->count.shape_count == SHAPE_MAX)
 	{
 		*success = false;
 		return ;
 	}
 	if (scene->shapes == NULL)
-	{
 		scene->shapes = ft_calloc(SHAPE_MAX, sizeof(t_shape));
-		if (scene->shapes == NULL)
-		{
-			*success = false;
-			return ;
-		}
+	if (scene->shapes == NULL)
+	{
+		*success = false;
+		return ;
 	}
 	shape = &scene->shapes[scene->count.shape_count];
 	if (ft_strncmp(splitted[0], "sp", ft_strlen(splitted[0])) == 0)
-	{
-		shape->type = SPHERE;
-		if (split_count(splitted) != 4)
-		{
-			*success = false;
-			return ;
-		}
-		shape->radius = ft_atof(splitted[2], success) / 2;
-		if (*success == false || shape->radius < 0.0 || shape->radius == 0.0)
-			parse_success = false;
-		parse_coordinates(&shape->origin, splitted[1], success);
-		if (*success == false)
-			parse_success = false;
-		parse_color(&shape->color, splitted[3], success);
-		if (*success == false)
-			parse_success = false;
-		*success = parse_success;
-	}
+		parse_sphere(shape, splitted, success);
 	else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
-	{
-		shape->type = PLANE;
-		if (split_count(splitted) != 4)
-		{
-			*success = false;
-			return ;
-		}
-		parse_coordinates(&shape->origin, splitted[1], success);
-		if (*success == false)
-			parse_success = false;
-		parse_orientation(&shape->orientation, splitted[2], success);
-		if (*success == false)
-			parse_success = false;
-		parse_color(&shape->color, splitted[3], success);
-		if (*success == false)
-			parse_success = false;
-		*success = parse_success;
-	}
+		parse_plane(shape, splitted, success);
 	else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
-	{
-		shape->type = CYLINDER;
-		if (split_count(splitted) != 6)
-		{
-			*success = false;
-			return ;
-		}
-		shape->radius = ft_atof(splitted[3], success) / 2;
-		if (*success == false || shape->radius <= 0.0)
-			parse_success = false;
-		shape->height = ft_atof(splitted[4], success);
-		if (*success == false || shape->height <= 0.0)
-			parse_success = false;
-		parse_coordinates(&shape->origin, splitted[1], success);
-		if (*success == false)
-			parse_success = false;
-		parse_orientation(&shape->orientation, splitted[2], success);
-		if (*success == false)
-			parse_success = false;
-		parse_color(&shape->color, splitted[5], success);
-		if (*success == false)
-			parse_success = false;
-		*success = parse_success;
-	}
+		parse_cylinder(shape, splitted, success);
 }
 
 /**
