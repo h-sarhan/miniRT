@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 12:31:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 15:02:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,17 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
 		char **splitted)
 {
-	if (!check_orientation(&scene->camera.orientation, line_num, line, "camera")
-		&& (scene->camera.fov < 0 || scene->camera.fov > 180))
+	bool	orientation;
+
+	orientation = check_orientation(&scene->camera.orientation, line_num, line,
+			"camera");
+	if (!orientation && (scene->camera.fov < 0 || scene->camera.fov > 180))
 	{
 		printf(YELLOW"Error with parsing camera fov on line #%ld\n"RED"->\t%s\n"
 			RESET, line_num, line);
 		printf(YELLOW"The fov value is out of range\n"RESET);
 	}
-	else
+	else if (!orientation)
 		printf(YELLOW"Error with parsing camera on line #%ld\n"RED"->\t%s"RESET
 			YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET,
 			line_num, line);
@@ -96,11 +99,16 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene,
 		char **splitted)
 {
-	if (scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
+	bool	color;
+
+	color = check_color(&scene->ambient.color, line_num, line, "ambient light");
+	if (!color && (scene->ambient.intensity < 0.0
+			|| scene->ambient.intensity > 1.0))
+	{
 		printf(YELLOW"Ambient light intensity out of range on line #%ld\n"
 			RED"->\t%s"RESET"Range is [0.0 -> 1.0]\n", line_num, line);
-	else if (!check_color(&scene->ambient.color,
-			line_num, line, "ambient light"))
+	}
+	else if (!color)
 	{
 		printf(YELLOW"Error with parsing ambient light on line #%ld\n"
 			RED"->\t%s"YELLOW"Correct syntax is \"A [intensity] [color]\"\n"
@@ -146,65 +154,66 @@ void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
 		char **splitted)
 {
 	t_shape	*shape;
+	bool	color;
+	bool	orientation;
 
 	if (scene->shapes == NULL)
-	{
-		printf(YELLOW"Error with parsing shape on line #%ld\n"RED"->\t%s"RESET,
-			line_num, line);
-		free(line);
-		free_scene(scene);
-		free_split_array(splitted);
-		get_next_line(-1);
-		return (NULL);
-	}
-	shape = &scene->shapes[scene->count.shape_count];
-	if (scene->count.shape_count >= SHAPE_MAX)
-	{
+		shape = NULL;
+	else
+		shape = &scene->shapes[scene->count.shape_count];
+	if (shape && scene->count.shape_count >= SHAPE_MAX)
 		printf(RED"Error: Scene contains more than %d shapes\n"RESET,
 			SHAPE_MAX);
-	}
-	else if (shape->type == SPHERE)
+	else if (shape && shape->type == SPHERE)
 	{
+		color = check_color(&shape->color, line_num, line, "sphere");
 		if (shape->radius <= 0)
 		{
 			printf(YELLOW"Error with sphere diameter on line #%ld\n"RED"->\t%s"
 				RESET, line_num, line);
 			printf(YELLOW"Diameter has to be a positive number\n"RESET);
 		}
-		else if (!check_color(&shape->color, line_num, line, "sphere"))
+		else if (!color)
 			printf(YELLOW"Error with parsing sphere on line #%ld\n"RED"->\t%s"
 				YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"
 				RESET, line_num, line);
 	}
-	else if (shape->type == PLANE)
+	else if (shape && shape->type == PLANE)
 	{
-		if (!check_orientation(&shape->orientation, line_num, line, "plane")
-			&& !check_color(&shape->color, line_num, line, "plane"))
+		orientation = check_orientation(&shape->orientation, line_num, line,
+				"plane");
+		color = check_color(&shape->color, line_num, line, "plane");
+		if (!color && !orientation)
 			printf(YELLOW"Error with parsing plane on line #%ld\n"RED"->\t%s"
 				YELLOW"Correct syntax is \"pl [origin] [orientation]"
 				" [color]\"\n"RESET, line_num, line);
 	}
-	else if (shape->type == CYLINDER)
+	else if (shape && shape->type == CYLINDER)
 	{
-		if (!check_orientation(&shape->orientation, line_num, line, "cylinder")
-			&& shape->radius <= 0)
+		orientation = check_orientation(&shape->orientation, line_num, line,
+				"cylinder");
+		color = check_color(&shape->color, line_num, line, "cylinder");
+		if (!orientation && shape->radius <= 0)
 		{
 			printf(YELLOW"Error with cylinder diameter on line #%ld\n"
 				RED"->\t%s"RESET, line_num, line);
 			printf(YELLOW"Diameter has to be a positive number\n"RESET);
 		}
-		else if (shape->height <= 0)
+		else if (!color && !orientation && shape->height <= 0)
 		{
 			printf(YELLOW"Error with cylinder height on line #%ld\n"
 				RED"->\t%s"RESET, line_num, line);
 			printf(YELLOW"Height has to be a positive number\n"RESET);
 		}
-		else if (!check_color(&shape->color, line_num, line, "cylinder"))
+		else if (!orientation && !color)
 			printf(YELLOW"Error with parsing cylinder on line #%ld\n"RED"->\t%s"
 				YELLOW"Correct syntax is "
 				"\"cy [origin] [orientation] [diameter] [height] [color]\"\n"
 				RESET, line_num, line);
 	}
+	else
+		printf(YELLOW"Error with parsing shape on line #%ld\n"RED"->\t%s"RESET,
+			line_num, line);
 	free(line);
 	free_scene(scene);
 	free_split_array(splitted);

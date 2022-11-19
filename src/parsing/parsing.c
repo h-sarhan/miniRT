@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 12:25:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 15:26:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	parse_color(t_color *color, const char *str, bool *success)
 		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 255 || !*success)
 			parse_success = false;
 	}
+	free_split_array(rgb);
 	color->r = res[0];
 	color->g = res[1];
 	color->b = res[2];
 	*success = parse_success;
-	free_split_array(rgb);
 }
 
 /**
@@ -75,10 +75,10 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
 		if (!is_num(coords[i], true) || *success == false)
 			parse_success = false;
 	}
+	free_split_array(coords);
 	position->x = res[0];
 	position->y = res[1];
 	position->z = res[2];
-	free_split_array(coords);
 	*success = parse_success;
 }
 
@@ -90,48 +90,38 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
  */
 void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 {
-	float	res;
-	char	**splitted;
+	float	res[3];
+	char	**coords;
+	size_t	i;
+	bool	parse_success;
 
-	splitted = ft_split(str, ',');
-	if (splitted == NULL || count_commas(str) != 2 || split_count(splitted) != 3)
+	parse_success = true;
+	coords = ft_split(str, ',');
+	if (coords == NULL || count_commas(str) != 2 || split_count(coords) != 3)
 	{
 		*success = false;
-		free_split_array(splitted);
+		free_split_array(coords);
 		return ;
 	}
-	// this can be in a loop
-	res = ft_atof(splitted[0], success);
-	orientation->x = res;
-	if (*success == false || res < -1.0 || res > 1.0)
+	i = -1;
+	while (coords[++i] != NULL)
 	{
-		*success = false;
-		free_split_array(splitted);
-		return ;
+		res[i] = ft_atof(coords[i], success);
+		if (!is_num(coords[i], true) || !*success || res[i] < -1 || res[i] > 1)
+			parse_success = false;
 	}
-	res = ft_atof(splitted[1], success);
-	orientation->y = res;
-	if (*success == false || res < -1.0 || res > 1.0)
-	{
-		*success = false;
-		free_split_array(splitted);
-		return ;
-	}
-	res = ft_atof(splitted[2], success);
-	orientation->z = res;
-	if (*success == false || res < -1.0 || res > 1.0)
-	{
-		*success = false;
-		free_split_array(splitted);
-		return ;
-	}
-	free_split_array(splitted);
+	free_split_array(coords);
+	orientation->x = res[0];
+	orientation->y = res[1];
+	orientation->z = res[2];
+	*success = parse_success;
 }
 
 /**
  * @brief Parses a point light
  * @param scene Pointer to scene struct
- * @param splitted The line containing the point light configuration split into tokens
+ * @param splitted The line containing the point light configuration split
+ *  into tokens
  * @param success Boolean pointer that is set to false on error
  */
 void	parse_light(t_scene *scene, char **splitted, bool *success)
@@ -160,9 +150,7 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 	light = &scene->lights[scene->count.light_count];
 	parse_coordinates(&light->position, splitted[1], success);
 	if (*success == false)
-	{
 		return ;
-	}
 	light->intensity = ft_atof(splitted[2], success);
 	if (*success == false || light->intensity < 0.0 || light->intensity > 1.0)
 	{
@@ -171,9 +159,7 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 	}
 	parse_color(&light->color, splitted[3], success);
 	if (*success == false)
-	{
 		return ;
-	}
 }
 
 /**
@@ -190,7 +176,6 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 	parse_success = true;
 	if (scene->count.shape_count == SHAPE_MAX)
 	{
-		// parse_success = false;
 		*success = false;
 		return ;
 	}
@@ -214,23 +199,13 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		}
 		shape->radius = ft_atof(splitted[2], success) / 2;
 		if (*success == false || shape->radius < 0.0 || shape->radius == 0.0)
-		{
 			parse_success = false;
-			// *success = false;
-			// return ;
-		}
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
-		{
 			parse_success = false;
-			// return ;
-		}
 		parse_color(&shape->color, splitted[3], success);
 		if (*success == false)
-		{
 			parse_success = false;
-			// return ;
-		}
 		*success = parse_success;
 	}
 	else if (ft_strncmp(splitted[0], "pl", ft_strlen(splitted[0])) == 0)
@@ -243,22 +218,13 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		}
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
-		{
 			parse_success = false;
-			// return ;
-		}
 		parse_orientation(&shape->orientation, splitted[2], success);
 		if (*success == false)
-		{
 			parse_success = false;
-			// return ;
-		}
 		parse_color(&shape->color, splitted[3], success);
 		if (*success == false)
-		{
 			parse_success = false;
-			// return ;
-		}
 		*success = parse_success;
 	}
 	else if (ft_strncmp(splitted[0], "cy", ft_strlen(splitted[0])) == 0)
@@ -271,36 +237,19 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
 		}
 		shape->radius = ft_atof(splitted[3], success) / 2;
 		if (*success == false || shape->radius <= 0.0)
-		{
-			// *success = false;
 			parse_success = false;
-			// return ;
-		}
 		shape->height = ft_atof(splitted[4], success);
 		if (*success == false || shape->height <= 0.0)
-		{
-			// *success = false;
-			// return ;
 			parse_success = false;
-		}
 		parse_coordinates(&shape->origin, splitted[1], success);
 		if (*success == false)
-		{
-			// return ;
 			parse_success = false;
-		}
 		parse_orientation(&shape->orientation, splitted[2], success);
 		if (*success == false)
-		{
-			// return ;
 			parse_success = false;
-		}
 		parse_color(&shape->color, splitted[5], success);
 		if (*success == false)
-		{
-			// return ;
 			parse_success = false;
-		}
 		*success = parse_success;
 	}
 }
@@ -311,119 +260,79 @@ void	parse_shape(t_scene *scene, char **splitted, bool *success)
  * @return A scene struct with the shapes, lights, and camera configuration
  * specified in the file
  */
-t_scene	*parse_scene(const char *file_name)
+t_scene	*parse_scene(int fd)
 {
 	size_t	line_count;
 	t_scene	*scene;
-	int		fd;
 	char	**splitted;
 	char	*line;
 	bool	success;
 
 	line_count = 1;
 	success = true;
-	if (ft_strnstr(file_name, ".rt", ft_strlen(file_name)) == NULL
-		|| ft_strncmp(&file_name[ft_strlen(file_name) - 3], ".rt", 3) != 0)
-	{
-		printf(RED"Can only read .rt files\n"RESET);
-		return (NULL);
-	}
-	fd = open(file_name, O_RDONLY);
-	if (fd == -1)
-	{
-		printf(RED"Could not open file \"%s\"\n"RESET, file_name);
-		return (NULL);
-	}
+	
 	scene = ft_calloc(1, sizeof(t_scene));
 	if (scene == NULL)
-	{
-		close(fd);
 		return (NULL);
-	}
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (*line == '\0' || all_whitespace(line) == true || ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0)
+		if (*line == '\0' || all_whitespace(line) == true
+			|| ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0)
 		{
 			free(line);
 			line = get_next_line(fd);
 			line_count++;
-			continue;
+			continue ;
 		}
 		splitted = ft_split_whitespace(line);
 		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 3)
-			{
-				close(fd);
 				return (ambient_parse_error(line, line_count, scene, splitted));
-			}
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
-			if (success == false || scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
-			{
-				close(fd);
+			if (success == false || scene->ambient.intensity < 0.0
+				|| scene->ambient.intensity > 1.0)
 				return (ambient_parse_error(line, line_count, scene, splitted));
-			}
 			parse_color(&scene->ambient.color, splitted[2], &success);
 			if (success == false)
-			{
-				close(fd);
 				return (ambient_parse_error(line, line_count, scene, splitted));
-			}
 			scene->count.ambient_count++;
 		}
 		else if (ft_strncmp(splitted[0], "C", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 4)
-			{
-				close(fd);
 				return (camera_parse_error(line, line_count, scene, splitted));
-			}
 			parse_coordinates(&scene->camera.position, splitted[1], &success);
 			if (success == false)
-			{
-				close(fd);
 				return (camera_parse_error(line, line_count, scene, splitted));
-			}
-			parse_orientation(&scene->camera.orientation, splitted[2], &success);
+			parse_orientation(&scene->camera.orientation, splitted[2],
+				&success);
 			if (success == false)
-			{
-				close(fd);
 				return (camera_parse_error(line, line_count, scene, splitted));
-			}
 			scene->camera.fov = ft_atol(splitted[3], &success);
-			if (success == false || scene->camera.fov < 0 || scene->camera.fov > 180)
-			{
-				close(fd);
+			if (success == false || scene->camera.fov < 0
+				|| scene->camera.fov > 180)
 				return (camera_parse_error(line, line_count, scene, splitted));
-			}
 			scene->count.camera_count++;
 		}
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
 			parse_light(scene, splitted, &success);
 			if (success == false)
-			{
-				close(fd);
 				return (light_parse_error(line, line_count, scene, splitted));
-			}
 			scene->count.light_count++;
 		}
 		else if (is_shape(splitted[0]))
 		{
 			parse_shape(scene, splitted, &success);
 			if (success == false)
-			{
-				close(fd);
 				return (shape_parse_error(line, line_count, scene, splitted));
-			}
 			scene->count.shape_count++;
 		}
 		else
-		{
-			close(fd);
-			return (unknown_identifier_error(line, line_count, scene, splitted));
-		}
+			return (unknown_identifier_error(line, line_count,
+					scene, splitted));
 		free(line);
 		free_split_array(splitted);
 		line = get_next_line(fd);
@@ -432,11 +341,10 @@ t_scene	*parse_scene(const char *file_name)
 	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
 	{
 		if (scene->count.ambient_count > 1)
-			printf(RED"Error: Scene contains more than one ambient light\n"RESET);
+			printf(RED"Error: Scene contains multiple ambient light\n"RESET);
 		else
 			printf(RED"Error: Scene contains no ambient lights\n"RESET);
 		free_scene(scene);
-		close(fd);
 		return (NULL);
 	}
 	if (scene->count.camera_count > 1 || scene->count.camera_count == 0)
@@ -446,10 +354,8 @@ t_scene	*parse_scene(const char *file_name)
 		else
 			printf(RED"Error: Scene contains no cameras\n"RESET);
 		free_scene(scene);
-		close(fd);
 		return (NULL);
 	}
-	close(fd);
 	print_scene(scene);
 	free_scene(scene);
 	return (scene);

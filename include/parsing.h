@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 12:02:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 15:12:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define LIGHT_MAX 20
 # define SHAPE_MAX 100
 
-t_scene	*parse_scene(const char *file_name);
+t_scene	*parse_scene(int fd);
 size_t	split_count(char **split);
 void	print_scene(const t_scene *scene);
 void	free_scene(t_scene *scene);
@@ -47,6 +47,5 @@ void	*light_parse_error(char *line, size_t line_count, t_scene *scene,
 			char **splitted);
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 			const char *line, const char *element);
-
 
 #endif
