@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 11:17:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 12:02:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,19 @@ bool	is_whitespace(const char c);
 bool	all_whitespace(const char *str);
 size_t	count_commas(const char *str);
 bool	is_num(const char *str, bool decimal);
+bool	is_shape(const char *identifier);
+void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
+			char **splitted);
+void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene,
+			char **splitted);
+void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene,
+			char **splitted);
+void	*shape_parse_error(char *line, size_t line_count, t_scene *scene,
+			char **splitted);
+void	*light_parse_error(char *line, size_t line_count, t_scene *scene,
+			char **splitted);
+bool	check_orientation(const t_vector *orientation, size_t line_num,
+			const char *line, const char *element);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 11:20:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/19 12:25:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,100 +48,6 @@ void	parse_color(t_color *color, const char *str, bool *success)
 }
 
 /**
- * @brief Prints the appropriate error message when an error occurs while
- * parsing a camera
- * @param line Line where the parse error occured
- * @param line_num Number of the line where the error occured
- * @param scene Pointer to the scene struct
- * @param splitted Array to be freed
- * @param fd fd to be closed
- */
-void	*camera_parse_error(char *line, size_t line_num, t_scene *scene, char **splitted, int fd)
-{
-	if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0
-		|| scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0
-		|| scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
-	{
-		printf(YELLOW"Error with parsing camera orientation on line #%ld\n"RED"->\t%s\n"RESET, line_num, line);
-		if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0)
-			printf(YELLOW"The x value is out of range\n"RESET);
-		if (scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0)
-			printf(YELLOW"The y value is out of range\n"RESET);
-		if (scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
-			printf(YELLOW"The z value is out of range\n"RESET);
-	}
-	else if (scene->camera.fov < 0 || scene->camera.fov > 180)
-	{
-		printf(YELLOW"Error with parsing camera fov on line #%ld\n"RED"->\t%s\n"RESET, line_num, line);
-		printf(YELLOW"The fov value is out of range\n"RESET);
-	}
-	else
-		printf(YELLOW"Error with parsing camera on line #%ld\n"RED"->\t%s"RESET
-			YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET, line_num, line);
-	free(line);
-	free_scene(scene);
-	free_split_array(splitted);
-	get_next_line(-1);
-	close(fd);
-	return (NULL);
-}
-
-/**
- * @brief Prints the appropriate error message when an error occurs while
- * parsing an ambient light
- * @param line Line where the parse error occured
- * @param line_num Number of the line where the error occured
- * @param scene Pointer to the scene struct
- * @param splitted Array to be freed
- * @param fd fd to be closed
- */
-void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene, char **splitted, int fd)
-{
-	if (scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
-		printf(YELLOW"Ambient light intensity out of range on line #%ld\n"RED"->\t%s"RESET"Range is [0.0 -> 1.0]\n", line_num, line);
-	else if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255
-		|| scene->ambient.color.g < 0 || scene->ambient.color.g > 255
-		|| scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
-	{
-		printf(YELLOW"Error with parsing ambient light color on line #%ld\n"RED"->\t%s\n"RESET, line_num, line);
-		if (scene->ambient.color.r < 0 || scene->ambient.color.r > 255)
-			printf(YELLOW"The red value is out of range\n"RESET);
-		if (scene->ambient.color.g < 0 || scene->ambient.color.g > 255)
-			printf(YELLOW"The green value is out of range\n"RESET);
-		if (scene->ambient.color.b < 0 || scene->ambient.color.b > 255)
-			printf(YELLOW"The blue value is out of range\n"RESET);
-	}
-	else
-		printf(YELLOW"Error with parsing ambient light on line #%ld\n"RED"->\t%s"
-			YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET, line_num, line);
-	free(line);
-	free_scene(scene);
-	get_next_line(-1);
-	free_split_array(splitted);
-	close(fd);
-	return (NULL);
-}
-
-/**
- * @brief Prints an error message if an identifier is unrecognized
- * @param line Line where the identifier was located
- * @param line_num Number of the line where the identifier was located
- * @param scene Scene struct to be freed
- * @param splitted Array to be freed
- * @param fd File descriptor to be closed
- */
-void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene, char **splitted, int fd)
-{
-	printf(YELLOW"Unknown identifier \"%s\" on line #%ld\n"RED"->\t%s"RESET, splitted[0], line_num, line);
-	free(line);
-	free_scene(scene);
-	get_next_line(-1);
-	free_split_array(splitted);
-	close(fd);
-	return (NULL);
-}
-
-/**
  * @brief Parses given coordinates into a vector
  * @param position Pointer to a vector that will be filled with coordinates
  * @param str Raw string to be parsed
@@ -149,41 +55,31 @@ void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene, char
  */
 void	parse_coordinates(t_vector *position, const char *str, bool *success)
 {
-	float	res;
-	char	**splitted;
+	float	res[3];
+	char	**coords;
+	bool	parse_success;
+	size_t	i;
 
-	splitted = ft_split(str, ',');
-	if (splitted == NULL || count_commas(str) != 2 || split_count(splitted) != 3
-		|| is_num(splitted[0], true) == false || is_num(splitted[1], true) == false
-		|| is_num(splitted[2], true) == false)
+	parse_success = true;
+	coords = ft_split(str, ',');
+	if (!coords || count_commas(str) != 2 || split_count(coords) != 3)
 	{
-		free_split_array(splitted);
 		*success = false;
+		free_split_array(coords);
 		return ;
 	}
-	// this can be in a loop
-	res = ft_atof(splitted[0], success);
-	position->x = res;
-	if (*success == false)
+	i = -1;
+	while (coords[++i] != NULL)
 	{
-		free_split_array(splitted);
-		return ;
+		res[i] = ft_atof(coords[i], success);
+		if (!is_num(coords[i], true) || *success == false)
+			parse_success = false;
 	}
-	res = ft_atof(splitted[1], success);
-	position->y = res;
-	if (*success == false)
-	{
-		free_split_array(splitted);
-		return ;
-	}
-	res = ft_atof(splitted[2], success);
-	position->z = res;
-	if (*success == false)
-	{
-		free_split_array(splitted);
-		return ;
-	}
-	free_split_array(splitted);
+	position->x = res[0];
+	position->y = res[1];
+	position->z = res[2];
+	free_split_array(coords);
+	*success = parse_success;
 }
 
 /**
@@ -232,193 +128,6 @@ void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 	free_split_array(splitted);
 }
 
-
-/**
- * @brief Prints the appropriate error message when an error occurs while
- * parsing a shape
- * @param line Line where the parse error occured
- * @param line_num Number of the line where the error occured
- * @param scene Pointer to the scene struct
- * @param splitted Array to be freed
- * @param fd fd to be closed
- */
-void	*shape_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
-{
-	t_shape	*shape;
-
-	if (scene->shapes == NULL)
-	{
-		printf(YELLOW"Error with parsing shape on line #%ld\n"RED"->\t%s"RESET, line_count, line);
-		free(line);
-		free_scene(scene);
-		free_split_array(splitted);
-		get_next_line(-1);
-		close(fd);
-		return (NULL);
-	}
-	shape = &scene->shapes[scene->count.shape_count];
-	if (scene->count.shape_count >= SHAPE_MAX)
-	{
-		printf(RED"Error: Scene contains more than %d shapes\n"RESET, SHAPE_MAX);
-	}
-	else if (shape->type == SPHERE)
-	{
-		if (shape->radius <= 0)
-		{
-			printf(YELLOW"Error with sphere diameter on line #%ld\n"RED"->\t%s"RESET, line_count, line);
-			printf(YELLOW"Diameter has to be a positive number\n"RESET);
-		}
-		else if (shape->color.r < 0 || shape->color.r > 255
-				|| shape->color.g < 0 || shape->color.g > 255
-				|| shape->color.b < 0 || shape->color.b > 255)
-		{
-			printf(YELLOW"Error with parsing sphere color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (shape->color.r < 0 || shape->color.r > 255)
-				printf(YELLOW"The red value is out of range\n"RESET);
-			if (shape->color.g < 0 || shape->color.g > 255)
-				printf(YELLOW"The green value is out of range\n"RESET);
-			if (shape->color.b < 0 || shape->color.b > 255)
-				printf(YELLOW"The blue value is out of range\n"RESET);
-		}
-		else
-			printf(YELLOW"Error with parsing sphere on line #%ld\n"RED"->\t%s"RESET
-				YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"RESET, line_count, line);
-	}
-	else if (shape->type == PLANE)
-	{
-		if (shape->orientation.x < 0.0 || shape->orientation.x > 1.0
-			|| shape->orientation.y < 0.0 || shape->orientation.y > 1.0
-			|| shape->orientation.z < 0.0 || shape->orientation.z > 1.0)
-		{
-			printf(YELLOW"Error with parsing plane orientation on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (shape->orientation.x < 0.0 || shape->orientation.x > 1.0)
-				printf(YELLOW"The x value is out of range\n"RESET);
-			if (shape->orientation.y < 0.0 || shape->orientation.y > 1.0)
-				printf(YELLOW"The y value is out of range\n"RESET);
-			if (shape->orientation.z < 0.0 || shape->orientation.z > 1.0)
-				printf(YELLOW"The z value is out of range\n"RESET);
-		}
-		else if (shape->color.r < 0 || shape->color.r > 255
-			|| shape->color.g < 0 || shape->color.g > 255
-			|| shape->color.b < 0 || shape->color.b > 255)
-		{
-			printf(YELLOW"Error with parsing plane color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (shape->color.r < 0 || shape->color.r > 255)
-				printf(YELLOW"The red value is out of range\n"RESET);
-			if (shape->color.g < 0 || shape->color.g > 255)
-				printf(YELLOW"The green value is out of range\n"RESET);
-			if (shape->color.b < 0 || shape->color.b > 255)
-				printf(YELLOW"The blue value is out of range\n"RESET);
-		}
-		else
-			printf(YELLOW"Error with parsing plane on line #%ld\n"RED"->\t%s"RESET
-				YELLOW"Correct syntax is \"pl [origin] [orientation] [color]\"\n"RESET, line_count, line);
-	}
-	else if (shape->type == CYLINDER)
-	{
-		if (shape->orientation.x < 0.0 || shape->orientation.x > 1.0
-			|| shape->orientation.y < 0.0 || shape->orientation.y > 1.0
-			|| shape->orientation.z < 0.0 || shape->orientation.z > 1.0)
-		{
-			printf(YELLOW"Error with parsing cylinder orientation on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (scene->camera.orientation.x < 0.0 || scene->camera.orientation.x > 1.0)
-				printf(YELLOW"The x value is out of range\n"RESET);
-			if (scene->camera.orientation.y < 0.0 || scene->camera.orientation.y > 1.0)
-				printf(YELLOW"The y value is out of range\n"RESET);
-			if (scene->camera.orientation.z < 0.0 || scene->camera.orientation.z > 1.0)
-				printf(YELLOW"The z value is out of range\n"RESET);
-		}
-		else if (shape->radius <= 0)
-		{
-			printf(YELLOW"Error with cylinder diameter on line #%ld\n"RED"->\t%s"RESET, line_count, line);
-			printf(YELLOW"Diameter has to be a positive number\n"RESET);
-		}
-		else if (shape->height <= 0)
-		{
-			printf(YELLOW"Error with cylinder height on line #%ld\n"RED"->\t%s"RESET, line_count, line);
-			printf(YELLOW"Height has to be a positive number\n"RESET);
-		}
-		else if (shape->color.r < 0 || shape->color.r > 255
-			|| shape->color.g < 0 || shape->color.g > 255
-			|| shape->color.b < 0 || shape->color.b > 255)
-		{
-			printf(YELLOW"Error with parsing cylinder color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-			if (shape->color.r < 0 || shape->color.r > 255)
-				printf(YELLOW"The red value is out of range\n"RESET);
-			if (shape->color.g < 0 || shape->color.g > 255)
-				printf(YELLOW"The green value is out of range\n"RESET);
-			if (shape->color.b < 0 || shape->color.b > 255)
-				printf(YELLOW"The blue value is out of range\n"RESET);
-		}
-		else
-			printf(YELLOW"Error with parsing cylinder on line #%ld\n"RED"->\t%s"RESET
-				YELLOW"Correct syntax is \"cy [origin] [orientation] [diameter] [height] [color]\"\n"RESET, line_count, line);
-	}
-	free(line);
-	free_scene(scene);
-	free_split_array(splitted);
-	get_next_line(-1);
-	close(fd);
-	return (NULL);
-}
-
-/**
- * @brief Prints the appropriate error message when an error occurs while
- * parsing a point light
- * @param line Line where the parse error occured
- * @param line_num Number of the line where the error occured
- * @param scene Pointer to the scene struct
- * @param splitted Array to be freed
- * @param fd fd to be closed
- */
-void	*light_parse_error(char *line, size_t line_count, t_scene *scene, char **splitted, int fd)
-{
-	t_light	*light;
-
-	if (scene->lights == NULL)
-	{
-		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
-			YELLOW"Correct syntax is \"L [origin] [intensity] [color\"\n"RESET, line_count, line);
-		free(line);
-		free_scene(scene);
-		free_split_array(splitted);
-		get_next_line(-1);
-		close(fd);
-		return (NULL);
-	}
-	light = &scene->lights[scene->count.light_count];
-	if (scene->count.light_count >= LIGHT_MAX)
-	{
-		printf(RED"Error: Scene contains more than %d lights\n"RESET, LIGHT_MAX);
-	}
-	else if (light->intensity < 0.0 || light->intensity > 1.0)
-	{
-		printf(YELLOW"Error with parsing light intensity on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-		printf(YELLOW"The intensity value is out of range\n"RESET);
-	}
-	else if (light->color.r < 0 || light->color.r > 255
-		|| light->color.g < 0 || light->color.g > 255
-		|| light->color.b < 0 || light->color.b > 255)
-	{
-		printf(YELLOW"Error with parsing light color on line #%ld\n"RED"->\t%s\n"RESET, line_count, line);
-		if (light->color.r < 0 || light->color.r > 255)
-			printf(YELLOW"The red value is out of range\n"RESET);
-		if (light->color.g < 0 || light->color.g > 255)
-			printf(YELLOW"The green value is out of range\n"RESET);
-		if (light->color.b < 0 || light->color.b > 255)
-			printf(YELLOW"The blue value is out of range\n"RESET);
-	}
-	else
-		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
-			YELLOW"Correct syntax is \"L [origin] [intensity] [color\"\n"RESET, line_count, line);
-	free(line);
-	free_scene(scene);
-	free_split_array(splitted);
-	get_next_line(-1);
-	close(fd);
-	return (NULL);
-}
-
 /**
  * @brief Parses a point light
  * @param scene Pointer to scene struct
@@ -465,19 +174,6 @@ void	parse_light(t_scene *scene, char **splitted, bool *success)
 	{
 		return ;
 	}
-}
-
-/**
- * @brief Returns whether an identifier is shape
- * @param identifier 
- * @return True if the identifier is a shape
- */
-static bool	is_shape(const char *identifier)
-{
-	return (ft_strncmp(identifier, "sp", ft_strlen(identifier)) == 0
-			|| ft_strncmp(identifier, "pl", ft_strlen(identifier)) == 0
-			|| ft_strncmp(identifier, "cy", ft_strlen(identifier)) == 0
-			|| ft_strncmp(identifier, "cu", ft_strlen(identifier)) == 0);
 }
 
 /**
@@ -658,48 +354,76 @@ t_scene	*parse_scene(const char *file_name)
 		if (ft_strncmp(splitted[0], "A", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 3)
-				return (ambient_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (ambient_parse_error(line, line_count, scene, splitted));
+			}
 			scene->ambient.intensity = ft_atof(splitted[1], &success);
 			if (success == false || scene->ambient.intensity < 0.0 || scene->ambient.intensity > 1.0)
-				return (ambient_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (ambient_parse_error(line, line_count, scene, splitted));
+			}
 			parse_color(&scene->ambient.color, splitted[2], &success);
 			if (success == false)
-				return (ambient_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (ambient_parse_error(line, line_count, scene, splitted));
+			}
 			scene->count.ambient_count++;
 		}
 		else if (ft_strncmp(splitted[0], "C", ft_strlen(splitted[0])) == 0)
 		{
 			if (split_count(splitted) != 4)
-				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (camera_parse_error(line, line_count, scene, splitted));
+			}
 			parse_coordinates(&scene->camera.position, splitted[1], &success);
 			if (success == false)
-				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (camera_parse_error(line, line_count, scene, splitted));
+			}
 			parse_orientation(&scene->camera.orientation, splitted[2], &success);
 			if (success == false)
-				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (camera_parse_error(line, line_count, scene, splitted));
+			}
 			scene->camera.fov = ft_atol(splitted[3], &success);
 			if (success == false || scene->camera.fov < 0 || scene->camera.fov > 180)
-				return (camera_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (camera_parse_error(line, line_count, scene, splitted));
+			}
 			scene->count.camera_count++;
 		}
 		else if (ft_strncmp(splitted[0], "L", ft_strlen(splitted[0])) == 0)
 		{
-			// if (split_count(splitted) != 4)
-			// 	return (camera_parse_error(line, line_count, scene, splitted, fd));
 			parse_light(scene, splitted, &success);
 			if (success == false)
-				return (light_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (light_parse_error(line, line_count, scene, splitted));
+			}
 			scene->count.light_count++;
 		}
 		else if (is_shape(splitted[0]))
 		{
 			parse_shape(scene, splitted, &success);
 			if (success == false)
-				return (shape_parse_error(line, line_count, scene, splitted, fd));
+			{
+				close(fd);
+				return (shape_parse_error(line, line_count, scene, splitted));
+			}
 			scene->count.shape_count++;
 		}
 		else
-			return (unknown_identifier_error(line, line_count, scene, splitted, fd));
+		{
+			close(fd);
+			return (unknown_identifier_error(line, line_count, scene, splitted));
+		}
 		free(line);
 		free_split_array(splitted);
 		line = get_next_line(fd);
