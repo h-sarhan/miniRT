@@ -6,14 +6,27 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:30:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:55:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
+/**
+ * @brief Returns whether an identifier is shape
+ * @param identifier 
+ * @return True if the identifier is a shape
+ */
+bool	is_shape(const char *identifier)
+{
+	return (ft_strcmp(identifier, "sp") == 0
+		|| ft_strcmp(identifier, "pl") == 0
+		|| ft_strcmp(identifier, "cy") == 0
+		|| ft_strcmp(identifier, "cu") == 0);
+}
+
 // ! COMMENT THIS LATER
-void	parse_sphere(t_shape *shape, char **splitted, bool *success)
+static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
 
@@ -38,7 +51,7 @@ void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 }
 
 // ! COMMENT THIS LATER
-void	parse_plane(t_shape *shape, char **splitted, bool *success)
+static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
 
@@ -62,7 +75,7 @@ void	parse_plane(t_shape *shape, char **splitted, bool *success)
 }
 
 // ! COMMENT THIS LATER
-void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
+static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
 

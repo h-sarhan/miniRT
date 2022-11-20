@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 10:21:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 17:50:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @brief Print the red, green, and blue values of a color
  * @param color Color to print
  */
-void	print_color(const t_color *color)
+static void	print_color(const t_color *color)
 {
 	printf("\tR: %d\n", color->r);
 	printf("\tG: %d\n", color->g);
@@ -29,7 +29,7 @@ void	print_color(const t_color *color)
  * @brief Prints the x, y, z values of a vector
  * @param vector Vector to be printed
  */
-void	print_vector(const t_vector *vector)
+static void	print_vector(const t_vector *vector)
 {
 	printf("\tX: %.2f\n", vector->x);
 	printf("\tY: %.2f\n", vector->y);

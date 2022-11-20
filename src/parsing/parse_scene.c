@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:39:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:54:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
 // ! DOCUMENT LATER
-bool	check_element_count(t_scene *scene)
+static bool	check_element_count(t_scene *scene)
 {
 	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
 	{
@@ -37,7 +37,7 @@ bool	check_element_count(t_scene *scene)
 }
 
 // ! DOCUMENT THIS
-bool	skip_line(char **line, int fd, size_t *line_count)
+static bool	skip_line(char **line, int fd, size_t *line_count)
 {
 	if (ft_strlen(*line) == 0 || all_whitespace(*line) == true
 		|| ft_strncmp(*line, "//", 2) == 0 || ft_strncmp(*line, "#", 1) == 0)
@@ -51,7 +51,7 @@ bool	skip_line(char **line, int fd, size_t *line_count)
 }
 
 // ! DOCUMENT THIS LATER
-bool	parse_line(t_scene *scene, char *line, size_t line_num)
+static bool	parse_line(t_scene *scene, char *line, size_t line_num)
 {
 	bool	success;
 	char	**splitted;

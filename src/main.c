@@ -6,12 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:47:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:48:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <miniRT.h>
 
+// ! Write documentation
 static int	open_file(int argc, char **argv)
 {
 	char	*file_name;

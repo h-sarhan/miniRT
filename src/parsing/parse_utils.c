@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:10:43 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 16:33:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:56:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param c Input character
  * @return True if whitespace
  */
-bool	is_whitespace(const char c)
+static bool	is_whitespace(const char c)
 {
 	return (c == ' ' || c == '\f'
 		|| c == '\n' || c == '\r'

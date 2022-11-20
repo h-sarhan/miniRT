@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 15:46:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:56:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
 // ! COMMENT THIS LATER
-void	sphere_parse_error(const t_shape *shape, size_t line_num,
+static void	sphere_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {
 	bool	color_check;
@@ -34,7 +34,7 @@ void	sphere_parse_error(const t_shape *shape, size_t line_num,
 }
 
 // ! COMMENT THIS LATER
-void	plane_parse_error(const t_shape *shape, size_t line_num,
+static void	plane_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {
 	bool	orientation_check;
@@ -52,7 +52,7 @@ void	plane_parse_error(const t_shape *shape, size_t line_num,
 }
 
 // ! COMMENT THIS LATER
-void	cylinder_parse_error(const t_shape *shape, size_t line_num,
+static void	cylinder_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {
 	bool	orientation_check;
