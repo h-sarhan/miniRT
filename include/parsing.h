@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 15:49:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:34:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,23 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 			const char *element);
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 			const char *line, const char *element);
+			
+void	parse_sphere(t_shape *shape, char **splitted, bool *success);
+void	parse_plane(t_shape *shape, char **splitted, bool *success);
+void	parse_cylinder(t_shape *shape, char **splitted, bool *success);
+bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
+			char *line);
+			
+bool	parse_light(t_scene *scene, char **splitted, char *line,
+			size_t line_num);
+bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
+			char *line);
+bool	parse_camera(t_scene *scene, char **splitted, char *line,
+			size_t line_num);
+		
+void	parse_color(t_color *color, const char *str, bool *success);
+void	parse_coordinates(t_vector *position, const char *str, bool *success);
+void	parse_orientation(t_vector *orientation, const char *str,
+			bool *success);
+
 #endif

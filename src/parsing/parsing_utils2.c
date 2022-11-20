@@ -6,12 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:10:43 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:23:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:47:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
+// ? Can be moved to parse_shapes
 /**
  * @brief Returns whether an identifier is shape
  * @param identifier 
@@ -25,6 +26,7 @@ bool	is_shape(const char *identifier)
 		|| ft_strcmp(identifier, "cu") == 0);
 }
 
+// ? Can be moved to parse_attrributes
 // ! COMMENT THIS LATER
 bool	check_color(const t_color *color, size_t line_num, const char *line,
 	const char *element)
@@ -46,6 +48,7 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 	return (false);
 }
 
+// ? Can be moved to parse_attrributes
 // ! WRITE COMMENTS LATER
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 	const char *line, const char *element)

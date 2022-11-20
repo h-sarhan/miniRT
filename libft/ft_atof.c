@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 10:22:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:36:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ static int	atof_split(char c)
 	i = ft_atoi(s);
 	free(s);
 	return (i);
+}
+
+static void	handle_error(const char *str, bool *success)
+{
+	if (*str != '\0' && !ft_isdigit(*str) && !is_whitespace(*str))
+		*success = false;
 }
 
 double	ft_atof(const char *str, bool *success)
@@ -57,7 +63,6 @@ double	ft_atof(const char *str, bool *success)
 		str++;
 	while (*str != '\0' && ft_isdigit(*str))
 		j = j + atof_split(*str++) / pow(10.0, k++);
-	if (*str != '\0' && !ft_isdigit(*str) && !is_whitespace(*str))
-		*success = false;
+	handle_error(str, success);
 	return (sign * (i + j));
 }
