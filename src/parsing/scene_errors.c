@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 15:44:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 15:48:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
  * @param splitted Array to be freed
  * @param fd fd to be closed
  */
-void	*light_parse_error(char *line, size_t line_num, t_scene *scene,
-		char **splitted)
+void	*light_parse_error(char *line, size_t line_num, t_scene *scene)
 {
 	t_light	*light;
 
@@ -43,9 +42,7 @@ void	*light_parse_error(char *line, size_t line_num, t_scene *scene,
 		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
 			YELLOW"Correct syntax is \"L [origin] [intensity] [color\"\n"RESET,
 			line_num, line);
-	free(line);
 	free_scene(scene);
-	free_split_array(splitted);
 	get_next_line(-1);
 	return (NULL);
 }
@@ -58,15 +55,13 @@ void	*light_parse_error(char *line, size_t line_num, t_scene *scene,
  * @param splitted Array to be freed
  * @param fd File descriptor to be closed
  */
-void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene,
+void	*unknown_identifier(char *line, size_t line_num, t_scene *scene,
 		char **splitted)
 {
 	printf(YELLOW"Unknown identifier \"%s\" on line #%ld\n"RED"->\t%s"RESET,
 		splitted[0], line_num, line);
-	free(line);
 	free_scene(scene);
 	get_next_line(-1);
-	free_split_array(splitted);
 	return (NULL);
 }
 
@@ -79,8 +74,7 @@ void	*unknown_identifier_error(char *line, size_t line_num, t_scene *scene,
  * @param splitted Array to be freed
  * @param fd fd to be closed
  */
-void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene,
-		char **splitted)
+void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene)
 {
 	bool	color;
 
@@ -97,10 +91,8 @@ void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene,
 			RED"->\t%s"YELLOW"Correct syntax is \"A [intensity] [color]\"\n"
 			RESET, line_num, line);
 	}
-	free(line);
 	free_scene(scene);
 	get_next_line(-1);
-	free_split_array(splitted);
 	return (NULL);
 }
 
@@ -113,8 +105,7 @@ void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene,
  * @param splitted Array to be freed
  * @param fd fd to be closed
  */
-void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
-		char **splitted)
+void	*camera_parse_error(char *line, size_t line_num, t_scene *scene)
 {
 	bool	orientation;
 
@@ -130,9 +121,7 @@ void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
 		printf(YELLOW"Error with parsing camera on line #%ld\n"RED"->\t%s"RESET
 			YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET,
 			line_num, line);
-	free(line);
 	free_scene(scene);
-	free_split_array(splitted);
 	get_next_line(-1);
 	return (NULL);
 }

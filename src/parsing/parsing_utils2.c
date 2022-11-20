@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:10:43 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 16:33:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:23:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
  */
 bool	is_shape(const char *identifier)
 {
-	return (ft_strncmp(identifier, "sp", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "pl", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "cy", ft_strlen(identifier)) == 0
-		|| ft_strncmp(identifier, "cu", ft_strlen(identifier)) == 0);
+	return (ft_strcmp(identifier, "sp") == 0
+		|| ft_strcmp(identifier, "pl") == 0
+		|| ft_strcmp(identifier, "cy") == 0
+		|| ft_strcmp(identifier, "cu") == 0);
 }
 
 // ! COMMENT THIS LATER

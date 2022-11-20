@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 22:18:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 11:21:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 16:23:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	while (is_space(str[i]))
 		i++;
-	if (ft_strncmp(&str[i], "-2147483648", 11) == 0)
+	if (ft_strcmp(&str[i], "-2147483648") == 0)
 		return (INT_MIN);
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -77,7 +77,7 @@ long	ft_atol(const char *str, bool *check)
 	*check = true;
 	while (is_space(str[i]))
 		i++;
-	if (ft_strncmp(&str[i], "-9223372036854775808", 20) == 0)
+	if (ft_strcmp(&str[i], "-9223372036854775808") == 0)
 		return (LONG_MIN);
 	if (str[i] == '+' || str[i] == '-')
 	{

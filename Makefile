@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/19 16:34:05 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/20 15:54:28 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ INC = -Iinclude -Ilibft
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Wall -Wextra -g3  $(INC) \
+CFLAGS = -Wall -Wextra -Werror -g3  $(INC) \
 			-fsanitize=address \
 			# $(OPTIMIZATION_FLAGS) \
 
@@ -45,7 +45,7 @@ $(LIBFT):
 	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lleaksan -llsan -lc++ -o $(NAME)
 
 clean:
 	make -C libft clean
@@ -53,6 +53,10 @@ clean:
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT)
+
+norm:
+	-make -C libft norm
+	norminette src
 
 re: fclean all
 

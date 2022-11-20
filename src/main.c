@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/19 15:26:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/20 15:56:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
+	print_scene(scene);
+	free_scene(scene);
 	return (EXIT_SUCCESS);
 }
