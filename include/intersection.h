@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 20:23:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/21 20:54:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../mlx/mlx.h"
 # include <ray.h>
 # include <shape.h>
+# include <matrix.h>
 
 /**
  * @brief 

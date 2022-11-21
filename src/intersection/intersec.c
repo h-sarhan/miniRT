@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 20:41:25 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:04:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	position(t_vector *pos, t_ray *ray, float time)
 	add_vec(pos, pos, &ray->origin);
 }
 
+// void	transform(t_ray *ray, t_shape *shape)
+// {
+// 	mat_vec_multiply(&ray->origin, &shape->inv_trans, &ray->origin);	
+// 	mat_vec_multiply(&ray->direction, &shape->inv_trans, &ray->direction);	
+// }
+
 bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	float		a;
@@ -38,7 +44,7 @@ bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 	float		c;
 	float		discriminant;
 
-	
+	// transform(&ray, shape);
 	a = dot_product(&ray->direction, &ray->direction);
 	b = 2 * dot_product(&ray->direction, &ray->origin);
 	c = dot_product(&ray->origin, &ray->origin) - 1;
