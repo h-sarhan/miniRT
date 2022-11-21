@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/21 17:03:43 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/21 17:13:11 by mkhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,10 @@ PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c matrix_inverse2.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-SRC = $(PARSING_SRC) $(MATH_SRC) free_utils.c print_utils.c
+INTERSECTION_SRC = intersec.c
+INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
+
+SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) free_utils.c print_utils.c
 
 SRC := $(addprefix src/, $(SRC))
 
@@ -30,7 +33,7 @@ LIBFT = libft/libft.a
 NAME = miniRT
 
 CC = gcc
-INC = -Iinclude -Ilibft
+INC = -Iinclude -Ilibft -Imlx
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
@@ -49,13 +52,15 @@ $(LIBFT):
 	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	make all -C mlx
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 leakcheck: $(LIBFT) $(OBJ)
 	rm -f $(NAME)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lleaksan -llsan -lc++ -o $(NAME)
 
 clean:
+	make -C mlx clean
 	make -C libft clean
 	rm -rf $(OBJ_DIR)
 
