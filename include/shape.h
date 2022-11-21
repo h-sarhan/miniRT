@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:49:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 15:06:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 22:05:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <vector.h>
 # include <color.h>
+# include <matrix.h>
 
 /**
  * @brief Type of shape
@@ -53,6 +54,8 @@ struct s_shape
 	t_vector		origin;
 	t_vector		orientation;
 	t_color			color;
+	t_mat4			trans;
+	t_mat4			inv_trans;
 };
 
 #endif

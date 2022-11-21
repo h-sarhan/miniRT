@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 21:04:37 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:57:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 	return (true);
 }
 
-t_intersections	*hit(t_intersections *xs)
+t_intersect	*hit(t_intersections *xs)
 {
 	float	min_time;
 	int		i;

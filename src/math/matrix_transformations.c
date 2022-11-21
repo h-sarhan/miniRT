@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 17:22:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/21 22:40:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <matrix.h>
+#include <scene.h>
 
 /**
  * @brief Initialize the translation matrix.
@@ -20,7 +21,7 @@
  * @param z The value along the z-axis to be translated.
  */
 
-void	translate_matrix(t_matrix *mat, float x, float y, float z)
+void	translate_matrix(t_mat4 *mat, float x, float y, float z)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = 1;
@@ -39,7 +40,7 @@ void	translate_matrix(t_matrix *mat, float x, float y, float z)
  * @param y The value along the y-axis to be scaled.
  * @param z The value along the z-axis to be scaled.
  */
-void	scaling_matrix(t_matrix *mat, float x, float y, float z)
+void	scaling_matrix(t_mat4 *mat, float x, float y, float z)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = x;
@@ -53,7 +54,7 @@ void	scaling_matrix(t_matrix *mat, float x, float y, float z)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_x(t_matrix *mat, float r)
+void	rotation_matrix_x(t_mat4 *mat, float r)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = 1;
@@ -69,7 +70,7 @@ void	rotation_matrix_x(t_matrix *mat, float r)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_y(t_matrix *mat, float r)
+void	rotation_matrix_y(t_mat4 *mat, float r)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = cos(r);
@@ -85,7 +86,7 @@ void	rotation_matrix_y(t_matrix *mat, float r)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_z(t_matrix *mat, float r)
+void	rotation_matrix_z(t_mat4 *mat, float r)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = cos(r);
@@ -114,4 +115,36 @@ float	rad_to_deg(float r)
 float	deg_to_rad(float r)
 {
 	return(r * (M_PI / 180));
+}
+
+void	calculate_transforms(t_scene *scene)
+{
+	unsigned int	i;
+	t_mat4			transform;
+
+	i = 0;
+	while (i < scene->count.shape_count)
+	{
+		if (scene->shapes[i].type == SPHERE)
+		{
+			identity_matrix(&scene->shapes[i].trans);
+			translate_matrix(&transform, scene->shapes[i].origin.x,
+				scene->shapes[i].origin.y, scene->shapes[i].origin.z);
+			// sphere_trans =  translation * sphere_trans
+			// ! REVERSE THIS MULTIPLICATION
+			mat_multiply(&scene->shapes[i].trans, &scene->shapes[i].trans,
+				&transform);
+			scaling_matrix(&transform, scene->shapes[i].radius,
+				scene->shapes[i].radius, scene->shapes[i].radius);
+			// sphere_trans = scaling * sphere_trans
+			// ! REVERSE THIS MULTIPLICATION
+			mat_multiply(&scene->shapes[i].trans, &scene->shapes[i].trans,
+				&transform);
+			print_mat4(&scene->shapes[i].trans);
+			// rotation is irrelevant for a sphere
+			// * Calculate inverse transform here
+			mat_inverse(&scene->shapes[i].inv_trans, &scene->shapes[i].trans);
+		}
+		i++;
+	}
 }

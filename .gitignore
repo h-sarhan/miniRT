@@ -2,3 +2,5 @@ miniRT
 .obj
 libft.a
 .vscode
+*.o
+*.a
