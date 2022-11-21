@@ -1,18 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   miniRT.h                                           :+:      :+:    :+:   */
+/*   intersection.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 12:22:02 by mkhan            ###   ########.fr       */
+/*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
+/*   Updated: 2022/11/21 12:54:02 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef INTERSECTION_H
+# define INTERSECTION_H
 
-# include <parsing.h>
-# include <intersection.h>
+#include "../mlx/mlx.h"
+
+/**
+ * @brief 
+ * 
+ */
+typedef struct s_mlx t_mlx;
+
+struct	s_mlx {
+	void	*mlx;
+	void	*mlx_win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+};
+
+void draw_scene(t_scene *scene);
+
 #endif
