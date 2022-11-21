@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/20 16:52:19 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/21 08:33:14 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,11 @@ $(LIBFT):
 	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lleaksan -llsan -lc++ -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+
+leakcheck: $(LIBFT) $(OBJ)
+	rm -f $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lleaksan -llsan -lc++ -o $(NAME)
 
 clean:
 	make -C libft clean
@@ -61,4 +65,4 @@ norm:
 
 re: fclean all
 
-.PHONY: all re fclean clean
+.PHONY: all re fclean clean leak
