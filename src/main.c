@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 08:27:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 13:09:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,26 @@ static int	open_file(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_scene	*scene;
-	int		fd;
+	// t_scene	*scene;
+	// int		fd;
 
-	fd = open_file(argc, argv);
-	scene = parse_scene(fd);
-	close(fd);
-	if (scene == NULL)
-		return (EXIT_FAILURE);
-	print_scene(scene);
-	free_scene(scene);
-	return (EXIT_SUCCESS);
+	// fd = open_file(argc, argv);
+	// scene = parse_scene(fd);
+	// close(fd);
+	// if (scene == NULL)
+	// 	return (EXIT_FAILURE);
+	// print_scene(scene);
+	// free_scene(scene);
+	// return (EXIT_SUCCESS);
+	t_mat2	mat2;
+	t_mat3	mat3;
+	t_mat4	mat4 =
+	{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 10, 11, 12},
+		{13, 14, 15, 16},
+	};
+	submat4(&mat3, &mat4, 1, 1);
+	print_mat3(&mat3);
 }

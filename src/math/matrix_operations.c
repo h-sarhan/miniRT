@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 11:47:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 12:25:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param m1 First matrix
  * @param m2 Second matrix
  */
-void	mat_multiply(t_matrix *res, const t_matrix *m1, const t_matrix *m2)
+void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2)
 {
 	unsigned char	row;
 
@@ -51,7 +51,7 @@ void	mat_multiply(t_matrix *res, const t_matrix *m1, const t_matrix *m2)
  * @param mat Matrix to be multiplied
  * @param vec Vector to be multiplied
  */
-void	mat_vec_multiply(t_vector *res, const t_matrix *mat,
+void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec)
 {
 	res->x = vec->x * (*mat)[0][0] + vec->y * (*mat)[0][1] \
@@ -68,7 +68,7 @@ void	mat_vec_multiply(t_vector *res, const t_matrix *mat,
  * @brief Sets the matrix to the identity matrix
  * @param mat The matrix to be set to an identity matrix
  */
-void	identity_matrix(t_matrix *mat)
+void	identity_matrix(t_mat4 *mat)
 {
 	ft_bzero(mat, 16 * sizeof(float));
 	(*mat)[0][0] = 1;
@@ -81,7 +81,7 @@ void	identity_matrix(t_matrix *mat)
  * @brief Transposes a given matrix in place
  * @param mat Matrix to be transposed
  */
-void	transpose_matrix(t_matrix *mat)
+void	transpose_matrix(t_mat4 *mat)
 {
 	float			temp;
 	unsigned char	row;

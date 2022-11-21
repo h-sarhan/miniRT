@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/17 17:07:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 12:53:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,4 +14,5 @@
 # define MINIRT_H
 
 # include <parsing.h>
+# include <matrix.h>
 #endif

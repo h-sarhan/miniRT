@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 17:50:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 12:55:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-// ! THIS FILE WILL LIKELY NOT BE SUBMITTED SO NORM ISNT AN ISSUE
+// ! THIS FILE WILL NOT BE SUBMITTED SO NORM ISNT AN ISSUE
 
 /**
  * @brief Print the red, green, and blue values of a color
@@ -100,4 +100,43 @@ void	print_scene(const t_scene *scene)
 		print_color(&scene->shapes[i].color);
 		i++;
 	}
+}
+
+void	print_mat4(const t_mat4 *mat)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			printf("%.1f ", (*mat)[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void	print_mat3(const t_mat3 *mat)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			printf("%.1f ", (*mat)[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void	print_mat2(const t_mat2 *mat)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 2; j++)
+		{
+			printf("%.1f ", (*mat)[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
 }
