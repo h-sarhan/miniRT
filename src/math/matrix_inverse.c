@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:53:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 13:00:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 16:43:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,67 @@ void	submat4(t_mat3 *res, const t_mat4 *mat, int row, int col)
 	}
 }
 
+/**
+ * @brief Returns the cofactor of a matrix at a mat[row][col]
+ * @param mat3 3x3 matrix to find the cofactor of
+ * @param row Row of the cofactor
+ * @param col Column of the cofactor
+ * @return The cofactor at mat[row][col]
+ */
+float	cofactor3(const t_mat3 *mat3, int row, int col)
+{
+	t_mat2	mat2;
+
+	submat3(&mat2, mat3, row, col);
+	if ((row + col) % 2 == 1)
+		return (det2(&mat2));
+	return (-det2(&mat2));
+}
+
+/**
+ * @brief Returns the cofactor of a matrix at a mat[row][col]
+ * @param mat4 4x4 matrix to find the cofactor of
+ * @param row Row of the cofactor
+ * @param col Column of the cofactor
+ * @return The cofactor at mat[row][col]
+ */
+float	cofactor4(const t_mat4 *mat4, int row, int col)
+{
+	t_mat3	mat3;
+
+	submat4(&mat3, mat4, row, col);
+	if ((row + col) % 2 == 1)
+		return (det3(&mat3));
+	return (-det3(&mat3));
+}
+
+/**
+ * @brief Returns the determinant
+ * @param mat3 Matrix to find the determinant of
+ * @return The determinant of a 3 by 3 matrix
+ */
+float	det3(const t_mat3 *mat3)
+{
+	return (cofactor3(mat3, 0, 0) * (*mat3)[0][0]
+			+ cofactor3(mat3, 0, 1) * (*mat3)[0][1]
+			+ cofactor3(mat3, 0, 2) * (*mat3)[0][2]);
+}
+
+/**
+ * @brief Returns the determinant
+ * @param mat4 Matrix to find the determinant of
+ * @return The determinant of a 4 by 4 matrix
+ */
+float	det4(const t_mat4 *mat4)
+{
+	return (cofactor4(mat4, 0, 0) * (*mat4)[0][0]
+			+ cofactor4(mat4, 0, 1) * (*mat4)[0][1]
+			+ cofactor4(mat4, 0, 2) * (*mat4)[0][2]
+			+ cofactor4(mat4, 0, 3) * (*mat4)[0][3]);
+}
+
+
+// void	inverse(t_mat4 *res, const t_mat4 *mat)
+// {
+	
+// }
