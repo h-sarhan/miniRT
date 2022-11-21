@@ -6,12 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:33:33 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 17:53:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 10:24:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 # define VECTOR_H
+
+# include <math.h>
 
 /**
  * @brief 4 dimensional vector
@@ -24,5 +26,17 @@ struct s_vector
 	float	z;
 	float	w;
 };
+
+// vector_arithmetic.c
+void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
+void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
+void	negate_vec(t_vector *res, const t_vector *v);
+void	scale_vec(t_vector *res, const t_vector *v, float scale);
+
+// vector_operations.c
+float	vec_magnitude(const t_vector *vec);
+void	normalize_vec(t_vector *vec);
+float	dot_product(const t_vector *v1, const t_vector *v2);
+void	cross_product(t_vector *res, const t_vector *v1, const t_vector *v2);
 
 #endif

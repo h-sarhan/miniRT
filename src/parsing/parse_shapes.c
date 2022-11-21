@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 08:23:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 10:05:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 	if (*success == false || shape->radius <= 0.0)
 		parse_success = false;
 	parse_coordinates(&shape->origin, splitted[1], success);
+	shape->origin.w = 1;
 	if (*success == false)
 		parse_success = false;
 	parse_color(&shape->color, splitted[3], success);
@@ -75,6 +76,7 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 		return ;
 	}
 	parse_coordinates(&shape->origin, splitted[1], success);
+	shape->origin.w = 1;
 	if (*success == false)
 		parse_success = false;
 	parse_orientation(&shape->orientation, splitted[2], success);
@@ -110,6 +112,7 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	if (*success == false || shape->height <= 0.0)
 		parse_success = false;
 	parse_coordinates(&shape->origin, splitted[1], success);
+	shape->origin.w = 1;
 	if (*success == false)
 		parse_success = false;
 	parse_orientation(&shape->orientation, splitted[2], success);

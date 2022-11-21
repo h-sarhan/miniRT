@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 08:27:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 10:05:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	parse_light(t_scene *scene, char **splitted, char *line,
 		return (light_parse_error(line, line_num, scene));
 	light = &scene->lights[scene->count.light_count];
 	parse_coordinates(&light->position, splitted[1], &success);
+	light->position.w = 1;
 	if (success == false)
 		return (light_parse_error(line, line_num, scene));
 	light->intensity = ft_atof(splitted[2], &success);
@@ -104,6 +105,7 @@ bool	parse_camera(t_scene *scene, char **splitted, char *line,
 	if (split_count(splitted) != 4)
 		return (camera_parse_error(line, line_num, scene));
 	parse_coordinates(&scene->camera.position, splitted[1], &success);
+	scene->camera.position.w = 1;
 	if (success == false)
 		return (camera_parse_error(line, line_num, scene));
 	parse_orientation(&scene->camera.orientation, splitted[2], &success);
