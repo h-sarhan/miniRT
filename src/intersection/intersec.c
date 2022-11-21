@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 13:00:35 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/21 21:04:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,63 @@ void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void	position(t_vector *pos, t_ray *ray, float time)
+{
+	scale_vec(pos, &ray->direction, time);
+	add_vec(pos, pos, &ray->origin);
+}
+
+// void	transform(t_ray *ray, t_shape *shape)
+// {
+// 	mat_vec_multiply(&ray->origin, &shape->inv_trans, &ray->origin);	
+// 	mat_vec_multiply(&ray->direction, &shape->inv_trans, &ray->direction);	
+// }
+
+bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
+{
+	float		a;
+	float		b;
+	float		c;
+	float		discriminant;
+
+	// transform(&ray, shape);
+	a = dot_product(&ray->direction, &ray->direction);
+	b = 2 * dot_product(&ray->direction, &ray->origin);
+	c = dot_product(&ray->origin, &ray->origin) - 1;
+	discriminant = (b * b) - (4 * a * c);
+	if (discriminant < 0)
+		return (false);
+	discriminant = sqrt(discriminant);
+	xs->arr[xs->count].time = ((b * -1) - discriminant) / (2 * a);
+	xs->arr[xs->count].shape = shape;
+	xs->arr[xs->count + 1].time = ((b * -1) + discriminant) / (2 * a);
+	xs->arr[xs->count + 1].shape = shape;
+	xs->count += 2;
+	return (true);
+}
+
+t_intersections	*hit(t_intersections *xs)
+{
+	float	min_time;
+	int		i;
+	int 	idx;
+
+	i = 0;
+	min_time = INFINITY;
+	while (i < xs->count)
+	{
+		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time)
+		{
+			min_time = xs->arr[i].time;
+			idx = i;
+		}
+		i++;
+	}
+	if (min_time == INFINITY)
+		return (NULL);
+	return (&xs->arr[idx]);
 }
 
 void draw_scene(t_scene *scene)
