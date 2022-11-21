@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 11:19:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 11:47:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,42 @@ void	mat_vec_multiply(t_vector *res, const t_matrix *mat,
 			+ vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
 	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] \
 			+ vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
+}
+
+/**
+ * @brief Sets the matrix to the identity matrix
+ * @param mat The matrix to be set to an identity matrix
+ */
+void	identity_matrix(t_matrix *mat)
+{
+	ft_bzero(mat, 16 * sizeof(float));
+	(*mat)[0][0] = 1;
+	(*mat)[1][1] = 1;
+	(*mat)[2][2] = 1;
+	(*mat)[3][3] = 1;
+}
+
+/**
+ * @brief Transposes a given matrix in place
+ * @param mat Matrix to be transposed
+ */
+void	transpose_matrix(t_matrix *mat)
+{
+	float			temp;
+	unsigned char	row;
+	unsigned char	col;
+
+	row = 1;
+	while (row < 4)
+	{
+		col = 0;
+		while (col < row)
+		{
+			temp = (*mat)[row][col];
+			(*mat)[row][col] = (*mat)[col][row];
+			(*mat)[col][row] = temp;
+			col++;
+		}
+	row++;
+	}
 }
