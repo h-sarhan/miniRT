@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 12:55:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 16:58:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	print_mat4(const t_mat4 *mat)
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			printf("%.1f ", (*mat)[i][j]);
+			printf("%.3f ", (*mat)[i][j]);
 		}
 		printf("\n");
 	}

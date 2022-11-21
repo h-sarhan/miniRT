@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 16:41:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 16:58:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,15 @@ static int	open_file(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	// t_scene	*scene;
-	// int		fd;
+	t_scene	*scene;
+	int		fd;
 
-	// fd = open_file(argc, argv);
-	// scene = parse_scene(fd);
-	// close(fd);
-	// if (scene == NULL)
-	// 	return (EXIT_FAILURE);
-	// print_scene(scene);
-	// free_scene(scene);
-	// return (EXIT_SUCCESS);
-	t_mat2	mat2;
-	t_mat3	mat3;
-	t_mat4	mat4 =
-	{
-		{-2, -8, 3, 5},
-		{-3, 1, 7, 3},
-		{1, 2, -9, 6},
-		{-6, 7, 7, -9},
-	};
-	// submat4(&mat3, &mat4, 1, 1);
-	// print_mat3(&mat3);
-	printf("%.2f\n", det4(&mat4));
+	fd = open_file(argc, argv);
+	scene = parse_scene(fd);
+	close(fd);
+	if (scene == NULL)
+		return (EXIT_FAILURE);
+	print_scene(scene);
+	free_scene(scene);
+	return (EXIT_SUCCESS);
 }
