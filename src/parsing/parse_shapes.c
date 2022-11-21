@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:55:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:23:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@ bool	is_shape(const char *identifier)
 		|| ft_strcmp(identifier, "cu") == 0);
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Parses a sphere object
+ * @param shape The shape to parse
+ * @param splitted The tokens containing the sphere configuration
+ * @param success A boolean pointer set to false if there are any errors while
+ *  parsing
+ */
 static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
@@ -50,7 +56,13 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 	*success = parse_success;
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Parses a plane object
+ * @param shape The shape to parse
+ * @param splitted The tokens containing the plane configuration
+ * @param success A boolean pointer set to false if there are any errors while
+ *  parsing
+ */
 static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
@@ -74,7 +86,13 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 	*success = parse_success;
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Parses a cylinder object
+ * @param shape The shape to parse
+ * @param splitted The tokens containing the cylinder configuration
+ * @param success A boolean pointer set to false if there are any errors while
+ *  parsing
+ */
 static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
@@ -107,6 +125,8 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
  * @brief Parses a shape
  * @param scene Pointer to scene struct
  * @param splitted The line containing the shape configurations
+ * @param line_num The number of the line containing the shape
+ * @param line The line containing the shape
  * @return Whether the parsing succeeded or not
  */
 bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,

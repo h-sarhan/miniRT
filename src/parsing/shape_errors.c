@@ -6,13 +6,19 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:56:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:25:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Prints the appropriate error message when an error occurs while
+ * parsing a sphere
+ * @param shape The sphere being parsed
+ * @param line_num The number of the line containing the sphere
+ * @param line The line containing the sphere
+ */
 static void	sphere_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {
@@ -33,7 +39,13 @@ static void	sphere_parse_error(const t_shape *shape, size_t line_num,
 	}
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Prints the appropriate error message when an error occurs while
+ * parsing a plane
+ * @param shape The plane being parsed
+ * @param line_num The number of the line containing the plane
+ * @param line The line containing the plane
+ */
 static void	plane_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {
@@ -51,7 +63,13 @@ static void	plane_parse_error(const t_shape *shape, size_t line_num,
 	}
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Prints the appropriate error message when an error occurs while
+ * parsing a cylinder
+ * @param shape The cylinder being parsed
+ * @param line_num The number of the line containing the cylinder
+ * @param line The line containing the cylinder
+ */
 static void	cylinder_parse_error(const t_shape *shape, size_t line_num,
 	const char *line)
 {

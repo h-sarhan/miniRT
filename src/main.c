@@ -6,13 +6,20 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:48:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:27:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <miniRT.h>
 
-// ! Write documentation
+/**
+ * @brief Opens a file and checks for errors with the arguments provided to
+ * the executable
+ * @param argc The number of arguments provided to the executable
+ * @param argv The arguments provided to the executable
+ * @return The file descriptor of the file passed to the executable or -1 on 
+ * error
+ */
 static int	open_file(int argc, char **argv)
 {
 	char	*file_name;

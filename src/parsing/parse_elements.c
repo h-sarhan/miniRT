@@ -6,13 +6,21 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:32:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:27:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Parses a point light according to the specification provided in the
+ *  scene file
+ * @param scene The scene struct to fill with the light configuration
+ * @param splitted The tokenized line containing the configuration of the light
+ * @param line The line where the light is located
+ * @param line_num The line number where the light is located
+ * @return True if the light was parsed correctly
+ */
 bool	parse_light(t_scene *scene, char **splitted, char *line,
 	size_t line_num)
 {
@@ -40,7 +48,16 @@ bool	parse_light(t_scene *scene, char **splitted, char *line,
 	return (true);
 }
 
-// ! COMMENT LATER
+/**
+ * @brief Parses an ambient light according to the specification provided in the
+ *  scene file
+ * @param scene The scene struct to fill with the ambient light configuration
+ * @param splitted The tokenized line containing the configuration of the 
+ * ambient light
+ * @param line_num The line number where the ambient light is located
+ * @param line The line where the ambient light is located
+ * @return True if the ambient light was parsed correctly
+ */
 bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
 		char *line)
 {
@@ -69,7 +86,15 @@ bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
 	return (true);
 }
 
-// ! COMMENT LATER
+/**
+ * @brief Parses a camera according to the specification provided in the
+ *  scene file
+ * @param scene The scene struct to fill with the camera information
+ * @param splitted The tokenized line containing the camera configuration
+ * @param line The line containing the camera configuration
+ * @param line_num The line number containing the camera
+ * @return True if the camera was parsed correctly
+ */
 bool	parse_camera(t_scene *scene, char **splitted, char *line,
 		size_t line_num)
 {

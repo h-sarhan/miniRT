@@ -6,13 +6,18 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:54:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:20:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-// ! DOCUMENT LATER
+/**
+ * @brief Checks if the amount of ambient lights and cameras in a struct
+ * is correct
+ * @param scene The scene struct to check
+ * @return True if there are no issues with the element count
+ */
 static bool	check_element_count(t_scene *scene)
 {
 	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
@@ -36,7 +41,15 @@ static bool	check_element_count(t_scene *scene)
 	return (true);
 }
 
-// ! DOCUMENT THIS
+/**
+ * @brief Skips parsing a line if it is empty, only contains whitespace, or
+ *  if it is a comment
+ * @param line The line to skip
+ * @param fd The file descriptor of the scene file
+ * @param line_count A pointer to the current line number. This will be
+ *  incremented if a line is skipped
+ * @return True if a line is skipped
+ */
 static bool	skip_line(char **line, int fd, size_t *line_count)
 {
 	if (ft_strlen(*line) == 0 || all_whitespace(*line) == true
@@ -50,7 +63,13 @@ static bool	skip_line(char **line, int fd, size_t *line_count)
 	return (false);
 }
 
-// ! DOCUMENT THIS LATER
+/**
+ * @brief Parses a single line from the scene file
+ * @param scene The scene struct to fill
+ * @param line The line to parse
+ * @param line_num The current line number
+ * @return True if the line was parsed successfully
+ */
 static bool	parse_line(t_scene *scene, char *line, size_t line_num)
 {
 	bool	success;
@@ -75,7 +94,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num)
 
 /**
  * @brief Parses a .rt file into a scene struct
- * @param file_name Name of the .rt file
+ * @param fd The file descriptor of a .rt file
  * @return A scene struct with the shapes, lights, and camera configuration
  * specified in the file
  */

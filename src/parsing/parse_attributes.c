@@ -6,13 +6,21 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:52:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/21 08:10:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parsing.h>
 
-// ! WRITE COMMENTS LATER
+/**
+ * @brief Checks wheter the orientation vector is valid and prints an
+ *  appropriate error message is it is not
+ * @param orientation The orientation vector to check
+ * @param line_num The line number where the vector is located
+ * @param line The line where the vector is located
+ * @param element The type of element the vector belongs to
+ * @return True if the vector is valid
+ */
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 	const char *line, const char *element)
 {
@@ -33,7 +41,15 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 	return (false);
 }
 
-// ! COMMENT THIS LATER
+/**
+ * @brief Checks wheter the color is valid and prints an
+ *  appropriate error message is it is not
+ * @param color The color to check
+ * @param line_num The line number where the color is located
+ * @param line The line where the color is located
+ * @param element The type of element the color belongs to
+ * @return True if the color is valid
+ */
 bool	check_color(const t_color *color, size_t line_num, const char *line,
 	const char *element)
 {
