@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 13:27:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 14:25:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ float	deg_to_rad(float r)
 	return(r * (M_PI / 180));
 }
 
+// Transformation order is scale, rotation, then translation
+// https://gamedev.stackexchange.com/questions/16719/what-is-the-correct-order-to-multiply-scale-rotation-and-translation-matrices-f
 void	calculate_transforms(t_scene *scene)
 {
 	unsigned int	i;
@@ -125,25 +127,25 @@ void	calculate_transforms(t_scene *scene)
 	i = 0;
 	while (i < scene->count.shape_count)
 	{
-		if (scene->shapes[i].type == SPHERE)
+		identity_matrix(&scene->shapes[i].trans);
+
+		// SCALE FIRST
+		scaling_matrix(&transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
+		mat_multiply(&scene->shapes[i].trans, &transform, &scene->shapes[i].trans);
+
+		if (scene->shapes[i].type != SPHERE)
 		{
-			identity_matrix(&scene->shapes[i].trans);
-			translate_matrix(&transform, scene->shapes[i].origin.x,
-				scene->shapes[i].origin.y, scene->shapes[i].origin.z);
-			// sphere_trans =  translation * sphere_trans
-			mat_multiply(&scene->shapes[i].trans,
-				&transform, &scene->shapes[i].trans);
-			scaling_matrix(&transform, scene->shapes[i].radius,
-				scene->shapes[i].radius, scene->shapes[i].radius);
-			// sphere_trans = scaling * sphere_trans
-			mat_multiply(&scene->shapes[i].trans,
-				&transform, &scene->shapes[i].trans);
-			print_mat4(&scene->shapes[i].trans);
-			// rotation is irrelevant for a sphere
-			// * Calculate inverse transform here
-			mat_inverse(&scene->shapes[i].inv_trans, &scene->shapes[i].trans);
-			print_mat4(&scene->shapes[i].inv_trans);
+			// ROTATE HERE
 		}
+
+		// TRANSLATE LAST
+		translate_matrix(&transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
+
+		// sphere_trans =  translation * sphere_trans
+		mat_multiply(&scene->shapes[i].trans, &transform, &scene->shapes[i].trans);
+
+		// * Calculate inverse transform here
+		mat_inverse(&scene->shapes[i].inv_trans, &scene->shapes[i].trans);
 		i++;
 	}
 }
