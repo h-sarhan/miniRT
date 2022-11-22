@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 18:41:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:08:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ t_intersect	*hit(t_intersections *xs)
 
 void draw_scene(t_scene *scene)
 {
-	t_mlx	mlx;
 	float	wall_z;
 	float	wall_size;
 	float	pixel_size;
@@ -102,25 +101,20 @@ void draw_scene(t_scene *scene)
 	t_intersect intersect_arr[100];
 	int		x;
 	int		y;
-	
+	t_mlx	*mlx;
+
+	mlx = scene->mlx;
 	x = 0;
 	y = 0;
 	wall_z = 10;
 	wall_size = 7.0;
-	scene->win_w = 1000;
-	scene->win_h = 1000;
+	ft_bzero(mlx->addr, mlx->bytes_per_pixel * scene->win_h * scene->win_w);
 	ray_origin.x = 0;
 	ray_origin.y = 0;
 	ray_origin.z = -5;
 	ray_origin.w = 1;
 	pixel_size = wall_size / (float)scene->win_h;
 	half = wall_size / 2;
-	mlx.mlx = mlx_init();
-	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
-	mlx.img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
-	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bytes_per_pixel, &mlx.line_length,
-								&mlx.endian);
-	mlx.bytes_per_pixel /= 8;
 	arr.arr = intersect_arr;
 	arr.count = 0;
 	int pixel = 0;
@@ -143,77 +137,15 @@ void draw_scene(t_scene *scene)
 			intersect(&scene->shapes[0], &ray, &arr);
 			t_intersect *intersection  = hit(&arr);
 			if (intersection != NULL)
-				*(unsigned int *)(mlx.addr + pixel) = intersection->shape->mlx_color;
-			pixel += mlx.bytes_per_pixel;
+			{
+				*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
+				// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);
+			}
+			pixel += mlx->bytes_per_pixel;
 			x++;				
 		}
 		y++;
 	}
 	TOCK(render);
-	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
-	mlx_loop(mlx.mlx);
+	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
 }
-
-// void draw_scene(t_scene *scene)
-// {
-// 	t_mlx	img;
-// 	float	wall_z;
-// 	float	wall_size;
-// 	float	pixel_size;
-// 	float	half;
-// 	float	world_y;
-// 	float	world_x;
-// 	t_vector position;
-// 	t_vector ray_origin;
-// 	t_ray	ray;
-// 	t_intersections arr;
-// 	t_intersect intersect_arr[100];
-// 	int		x;
-// 	int		y;
-	
-// 	x = 0;
-// 	y = 0;
-// 	wall_z = 10;
-// 	wall_size = 7.0;
-// 	scene->win_w = 1000;
-// 	scene->win_h = 1000;
-// 	ray_origin.x = 0;
-// 	ray_origin.y = 0;
-// 	ray_origin.z = -5;
-// 	ray_origin.w = 1;
-// 	pixel_size = wall_size / (float)scene->win_h;
-// 	half = wall_size / 2;
-// 	img.mlx = mlx_init();
-// 	img.mlx_win = mlx_new_window(img.mlx, scene->win_w, scene->win_h, "Hello world!");
-// 	img.img = mlx_new_image(img.mlx, scene->win_w, scene->win_h);
-// 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-// 								&img.endian);
-// 	arr.arr = intersect_arr;
-// 	arr.count = 0;
-// 	while (y < scene->win_h)
-// 	{
-// 		world_y = half - (pixel_size * y);
-// 		x = 0;
-// 		while (x < scene->win_h)
-// 		{
-// 			world_x = (half * -1) + (pixel_size * x);
-// 			position.x = world_x;
-// 			position.y = world_y;
-// 			position.z = wall_z;
-// 			position.w = 1;
-// 			ray.origin = ray_origin;
-// 			sub_vec(&ray.direction, &position, &ray_origin);
-// 			normalize_vec(&ray.direction);
-// 			arr.count = 0;
-// 			intersect(&scene->shapes[0], &ray, &arr);
-// 			if (hit(&arr) != NULL)
-// 				my_mlx_pixel_put(&img, x, y, 0x00FF0000);
-// 			x++;				
-// 		}
-// 		y++;
-// 	}
-	
-// 	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
-// 	mlx_loop(img.mlx);
-// }
-
