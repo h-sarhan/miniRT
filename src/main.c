@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 22:25:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 15:10:58 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	calculate_transforms(scene);
 	// print_scene(scene);
-	// draw_scene(scene);
+	draw_scene(scene);
 	free_scene(scene);
 	return (EXIT_SUCCESS);
 }

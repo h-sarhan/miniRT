@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/21 22:06:18 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/22 15:11:29 by mkhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ INC = -Iinclude -Ilibft -Imlx
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Wall -Wextra   -g3  $(INC) \
+CFLAGS = -Wall -Wextra  -Werror  -g3  $(INC) \
 			-fsanitize=address \
 			# $(OPTIMIZATION_FLAGS) \
 
@@ -52,7 +52,7 @@ $(LIBFT):
 	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	make -s all -C mlx
+	make -s -j10 all -C mlx
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 leakcheck: $(LIBFT) $(OBJ)
