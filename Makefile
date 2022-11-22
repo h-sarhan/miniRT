@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/22 20:20:12 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/22 20:29:31 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c matrix_inverse2.c matrix_transformations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-INTERSECTION_SRC = intersect.c
+INTERSECTION_SRC = intersections.c
 INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 
 SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:14:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:31:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ struct	s_el_count
 	unsigned int	shape_count;
 };
 
-typedef struct s_mlx	t_mlx;
+typedef struct s_mlx		t_mlx;
 
 /**
  * @brief A description of a 3D scene

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 18:09:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:33:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,6 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
 	scene->count.shape_count++;
-	shape->mlx_color =  create_mlx_color(&shape->color);
+	shape->mlx_color = create_mlx_color(&shape->color);
 	return (true);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 19:03:52 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/22 20:33:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	rotation_matrix_z(t_mat4 *mat, float r)
 	(*mat)[1][0] = sin(r);
 	(*mat)[1][1] = cos(r);
 	(*mat)[2][2] = 1;
-	(*mat)[3][3] = 1;	
+	(*mat)[3][3] = 1;
 }
 
 /**

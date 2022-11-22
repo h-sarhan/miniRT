@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersect.c                                        :+:      :+:    :+:   */
+/*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:23:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:34:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_intersect	*hit(t_intersections *xs)
 {
 	float	min_time;
 	int		i;
-	int 	idx;
+	int		idx;
 
 	i = 0;
 	min_time = INFINITY;
@@ -80,10 +80,10 @@ t_intersect	*hit(t_intersections *xs)
 
 t_vector	normal_at(t_shape *shape, t_vector *intersection_point)
 {
-	t_vector origin;
-	t_vector object_point;
-	t_vector object_normal;
-	t_vector world_normal;
+	t_vector	origin;
+	t_vector	object_point;
+	t_vector	object_normal;
+	t_vector	world_normal;
 	
 	// Object point calculation
 	mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);

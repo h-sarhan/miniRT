@@ -6,12 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 19:54:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:32:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scene.h"
+#ifndef KEY_INPUT_H
+# define KEY_INPUT_H
 
+# include "scene.h"
 # define ON_DESTROY 17
 # define PI           3.14159265358979323846F
 # define KEY_ESC 53
@@ -45,4 +47,5 @@
 # define KEY_C 8
 # define L_KEY_C 99
 
-int	transform_keys(int key, t_scene *scene);
+int	key_input(int key, t_scene *scene);
+#endif

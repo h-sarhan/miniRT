@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:23:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:33:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param origin The ray starting point
  * @param direction The direction where the ray is being projected
  */
-typedef struct s_ray	t_ray;
+typedef struct s_ray			t_ray;
 struct s_ray
 {
 	t_vector	origin;
@@ -38,7 +38,7 @@ struct s_ray
  * @param line_length Number of pixels in a row
  * @param endian idk
  */
-typedef struct s_mlx		t_mlx;
+typedef struct s_mlx			t_mlx;
 struct	s_mlx
 {
 	void	*mlx;
@@ -56,7 +56,7 @@ struct	s_mlx
  * @param time The t value of the intersection
  * @param shape A pointer to the object that the ray intersected with
  */
-typedef struct s_intersect	t_intersect;
+typedef struct s_intersect		t_intersect;
 struct s_intersect
 {	
 	float	time;
@@ -68,15 +68,17 @@ struct s_intersect
  * @param arr Array of intersections
  * @param count Number of intersections in the array
  */
-typedef struct s_intersections t_intersections;
+typedef struct s_intersections	t_intersections;
 struct s_intersections
 {
-	t_intersect *arr;
-	int 		count;
+	t_intersect	*arr;
+	int			count;
 };
-
-void		draw_scene(t_scene *scene);
+// draw_scene.c
 void		my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void		draw_scene(t_scene *scene);
+
+// intersections.c
 void		ray_position(t_vector *pos, t_ray *ray, float time);
 void		transform_ray(t_ray *ray, t_shape *shape);
 bool		intersect(t_shape *shape, t_ray *ray, t_intersections *xs);
