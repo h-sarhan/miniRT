@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:22:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 21:00:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+/**
+ * @brief Draws a simple scene *for now*
+ * @param scene A struct describing the current scene
+ */
 void draw_scene(t_scene *scene)
 {
 	float	wall_z;
@@ -42,7 +46,6 @@ void draw_scene(t_scene *scene)
 	y = 0;
 	wall_z = 10;
 	wall_size = 7.0;
-	// ft_bzero(mlx->addr, mlx->bytes_per_pixel * scene->win_h * scene->win_w);
 	ray_origin.x = 0;
 	ray_origin.y = 0;
 	ray_origin.z = -5;

@@ -6,19 +6,19 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:34:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 21:06:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ray_position(t_vector *pos, t_ray *ray, float time)
+void	ray_position(t_vector *pos, const t_ray *ray, float time)
 {
 	scale_vec(pos, &ray->direction, time);
 	add_vec(pos, pos, &ray->origin);
 }
 
-void	transform_ray(t_ray *ray, t_shape *shape)
+void	transform_ray(t_ray *ray, const t_shape *shape)
 {
 	mat_vec_multiply(&ray->origin, &shape->inv_transf, &ray->origin);
 	mat_vec_multiply(&ray->direction, &shape->inv_transf, &ray->direction);
@@ -56,7 +56,7 @@ bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 	return (true);
 }
 
-t_intersect	*hit(t_intersections *xs)
+t_intersect	*hit(const t_intersections *xs)
 {
 	float	min_time;
 	int		i;
@@ -78,7 +78,7 @@ t_intersect	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-t_vector	normal_at(t_shape *shape, t_vector *intersection_point)
+t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 {
 	t_vector	origin;
 	t_vector	object_point;

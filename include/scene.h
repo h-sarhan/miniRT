@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:31:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:56:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ struct s_color
 
 // color.c
 unsigned int	create_mlx_color(t_color *color);
+void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
+void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
+void			mult_color(t_color *res, const t_color *color, float val);
+void			blend_colors(t_color *res, const t_color *c1, const t_color *c2);
 
 /**
  * @brief A light source

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:33:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 21:02:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,11 @@ float	deg_to_rad(float r)
 	return(r * (M_PI / 180));
 }
 
-// Transformation order is scale, rotation, then translation
-// https://gamedev.stackexchange.com/questions/16719/what-is-the-correct-order-to-multiply-scale-rotation-and-translation-matrices-f
+/**
+ * @brief Calculates the transformation matrices for every object in the scene
+ * The chosen transformation order is scale -> rotation -> translation
+ * @param scene The scene struct containing the objects
+ */
 void	calculate_transforms(t_scene *scene)
 {
 	unsigned int	i;

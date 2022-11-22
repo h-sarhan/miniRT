@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:33:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 21:06:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void		my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void		draw_scene(t_scene *scene);
 
 // intersections.c
-void		ray_position(t_vector *pos, t_ray *ray, float time);
-void		transform_ray(t_ray *ray, t_shape *shape);
+void		ray_position(t_vector *pos, const t_ray *ray, float time);
+void		transform_ray(t_ray *ray, const t_shape *shape);
 bool		intersect(t_shape *shape, t_ray *ray, t_intersections *xs);
-t_intersect	*hit(t_intersections *xs);
-t_vector	normal_at(t_shape *shape, t_vector *intersection_point);
+t_intersect	*hit(const t_intersections *xs);
+t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
 
 #endif

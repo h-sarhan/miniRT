@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:42:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:59:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
 /**
- * @brief Function to call when a key is pressed
+ * @brief Function to transform a shape when a key is pressed
  * @param key Key that was pressed
  * @param scene The scene struct
  */
