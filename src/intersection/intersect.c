@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 18:15:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 18:41:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 	discriminant = (b * b) - (4 * a * c);
 	if (discriminant < 0)
 		return (false);
-	discriminant = sqrt(discriminant);
-	xs->arr[xs->count].time = ((b * -1) - discriminant) / (2 * a);
+	b *= -1;
+	a *= 2;
+	discriminant = sqrtf(discriminant);
+	xs->arr[xs->count].time = (b - discriminant) / a;
 	xs->arr[xs->count].shape = shape;
-	xs->arr[xs->count + 1].time = ((b * -1) + discriminant) / (2 * a);
+	xs->arr[xs->count + 1].time = (b + discriminant) / a;
 	xs->arr[xs->count + 1].shape = shape;
 	xs->count += 2;
 	return (true);
@@ -121,6 +123,8 @@ void draw_scene(t_scene *scene)
 	mlx.bytes_per_pixel /= 8;
 	arr.arr = intersect_arr;
 	arr.count = 0;
+	int pixel = 0;
+	TICK(render);
 	while (y < scene->win_h)
 	{
 		world_y = half - (pixel_size * y);
@@ -139,14 +143,13 @@ void draw_scene(t_scene *scene)
 			intersect(&scene->shapes[0], &ray, &arr);
 			t_intersect *intersection  = hit(&arr);
 			if (intersection != NULL)
-			{
-				my_mlx_pixel_put(&mlx, x, y, intersection->shape->mlx_color);
-			}
+				*(unsigned int *)(mlx.addr + pixel) = intersection->shape->mlx_color;
+			pixel += mlx.bytes_per_pixel;
 			x++;				
 		}
 		y++;
 	}
-	
+	TOCK(render);
 	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
 	mlx_loop(mlx.mlx);
 }
