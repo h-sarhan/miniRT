@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/22 19:52:54 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/22 20:20:12 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 INTERSECTION_SRC = intersect.c
 INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 
-SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) free_utils.c print_utils.c color.c keyboard_input.c
+SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c
 
 SRC := $(addprefix src/, $(SRC))
 

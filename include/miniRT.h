@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 19:44:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:21:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include "intersection.h"
 # include "matrix.h"
 # include "parsing.h"
-# include "ray.h"
 # include "scene.h"
 # include "utils.h"
 # include "vector.h"

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 19:46:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:23:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 # define INTERSECTION_H
 
 # include "scene.h"
+
+/**
+ * @brief A ray being cast from the screen
+ * @param origin The ray starting point
+ * @param direction The direction where the ray is being projected
+ */
+typedef struct s_ray	t_ray;
+struct s_ray
+{
+	t_vector	origin;
+	t_vector	direction;
+};
 
 /**
  * @brief Struct containing information relevant for mlx and the window
@@ -63,6 +75,12 @@ struct s_intersections
 	int 		count;
 };
 
-void draw_scene(t_scene *scene);
+void		draw_scene(t_scene *scene);
+void		my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void		ray_position(t_vector *pos, t_ray *ray, float time);
+void		transform_ray(t_ray *ray, t_shape *shape);
+bool		intersect(t_shape *shape, t_ray *ray, t_intersections *xs);
+t_intersect	*hit(t_intersections *xs);
+t_vector	normal_at(t_shape *shape, t_vector *intersection_point);
 
 #endif
