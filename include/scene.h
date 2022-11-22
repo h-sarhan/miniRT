@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 18:02:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 18:58:35 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,9 @@ struct s_shape
 	t_vector		origin;
 	t_vector		orientation;
 	t_color			color;
-	t_mat4			trans;
-	t_mat4			inv_trans;
+	t_mat4			transf;
+	t_mat4			inv_transf;
+	t_mat4			norm_transf;
 	unsigned int	mlx_color;
 };
 

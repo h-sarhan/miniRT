@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 16:04:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 19:03:52 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ void	calculate_transforms(t_scene *scene)
 	i = 0;
 	while (i < scene->count.shape_count)
 	{
-		identity_matrix(&scene->shapes[i].trans);
+		identity_matrix(&scene->shapes[i].transf);
 
 		// SCALE FIRST
 		scaling_matrix(&transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
-		mat_multiply(&scene->shapes[i].trans, &transform, &scene->shapes[i].trans);
+		mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
 
 		if (scene->shapes[i].type != SPHERE)
 		{
@@ -141,10 +141,12 @@ void	calculate_transforms(t_scene *scene)
 		translate_matrix(&transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 
 		// sphere_trans =  translation * sphere_trans
-		mat_multiply(&scene->shapes[i].trans, &transform, &scene->shapes[i].trans);
+		mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
 
 		// * Calculate inverse transform here
-		mat_inverse(&scene->shapes[i].inv_trans, &scene->shapes[i].trans);
+		mat_inverse(&scene->shapes[i].inv_transf, &scene->shapes[i].transf);
+		ft_memcpy(&scene->shapes[i].norm_transf, &scene->shapes[i].inv_transf, sizeof(t_mat4));
+		transpose_matrix(&scene->shapes[i].norm_transf);
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 18:15:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 19:12:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	position(t_vector *pos, t_ray *ray, float time)
 
 void	transform(t_ray *ray, t_shape *shape)
 {
-	mat_vec_multiply(&ray->origin, &shape->inv_trans, &ray->origin);
-	mat_vec_multiply(&ray->direction, &shape->inv_trans, &ray->direction);
+	mat_vec_multiply(&ray->origin, &shape->inv_transf, &ray->origin);
+	mat_vec_multiply(&ray->direction, &shape->inv_transf, &ray->direction);
 }
 
 bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
@@ -82,6 +82,30 @@ t_intersect	*hit(t_intersections *xs)
 	if (min_time == INFINITY)
 		return (NULL);
 	return (&xs->arr[idx]);
+}
+
+t_vector	normal_at(t_shape *shape, t_vector *intersection_point)
+{
+	t_vector origin;
+	t_vector object_point;
+	t_vector object_normal;
+	t_vector world_normal;
+	
+	// Object point calculation
+	mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
+	
+	// Object normal calculation
+	origin.x = 0;
+	origin.y = 0;
+	origin.z = 0;
+	origin.w = 1;
+	sub_vec(&object_normal, &object_normal, &origin);
+	
+	// World normal calculation
+	mat_vec_multiply(&world_normal, shape->norm_transf, &object_normal);
+	world_normal.w = 0;
+	normalize_vec(&world_normal);
+	return(world_normal);
 }
 
 void draw_scene(t_scene *scene)
