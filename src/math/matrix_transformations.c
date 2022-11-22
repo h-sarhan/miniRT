@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/21 22:40:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 13:27:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,19 +131,18 @@ void	calculate_transforms(t_scene *scene)
 			translate_matrix(&transform, scene->shapes[i].origin.x,
 				scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 			// sphere_trans =  translation * sphere_trans
-			// ! REVERSE THIS MULTIPLICATION
-			mat_multiply(&scene->shapes[i].trans, &scene->shapes[i].trans,
-				&transform);
+			mat_multiply(&scene->shapes[i].trans,
+				&transform, &scene->shapes[i].trans);
 			scaling_matrix(&transform, scene->shapes[i].radius,
 				scene->shapes[i].radius, scene->shapes[i].radius);
 			// sphere_trans = scaling * sphere_trans
-			// ! REVERSE THIS MULTIPLICATION
-			mat_multiply(&scene->shapes[i].trans, &scene->shapes[i].trans,
-				&transform);
+			mat_multiply(&scene->shapes[i].trans,
+				&transform, &scene->shapes[i].trans);
 			print_mat4(&scene->shapes[i].trans);
 			// rotation is irrelevant for a sphere
 			// * Calculate inverse transform here
 			mat_inverse(&scene->shapes[i].inv_trans, &scene->shapes[i].trans);
+			print_mat4(&scene->shapes[i].inv_trans);
 		}
 		i++;
 	}
