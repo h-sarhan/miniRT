@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:35:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:42:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param key Key that was pressed
  * @param scene The scene struct
  */
-int	key_input(int key, t_scene *scene)
+int	transform_shape(int key, t_scene *scene)
 {
 	if (key == KEY_W)
 		scene->shapes[0].origin.y += 0.05;
