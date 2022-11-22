@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 18:58:35 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/22 20:14:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ struct	s_el_count
 	unsigned int	shape_count;
 };
 
+typedef struct s_mlx	t_mlx;
+
 /**
  * @brief A description of a 3D scene
  * @param ambient Ambient lighting information
@@ -162,6 +164,7 @@ struct s_scene
 	t_el_count	count;
 	int			win_h;
 	int			win_w;
+	t_mlx		*mlx;
 };
 
 #endif

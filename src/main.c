@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:10:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,33 @@ int	main(int argc, char **argv)
 {
 	t_scene	*scene;
 	int		fd;
+	t_mlx	mlx;
 
 	fd = open_file(argc, argv);
+	if (fd == -1)
+		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	calculate_transforms(scene);
+
 	// print_scene(scene);
+	scene->win_w = 1000;
+	scene->win_h = 1000;
+	mlx.mlx = mlx_init();
+	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
+	mlx.img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bytes_per_pixel, &mlx.line_length,
+								&mlx.endian);
+	mlx.bytes_per_pixel /= 8;
+	scene->mlx = &mlx;
+	mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_keys, scene);
+
 	draw_scene(scene);
-	free_scene(scene);
+
+	// ! Put this somewhere
+	// free_scene(scene);
+	mlx_loop(mlx.mlx);
 	return (EXIT_SUCCESS);
 }
