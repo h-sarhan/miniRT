@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:53:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 17:04:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <matrix.h>
+#include "miniRT.h"
 
 /**
  * @brief Returns a determinant of a 2x2 matrix

@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 10:04:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include "miniRT.h"
 
 /**
  * @brief Checks wheter the orientation vector is valid and prints an

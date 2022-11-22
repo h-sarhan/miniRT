@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 10:23:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vector.h>
+#include "miniRT.h"
 
 /**
  * @brief Returns a vector's magnitude

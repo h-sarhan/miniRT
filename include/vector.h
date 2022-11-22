@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:33:33 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 21:59:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 # define VECTOR_H
 
-# include <math.h>
+# include "miniRT.h"
 
 /**
  * @brief 4 dimensional vector

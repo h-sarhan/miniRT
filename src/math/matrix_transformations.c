@@ -6,12 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 14:25:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <matrix.h>
-#include <scene.h>
+#include "miniRT.h"
 
 /**
  * @brief Initialize the translation matrix.

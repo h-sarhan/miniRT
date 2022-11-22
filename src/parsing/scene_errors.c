@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 15:48:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include "miniRT.h"
 
 /**
  * @brief Prints the appropriate error message when an error occurs while

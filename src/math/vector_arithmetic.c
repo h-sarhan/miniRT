@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:46:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 10:16:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vector.h>
+#include "miniRT.h"
 
 /**
  * @brief Adds two vectors together and stores the result in res

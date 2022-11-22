@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 10:05:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include "miniRT.h"
 
 /**
  * @brief Parses a point light according to the specification provided in the

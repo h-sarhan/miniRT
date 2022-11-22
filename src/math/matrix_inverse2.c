@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 17:01:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 17:02:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <matrix.h>
+#include "miniRT.h"
 
 /**
  * @brief Returns the cofactor of a matrix at a mat[row][col]

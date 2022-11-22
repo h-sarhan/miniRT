@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 08:20:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include "miniRT.h"
 
 /**
  * @brief Checks if the amount of ambient lights and cameras in a struct

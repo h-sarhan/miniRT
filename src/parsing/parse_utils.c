@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:10:43 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:56:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <parsing.h>
+#include "miniRT.h"
 
 /**
  * @brief Returns whether a character is whitespace

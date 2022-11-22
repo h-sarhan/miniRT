@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/21 12:25:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <matrix.h>
+#include "miniRT.h"
 
 /**
  * @brief Multiplies matrix m1 by matrix m2 and stores the result in res

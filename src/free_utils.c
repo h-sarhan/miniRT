@@ -6,11 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 15:45:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:05:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <utils.h>
+#include "miniRT.h"
 
 /**
  * @brief Frees an array allocated by split

@@ -6,18 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 17:52:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 16:04:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <fcntl.h>
-# include <libft.h>
-# include <scene.h>
-# include <stdio.h>
-# include <utils.h>
+# include "miniRT.h"
+
 # define RED "\x1b[31m"
 # define RESET "\x1b[0m"
 # define YELLOW "\x1b[33m"

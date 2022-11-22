@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersec.c                                         :+:      :+:    :+:   */
+/*   intersect.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 15:44:36 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/22 18:15:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <miniRT.h>
+#include "miniRT.h"
 
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = data->addr + (y * data->line_length + x * (data->bytes_per_pixel));
 	*(unsigned int*)dst = color;
-}
-
-int	create_trgb(int t, int r, int g, int b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
 }
 
 void	position(t_vector *pos, t_ray *ray, float time)
@@ -91,7 +86,7 @@ t_intersect	*hit(t_intersections *xs)
 
 void draw_scene(t_scene *scene)
 {
-	t_mlx	img;
+	t_mlx	mlx;
 	float	wall_z;
 	float	wall_size;
 	float	pixel_size;
@@ -118,11 +113,12 @@ void draw_scene(t_scene *scene)
 	ray_origin.w = 1;
 	pixel_size = wall_size / (float)scene->win_h;
 	half = wall_size / 2;
-	img.mlx = mlx_init();
-	img.mlx_win = mlx_new_window(img.mlx, scene->win_w, scene->win_h, "Hello world!");
-	img.img = mlx_new_image(img.mlx, scene->win_w, scene->win_h);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-								&img.endian);
+	mlx.mlx = mlx_init();
+	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
+	mlx.img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bytes_per_pixel, &mlx.line_length,
+								&mlx.endian);
+	mlx.bytes_per_pixel /= 8;
 	arr.arr = intersect_arr;
 	arr.count = 0;
 	while (y < scene->win_h)
@@ -141,15 +137,18 @@ void draw_scene(t_scene *scene)
 			normalize_vec(&ray.direction);
 			arr.count = 0;
 			intersect(&scene->shapes[0], &ray, &arr);
-			if (hit(&arr) != NULL)
-				my_mlx_pixel_put(&img, x, y, 0x00FF0000);
+			t_intersect *intersection  = hit(&arr);
+			if (intersection != NULL)
+			{
+				my_mlx_pixel_put(&mlx, x, y, intersection->shape->mlx_color);
+			}
 			x++;				
 		}
 		y++;
 	}
 	
-	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
-	mlx_loop(img.mlx);
+	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, mlx.img, 0, 0);
+	mlx_loop(mlx.mlx);
 }
 
 // void draw_scene(t_scene *scene)
