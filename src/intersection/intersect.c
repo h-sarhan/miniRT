@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 20:14:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/22 20:17:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_vector	normal_at(t_shape *shape, t_vector *intersection_point)
 	sub_vec(&object_normal, &object_normal, &origin);
 	
 	// World normal calculation
-	mat_vec_multiply(&world_normal, shape->norm_transf, &object_normal);
+	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
 	return(world_normal);
@@ -132,7 +132,7 @@ void draw_scene(t_scene *scene)
 	y = 0;
 	wall_z = 10;
 	wall_size = 7.0;
-	ft_bzero(mlx->addr, mlx->bytes_per_pixel * scene->win_h * scene->win_w);
+	// ft_bzero(mlx->addr, mlx->bytes_per_pixel * scene->win_h * scene->win_w);
 	ray_origin.x = 0;
 	ray_origin.y = 0;
 	ray_origin.z = -5;
@@ -165,8 +165,12 @@ void draw_scene(t_scene *scene)
 				*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
 				// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);
 			}
+			else
+			{
+				*(unsigned int *)(mlx->addr + pixel) = 0;
+			}
 			pixel += mlx->bytes_per_pixel;
-			x++;				
+			x++;
 		}
 		y++;
 	}
