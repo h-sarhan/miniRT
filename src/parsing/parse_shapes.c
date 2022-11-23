@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:33:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 16:42:08 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
 	scene->count.shape_count++;
-	shape->mlx_color = create_mlx_color(&shape->color);
+	shape->diffuse = 0.9;
+	shape->specular = 0.9;
+	shape->shininess = 200;
 	return (true);
 }

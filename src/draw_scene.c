@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 16:12:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 16:50:04 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void draw_scene(t_scene *scene)
 	t_vector normal;
 	t_vector eye;
 	t_color	color;
-
+	unsigned int		i;
+	
 	mlx = scene->mlx;
 	x = 0;
 	y = 0;
@@ -59,9 +60,6 @@ void draw_scene(t_scene *scene)
 	arr.arr = intersect_arr;
 	arr.count = 0;
 	int pixel = 0;
-	scene->shapes[0].diffuse = 0.9;
-	scene->shapes[0].specular = 0.9;
-	scene->shapes[0].shininess = 200;
 	TICK(render);
 	while (y < scene->win_h)
 	{
@@ -76,26 +74,29 @@ void draw_scene(t_scene *scene)
 			position.w = 1;
 			ray.origin = ray_origin;
 			sub_vec(&ray.direction, &position, &ray_origin);
-			ray.direction.w = 0;
-			arr.count = 0;
-			intersect(&scene->shapes[0], &ray, &arr);
-			t_intersect *intersection  = hit(&arr);
-			if (intersection != NULL)
+			i = 0;
+			while (i < scene->count.shape_count)
 			{
-				ray_position(&point, &ray, intersection->time);
-				normal = normal_at(intersection->shape, &point);
-				normal.w = 0;
-				normalize_vec(&ray.direction);
-				negate_vec(&eye, &ray.direction);
-				eye.w = 0;
-				color = lighting(intersection->shape, scene, &point, &eye, &normal);
-				intersection->shape->mlx_color = create_mlx_color(&color);
-				*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
-				// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);
-			}
-			else
-			{
-				*(unsigned int *)(mlx->addr + pixel) = 0;
+				ray.direction.w = 0;
+				arr.count = 0;
+				intersect(&scene->shapes[i], &ray, &arr);
+				t_intersect *intersection  = hit(&arr);
+				if (intersection != NULL)
+				{
+					ray_position(&point, &ray, intersection->time);
+					normal = normal_at(intersection->shape, &point);
+					normal.w = 0;
+					normalize_vec(&ray.direction);
+					negate_vec(&eye, &ray.direction);
+					eye.w = 0;
+					color = lighting(intersection->shape, scene, &point, &eye, &normal);
+					intersection->shape->mlx_color = create_mlx_color(&color);
+					*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
+					// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);
+				}
+				// else
+				// 	*(unsigned int *)(mlx->addr + pixel) = 0;
+				i++;
 			}
 			pixel += mlx->bytes_per_pixel;
 			x++;
