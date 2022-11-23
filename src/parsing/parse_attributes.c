@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 11:54:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,12 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 void	parse_color(t_color *color, const char *str, bool *success)
 {
 	char	**rgb;
-	long	res[3];
+	float	res[3];
 	bool	parse_success;
 	size_t	i;
 
 	parse_success = true;
+	
 	rgb = ft_split(str, ',');
 	if (!rgb || count_commas(str) != 2 || split_count(rgb) != 3)
 	{
@@ -94,8 +95,8 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	i = -1;
 	while (rgb[++i] != NULL)
 	{
-		res[i] = ft_atol(rgb[i], success);
-		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 255 || !*success)
+		res[i] = ft_atol(rgb[i], success) / 255.0f;
+		if (!is_num(rgb[i], false) || res[i] < 0 || res[i] > 1.0f || !*success)
 			parse_success = false;
 	}
 	free_split_array(rgb);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:56:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 11:14:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ enum e_light_type
 typedef struct s_color		t_color;
 struct s_color
 {
-	int	r;
-	int	g;
-	int	b;
-	int	a;
+	float	r;
+	float	g;
+	float	b;
+	float	a;
 };
 
 // color.c

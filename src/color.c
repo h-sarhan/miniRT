@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:56:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 11:58:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,26 @@
  */
 unsigned int	create_mlx_color(t_color *color)
 {
-	if (color->r > 255)
-		color->r = 255;
-	if (color->r < 0)
-		color->r = 0;
-	if (color->g > 255)
-		color->g = 255;
-	if (color->g < 0)
-		color->g = 0;
-	if (color->b > 255)
-		color->b = 255;
-	if (color->b < 0)
-		color->b = 0;
-	return (color->a << 24 | color->r << 16 | color->g << 8 | color->b);
+	t_color	copy;
+
+	ft_memcpy(&copy, color, sizeof(t_color));
+	copy.r *= 255;
+	copy.g *= 255;
+	copy.b *= 255;
+	if (copy.r > 255)
+		copy.r = 255;
+	if (copy.r < 0)
+		copy.r = 0;
+	if (copy.g > 255)
+		copy.g = 255;
+	if (copy.g < 0)
+		copy.g = 0;
+	if (copy.b > 255)
+		copy.b = 255;
+	if (copy.b < 0)
+		copy.b = 0;
+	return ((int)copy.a << 24 | (int)copy.r << 16 |
+			(int)copy.g << 8 | (int)copy.b);
 }
 
 /**
