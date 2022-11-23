@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 14:00:14 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:12:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void draw_scene(t_scene *scene)
 			position.w = 1;
 			ray.origin = ray_origin;
 			sub_vec(&ray.direction, &position, &ray_origin);
-			normalize_vec(&ray.direction);
+			ray.direction.w = 0;
 			arr.count = 0;
 			intersect(&scene->shapes[0], &ray, &arr);
 			t_intersect *intersection  = hit(&arr);
@@ -84,9 +84,11 @@ void draw_scene(t_scene *scene)
 			{
 				ray_position(&point, &ray, intersection->time);
 				normal = normal_at(intersection->shape, &point);
+				normal.w = 0;
+				normalize_vec(&ray.direction);
 				negate_vec(&eye, &ray.direction);
+				eye.w = 0;
 				color = lighting(intersection->shape, scene, &point, &eye, &normal);
-				// color = intersection->shape->color;
 				intersection->shape->mlx_color = create_mlx_color(&color);
 				*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
 				// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);

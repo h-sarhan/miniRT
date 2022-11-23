@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 11:58:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 15:30:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @brief Print the red, green, and blue values of a color
  * @param color Color to print
  */
-static void	print_color(const t_color *color)
+void	print_color(const t_color *color)
 {
 	printf("\tR: %f\n", color->r);
 	printf("\tG: %f\n", color->g);

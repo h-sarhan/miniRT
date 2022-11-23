@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/23 12:44:49 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:01:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ray_position(t_vector *pos, const t_ray *ray, float time)
 {
 	scale_vec(pos, &ray->direction, time);
 	add_vec(pos, pos, &ray->origin);
+	pos->w = 1;
 }
 
 void	transform_ray(t_ray *ray, const t_shape *shape)
@@ -87,17 +88,20 @@ t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 	
 	// Object point calculation
 	mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
+	// print_vector(&object_point);
 	
 	// Object normal calculation
 	origin.x = 0;
 	origin.y = 0;
 	origin.z = 0;
 	origin.w = 1;
-	sub_vec(&object_normal, &object_normal, &origin);
+	sub_vec(&object_normal, &object_point, &origin);
+	object_normal.w = 0;
 	
 	// World normal calculation
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
-	return(world_normal);
+	// print_vector(&world_normal);
+	return (world_normal);
 }

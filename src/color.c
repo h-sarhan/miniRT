@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 12:29:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 15:16:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned char	clamp_color(float color)
+unsigned int	clamp_color(float color)
 {
 	color *= 255;
 	if (color > 255)
