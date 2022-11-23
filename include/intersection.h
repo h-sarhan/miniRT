@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/23 13:46:57 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/23 18:32:54 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ struct s_intersect
 {	
 	float	time;
 	t_shape	*shape;
+	t_vector point;
+	t_vector normal;
+	t_vector eye;
+	bool	inside;
 };
 
 /**
@@ -84,6 +88,6 @@ void		transform_ray(t_ray *ray, const t_shape *shape);
 bool		intersect(t_shape *shape, t_ray *ray, t_intersections *xs);
 t_intersect	*hit(const t_intersections *xs);
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
-t_color		lighting(t_shape *shape, t_scene *scene, t_vector *point, t_vector *eye_v, t_vector *normal_v);
+t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
 
 #endif

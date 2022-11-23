@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/23 16:11:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 18:31:02 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
 	res->w = 0;
 }
 
-t_color	lighting(t_shape *shape, t_scene *scene, t_vector *point, t_vector *eye_v, t_vector *normal_v)
+t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 {
 	t_color		effective_color;
 	t_vector	light_v;
@@ -38,13 +38,13 @@ t_color	lighting(t_shape *shape, t_scene *scene, t_vector *point, t_vector *eye_
 	t_color		result;
 	
 	// effective color calculation
-	blend_colors(&effective_color, &shape->color, &scene->lights[0].color);
+	blend_colors(&effective_color, &intersection->shape->color, &scene->lights[light_idx].color);
 	// light_v calculation
-	sub_vec(&light_v, &scene->lights[0].position, point);
+	sub_vec(&light_v, &scene->lights[light_idx].position, &intersection->point);
 	normalize_vec(&light_v);
 	// ambient calculation
 	mult_color(&ambient, &effective_color, scene->ambient.intensity);
-	light_dot_normal = dot_product(&light_v, normal_v);
+	light_dot_normal = dot_product(&light_v, &intersection->normal);
 	if (light_dot_normal < 0)
 	{
 		ft_bzero(&diffuse, sizeof(t_color));
@@ -53,16 +53,16 @@ t_color	lighting(t_shape *shape, t_scene *scene, t_vector *point, t_vector *eye_
 	else
 	{
 		// Greater the angle lesser the diffuse. 
-		mult_color(&diffuse, &effective_color, shape->diffuse * light_dot_normal);
+		mult_color(&diffuse, &effective_color, intersection->shape->diffuse * light_dot_normal);
 		light_v.x = -light_v.x;
 		light_v.y = -light_v.y;
 		light_v.z = -light_v.z;
-		reflect(&reflect_v, &light_v, normal_v);
-		reflect_dot_eye = dot_product(&reflect_v, eye_v);
+		reflect(&reflect_v, &light_v, &intersection->normal);
+		reflect_dot_eye = dot_product(&reflect_v, &intersection->eye);
 		if (reflect_dot_eye <= 0)
 			ft_bzero(&specular, sizeof(t_color));
 		else
-			mult_color(&specular, &scene->lights[0].color, shape->specular * powf(reflect_dot_eye, shape->shininess));
+			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * powf(reflect_dot_eye, intersection->shape->shininess));
 	}
 	add_colors(&result, &ambient, &diffuse);
 	add_colors(&result, &result, &specular);

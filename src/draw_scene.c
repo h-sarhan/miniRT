@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 16:50:04 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/23 18:34:00 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,23 @@ void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bytes_per_pixel));
 	*(unsigned int*)dst = color;
+}
+
+void	prepare_computations(t_intersect *intersection, t_ray *ray)
+{
+	ray_position(&intersection->point, ray, intersection->time);
+	intersection->normal = normal_at(intersection->shape, &intersection->point);
+	intersection->normal.w = 0;
+	normalize_vec(&ray->direction);
+	negate_vec(&intersection->eye, &ray->direction);
+	intersection->eye.w = 0;
+	if (dot_product(&intersection->normal, &intersection->eye) < 0)
+	{
+		intersection->inside = true;
+		negate_vec(&intersection->normal, &intersection->normal);
+	}
+	else
+		intersection->inside = false;
 }
 
 /**
@@ -32,17 +49,14 @@ void draw_scene(t_scene *scene)
 	float	half;
 	float	world_y;
 	float	world_x;
+	t_intersections arr;
+	t_intersect intersect_arr[100];
 	t_vector position;
 	t_vector ray_origin;
 	t_ray	ray;
-	t_intersections arr;
-	t_intersect intersect_arr[100];
 	int		x;
 	int		y;
 	t_mlx	*mlx;
-	t_vector point;
-	t_vector normal;
-	t_vector eye;
 	t_color	color;
 	unsigned int		i;
 	
@@ -61,6 +75,7 @@ void draw_scene(t_scene *scene)
 	arr.count = 0;
 	int pixel = 0;
 	TICK(render);
+	ft_bzero(mlx->addr, scene->win_h * scene->win_w * scene->mlx->bytes_per_pixel);
 	while (y < scene->win_h)
 	{
 		world_y = half - (pixel_size * y);
@@ -83,13 +98,15 @@ void draw_scene(t_scene *scene)
 				t_intersect *intersection  = hit(&arr);
 				if (intersection != NULL)
 				{
-					ray_position(&point, &ray, intersection->time);
-					normal = normal_at(intersection->shape, &point);
-					normal.w = 0;
-					normalize_vec(&ray.direction);
-					negate_vec(&eye, &ray.direction);
-					eye.w = 0;
-					color = lighting(intersection->shape, scene, &point, &eye, &normal);
+					prepare_computations(intersection, &ray);
+					ft_bzero(&color, sizeof(t_color));
+					unsigned int light_idx = 0;
+					while (light_idx < scene->count.light_count)
+					{
+						t_color light_color = lighting(intersection, scene, light_idx);
+						add_colors(&color, &color, &light_color);
+						light_idx++;
+					}
 					intersection->shape->mlx_color = create_mlx_color(&color);
 					*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
 					// my_mlx_pixel_put(mlx, x, y, intersection->shape->mlx_color);
