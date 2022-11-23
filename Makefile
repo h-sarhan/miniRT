@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/11/22 20:37:59 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/11/23 13:35:11 by mkhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 INTERSECTION_SRC = intersections.c
 INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 
-SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c
+LIGHTING_SRC = lighting.c
+LIGHTING_SRC := $(addprefix lighting/, $(LIGHTING_SRC))
+
+SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c
 
 SRC := $(addprefix src/, $(SRC))
 

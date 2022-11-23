@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/22 21:06:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 13:46:57 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ void		transform_ray(t_ray *ray, const t_shape *shape);
 bool		intersect(t_shape *shape, t_ray *ray, t_intersections *xs);
 t_intersect	*hit(const t_intersections *xs);
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
+t_color		lighting(t_shape *shape, t_scene *scene, t_vector *point, t_vector *eye_v, t_vector *normal_v);
 
 #endif

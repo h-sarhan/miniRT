@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 11:14:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 12:51:43 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,9 @@ struct s_shape
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
 	unsigned int	mlx_color;
+	float			diffuse;
+	float			specular;
+	float			shininess;
 };
 
 /**
