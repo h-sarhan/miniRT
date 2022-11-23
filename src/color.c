@@ -6,11 +6,21 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 11:58:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/23 12:29:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+unsigned char	clamp_color(float color)
+{
+	color *= 255;
+	if (color > 255)
+		return (255);
+	if (color < 0)
+		return (0);
+	return (color);
+}
 
 /**
  * @brief Creates a color that can be used by mlx
@@ -19,26 +29,8 @@
  */
 unsigned int	create_mlx_color(t_color *color)
 {
-	t_color	copy;
-
-	ft_memcpy(&copy, color, sizeof(t_color));
-	copy.r *= 255;
-	copy.g *= 255;
-	copy.b *= 255;
-	if (copy.r > 255)
-		copy.r = 255;
-	if (copy.r < 0)
-		copy.r = 0;
-	if (copy.g > 255)
-		copy.g = 255;
-	if (copy.g < 0)
-		copy.g = 0;
-	if (copy.b > 255)
-		copy.b = 255;
-	if (copy.b < 0)
-		copy.b = 0;
-	return ((int)copy.a << 24 | (int)copy.r << 16 |
-			(int)copy.g << 8 | (int)copy.b);
+	return (clamp_color(color->a) << 24 | clamp_color(color->r) << 16
+			| clamp_color(color->g) << 8 | clamp_color(color->b));
 }
 
 /**
