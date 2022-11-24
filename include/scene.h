@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 12:51:43 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/24 14:58:46 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ struct s_camera
 	t_vector	position;
 	t_vector	orientation;
 	int			fov;
+	float		pixel_size;
+	float		half_width;
+	float		half_height;
+	t_mat4		transform;
+	
 };
 
 /**

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:38:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 20:30:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/24 14:52:01 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec);
 void	transpose_matrix(t_mat4 *mat);
+void	translate_matrix(t_mat4 *mat, float x, float y, float z);
+void	scaling_matrix(t_mat4 *mat, float x, float y, float z);
 
 // matrix_inverse.c
 float	det3(const t_mat3 *mat3);
