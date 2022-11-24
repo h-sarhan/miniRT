@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 18:34:00 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/24 12:18:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,14 @@ void draw_scene(t_scene *scene)
 	arr.count = 0;
 	int pixel = 0;
 	TICK(render);
-	ft_bzero(mlx->addr, scene->win_h * scene->win_w * scene->mlx->bytes_per_pixel);
+	// ft_bzero(mlx->addr, scene->win_h * scene->win_w * scene->mlx->bytes_per_pixel);
 	while (y < scene->win_h)
 	{
 		world_y = half - (pixel_size * y);
 		x = 0;
 		while (x < scene->win_h)
 		{
+			*(unsigned int *)(mlx->addr + pixel) = 0;
 			world_x = (half * -1) + (pixel_size * x);
 			position.x = world_x;
 			position.y = world_y;
