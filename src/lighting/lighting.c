@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/23 18:31:02 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/26 14:56:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
 	dot_res = dot_product(in_vector, normal);
 	scale_vec(res, normal, dot_res * 2);
 	sub_vec(res, in_vector, res);
-	res->w = 0;
+	// res->w = 0;
 }
 
 t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
@@ -41,9 +41,11 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	blend_colors(&effective_color, &intersection->shape->color, &scene->lights[light_idx].color);
 	// light_v calculation
 	sub_vec(&light_v, &scene->lights[light_idx].position, &intersection->point);
+	light_v.w = 0;
 	normalize_vec(&light_v);
 	// ambient calculation
 	mult_color(&ambient, &effective_color, scene->ambient.intensity);
+	intersection->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &intersection->normal);
 	if (light_dot_normal < 0)
 	{
@@ -57,6 +59,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 		light_v.x = -light_v.x;
 		light_v.y = -light_v.y;
 		light_v.z = -light_v.z;
+		light_v.w = -light_v.w;
 		reflect(&reflect_v, &light_v, &intersection->normal);
 		reflect_dot_eye = dot_product(&reflect_v, &intersection->eye);
 		if (reflect_dot_eye <= 0)

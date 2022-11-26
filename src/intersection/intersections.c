@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/23 16:01:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 15:23:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	ray_position(t_vector *pos, const t_ray *ray, float time)
 	pos->w = 1;
 }
 
-void	transform_ray(t_ray *ray, const t_shape *shape)
+void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shape)
 {
-	mat_vec_multiply(&ray->origin, &shape->inv_transf, &ray->origin);
-	mat_vec_multiply(&ray->direction, &shape->inv_transf, &ray->direction);
+	mat_vec_multiply(&transformed_ray->origin, &shape->inv_transf, &ray->origin);
+	mat_vec_multiply(&transformed_ray->direction, &shape->inv_transf, &ray->direction);
 }
 
-bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
+bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
 	float		a;
 	float		b;
@@ -33,15 +33,17 @@ bool	intersect(t_shape *shape, t_ray *ray, t_intersections *xs)
 	float		discriminant;
 	t_vector	sphere_to_ray;
 	t_vector	center;
+	t_ray		transf_ray;
 
 	center.x = 0;
 	center.y = 0;
 	center.z = 0;
 	center.w = 1;
-	transform_ray(ray, shape);
-	sub_vec(&sphere_to_ray, &ray->origin, &center);
-	a = dot_product(&ray->direction, &ray->direction);
-	b = 2 * dot_product(&ray->direction, &sphere_to_ray);
+	transform_ray(&transf_ray, ray, shape);
+	// normalize_vec(&ray->direction);
+	sub_vec(&sphere_to_ray, &transf_ray.origin, &center);
+	a = dot_product(&transf_ray.direction, &transf_ray.direction);
+	b = 2 * dot_product(&transf_ray.direction, &sphere_to_ray);
 	c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
 	discriminant = (b * b) - (4 * a * c);
 	if (discriminant < 0)
@@ -96,7 +98,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 	origin.z = 0;
 	origin.w = 1;
 	sub_vec(&object_normal, &object_point, &origin);
-	object_normal.w = 0;
+	// object_normal.w = 0;
 	
 	// World normal calculation
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);

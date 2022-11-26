@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/24 12:18:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 15:50:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 {
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
-	intersection->normal.w = 0;
-	normalize_vec(&ray->direction);
+	// intersection->normal.w = 0;
+	// normalize_vec(&ray->direction);
 	negate_vec(&intersection->eye, &ray->direction);
 	intersection->eye.w = 0;
 	if (dot_product(&intersection->normal, &intersection->eye) < 0)
@@ -84,16 +84,17 @@ void draw_scene(t_scene *scene)
 		{
 			*(unsigned int *)(mlx->addr + pixel) = 0;
 			world_x = (half * -1) + (pixel_size * x);
-			position.x = world_x;
-			position.y = world_y;
-			position.z = wall_z;
-			position.w = 1;
-			ray.origin = ray_origin;
-			sub_vec(&ray.direction, &position, &ray_origin);
 			i = 0;
 			while (i < scene->count.shape_count)
 			{
+				position.x = world_x;
+				position.y = world_y;
+				position.z = wall_z;
+				position.w = 1;
+				ray.origin = ray_origin;
+				sub_vec(&ray.direction, &position, &ray.origin);
 				ray.direction.w = 0;
+				normalize_vec(&ray.direction);
 				arr.count = 0;
 				intersect(&scene->shapes[i], &ray, &arr);
 				t_intersect *intersection  = hit(&arr);
