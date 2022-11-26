@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 15:24:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:43:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ struct s_intersect
 typedef struct s_intersections	t_intersections;
 struct s_intersections
 {
-	t_intersect	*arr;
+	t_intersect	arr[100];
 	int			count;
 };
 // draw_scene.c
@@ -86,7 +86,7 @@ void		draw_scene(t_scene *scene);
 void		ray_position(t_vector *pos, const t_ray *ray, float time);
 void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shape);
 bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
-t_intersect	*hit(const t_intersections *xs);
+t_intersect	*hit(t_intersections *xs);
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
 t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 15:50:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:45:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,21 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
  */
 void draw_scene(t_scene *scene)
 {
-	float	wall_z;
-	float	wall_size;
-	float	pixel_size;
-	float	half;
-	float	world_y;
-	float	world_x;
-	t_intersections arr;
-	t_intersect intersect_arr[100];
-	t_vector position;
-	t_vector ray_origin;
-	t_ray	ray;
-	int		x;
-	int		y;
-	t_mlx	*mlx;
-	t_color	color;
-	unsigned int		i;
+	float			wall_z;
+	float			wall_size;
+	float			pixel_size;
+	float			half;
+	float			world_y;
+	float			world_x;
+	t_intersections	arr;
+	t_vector		position;
+	t_vector		ray_origin;
+	t_ray			ray;
+	int				x;
+	int				y;
+	t_mlx			*mlx;
+	t_color			color;
+	unsigned int	i;
 	
 	mlx = scene->mlx;
 	x = 0;
@@ -71,7 +70,6 @@ void draw_scene(t_scene *scene)
 	ray_origin.w = 1;
 	pixel_size = wall_size / (float)scene->win_h;
 	half = wall_size / 2;
-	arr.arr = intersect_arr;
 	arr.count = 0;
 	int pixel = 0;
 	TICK(render);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 15:23:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:43:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	return (true);
 }
 
-t_intersect	*hit(const t_intersections *xs)
+t_intersect	*hit(t_intersections *xs)
 {
 	float	min_time;
 	int		i;

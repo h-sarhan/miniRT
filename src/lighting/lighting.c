@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 14:56:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:36:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	light_v.w = 0;
 	normalize_vec(&light_v);
 	// ambient calculation
-	mult_color(&ambient, &effective_color, scene->ambient.intensity);
+	mult_color(&ambient, &effective_color, scene->ambient.intensity * scene->lights[light_idx].intensity);
 	intersection->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &intersection->normal);
 	if (light_dot_normal < 0)
@@ -55,7 +55,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	else
 	{
 		// Greater the angle lesser the diffuse. 
-		mult_color(&diffuse, &effective_color, intersection->shape->diffuse * light_dot_normal);
+		mult_color(&diffuse, &effective_color, intersection->shape->diffuse * light_dot_normal * scene->lights[light_idx].intensity);
 		light_v.x = -light_v.x;
 		light_v.y = -light_v.y;
 		light_v.z = -light_v.z;
@@ -65,7 +65,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 		if (reflect_dot_eye <= 0)
 			ft_bzero(&specular, sizeof(t_color));
 		else
-			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * powf(reflect_dot_eye, intersection->shape->shininess));
+			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * powf(reflect_dot_eye, intersection->shape->shininess) * scene->lights[light_idx].intensity);
 	}
 	add_colors(&result, &ambient, &diffuse);
 	add_colors(&result, &result, &specular);

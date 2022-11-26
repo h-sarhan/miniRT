@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 15:32:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 16:28:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int	main(int argc, char **argv)
 	calculate_transforms(scene);
 
 	print_scene(scene);
-	scene->win_w = 1000;
-	scene->win_h = 1000;
+	scene->win_w = 700;
+	scene->win_h = 700;
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
 	mlx.img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
