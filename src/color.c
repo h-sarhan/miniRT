@@ -6,13 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 14:52:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 17:08:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-// ! There has to be a more efficient way to calculate color
 unsigned int	clamp_color(float color)
 {
 	color *= 255;
@@ -23,7 +22,6 @@ unsigned int	clamp_color(float color)
 	return (color);
 }
 
-// ! There has to be a more efficient way to calculate color
 /**
  * @brief Creates a color that can be used by mlx
  * @param color Color struct
@@ -35,7 +33,6 @@ unsigned int	create_mlx_color(t_color *color)
 			| clamp_color(color->g) << 8 | clamp_color(color->b));
 }
 
-// ! There has to be a more efficient way to calculate color
 /**
  * @brief Adds two colors together
  * @param res The result of the operation will be stored in res

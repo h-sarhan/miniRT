@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/24 15:04:39 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/26 19:50:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	view_transform(t_mat4 *res, t_vector *up, t_vector *to, t_vector *from)
+void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *to, const t_vector *up)
 {
 	t_vector forward;
 	t_vector left;
@@ -23,11 +23,11 @@ void	view_transform(t_mat4 *res, t_vector *up, t_vector *to, t_vector *from)
 	
 	sub_vec(&forward, to, from);
 	normalize_vec(&forward);
-	ft_memcpy(&upn, &up, sizeof(t_vector));
+	ft_memcpy(&upn, up, sizeof(t_vector));
 	normalize_vec(&upn);
 	cross_product(&left, &forward, &upn);
 	cross_product(&true_up, &left, &forward);
-	ft_bzero(&orientation, sizeof(mat_4));
+	ft_bzero(&orientation, sizeof(t_mat4));
 	orientation[0][0] = left.x;
 	orientation[0][1] = left.y;
 	orientation[0][2] = left.z;
@@ -48,8 +48,8 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	float	aspect;
 	
 
-	half_view = tanf(camera->fov / 2);
-	aspect = scene->win_w / scene->win_h;
+	half_view = tanf((camera->fov / 2.0f) * M_PI / 180.0f);
+	aspect = scene->win_w / (float) scene->win_h;
 	if (aspect >= 1)
 	{
 		camera->half_width = half_view;
@@ -60,7 +60,39 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_width = half_view * aspect;
 		camera->half_height = half_view;
 	}
-	camera->pixel_size = (camera->half_width * 2) / scene->win_w;
+	camera->pixel_size = (camera->half_width * 2) / (float)scene->win_w;
 }
 
 
+void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
+{
+	float		x_offset;
+	float		y_offset;
+	float		world_x;
+	float		world_y;
+	t_vector	pixel;
+	t_vector	world_point;
+	t_vector	center;
+
+	x_offset = (x + 0.5) * cam->pixel_size;
+	y_offset = (y + 0.5) * cam->pixel_size;
+	world_x = cam->half_width - x_offset;
+	world_y = cam->half_height - y_offset;
+	world_point.x = world_x;
+	world_point.y = world_y;
+	world_point.z = -1;
+	world_point.w = 1;
+	mat_vec_multiply(&pixel, &cam->inv_trans, &world_point);
+	ft_bzero(&center, sizeof(t_vector));
+	center.w = 1;
+	mat_vec_multiply(&ray->origin, &cam->inv_trans, &center);
+	sub_vec(&ray->direction, &pixel, &ray->origin);
+	ray->direction.w = 0;
+	normalize_vec(&ray->direction);
+}
+
+// 	pixel ← inverse(camera.transform) * point(world_x, world_y, -1)
+// 	origin ← inverse(camera.transform) * point(0, 0, 0)
+// 	direction ← normalize(pixel - origin)
+// 	return ray(origin, direction)
+// end function

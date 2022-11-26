@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 16:43:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 17:24:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct s_ray
 	t_vector	origin;
 	t_vector	direction;
 };
+void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
 
 /**
  * @brief Struct containing information relevant for mlx and the window

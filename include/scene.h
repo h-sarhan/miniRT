@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/24 14:58:46 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/26 17:41:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ struct s_camera
 	float		half_width;
 	float		half_height;
 	t_mat4		transform;
-	
+	t_mat4		inv_trans;
 };
+void	camera_init(t_camera *camera, t_scene *scene);
+void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *to, const t_vector *up);
 
 /**
  * @brief Type of shape

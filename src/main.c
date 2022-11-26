@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 16:28:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/26 19:52:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ static int	open_file(int argc, char **argv)
 	return (fd);
 }
 
+
+
+
 int	main(int argc, char **argv)
 {
 	t_scene	*scene;
@@ -59,11 +62,13 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
+	scene->win_w = 640;
+	scene->win_h = 480;
+	camera_init(&scene->camera, scene);
+	
 	calculate_transforms(scene);
 
-	print_scene(scene);
-	scene->win_w = 700;
-	scene->win_h = 700;
+	// print_scene(scene);
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
 	mlx.img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
@@ -71,7 +76,8 @@ int	main(int argc, char **argv)
 								&mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
-	mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_shape, scene);
+	// mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_shape, scene);
+	mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_room, scene);
 
 	draw_scene(scene);
 	// run_lighting_tests(scene);
