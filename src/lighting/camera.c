@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 15:44:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	
 
 	half_view = tanf((camera->fov / 2.0f) * M_PI / 180.0f);
-	aspect = scene->win_w / (double) scene->win_h;
+	aspect = scene->render_w / (double) scene->render_h;
 	if (aspect >= 1)
 	{
 		camera->half_width = half_view;
@@ -60,7 +60,7 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_width = half_view * aspect;
 		camera->half_height = half_view;
 	}
-	camera->pixel_size = (camera->half_width * 2) / (double)scene->win_w;
+	camera->pixel_size = (camera->half_width * 2) / (double)scene->render_w;
 }
 
 

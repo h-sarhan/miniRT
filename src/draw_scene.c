@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 14:14:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 16:14:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 		intersection->inside = false;
 }
 
+int	min(int a, int b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
 /**
  * @brief Draws a scene
  * @param scene A struct describing the current scene
@@ -57,10 +64,10 @@ void draw_scene(t_scene *scene)
 	arr.count = 0;
 	int pixel = 0;
 	TICK(render);
-	while (y < scene->win_h)
+	while (y < scene->render_h)
 	{
 		x = 0;
-		while (x < scene->win_w)
+		while (x < scene->render_w)
 		{
 			*(unsigned int *)(mlx->addr + pixel) = 0;
 			ray_for_pixel(&ray, &scene->camera, x, y);
@@ -92,5 +99,41 @@ void draw_scene(t_scene *scene)
 		y++;
 	}
 	TOCK(render);
-	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->img, 0, 0);
+	// def nearestNeighborScaling( source, newWid, newHt ):
+    // target = makeEmptyPicture(newWid, newHt)
+    // width = getWidth( source )
+    // height = getHeight( source )
+    // for x in range(0, newWid):  
+    //   for y in range(0, newHt):
+    //     srcX = int( round( float(x) / float(newWid) * float(width) ) )
+    //     srcY = int( round( float(y) / float(newHt) * float(height) ) )
+    //     srcX = min( srcX, width-1)
+    //     srcY = min( srcY, height-1)
+    //     tarPix = getPixel(target, x, y )
+    //     srcColor = getColor( getPixel(source, srcX, srcY) )
+    //     setColor( tarPix, srcColor)
+	y = 0;
+	pixel = 0;
+	TICK(scale);
+	while (y < scene->win_h)
+	{
+		x = 0;
+		while (x < scene->win_w)
+		{
+			int src_x = roundf(((float)x / (float)scene->win_w) * scene->render_w);
+			int src_y = roundf(((float)y / (float)scene->win_h) * scene->render_h);
+			src_x = min(src_x, scene->render_w - 1);
+			src_y = min(src_y, scene->render_h - 1);
+			// printf("%d %d\n", src_x, src_y);
+			*(unsigned int *)(mlx->display_addr + pixel) = *(unsigned int *)(mlx->addr + (src_y * mlx->line_length + src_x * (mlx->bytes_per_pixel)));
+			pixel += mlx->bytes_per_pixel;
+			x++;
+		}
+		y++;
+	}
+	TOCK(scale);
+    // return target
+
+
+	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 }
