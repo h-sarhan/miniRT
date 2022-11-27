@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 19:44:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:38:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	normalize_vec(&light_v);
 	// ambient calculation
 	mult_color(&ambient, &effective_color, scene->ambient.intensity * scene->lights[light_idx].intensity);
+	blend_colors(&ambient, &ambient, &scene->ambient.color);
 	intersection->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &intersection->normal);
 	if (light_dot_normal < 0)

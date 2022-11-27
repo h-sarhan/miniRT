@@ -6,27 +6,27 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 19:50:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:46:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *to, const t_vector *up)
+void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up, const t_vector *forward)
 {
-	t_vector forward;
+	// t_vector forward;
 	t_vector left;
 	t_vector true_up;
 	t_vector upn;
 	t_mat4	orientation;
 	t_mat4	translation;
 	
-	sub_vec(&forward, to, from);
-	normalize_vec(&forward);
+	// sub_vec(&forward, to, from);
+	// normalize_vec(&forward);
 	ft_memcpy(&upn, up, sizeof(t_vector));
 	normalize_vec(&upn);
-	cross_product(&left, &forward, &upn);
-	cross_product(&true_up, &left, &forward);
+	cross_product(&left, forward, &upn);
+	cross_product(&true_up, &left, forward);
 	ft_bzero(&orientation, sizeof(t_mat4));
 	orientation[0][0] = left.x;
 	orientation[0][1] = left.y;
@@ -34,9 +34,9 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *to, const
 	orientation[1][0] = true_up.x;
 	orientation[1][1] = true_up.y;
 	orientation[1][2] = true_up.z;
-	orientation[2][0] = forward.x * -1;
-	orientation[2][1] = forward.y * -1;
-	orientation[2][2] = forward.z * -1;
+	orientation[2][0] = forward->x * -1;
+	orientation[2][1] = forward->y * -1;
+	orientation[2][2] = forward->z * -1;
 	orientation[3][3] = 1;
 	translate_matrix(&translation, from->x * -1, from->y * -1, from->z * -1);
 	mat_multiply(res, &orientation, &translation);

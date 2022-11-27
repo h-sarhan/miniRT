@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 19:36:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:46:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,25 +185,25 @@ void	calculate_transforms(t_scene *scene)
 	unsigned int	i;
 	t_mat4			transform;
 	t_vector		from;
-	t_vector		to;
+	// t_vector		to;
 	t_vector		up;
 
 	from.x = scene->camera.position.x;
 	from.y = scene->camera.position.y;
 	from.z = scene->camera.position.z;
 	from.w = 1;
-
-	to.x = 0;
-	to.y = 1;
-	to.z = 0;
-	to.w = 1;
+	normalize_vec(&scene->camera.orientation);
+	// to.x = scene->camera.orientation.x;
+	// to.y = scene->camera.orientation.y;
+	// to.z = scene->camera.orientation.z;
+	// to.w = 1;
 
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
 
-	view_transform(&scene->camera.transform, &from, &to, &up);
+	view_transform(&scene->camera.transform, &from, &up, &scene->camera.orientation);
 	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
 	i = 0;
 	while (i < scene->count.shape_count)
