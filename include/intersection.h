@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 17:24:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ struct	s_mlx
 typedef struct s_intersect		t_intersect;
 struct s_intersect
 {	
-	float	time;
+	double	time;
 	t_shape	*shape;
 	t_vector point;
 	t_vector normal;
@@ -84,7 +84,7 @@ void		my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
 void		draw_scene(t_scene *scene);
 
 // intersections.c
-void		ray_position(t_vector *pos, const t_ray *ray, float time);
+void		ray_position(t_vector *pos, const t_ray *ray, double time);
 void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shape);
 bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
 t_intersect	*hit(t_intersections *xs);

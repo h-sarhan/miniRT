@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 11:54:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 void	parse_color(t_color *color, const char *str, bool *success)
 {
 	char	**rgb;
-	float	res[3];
+	double	res[3];
 	bool	parse_success;
 	size_t	i;
 
@@ -114,7 +114,7 @@ void	parse_color(t_color *color, const char *str, bool *success)
  */
 void	parse_coordinates(t_vector *position, const char *str, bool *success)
 {
-	float	res[3];
+	double	res[3];
 	char	**coords;
 	bool	parse_success;
 	size_t	i;
@@ -149,7 +149,7 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
  */
 void	parse_orientation(t_vector *orientation, const char *str, bool *success)
 {
-	float	res[3];
+	double	res[3];
 	char	**coords;
 	size_t	i;
 	bool	parse_success;

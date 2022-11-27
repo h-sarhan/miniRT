@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 13:45:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ enum e_light_type
 typedef struct s_color		t_color;
 struct s_color
 {
-	float	r;
-	float	g;
-	float	b;
-	float	a;
+	double	r;
+	double	g;
+	double	b;
+	double	a;
 };
 
 // color.c
 unsigned int	create_mlx_color(t_color *color);
 void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
 void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
-void			mult_color(t_color *res, const t_color *color, float val);
+void			mult_color(t_color *res, const t_color *color, double val);
 void			blend_colors(t_color *res, const t_color *c1, const t_color *c2);
 
 /**
@@ -61,7 +61,7 @@ struct s_light
 {
 	t_light_type	type;
 	t_vector		position;
-	float			intensity;
+	double			intensity;
 	t_color			color;
 };
 
@@ -73,7 +73,7 @@ struct s_light
 typedef struct s_ambient	t_ambient;
 struct s_ambient
 {
-	float	intensity;
+	double	intensity;
 	t_color	color;
 };
 
@@ -90,9 +90,9 @@ struct s_camera
 	t_vector	position;
 	t_vector	orientation;
 	int			fov;
-	float		pixel_size;
-	float		half_width;
-	float		half_height;
+	double		pixel_size;
+	double		half_width;
+	double		half_height;
 	t_mat4		transform;
 	t_mat4		inv_trans;
 };
@@ -129,8 +129,8 @@ typedef struct s_shape		t_shape;
 struct s_shape
 {
 	t_shape_type	type;
-	float			radius;
-	float			height;
+	double			radius;
+	double			height;
 	t_vector		origin;
 	t_vector		orientation;
 	t_color			color;
@@ -138,9 +138,9 @@ struct s_shape
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
 	unsigned int	mlx_color;
-	float			diffuse;
-	float			specular;
-	float			shininess;
+	double			diffuse;
+	double			specular;
+	double			shininess;
 };
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 19:51:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
  */
 // void draw_scene(t_scene *scene)
 // {
-// 	float			wall_z;
-// 	float			wall_size;
-// 	float			pixel_size;
-// 	float			half;
-// 	float			world_y;
-// 	float			world_x;
+// 	double			wall_z;
+// 	double			wall_size;
+// 	double			pixel_size;
+// 	double			half;
+// 	double			world_y;
+// 	double			world_x;
 // 	t_intersections	arr;
 // 	t_vector		position;
 // 	t_vector		ray_origin;
@@ -68,7 +68,7 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 // 	ray_origin.y = 0;
 // 	ray_origin.z = -5;
 // 	ray_origin.w = 1;
-// 	pixel_size = wall_size / (float)scene->win_h;
+// 	pixel_size = wall_size / (double)scene->win_h;
 // 	half = wall_size / 2;
 // 	arr.count = 0;
 // 	int pixel = 0;

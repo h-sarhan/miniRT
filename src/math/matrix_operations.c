@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
  */
 void	identity_matrix(t_mat4 *mat)
 {
-	ft_bzero(mat, 16 * sizeof(float));
+	ft_bzero(mat, 16 * sizeof(double));
 	(*mat)[0][0] = 1;
 	(*mat)[1][1] = 1;
 	(*mat)[2][2] = 1;
@@ -83,7 +83,7 @@ void	identity_matrix(t_mat4 *mat)
  */
 void	transpose_matrix(t_mat4 *mat)
 {
-	float			temp;
+	double			temp;
 	unsigned char	row;
 	unsigned char	col;
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:38:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
 {
-	float	dot_res;
+	double	dot_res;
 	
 	dot_res = dot_product(in_vector, normal);
 	scale_vec(res, normal, dot_res * 2);
@@ -32,8 +32,8 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	t_color		ambient;
 	t_color		diffuse;
 	t_color		specular;
-	float		light_dot_normal;
-	float		reflect_dot_eye;
+	double		light_dot_normal;
+	double		reflect_dot_eye;
 	t_vector	reflect_v;
 	t_color		result;
 	

@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/26 16:43:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ray_position(t_vector *pos, const t_ray *ray, float time)
+void	ray_position(t_vector *pos, const t_ray *ray, double time)
 {
 	scale_vec(pos, &ray->direction, time);
 	add_vec(pos, pos, &ray->origin);
@@ -27,10 +27,10 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shap
 
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
-	float		a;
-	float		b;
-	float		c;
-	float		discriminant;
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
 	t_vector	sphere_to_ray;
 	t_vector	center;
 	t_ray		transf_ray;
@@ -61,7 +61,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 
 t_intersect	*hit(t_intersections *xs)
 {
-	float	min_time;
+	double	min_time;
 	int		i;
 	int		idx;
 

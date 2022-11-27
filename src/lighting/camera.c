@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:46:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up, const
 
 void	camera_init(t_camera *camera, t_scene *scene)
 {
-	float	half_view;
-	float	aspect;
+	double	half_view;
+	double	aspect;
 	
 
 	half_view = tanf((camera->fov / 2.0f) * M_PI / 180.0f);
-	aspect = scene->win_w / (float) scene->win_h;
+	aspect = scene->win_w / (double) scene->win_h;
 	if (aspect >= 1)
 	{
 		camera->half_width = half_view;
@@ -60,16 +60,16 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_width = half_view * aspect;
 		camera->half_height = half_view;
 	}
-	camera->pixel_size = (camera->half_width * 2) / (float)scene->win_w;
+	camera->pixel_size = (camera->half_width * 2) / (double)scene->win_w;
 }
 
 
 void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
 {
-	float		x_offset;
-	float		y_offset;
-	float		world_x;
-	float		world_y;
+	double		x_offset;
+	double		y_offset;
+	double		world_x;
+	double		world_y;
 	t_vector	pixel;
 	t_vector	world_point;
 	t_vector	center;
