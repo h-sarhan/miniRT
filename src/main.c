@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 19:52:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 14:20:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ static int	open_file(int argc, char **argv)
 	return (fd);
 }
 
-
-
-
 int	main(int argc, char **argv)
 {
 	t_scene	*scene;
@@ -65,7 +62,7 @@ int	main(int argc, char **argv)
 	scene->win_w = 640;
 	scene->win_h = 480;
 	camera_init(&scene->camera, scene);
-	
+
 	calculate_transforms(scene);
 
 	// print_scene(scene);
@@ -80,7 +77,7 @@ int	main(int argc, char **argv)
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_room, scene);
 
 	draw_scene(scene);
-	// run_lighting_tests(scene);
+
 	// ! Put this somewhere
 	// free_scene(scene);
 	mlx_loop(mlx.mlx);

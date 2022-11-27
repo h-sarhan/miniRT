@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 14:11:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,13 @@
 
 void	ray_position(t_vector *pos, const t_ray *ray, double time)
 {
-	scale_vec(pos, &ray->direction, time);
-	add_vec(pos, pos, &ray->origin);
+	// scale_vec(pos, &ray->direction, time);
+	// add_vec(pos, pos, &ray->origin);
+	
+	// ? More optimized version maybe
+	pos->x = ray->direction.x * time + ray->origin.x;
+	pos->y = ray->direction.y * time + ray->origin.y;
+	pos->z = ray->direction.z * time + ray->origin.z;
 	pos->w = 1;
 }
 
@@ -40,7 +45,6 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	center.z = 0;
 	center.w = 1;
 	transform_ray(&transf_ray, ray, shape);
-	// normalize_vec(&ray->direction);
 	sub_vec(&sphere_to_ray, &transf_ray.origin, &center);
 	a = dot_product(&transf_ray.direction, &transf_ray.direction);
 	b = 2 * dot_product(&transf_ray.direction, &sphere_to_ray);
@@ -83,27 +87,15 @@ t_intersect	*hit(t_intersections *xs)
 
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 {
-	t_vector	origin;
 	t_vector	object_point;
-	t_vector	object_normal;
 	t_vector	world_normal;
 	
-	// Object point calculation
 	mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
-	// print_vector(&object_point);
-	
-	// Object normal calculation
-	origin.x = 0;
-	origin.y = 0;
-	origin.z = 0;
-	origin.w = 1;
-	sub_vec(&object_normal, &object_point, &origin);
-	// object_normal.w = 0;
+	object_point.w = 0;
 	
 	// World normal calculation
-	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_point);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
-	// print_vector(&world_normal);
 	return (world_normal);
 }

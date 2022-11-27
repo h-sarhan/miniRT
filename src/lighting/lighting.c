@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 14:08:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 		else
 			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * powf(reflect_dot_eye, intersection->shape->shininess) * scene->lights[light_idx].intensity);
 	}
-	add_colors(&result, &ambient, &diffuse);
-	add_colors(&result, &result, &specular);
+	// add_colors(&result, &ambient, &diffuse);
+	// add_colors(&result, &result, &specular);
+	result.r = ambient.r + diffuse.r + specular.r;
+	result.g = ambient.g + diffuse.g + specular.g;
+	result.b = ambient.b + diffuse.b + specular.b;
 	return(result);
 }
