@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 16:21:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 18:27:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 854 * 0.6;
-	scene->render_h = 480 * 0.6;
-	scene->win_w = 2560 * 0.8;
-	scene->win_h = 1440 * 0.8;
+	scene->render_w = 854 * 1;
+	scene->render_h = 480 * 1;
+	scene->win_w = 2560 * 0.5;
+	scene->win_h = 1440 * 0.5;
 	camera_init(&scene->camera, scene);
 
 	calculate_transforms(scene);

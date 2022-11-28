@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/27 18:19:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	setup_room(t_scene *scene)
 	t_mat4	transform2;
 	t_mat4	transform_res;
 
-	scene->shapes[0].specular = 0;
+	scene->shapes[0].specular = 0.8;
 	identity_matrix(&scene->shapes[0].transf);
 
 	scaling_matrix(&transform1, 10, 0.01, 10);
@@ -138,7 +138,7 @@ void	setup_room(t_scene *scene)
 	ft_memcpy(&scene->shapes[0].norm_transf, &scene->shapes[0].inv_transf, sizeof(t_mat4));
 	transpose_matrix(&scene->shapes[0].norm_transf);
 	
-	scene->shapes[1].specular = 0;
+	scene->shapes[1].specular = 0.8;
 	identity_matrix(&scene->shapes[1].transf);
 	translate_matrix(&transform1, 0, 0, 5);
 	rotation_matrix_y(&transform2, -M_PI_4);
@@ -171,7 +171,11 @@ void	setup_room(t_scene *scene)
 	transpose_matrix(&scene->shapes[2].norm_transf);
 	
 	scene->shapes[3].diffuse = 0.7;
-	scene->shapes[3].specular = 0.3;
+	scene->shapes[3].specular = 0.6;
+	scene->shapes[4].diffuse = 0.7;
+	scene->shapes[4].specular = 0.3;
+	scene->shapes[5].diffuse = 0.7;
+	scene->shapes[5].specular = 0.3;
 }
 
 
