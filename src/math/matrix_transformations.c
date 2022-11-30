@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 18:19:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:54:36 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,5 +235,5 @@ void	calculate_transforms(t_scene *scene)
 		transpose_matrix(&scene->shapes[i].norm_transf);
 		i++;
 	}
-	setup_room(scene);
+	// setup_room(scene);
 }

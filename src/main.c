@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/29 19:25:54 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/30 16:00:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 15360 * 0.05;
-	scene->render_h = 8640 * 0.05;
+	scene->render_w = 15360 * 0.03;
+	scene->render_h = 8640 * 0.03;
 	scene->win_w = 2560 * 0.5;
 	scene->win_h = 1440 * 0.5;
 	camera_init(&scene->camera, scene);

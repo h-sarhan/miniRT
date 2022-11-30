@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 14:08:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:22:17 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	double		reflect_dot_eye;
 	t_vector	reflect_v;
 	t_color		result;
+	bool		shadow;
 	
+	shadow = is_shadowed(scene, light_idx, &intersection->over_point);
 	// effective color calculation
 	blend_colors(&effective_color, &intersection->shape->color, &scene->lights[light_idx].color);
 	// light_v calculation
-	sub_vec(&light_v, &scene->lights[light_idx].position, &intersection->point);
+	sub_vec(&light_v, &scene->lights[light_idx].position, &intersection->over_point);
 	light_v.w = 0;
 	normalize_vec(&light_v);
 	// ambient calculation
@@ -48,7 +50,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
 	intersection->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &intersection->normal);
-	if (light_dot_normal < 0)
+	if (light_dot_normal < 0 || shadow)
 	{
 		ft_bzero(&diffuse, sizeof(t_color));
 		ft_bzero(&specular, sizeof(t_color));

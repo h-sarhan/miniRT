@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 15:45:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:07:58 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ struct s_intersect
 	t_vector point;
 	t_vector normal;
 	t_vector eye;
+	t_vector over_point;
 	bool	inside;
 };
 
@@ -92,5 +93,6 @@ bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
 t_intersect	*hit(t_intersections *xs);
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
 t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
+bool	is_shadowed(t_scene *scene, int	light_idx, t_vector *intersection_point);
 
 #endif

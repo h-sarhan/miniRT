@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 16:14:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/30 15:59:34 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 	}
 	else
 		intersection->inside = false;
+	scale_vec(&intersection->over_point, &intersection->normal, 0.001);
+	add_vec(&intersection->over_point, &intersection->point, &intersection->over_point);
 }
 
 int	min(int a, int b)
