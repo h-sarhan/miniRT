@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 14:11:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/11/29 19:20:56 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,36 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shap
 	mat_vec_multiply(&transformed_ray->origin, &shape->inv_transf, &ray->origin);
 	mat_vec_multiply(&transformed_ray->direction, &shape->inv_transf, &ray->direction);
 }
+
+// bool	is_shadowed(t_scene *scene, int	light_idx, t_intersections *intersection_point)
+// {
+// 	t_vector v;
+// 	double	distance;
+// 	t_vector direction;
+// 	t_ray	ray;
+// 	t_intersections arr;
+// 	t_intersect		intersection;
+
+// 	sub_vec(&v, &scene->lights[light_idx].position, intersection_point);
+// 	distance = vec_magnitude(&v);
+// 	normalize_vec(&v);
+// 	direction.x = v.x;
+// 	direction.y = v.y;
+// 	direction.z = v.z;
+// 	direction.w = v.w;
+// 	ray.origin = intersection_point;
+// 	ray.direction = direction;
+// 	while (scene->shapes->)
+// 	{
+// 		intersect(scene->shapes, &ray, &arr);
+// 	}
+	
+// 	intersection = hit(&arr);
+// 	if (intersection && intersection.time < distance)
+// 		return(true);
+// 	else
+// 		return(false);
+// }
 
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
