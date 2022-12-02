@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 20:00:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 20:13:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,90 +56,50 @@ int	transform_shape(int key, t_scene *scene)
 int	set_key_down(int key, t_scene *scene)
 {
 	if (key == KEY_W)
-	{
 		scene->keys_held.w = true;
-	}
 	if (key == KEY_A)
-	{
 		scene->keys_held.a = true;
-	}
 	if (key == KEY_S)
-	{
 		scene->keys_held.s = true;
-	}
 	if (key == KEY_D)
-	{
 		scene->keys_held.d = true;
-	}
 	if (key == KEY_UP)
-	{
 		scene->keys_held.up = true;
-	}
 	if (key == KEY_DOWN)
-	{
 		scene->keys_held.down = true;
-	}
 	if (key == KEY_LEFT)
-	{
 		scene->keys_held.left = true;
-	}
 	if (key == KEY_RIGHT)
-	{
 		scene->keys_held.right = true;
-	}
 	if (key == KEY_Q)
-	{
 		scene->keys_held.q = true;
-	}
 	if (key == KEY_E)
-	{
 		scene->keys_held.e = true;
-	}
 	return (0);
 }
 
 int	set_key_up(int key, t_scene *scene)
 {
 	if (key == KEY_W)
-	{
 		scene->keys_held.w = false;
-	}
 	if (key == KEY_A)
-	{
 		scene->keys_held.a = false;
-	}
 	if (key == KEY_S)
-	{
 		scene->keys_held.s = false;
-	}
 	if (key == KEY_D)
-	{
 		scene->keys_held.d = false;
-	}
 	if (key == KEY_UP)
-	{
 		scene->keys_held.up = false;
-	}
 	if (key == KEY_DOWN)
-	{
 		scene->keys_held.down = false;
-	}
 	if (key == KEY_LEFT)
-	{
 		scene->keys_held.left = false;
-	}
 	if (key == KEY_RIGHT)
-	{
 		scene->keys_held.right = false;
-	}
 	if (key == KEY_Q)
-	{
 		scene->keys_held.q = false;
-	}
 	if (key == KEY_E)
-	{
 		scene->keys_held.e = false;
-	}
 	return (0);
 }
 
@@ -172,7 +132,7 @@ int	transform_camera(t_scene *scene)
 	if (scene->keys_held.up == true)
 	{
 		if (scene->camera.phi > 0.5)
-			scene->camera.phi -= 0.08;
+			scene->camera.phi -= 0.05;
 		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
 		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
 		scene->camera.orientation.y = cos(scene->camera.phi);
@@ -180,7 +140,7 @@ int	transform_camera(t_scene *scene)
 	if (scene->keys_held.down == true)
 	{
 		if (scene->camera.phi < M_PI - 0.5)
-			scene->camera.phi += 0.08;
+			scene->camera.phi += 0.05;
 		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
 		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
 		scene->camera.orientation.y = cos(scene->camera.phi);
