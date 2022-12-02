@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 19:54:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 21:28:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ struct s_scene
 	int			render_w;
 	t_mlx		*mlx;
 	t_keys		keys_held;
+	float		plane_angle;
 };
 
 #endif

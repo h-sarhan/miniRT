@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 20:13:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 21:43:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,11 @@ int	transform_camera(t_scene *scene)
 	}
 	if (scene->keys_held.q == true)
 	{
-		scene->lights[0].position.x -= 0.8;
+		scene->plane_angle -= 2;
 	}
 	if (scene->keys_held.e == true)
 	{
-		scene->lights[0].position.x += 0.8;
+		scene->plane_angle += 2;
 	}
 	if (scene->keys_held.w
 		|| scene->keys_held.a

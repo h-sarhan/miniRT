@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/30 16:51:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 21:43:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ bool	is_shadowed(t_scene *scene, int	light_idx, t_vector *intersection_point)
 	while (i < scene->count.shape_count)
 	{
 		intersect(&scene->shapes[i], &ray, &arr);
-			// break ;
 		i++;
 	}
 	intersection = hit(&arr);
@@ -70,7 +69,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	t_vector	sphere_to_ray;
 	t_vector	center;
 	t_ray		transf_ray;
-
+	(void)ray;
 	center.x = 0;
 	center.y = 0;
 	center.z = 0;
