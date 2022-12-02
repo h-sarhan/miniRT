@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/02 22:32:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 23:08:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,66 +117,66 @@ double	deg_to_rad(double r)
 }
 
 
-void	setup_room(t_scene *scene)
-{
-	t_mat4	transform1;
-	t_mat4	transform2;
-	t_mat4	transform_res;
+// void	setup_room(t_scene *scene)
+// {
+// 	t_mat4	transform1;
+// 	t_mat4	transform2;
+// 	t_mat4	transform_res;
 
-	scene->shapes[0].specular = 0.8;
-	identity_matrix(&scene->shapes[0].transf);
+// 	scene->shapes[0].specular = 0.8;
+// 	identity_matrix(&scene->shapes[0].transf);
 
-	scaling_matrix(&transform1, 10, 0.01, 10);
-	mat_multiply(&scene->shapes[0].transf, &transform1, &scene->shapes[0].transf);
+// 	scaling_matrix(&transform1, 10, 0.01, 10);
+// 	mat_multiply(&scene->shapes[0].transf, &transform1, &scene->shapes[0].transf);
 
-	// translate_matrix(&transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
+// 	// translate_matrix(&transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 
-	// sphere_trans =  translation * sphere_trans
-	// mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
+// 	// sphere_trans =  translation * sphere_trans
+// 	// mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
 
-	mat_inverse(&scene->shapes[0].inv_transf, &scene->shapes[0].transf);
-	ft_memcpy(&scene->shapes[0].norm_transf, &scene->shapes[0].inv_transf, sizeof(t_mat4));
-	transpose_matrix(&scene->shapes[0].norm_transf);
+// 	mat_inverse(&scene->shapes[0].inv_transf, &scene->shapes[0].transf);
+// 	ft_memcpy(&scene->shapes[0].norm_transf, &scene->shapes[0].inv_transf, sizeof(t_mat4));
+// 	transpose_matrix(&scene->shapes[0].norm_transf);
 	
-	scene->shapes[1].specular = 0.8;
-	identity_matrix(&scene->shapes[1].transf);
-	translate_matrix(&transform1, 0, 0, 5);
-	rotation_matrix_y(&transform2, -M_PI_4);
-	mat_multiply(&transform_res, &transform1, &transform2);
-	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
-	rotation_matrix_x(&transform2, M_PI_2);
-	mat_multiply(&transform_res, &transform1, &transform2);
-	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
-	scaling_matrix(&transform2, 10, 0.01, 10);
-	mat_multiply(&scene->shapes[1].transf, &transform1, &transform2);
+// 	scene->shapes[1].specular = 0.8;
+// 	identity_matrix(&scene->shapes[1].transf);
+// 	translate_matrix(&transform1, 0, 0, 5);
+// 	rotation_matrix_y(&transform2, -M_PI_4);
+// 	mat_multiply(&transform_res, &transform1, &transform2);
+// 	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
+// 	rotation_matrix_x(&transform2, M_PI_2);
+// 	mat_multiply(&transform_res, &transform1, &transform2);
+// 	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
+// 	scaling_matrix(&transform2, 10, 0.01, 10);
+// 	mat_multiply(&scene->shapes[1].transf, &transform1, &transform2);
 	
-	mat_inverse(&scene->shapes[1].inv_transf, &scene->shapes[1].transf);
-	ft_memcpy(&scene->shapes[1].norm_transf, &scene->shapes[1].inv_transf, sizeof(t_mat4));
-	transpose_matrix(&scene->shapes[1].norm_transf);
+// 	mat_inverse(&scene->shapes[1].inv_transf, &scene->shapes[1].transf);
+// 	ft_memcpy(&scene->shapes[1].norm_transf, &scene->shapes[1].inv_transf, sizeof(t_mat4));
+// 	transpose_matrix(&scene->shapes[1].norm_transf);
 
-	scene->shapes[2].specular = 0;
-	identity_matrix(&scene->shapes[2].transf);
-	translate_matrix(&transform1, 0, 0, 5);
-	rotation_matrix_y(&transform2, M_PI_4);
-	mat_multiply(&transform_res, &transform1, &transform2);
-	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
-	rotation_matrix_x(&transform2, M_PI_2);
-	mat_multiply(&transform_res, &transform1, &transform2);
-	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
-	scaling_matrix(&transform2, 10, 0.01, 10);
-	mat_multiply(&scene->shapes[2].transf, &transform1, &transform2);
+// 	scene->shapes[2].specular = 0;
+// 	identity_matrix(&scene->shapes[2].transf);
+// 	translate_matrix(&transform1, 0, 0, 5);
+// 	rotation_matrix_y(&transform2, M_PI_4);
+// 	mat_multiply(&transform_res, &transform1, &transform2);
+// 	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
+// 	rotation_matrix_x(&transform2, M_PI_2);
+// 	mat_multiply(&transform_res, &transform1, &transform2);
+// 	ft_memcpy(&transform1, &transform_res, sizeof(t_mat4));
+// 	scaling_matrix(&transform2, 10, 0.01, 10);
+// 	mat_multiply(&scene->shapes[2].transf, &transform1, &transform2);
 	
-	mat_inverse(&scene->shapes[2].inv_transf, &scene->shapes[2].transf);
-	ft_memcpy(&scene->shapes[2].norm_transf, &scene->shapes[2].inv_transf, sizeof(t_mat4));
-	transpose_matrix(&scene->shapes[2].norm_transf);
+// 	mat_inverse(&scene->shapes[2].inv_transf, &scene->shapes[2].transf);
+// 	ft_memcpy(&scene->shapes[2].norm_transf, &scene->shapes[2].inv_transf, sizeof(t_mat4));
+// 	transpose_matrix(&scene->shapes[2].norm_transf);
 	
-	scene->shapes[3].diffuse = 0.7;
-	scene->shapes[3].specular = 0.6;
-	scene->shapes[4].diffuse = 0.7;
-	scene->shapes[4].specular = 0.3;
-	scene->shapes[5].diffuse = 0.7;
-	scene->shapes[5].specular = 0.3;
-}
+// 	scene->shapes[3].diffuse = 0.7;
+// 	scene->shapes[3].specular = 0.6;
+// 	scene->shapes[4].diffuse = 0.7;
+// 	scene->shapes[4].specular = 0.3;
+// 	scene->shapes[5].diffuse = 0.7;
+// 	scene->shapes[5].specular = 0.3;
+// }
 
 void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, double angle)
 {
@@ -244,16 +244,19 @@ void	calculate_transforms(t_scene *scene)
 			scaling_matrix(&scale_transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
 		}
 
-		if (scene->shapes[i].type != SPHERE)
+		if (scene->shapes[i].type == PLANE)
 		{
 			// ROTATE HERE
 			t_vector ax;
-			ax.x = 0;
-			ax.y = 0;
-			ax.z = 1;
 			ax.w = 0;
-			normalize_vec(&ax);
-			axis_angle(&rot_transform, &ax, deg_to_rad(scene->plane_angle));
+
+			up.x = 0;
+			up.y = 0;
+			up.z = 1;
+			normalize_vec(&scene->shapes[i].orientation);
+			cross_product(&ax, &scene->shapes[i].orientation, &up);
+			double angle = acos(dot_product(&scene->shapes[i].orientation, &up));
+			axis_angle(&rot_transform, &ax, angle);
 		}
 		// TRANSLATE LAST
 		// sphere_trans =  translation * sphere_trans
