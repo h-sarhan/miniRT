@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/30 15:54:36 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/01 22:58:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ void	setup_room(t_scene *scene)
 	scene->shapes[5].specular = 0.3;
 }
 
-
 /**
  * @brief Calculates the transformation matrices for every object in the scene
  * The chosen transformation order is scale -> rotation -> translation
@@ -215,14 +214,29 @@ void	calculate_transforms(t_scene *scene)
 		identity_matrix(&scene->shapes[i].transf);
 
 		// SCALE FIRST
-		scaling_matrix(&transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
-		mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
-
-		if (scene->shapes[i].type != SPHERE)
+		if (scene->shapes[i].type != PLANE)
 		{
-			// ROTATE HERE
+			scaling_matrix(&transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
+			mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
 		}
 
+		// if (scene->shapes[i].type != SPHERE)
+		// {
+		// 	// ROTATE HERE
+		// 	// normalize_vec(&scene->shapes[i].orientation);
+		// 	print_vector(&scene->shapes[i].orientation);
+			
+		// 	// make_rotation_dir(&transform, &scene->shapes[i].orientation);
+			
+		// 	rotation_matrix_x(&transform, scene->shapes[i].orientation.x * M_PI);
+		// 	mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
+		// 	rotation_matrix_y(&transform, scene->shapes[i].orientation.y * M_PI);
+		// 	mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
+		// 	rotation_matrix_z(&transform, scene->shapes[i].orientation.z * M_PI);
+		// 	mat_multiply(&scene->shapes[i].transf, &transform, &scene->shapes[i].transf);
+		// }
+
+		// print_mat4(&transform);
 		// TRANSLATE LAST
 		translate_matrix(&transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/30 16:08:43 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/11/30 16:51:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,27 +129,56 @@ t_intersect	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
+// t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
+// {
+// 	t_vector	object_point;
+// 	t_vector	world_normal;
+// 	t_vector	local_point;
+	
+// 	mat_vec_multiply(&local_point, &shape->inv_transf, intersection_point);
+// 	if (shape->type == SPHERE)
+// 	{
+// 		object_point.w = 0;
+// 		// mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
+		
+// 		// World normal calculation
+// 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_point);
+// 		world_normal.w = 0;
+// 		normalize_vec(&world_normal);
+// 	}
+// 	if (shape->type == PLANE)
+// 	{
+// 		world_normal.x = 0;
+// 		world_normal.y = 1;
+// 		world_normal.z = 0;
+// 		world_normal.w = 0;
+// 	}
+// 	return (world_normal);
+// }
+
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 {
-	t_vector	object_point;
+	t_vector	object_normal;
 	t_vector	world_normal;
-	
+
 	if (shape->type == SPHERE)
 	{
-		mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
-		object_point.w = 0;
-		
-		// World normal calculation
-		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_point);
+		mat_vec_multiply(&object_normal, &shape->inv_transf, intersection_point);
+		object_normal.w = 0;
+		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
 		normalize_vec(&world_normal);
 	}
 	if (shape->type == PLANE)
 	{
-		world_normal.x = 0;
-		world_normal.y = 1;
-		world_normal.z = 0;
+		// mat_vec_multiply(&object_normal, &shape->inv_transf, intersection_point);
+		object_normal.x = 0;
+		object_normal.y = 1;
+		object_normal.z = 0;
+		object_normal.w = 0;
+		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
+		normalize_vec(&world_normal);
 	}
-	return (world_normal);
+	return world_normal;
 }
