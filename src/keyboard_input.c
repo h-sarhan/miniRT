@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 18:45:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 19:14:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,27 @@ int	transform_room(int key, t_scene *scene)
 {
 	if (key == KEY_W)
 	{
-		scene->camera.position.z += 0.35;
+		scene->camera.position.x += 0.5 *sin(scene->camera.phi)*cos(scene->camera.theta);
+		scene->camera.position.z += 0.5 *sin(scene->camera.phi)*sin(scene->camera.theta);
+		scene->camera.position.y += 0.5 *cos(scene->camera.phi);
 	}
 	if (key == KEY_A)
 	{
-		scene->camera.position.x -= 0.35;
+		scene->camera.position.x += 0.5 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
+		scene->camera.position.z += 0.5 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
+		scene->camera.position.y += 0.5 *cos(M_PI / 2);
 	}
 	if (key == KEY_S)
 	{
-		scene->camera.position.z -= 0.35;
+		scene->camera.position.x -= 0.5 *sin(scene->camera.phi)*cos(scene->camera.theta);
+		scene->camera.position.z -= 0.5 *sin(scene->camera.phi)*sin(scene->camera.theta);
+		scene->camera.position.y -= 0.5 *cos(scene->camera.phi);
 	}
 	if (key == KEY_D)
 	{
-		scene->camera.position.x += 0.35;
+		scene->camera.position.x += 0.5 *sin(M_PI / 2)*cos(scene->camera.theta - M_PI / 2);
+		scene->camera.position.z += 0.5 *sin(M_PI / 2)*sin(scene->camera.theta - M_PI / 2);
+		scene->camera.position.y += 0.5 *cos(M_PI / 2);
 	}
 	if (key == KEY_UP)
 	{
@@ -101,7 +109,6 @@ int	transform_room(int key, t_scene *scene)
 		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
 		scene->camera.orientation.y = cos(scene->camera.phi);
 	}
-	print_vector(&scene->camera.orientation);
 	if (key == KEY_Q)
 	{
 		scene->lights[0].position.x -= 0.8;
