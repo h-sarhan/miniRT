@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/26 19:36:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 19:57:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@
 # define L_KEY_C 99
 
 int	transform_shape(int key, t_scene *scene);
-int	transform_room(int key, t_scene *scene);
+int	transform_camera(t_scene *scene);
 
 #endif

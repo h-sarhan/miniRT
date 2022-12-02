@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 19:12:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 20:01:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 15360 * 0.02;
-	scene->render_h = 8640 * 0.02;
-	scene->win_w = 2560 * 0.5;
-	scene->win_h = 1440 * 0.5;
+	scene->render_w = 15360 * 0.025;
+	scene->render_h = 8640 * 0.025;
+	scene->win_w = 2560 * 0.6;
+	scene->win_h = 1440 * 0.6;
 	camera_init(&scene->camera, scene);
 
 	calculate_transforms(scene);
@@ -79,8 +79,9 @@ int	main(int argc, char **argv)
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
 	// mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_shape, scene);
-	mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_room, scene);
-
+	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
+	mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
+	mlx_loop_hook(mlx.mlx, transform_camera, scene);
 	draw_scene(scene);
 
 	// ! Put this somewhere

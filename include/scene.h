@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 18:24:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 19:54:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,24 @@ struct	s_el_count
 
 typedef struct s_mlx		t_mlx;
 
+
+typedef struct s_keys		t_keys;
+struct s_keys
+{
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
+	bool	up;
+	bool	down;
+	bool	left;
+	bool	right;
+	bool	q;
+	bool	e;
+};
+int	set_key_down(int key, t_scene *scene);
+int	set_key_up(int key, t_scene *scene);
+
 /**
  * @brief A description of a 3D scene
  * @param ambient Ambient lighting information
@@ -183,6 +201,7 @@ struct s_scene
 	int			render_h;
 	int			render_w;
 	t_mlx		*mlx;
+	t_keys		keys_held;
 };
 
 #endif
