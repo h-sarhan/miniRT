@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 13:54:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 18:45:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,32 +73,41 @@ int	transform_room(int key, t_scene *scene)
 	}
 	if (key == KEY_UP)
 	{
-		scene->camera.orientation.y += 0.05;
-		// scene->lights[0].position.y += 0.8;
+		if (scene->camera.phi > 0.5)
+			scene->camera.phi -= 0.15;
+		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
+		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
+		scene->camera.orientation.y = cos(scene->camera.phi);
 	}
 	if (key == KEY_DOWN)
 	{
-		scene->camera.orientation.y -= 0.05;
-		// scene->lights[0].position.y -= 0.8;
+		if (scene->camera.phi < M_PI - 0.5)
+			scene->camera.phi += 0.15;
+		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
+		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
+		scene->camera.orientation.y = cos(scene->camera.phi);
 	}
 	if (key == KEY_LEFT)
 	{
-		scene->camera.orientation.x -= 0.05;
-		// scene->lights[0].position.x -= 0.8;
+		scene->camera.theta += 0.15;
+		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
+		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
+		scene->camera.orientation.y = cos(scene->camera.phi);
 	}
 	if (key == KEY_RIGHT)
 	{
-		scene->camera.orientation.x += 0.05;
-		// scene->lights[0].position.x += 0.8;
+		scene->camera.theta -= 0.15;
+		scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
+		scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
+		scene->camera.orientation.y = cos(scene->camera.phi);
 	}
+	print_vector(&scene->camera.orientation);
 	if (key == KEY_Q)
 	{
-		// scene->camera.position.x += 0.35;
 		scene->lights[0].position.x -= 0.8;
 	}
 	if (key == KEY_E)
 	{
-		// scene->camera.position.x -= 0.35;
 		scene->lights[0].position.x += 0.8;
 	}
 	if (key == KEY_A || key == KEY_S || key == KEY_D || key == KEY_PLUS

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/27 15:44:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/02 18:43:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_height = half_view;
 	}
 	camera->pixel_size = (camera->half_width * 2) / (double)scene->render_w;
+	camera->theta = atan(camera->orientation.z / camera->orientation.x);
+	camera->phi = acos(camera->orientation.y);
 }
 
 
