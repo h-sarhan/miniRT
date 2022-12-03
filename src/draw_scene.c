@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/30 15:59:34 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/03 12:34:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,76 +44,121 @@ int	min(int a, int b)
 	return (b);
 }
 
-/**
- * @brief Draws a scene
- * @param scene A struct describing the current scene
- */
-void draw_scene(t_scene *scene)
+
+void	init_workers(t_worker *workers, t_scene *scene)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		workers[i].max_workers = NUM_THREADS;
+		workers[i].worker_id = i;
+		workers[i].scene = scene;
+		workers[i].y_start = (scene->render_h / (float)NUM_THREADS) * i;
+		workers[i].y_end = (scene->render_h / (float)NUM_THREADS) * (i + 1);
+		i++;
+	}
+}
+
+void	*render_scene(void *worker_ptr)
 {
 	t_intersections	arr;
-	t_ray			ray;
-	int				x;
-	int				y;
-	t_mlx			*mlx;
-	t_color			color;
-	unsigned int	shape_idx;
-	t_intersect		*intersection;
+	t_worker	*worker;
+	int			x;
+	int			y;
 	t_color			light_color;
+	t_color			color;
+	t_intersect		*intersection;
+	int pixel;
+	unsigned int	shape_idx;
+	t_ray			ray;
 
-	mlx = scene->mlx;
 	x = 0;
-	y = 0;
+	worker = worker_ptr;
+	y = worker->y_start;
 	arr.count = 0;
-	int pixel = 0;
-	TICK(render);
-	while (y < scene->render_h)
+	pixel = worker->scene->mlx->bytes_per_pixel * y * worker->scene->render_w;
+	while (y < worker->y_end)
 	{
 		x = 0;
-		while (x < scene->render_w)
+		while (x < worker->scene->render_w)
 		{
-			*(unsigned int *)(mlx->addr + pixel) = 0;
-			ray_for_pixel(&ray, &scene->camera, x, y);
+			*(unsigned int *)(worker->scene->mlx->addr + pixel) = 0;
+			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = 0;
 			arr.count = 0;
-			while (shape_idx < scene->count.shape_count)
+			while (shape_idx < worker->scene->count.shape_count)
 			{
-				intersect(&scene->shapes[shape_idx], &ray, &arr);
+				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 				intersection  = hit(&arr);
 				if (intersection != NULL)
 				{
 					prepare_computations(intersection, &ray);
 					ft_bzero(&color, sizeof(t_color));
 					unsigned int light_idx = 0;
-					while (light_idx < scene->count.light_count)
+					while (light_idx < worker->scene->count.light_count)
 					{
-						light_color = lighting(intersection, scene, light_idx);
+						light_color = lighting(intersection, worker->scene, light_idx);
 						add_colors(&color, &color, &light_color);
 						light_idx++;
 					}
 					intersection->shape->mlx_color = create_mlx_color(&color);
-					*(unsigned int *)(mlx->addr + pixel) = intersection->shape->mlx_color;
+					*(unsigned int *)(worker->scene->mlx->addr + pixel) = intersection->shape->mlx_color;
 				}
 				shape_idx++;
 			}
-			pixel += mlx->bytes_per_pixel;
+			pixel += worker->scene->mlx->bytes_per_pixel;
 			x++;
 		}
 		y++;
 	}
-	TOCK(render);
-	// def nearestNeighborScaling( source, newWid, newHt ):
-    // target = makeEmptyPicture(newWid, newHt)
-    // width = getWidth( source )
-    // height = getHeight( source )
-    // for x in range(0, newWid):  
-    //   for y in range(0, newHt):
-    //     srcX = int( round( float(x) / float(newWid) * float(width) ) )
-    //     srcY = int( round( float(y) / float(newHt) * float(height) ) )
-    //     srcX = min( srcX, width-1)
-    //     srcY = min( srcY, height-1)
-    //     tarPix = getPixel(target, x, y )
-    //     srcColor = getColor( getPixel(source, srcX, srcY) )
-    //     setColor( tarPix, srcColor)
+	return (NULL);
+}
+
+
+/**
+ * @brief Draws a scene
+ * @param scene A struct describing the current scene
+ */
+void draw_scene(t_scene *scene)
+{
+	int				x;
+	int				y;
+	t_mlx			*mlx;
+	t_worker		workers[NUM_THREADS];
+	pthread_t		threads[NUM_THREADS];
+
+	mlx = scene->mlx;
+	x = 0;
+	y = 0;
+	init_workers(workers, scene);
+	
+	int pixel = 0;
+	
+	struct timespec start, finish;
+	double elapsed;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
+	int i = 0;
+	while (i < NUM_THREADS)
+	{
+		pthread_create(&threads[i], NULL, render_scene, &workers[i]);
+		i++;
+	}
+
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+	clock_gettime(CLOCK_MONOTONIC, &finish);
+	elapsed = (finish.tv_sec - start.tv_sec);
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("render time is %f\n", elapsed);
+
+
 	y = 0;
 	pixel = 0;
 	TICK(scale);
@@ -134,8 +179,6 @@ void draw_scene(t_scene *scene)
 		y++;
 	}
 	TOCK(scale);
-    // return target
-
 
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 }

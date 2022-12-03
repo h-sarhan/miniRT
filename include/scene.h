@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 21:28:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/03 12:43:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "vector.h"
 # include "matrix.h"
+# include <pthread.h>
 
 /**
  * @brief Type of light
@@ -203,6 +204,19 @@ struct s_scene
 	t_mlx		*mlx;
 	t_keys		keys_held;
 	float		plane_angle;
+};
+
+#define NUM_THREADS 12
+
+typedef struct s_worker		t_worker;
+
+struct s_worker
+{
+	int	worker_id;
+	int	y_start;
+	int	y_end;
+	int	max_workers;
+	t_scene			*scene;
 };
 
 #endif
