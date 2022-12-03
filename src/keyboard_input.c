@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 23:17:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/03 22:24:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ int	set_key_down(int key, t_scene *scene)
 		scene->keys_held.q = true;
 	if (key == KEY_E)
 		scene->keys_held.e = true;
+	if (key == KEY_PLUS)
+		scene->keys_held.plus = true;
+	if (key == KEY_MINUS)
+		scene->keys_held.minus = true;
 	return (0);
 }
 
@@ -100,6 +104,10 @@ int	set_key_up(int key, t_scene *scene)
 		scene->keys_held.q = false;
 	if (key == KEY_E)
 		scene->keys_held.e = false;
+	if (key == KEY_PLUS)
+		scene->keys_held.plus = false;
+	if (key == KEY_MINUS)
+		scene->keys_held.minus = false;
 	return (0);
 }
 
@@ -176,7 +184,8 @@ int	transform_camera(t_scene *scene)
 		|| scene->keys_held.left
 		|| scene->keys_held.right
 		|| scene->keys_held.q
-		|| scene->keys_held.e)
+		|| scene->keys_held.e
+		)
 	{
 		calculate_transforms(scene);
 		draw_scene(scene);
