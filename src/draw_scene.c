@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/03 12:34:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/03 21:47:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 		intersection->inside = false;
 	scale_vec(&intersection->over_point, &intersection->normal, 0.001);
 	add_vec(&intersection->over_point, &intersection->point, &intersection->over_point);
+	reflect(&intersection->reflect_vec, &ray->direction, &intersection->normal);
 }
 
 int	min(int a, int b)
@@ -91,22 +92,22 @@ void	*render_scene(void *worker_ptr)
 			while (shape_idx < worker->scene->count.shape_count)
 			{
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-				intersection  = hit(&arr);
-				if (intersection != NULL)
-				{
-					prepare_computations(intersection, &ray);
-					ft_bzero(&color, sizeof(t_color));
-					unsigned int light_idx = 0;
-					while (light_idx < worker->scene->count.light_count)
-					{
-						light_color = lighting(intersection, worker->scene, light_idx);
-						add_colors(&color, &color, &light_color);
-						light_idx++;
-					}
-					intersection->shape->mlx_color = create_mlx_color(&color);
-					*(unsigned int *)(worker->scene->mlx->addr + pixel) = intersection->shape->mlx_color;
-				}
 				shape_idx++;
+			}
+			intersection  = hit(&arr);
+			if (intersection != NULL)
+			{
+				prepare_computations(intersection, &ray);
+				ft_bzero(&color, sizeof(t_color));
+				unsigned int light_idx = 0;
+				while (light_idx < worker->scene->count.light_count)
+				{
+					light_color = lighting(intersection, worker->scene, light_idx);
+					add_colors(&color, &color, &light_color);
+					light_idx++;
+				}
+				intersection->shape->mlx_color = create_mlx_color(&color);
+				*(unsigned int *)(worker->scene->mlx->addr + pixel) = intersection->shape->mlx_color;
 			}
 			pixel += worker->scene->mlx->bytes_per_pixel;
 			x++;

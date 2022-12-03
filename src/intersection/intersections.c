@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/02 21:43:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/03 21:06:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	ray_position(t_vector *pos, const t_ray *ray, double time)
 {
-	// scale_vec(pos, &ray->direction, time);
-	// add_vec(pos, pos, &ray->origin);
-	
-	// ? More optimized version maybe
 	pos->x = ray->direction.x * time + ray->origin.x;
 	pos->y = ray->direction.y * time + ray->origin.y;
 	pos->z = ray->direction.z * time + ray->origin.z;
@@ -127,33 +123,6 @@ t_intersect	*hit(t_intersections *xs)
 		return (NULL);
 	return (&xs->arr[idx]);
 }
-
-// t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
-// {
-// 	t_vector	object_point;
-// 	t_vector	world_normal;
-// 	t_vector	local_point;
-	
-// 	mat_vec_multiply(&local_point, &shape->inv_transf, intersection_point);
-// 	if (shape->type == SPHERE)
-// 	{
-// 		object_point.w = 0;
-// 		// mat_vec_multiply(&object_point, &shape->inv_transf, intersection_point);
-		
-// 		// World normal calculation
-// 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_point);
-// 		world_normal.w = 0;
-// 		normalize_vec(&world_normal);
-// 	}
-// 	if (shape->type == PLANE)
-// 	{
-// 		world_normal.x = 0;
-// 		world_normal.y = 1;
-// 		world_normal.z = 0;
-// 		world_normal.w = 0;
-// 	}
-// 	return (world_normal);
-// }
 
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 {
