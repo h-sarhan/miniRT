@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 18:23:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:11:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,23 @@
  */
 double	vec_magnitude(const t_vector *vec)
 {
-	return (sqrtf(vec->x * vec->x + vec->y * vec->y \
+	return (sqrt(vec->x * vec->x + vec->y * vec->y \
 			+ vec->z * vec->z + vec->w * vec->w));
 }
 
-float Q_rsqrt( float number )
+float	fast_inv_sqrt(double number)
 {
-	long i;
-	float x2, y;
-	const float threehalfs = 1.5F;
+	long	i;
+	float	x2;
+	float	y;
 
 	x2 = number * 0.5F;
-	y  = number;
-	i  = * ( long * ) &y;                       // evil floating point bit level hacking
-	i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
-	y  = * ( float * ) &i;
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-
-	return y;
+	y = number;
+	i = *(long *) &y;
+	i = 0x5f3759df - (i >> 1);
+	y = *(float *) &i;
+	y = y * (1.5F - (x2 * y * y));
+	return (y);
 }
 
 /**
@@ -45,7 +44,7 @@ float Q_rsqrt( float number )
  */
 void	normalize_vec(t_vector *vec)
 {
-	scale_vec(vec, vec, Q_rsqrt(vec->x * vec->x + vec->y * vec->y \
+	scale_vec(vec, vec, fast_inv_sqrt(vec->x * vec->x + vec->y * vec->y \
 			+ vec->z * vec->z + vec->w * vec->w));
 }
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/03 22:15:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:21:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ unsigned int	create_mlx_color(t_color *color);
 void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
 void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
 void			mult_color(t_color *res, const t_color *color, double val);
-void			blend_colors(t_color *res, const t_color *c1, const t_color *c2);
+void			blend_colors(t_color *res, const t_color *c1,
+					const t_color *c2);
 
 /**
  * @brief A light source
@@ -99,8 +100,9 @@ struct s_camera
 	float		phi;
 	float		theta;
 };
-void	camera_init(t_camera *camera, t_scene *scene);
-void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up, const t_vector *forward);
+void			camera_init(t_camera *camera, t_scene *scene);
+void			view_transform(t_mat4 *res, const t_vector *from,
+					const t_vector *up, const t_vector *forward);
 
 /**
  * @brief Type of shape
@@ -146,7 +148,7 @@ struct s_shape
 	double			shininess;
 	double			reflectiveness;
 };
-void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
+void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 
 /**
  * @brief Holds the number of elements in a scene
@@ -165,8 +167,6 @@ struct	s_el_count
 };
 
 typedef struct s_mlx		t_mlx;
-
-
 typedef struct s_keys		t_keys;
 struct s_keys
 {
@@ -183,8 +183,8 @@ struct s_keys
 	bool	plus;
 	bool	minus;
 };
-int	set_key_down(int key, t_scene *scene);
-int	set_key_up(int key, t_scene *scene);
+int				set_key_down(int key, t_scene *scene);
+int				set_key_up(int key, t_scene *scene);
 
 /**
  * @brief A description of a 3D scene
@@ -210,17 +210,15 @@ struct s_scene
 	float		plane_angle;
 };
 
-#define NUM_THREADS 12
-
 typedef struct s_worker		t_worker;
 
 struct s_worker
 {
-	int	worker_id;
-	int	y_start;
-	int	y_end;
-	int	max_workers;
-	t_scene			*scene;
+	int		worker_id;
+	int		y_start;
+	int		y_end;
+	int		max_workers;
+	t_scene	*scene;
 };
 
 #endif

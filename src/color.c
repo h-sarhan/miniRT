@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 18:53:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:12:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ unsigned int	clamp_color(double color)
 unsigned int	create_mlx_color(t_color *color)
 {
 	return (clamp_color(color->a) << 24 | clamp_color(color->r) << 16
-			| clamp_color(color->g) << 8 | clamp_color(color->b));
+		| clamp_color(color->g) << 8 | clamp_color(color->b));
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/03 18:52:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:26:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ struct s_ray
 	t_vector	origin;
 	t_vector	direction;
 };
-void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
+void		ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
 
 /**
  * @brief Struct containing information relevant for mlx and the window
@@ -62,14 +62,14 @@ struct	s_mlx
 typedef struct s_intersect		t_intersect;
 struct s_intersect
 {	
-	double	time;
-	t_shape	*shape;
-	t_vector point;
-	t_vector normal;
-	t_vector eye;
-	t_vector over_point;
-	t_vector reflect_vec;
-	bool	inside;
+	double		time;
+	t_shape		*shape;
+	t_vector	point;
+	t_vector	normal;
+	t_vector	eye;
+	t_vector	over_point;
+	t_vector	reflect_vec;
+	bool		inside;
 };
 
 /**
@@ -89,11 +89,13 @@ void		draw_scene(t_scene *scene);
 
 // intersections.c
 void		ray_position(t_vector *pos, const t_ray *ray, double time);
-void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shape);
+void		transform_ray(t_ray *transformed_ray, const t_ray *ray,
+				const t_shape *shape);
 bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
 t_intersect	*hit(t_intersections *xs);
 t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
 t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
-bool	is_shadowed(t_scene *scene, int	light_idx, t_vector *intersection_point);
+bool		is_shadowed(t_scene *scene, int light_idx,
+				t_vector *intersection_point);
 
 #endif

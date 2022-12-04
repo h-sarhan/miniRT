@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 18:10:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:18:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ static int	open_file(int argc, char **argv)
 	return (fd);
 }
 
-
-
-
 int	main(int argc, char **argv)
 {
 	t_scene		*scene;
@@ -82,10 +79,10 @@ int	main(int argc, char **argv)
 								&mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
-	// mlx_hook(mlx.mlx_win, 2, (1L << 0), transform_shape, scene);
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
 	mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
-	mlx_loop_hook(mlx.mlx, transform_shape, scene);
+	// mlx_loop_hook(mlx.mlx, transform_shape, scene);
+	mlx_loop_hook(mlx.mlx, transform_camera, scene);
 	draw_scene(scene);
 
 	// ! Put this somewhere

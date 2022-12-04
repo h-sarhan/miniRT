@@ -6,19 +6,19 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 18:50:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:17:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
-{
-	char	*dst;
+// void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
+// {
+// 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bytes_per_pixel));
-	*(unsigned int*)dst = color;
-}
+// 	dst = data->addr + (y * data->line_length + x * (data->bytes_per_pixel));
+// 	*(unsigned int*) dst = color;
+// }
 
 void	prepare_computations(t_intersect *intersection, t_ray *ray)
 {
@@ -34,7 +34,8 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 	else
 		intersection->inside = false;
 	scale_vec(&intersection->over_point, &intersection->normal, 0.001);
-	add_vec(&intersection->over_point, &intersection->point, &intersection->over_point);
+	add_vec(&intersection->over_point, &intersection->point,
+		&intersection->over_point);
 	reflect(&intersection->reflect_vec, &ray->direction, &intersection->normal);
 }
 
@@ -44,7 +45,6 @@ int	min(int a, int b)
 		return (a);
 	return (b);
 }
-
 
 void	init_workers(t_worker *workers, t_scene *scene)
 {
@@ -73,6 +73,7 @@ void	*render_scene(void *worker_ptr)
 	t_intersect		*intersection;
 	int				pixel;
 	unsigned int	shape_idx;
+	unsigned int	light_idx;
 	t_ray			ray;
 
 	x = 0;
@@ -94,12 +95,12 @@ void	*render_scene(void *worker_ptr)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 				shape_idx++;
 			}
-			intersection  = hit(&arr);
+			intersection = hit(&arr);
 			if (intersection != NULL)
 			{
 				prepare_computations(intersection, &ray);
 				ft_bzero(&color, sizeof(t_color));
-				unsigned int light_idx = 0;
+				light_idx = 0;
 				while (light_idx < worker->scene->count.light_count)
 				{
 					light_color = lighting(intersection, worker->scene, light_idx);
@@ -122,6 +123,8 @@ void	nearest_neighbours_scaling(t_scene *scene)
 	int	pixel;
 	int	x;
 	int	y;
+	int	src_x;
+	int	src_y;
 
 	x = 0;
 	y = 0;
@@ -131,12 +134,13 @@ void	nearest_neighbours_scaling(t_scene *scene)
 		x = 0;
 		while (x < scene->win_w)
 		{
-			int src_x = roundf(((float)x / (float)scene->win_w) * scene->render_w);
-			int src_y = roundf(((float)y / (float)scene->win_h) * scene->render_h);
+			src_x = round(((double)x / (double)scene->win_w) * scene->render_w);
+			src_y = round(((double)y / (double)scene->win_h) * scene->render_h);
 			src_x = min(src_x, scene->render_w - 1);
 			src_y = min(src_y, scene->render_h - 1);
-			// printf("%d %d\n", src_x, src_y);
-			*(unsigned int *)(scene->mlx->display_addr + pixel) = *(unsigned int *)(scene->mlx->addr + (src_y * scene->mlx->line_length + src_x * (scene->mlx->bytes_per_pixel)));
+			*(unsigned int *)(scene->mlx->display_addr + pixel) = \
+			*(unsigned int *)(scene->mlx->addr + (src_y * \
+			scene->mlx->line_length + src_x * (scene->mlx->bytes_per_pixel)));
 			pixel += scene->mlx->bytes_per_pixel;
 			x++;
 		}
@@ -148,27 +152,25 @@ void	nearest_neighbours_scaling(t_scene *scene)
  * @brief Draws a scene
  * @param scene A struct describing the current scene
  */
-void draw_scene(t_scene *scene)
+void	draw_scene(t_scene *scene)
 {
 	t_mlx			*mlx;
 	t_worker		workers[NUM_THREADS];
 	pthread_t		threads[NUM_THREADS];
+	struct timespec	start;
+	struct timespec	finish;
+	double			elapsed;
+	int				i;
 
 	mlx = scene->mlx;
 	init_workers(workers, scene);
-	
-	
-	struct timespec start, finish;
-	double elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &start);
-
-	int i = 0;
+	i = 0;
 	while (i < NUM_THREADS)
 	{
 		pthread_create(&threads[i], NULL, render_scene, &workers[i]);
 		i++;
 	}
-
 	i = 0;
 	while (i < NUM_THREADS)
 	{
@@ -179,11 +181,8 @@ void draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("render time is %f\n", elapsed);
-
-
 	TICK(scale);
 	nearest_neighbours_scaling(scene);
 	TOCK(scale);
-
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 }

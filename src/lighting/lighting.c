@@ -6,12 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 18:51:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:27:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
 
 void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
 {
@@ -31,15 +30,12 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	t_vector	reflect_v;
 	t_color		result;
 	bool		shadow;
-	
+
 	shadow = is_shadowed(scene, light_idx, &intersection->over_point);
-	// effective color calculation
 	blend_colors(&effective_color, &intersection->shape->color, &scene->lights[light_idx].color);
-	// light_v calculation
 	sub_vec(&light_v, &scene->lights[light_idx].position, &intersection->over_point);
 	light_v.w = 0;
 	normalize_vec(&light_v);
-	// ambient calculation
 	mult_color(&ambient, &effective_color, scene->ambient.intensity * scene->lights[light_idx].intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
 	intersection->normal.w = 0;
@@ -51,7 +47,6 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 	}
 	else
 	{
-		// Greater the angle lesser the diffuse. 
 		mult_color(&diffuse, &effective_color, intersection->shape->diffuse * light_dot_normal * scene->lights[light_idx].intensity);
 		light_v.x = -light_v.x;
 		light_v.y = -light_v.y;
@@ -64,10 +59,8 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 		else
 			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * pow(reflect_dot_eye, intersection->shape->shininess) * scene->lights[light_idx].intensity);
 	}
-	// add_colors(&result, &ambient, &diffuse);
-	// add_colors(&result, &result, &specular);
 	result.r = ambient.r + diffuse.r + specular.r;
 	result.g = ambient.g + diffuse.g + specular.g;
 	result.b = ambient.b + diffuse.b + specular.b;
-	return(result);
+	return (result);
 }

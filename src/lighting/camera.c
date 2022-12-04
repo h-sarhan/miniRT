@@ -6,23 +6,21 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 18:52:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:03:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up, const t_vector *forward)
+void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
+	const t_vector *forward)
 {
-	// t_vector forward;
-	t_vector left;
-	t_vector true_up;
-	t_vector upn;
-	t_mat4	orientation;
-	t_mat4	translation;
-	
-	// sub_vec(&forward, to, from);
-	// normalize_vec(&forward);
+	t_vector	left;
+	t_vector	true_up;
+	t_vector	upn;
+	t_mat4		orientation;
+	t_mat4		translation;
+
 	ft_memcpy(&upn, up, sizeof(t_vector));
 	normalize_vec(&upn);
 	cross_product(&left, forward, &upn);
@@ -46,7 +44,6 @@ void	camera_init(t_camera *camera, t_scene *scene)
 {
 	double	half_view;
 	double	aspect;
-	
 
 	half_view = tan((camera->fov / 2.0f) * M_PI / 180.0f);
 	aspect = scene->render_w / (double) scene->render_h;
@@ -65,21 +62,16 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	camera->phi = acos(camera->orientation.y);
 }
 
-
 void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
 {
-	double		x_offset;
-	double		y_offset;
 	double		world_x;
 	double		world_y;
 	t_vector	pixel;
 	t_vector	world_point;
 	t_vector	center;
 
-	x_offset = (x + 0.5) * cam->pixel_size;
-	y_offset = (y + 0.5) * cam->pixel_size;
-	world_x = cam->half_width - x_offset;
-	world_y = cam->half_height - y_offset;
+	world_x = cam->half_width - (x + 0.5) * cam->pixel_size;
+	world_y = cam->half_height - (y + 0.5) * cam->pixel_size;
 	world_point.x = world_x;
 	world_point.y = world_y;
 	world_point.z = -1;
@@ -92,9 +84,3 @@ void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
 	ray->direction.w = 0;
 	normalize_vec(&ray->direction);
 }
-
-// 	pixel ← inverse(camera.transform) * point(world_x, world_y, -1)
-// 	origin ← inverse(camera.transform) * point(0, 0, 0)
-// 	direction ← normalize(pixel - origin)
-// 	return ray(origin, direction)
-// end function

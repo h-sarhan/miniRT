@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/03 12:38:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:07:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	rotation_matrix_z(t_mat4 *mat, double r)
  */
 double	rad_to_deg(double r)
 {
-	return(r * (180 / M_PI));
+	return (r * (180 / M_PI));
 }
 
 /**
@@ -113,10 +113,8 @@ double	rad_to_deg(double r)
  */
 double	deg_to_rad(double r)
 {
-	return(r * (M_PI / 180));
+	return (r * (M_PI / 180));
 }
-
-
 
 void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, double angle)
 {
@@ -149,26 +147,20 @@ void	calculate_transforms(t_scene *scene)
 	t_mat4			scale_transform;
 	t_mat4			rot_transform;
 	t_mat4			translate_transform;
-	// t_mat4			temp;
 	t_vector		from;
-	// t_vector		to;
 	t_vector		up;
+	t_vector		ax;
+	double			angle;
 
 	from.x = scene->camera.position.x;
 	from.y = scene->camera.position.y;
 	from.z = scene->camera.position.z;
 	from.w = 1;
 	normalize_vec(&scene->camera.orientation);
-	// to.x = scene->camera.orientation.x;
-	// to.y = scene->camera.orientation.y;
-	// to.z = scene->camera.orientation.z;
-	// to.w = 1;
-
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-
 	view_transform(&scene->camera.transform, &from, &up, &scene->camera.orientation);
 	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
 	i = 0;
@@ -178,40 +170,28 @@ void	calculate_transforms(t_scene *scene)
 		identity_matrix(&scale_transform);
 		identity_matrix(&rot_transform);
 		identity_matrix(&translate_transform);
-		// SCALE FIRST
 		if (scene->shapes[i].type == SPHERE)
 		{
 			scaling_matrix(&scale_transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
 		}
-
 		if (scene->shapes[i].type == PLANE)
 		{
-			// ROTATE HERE
-			t_vector ax;
 			ax.w = 0;
-
 			up.x = 1;
 			up.y = 0;
 			up.z = 0;
 			normalize_vec(&scene->shapes[i].orientation);
 			cross_product(&ax, &scene->shapes[i].orientation, &up);
-			double angle = acos(dot_product(&scene->shapes[i].orientation, &up));
+			angle = acos(dot_product(&scene->shapes[i].orientation, &up));
 			axis_angle(&rot_transform, &ax, angle);
 		}
-		// TRANSLATE LAST
-		// sphere_trans =  translation * sphere_trans
-		
 		translate_matrix(&translate_transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 		mat_multiply(&scene->shapes[i].transf, &translate_transform, &rot_transform);
 		ft_memcpy(&translate_transform, &scene->shapes[i].transf, sizeof(t_mat4));
 		mat_multiply(&scene->shapes[i].transf, &translate_transform, &scale_transform);
-
-
-		// * Calculate inverse transform here
 		mat_inverse(&scene->shapes[i].inv_transf, &scene->shapes[i].transf);
 		ft_memcpy(&scene->shapes[i].norm_transf, &scene->shapes[i].inv_transf, sizeof(t_mat4));
 		transpose_matrix(&scene->shapes[i].norm_transf);
 		i++;
 	}
-	// setup_room(scene);
 }

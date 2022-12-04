@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:27:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	parse_color(t_color *color, const char *str, bool *success)
 	size_t	i;
 
 	parse_success = true;
-	
 	rgb = ft_split(str, ',');
 	if (!rgb || count_commas(str) != 2 || split_count(rgb) != 3)
 	{
