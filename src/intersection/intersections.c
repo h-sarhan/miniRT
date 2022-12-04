@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 18:47:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:01:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,41 @@ void	ray_position(t_vector *pos, const t_ray *ray, double time)
 	pos->w = 1;
 }
 
-void	transform_ray(t_ray *transformed_ray, const t_ray *ray, const t_shape *shape)
+void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
+	const t_shape *shape)
 {
-	mat_vec_multiply(&transformed_ray->origin, &shape->inv_transf, &ray->origin);
-	mat_vec_multiply(&transformed_ray->direction, &shape->inv_transf, &ray->direction);
+	mat_vec_multiply(&transformed_ray->origin, &shape->inv_transf,
+		&ray->origin);
+	mat_vec_multiply(&transformed_ray->direction, &shape->inv_transf,
+		&ray->direction);
 }
 
-bool	is_shadowed(t_scene *scene, int	light_idx, t_vector *intersection_point)
+bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
-	double	distance;
-	t_ray	ray;
-	t_intersections arr;
-	unsigned int 	i;
+	double			distance;
+	t_ray			ray;
+	t_intersections	arr;
+	unsigned int	i;
+	int				itx_idx;
 
-	sub_vec(&ray.direction, &scene->lights[light_idx].position, intersection_point);
+	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.direction);
 	scale_vec(&ray.direction, &ray.direction, 1 / distance);
-	ft_memcpy(&ray.origin, intersection_point, sizeof(t_vector));
-	i = 0;
+	ft_memcpy(&ray.origin, itx_point, sizeof(t_vector));
+	i = -1;
 	arr.count = 0;
-	int itx_idx = 0;
-	while (i < scene->count.shape_count)
+	itx_idx = -1;
+	while (++i < scene->count.shape_count)
 	{
 		if (intersect(&scene->shapes[i], &ray, &arr) == true)
 		{
-			while (itx_idx < arr.count)
-			{
-				if (arr.arr[itx_idx].time < distance && arr.arr[itx_idx].time > 0)
-					return(true);
-				itx_idx++;
-			}
+			while (++itx_idx < arr.count)
+				if (arr.arr[itx_idx].time < distance
+					&& arr.arr[itx_idx].time > 0)
+					return (true);
 		}
-		i++;
 	}
-	return(false);
+	return (false);
 }
 
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
@@ -65,7 +66,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	t_vector	sphere_to_ray;
 	t_vector	center;
 	t_ray		transf_ray;
-	(void)ray;
+
 	center.x = 0;
 	center.y = 0;
 	center.z = 0;
@@ -91,8 +92,6 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	if (shape->type == PLANE)
 	{
-		// create local_intersect
-		// printf("plane\n");
 		if (fabs(transf_ray.direction.y) < 0.001)
 			return (false);
 		xs->arr[xs->count].time = (transf_ray.origin.y * -1) / transf_ray.direction.y;
@@ -124,14 +123,14 @@ t_intersect	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
+t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	object_normal;
 	t_vector	world_normal;
 
 	if (shape->type == SPHERE)
 	{
-		mat_vec_multiply(&object_normal, &shape->inv_transf, intersection_point);
+		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
 		object_normal.w = 0;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
@@ -139,7 +138,6 @@ t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 	}
 	if (shape->type == PLANE)
 	{
-		// mat_vec_multiply(&object_normal, &shape->inv_transf, intersection_point);
 		object_normal.x = 0;
 		object_normal.y = 1;
 		object_normal.z = 0;
@@ -148,5 +146,5 @@ t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point)
 		world_normal.w = 0;
 		normalize_vec(&world_normal);
 	}
-	return world_normal;
+	return (world_normal);
 }
