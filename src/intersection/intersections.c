@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 19:01:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:45:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	t_intersections	arr;
 	unsigned int	i;
 	int				itx_idx;
+	t_intersect		*intersection;
 
 	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.direction);
@@ -45,15 +46,10 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	arr.count = 0;
 	itx_idx = -1;
 	while (++i < scene->count.shape_count)
-	{
-		if (intersect(&scene->shapes[i], &ray, &arr) == true)
-		{
-			while (++itx_idx < arr.count)
-				if (arr.arr[itx_idx].time < distance
-					&& arr.arr[itx_idx].time > 0)
-					return (true);
-		}
-	}
+		intersect(&scene->shapes[i], &ray, &arr);
+	intersection = hit(&arr);
+	if (intersection && intersection->time < distance)
+		return (true);
 	return (false);
 }
 

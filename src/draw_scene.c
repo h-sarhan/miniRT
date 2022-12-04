@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:17:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:41:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	init_workers(t_worker *workers, t_scene *scene)
 		workers[i].scene = scene;
 		workers[i].y_start = (scene->render_h / (float)NUM_THREADS) * i;
 		workers[i].y_end = (scene->render_h / (float)NUM_THREADS) * (i + 1);
+		workers[i].y_scale_start = (scene->win_h / (float)NUM_THREADS) * i;
+		workers[i].y_scale_end = (scene->win_h / (float)NUM_THREADS) * (i + 1);
 		i++;
 	}
 }
@@ -118,34 +120,37 @@ void	*render_scene(void *worker_ptr)
 	return (NULL);
 }
 
-void	nearest_neighbours_scaling(t_scene *scene)
+void	*nearest_neighbours_scaling(void *worker_ptr)
 {
-	int	pixel;
-	int	x;
-	int	y;
-	int	src_x;
-	int	src_y;
+	int			pixel;
+	int			x;
+	int			y;
+	int			src_x;
+	int			src_y;
+	t_worker	*worker;
 
+	worker = worker_ptr;
 	x = 0;
-	y = 0;
-	pixel = 0;
-	while (y < scene->win_h)
+	y = worker->y_scale_start;
+	pixel = worker->scene->mlx->bytes_per_pixel * y * worker->scene->win_w;
+	while (y < worker->y_scale_end)
 	{
 		x = 0;
-		while (x < scene->win_w)
+		while (x < worker->scene->win_w)
 		{
-			src_x = round(((double)x / (double)scene->win_w) * scene->render_w);
-			src_y = round(((double)y / (double)scene->win_h) * scene->render_h);
-			src_x = min(src_x, scene->render_w - 1);
-			src_y = min(src_y, scene->render_h - 1);
-			*(unsigned int *)(scene->mlx->display_addr + pixel) = \
-			*(unsigned int *)(scene->mlx->addr + (src_y * \
-			scene->mlx->line_length + src_x * (scene->mlx->bytes_per_pixel)));
-			pixel += scene->mlx->bytes_per_pixel;
+			src_x = round(((double)x / (double)worker->scene->win_w) * worker->scene->render_w);
+			src_y = round(((double)y / (double)worker->scene->win_h) * worker->scene->render_h);
+			src_x = min(src_x, worker->scene->render_w - 1);
+			src_y = min(src_y, worker->scene->render_h - 1);
+			*(unsigned int *)(worker->scene->mlx->display_addr + pixel) = \
+			*(unsigned int *)(worker->scene->mlx->addr + (src_y * \
+			worker->scene->mlx->line_length + src_x * (worker->scene->mlx->bytes_per_pixel)));
+			pixel += worker->scene->mlx->bytes_per_pixel;
 			x++;
 		}
 		y++;
 	}
+	return (NULL);
 }
 
 /**
@@ -181,8 +186,25 @@ void	draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("render time is %f\n", elapsed);
-	TICK(scale);
-	nearest_neighbours_scaling(scene);
-	TOCK(scale);
+	// TICK(scale);
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	// nearest_neighbours_scaling(scene);
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		pthread_create(&threads[i], NULL, nearest_neighbours_scaling, &workers[i]);
+		i++;
+	}
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+	clock_gettime(CLOCK_MONOTONIC, &finish);
+	elapsed = (finish.tv_sec - start.tv_sec);
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("scale time is %f\n", elapsed);
+	// TOCK(scale);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 }
