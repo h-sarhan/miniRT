@@ -3,26 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/11/30 15:22:17 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/04 18:51:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-// function reflect(in, normal)
-// return in - normal * 2 * dot(in, normal)
 
 void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
 {
-	double	dot_res;
-	
-	dot_res = dot_product(in_vector, normal);
-	scale_vec(res, normal, dot_res * 2);
+	scale_vec(res, normal, dot_product(in_vector, normal) * 2);
 	sub_vec(res, in_vector, res);
-	// res->w = 0;
 }
 
 t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
@@ -68,7 +62,7 @@ t_color	lighting(t_intersect *intersection, t_scene *scene, int light_idx)
 		if (reflect_dot_eye <= 0)
 			ft_bzero(&specular, sizeof(t_color));
 		else
-			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * powf(reflect_dot_eye, intersection->shape->shininess) * scene->lights[light_idx].intensity);
+			mult_color(&specular, &scene->lights[light_idx].color, intersection->shape->specular * pow(reflect_dot_eye, intersection->shape->shininess) * scene->lights[light_idx].intensity);
 	}
 	// add_colors(&result, &ambient, &diffuse);
 	// add_colors(&result, &result, &specular);

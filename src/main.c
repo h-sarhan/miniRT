@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 17:34:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:10:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 1920 * 0.2;
-	scene->render_h = 1080 * 0.2;
+	scene->render_w = 1920 * 0.3;
+	scene->render_h = 1080 * 0.3;
 	scene->win_w = 2560 * 0.6;
 	scene->win_h = 1440 * 0.6;
 	camera_init(&scene->camera, scene);

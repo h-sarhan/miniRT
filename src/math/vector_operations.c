@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 17:32:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:23:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ float Q_rsqrt( float number )
 	i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
 	y  = * ( float * ) &i;
 	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
 
 	return y;
 }
@@ -46,14 +45,8 @@ float Q_rsqrt( float number )
  */
 void	normalize_vec(t_vector *vec)
 {
-	float	mag;
-
-	mag = vec_magnitude(vec);
-	if (fabs(mag) > 0.001)
-	{
-		scale_vec(vec, vec, Q_rsqrt(vec->x * vec->x + vec->y * vec->y \
+	scale_vec(vec, vec, Q_rsqrt(vec->x * vec->x + vec->y * vec->y \
 			+ vec->z * vec->z + vec->w * vec->w));
-	}
 }
 
 /**

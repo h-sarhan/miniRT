@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 18:09:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:50:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ void	init_workers(t_worker *workers, t_scene *scene)
 void	*render_scene(void *worker_ptr)
 {
 	t_intersections	arr;
-	t_worker	*worker;
-	int			x;
-	int			y;
+	t_worker		*worker;
+	int				x;
+	int				y;
 	t_color			light_color;
 	t_color			color;
 	t_intersect		*intersection;
-	int pixel;
+	int				pixel;
 	unsigned int	shape_idx;
 	t_ray			ray;
 
