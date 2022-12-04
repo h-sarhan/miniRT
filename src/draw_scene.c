@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/03 22:25:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 16:41:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,33 @@ void	*render_scene(void *worker_ptr)
 	return (NULL);
 }
 
+void	nearest_neighbours_scaling(t_scene *scene)
+{
+	int	pixel;
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	pixel = 0;
+	while (y < scene->win_h)
+	{
+		x = 0;
+		while (x < scene->win_w)
+		{
+			int src_x = roundf(((float)x / (float)scene->win_w) * scene->render_w);
+			int src_y = roundf(((float)y / (float)scene->win_h) * scene->render_h);
+			src_x = min(src_x, scene->render_w - 1);
+			src_y = min(src_y, scene->render_h - 1);
+			// printf("%d %d\n", src_x, src_y);
+			*(unsigned int *)(scene->mlx->display_addr + pixel) = *(unsigned int *)(scene->mlx->addr + (src_y * scene->mlx->line_length + src_x * (scene->mlx->bytes_per_pixel)));
+			pixel += scene->mlx->bytes_per_pixel;
+			x++;
+		}
+		y++;
+	}
+}
+void	bilinear_scaling(t_scene *scene);
 
 /**
  * @brief Draws a scene
@@ -124,18 +151,13 @@ void	*render_scene(void *worker_ptr)
  */
 void draw_scene(t_scene *scene)
 {
-	int				x;
-	int				y;
 	t_mlx			*mlx;
 	t_worker		workers[NUM_THREADS];
 	pthread_t		threads[NUM_THREADS];
 
 	mlx = scene->mlx;
-	x = 0;
-	y = 0;
 	init_workers(workers, scene);
 	
-	int pixel = 0;
 	
 	struct timespec start, finish;
 	double elapsed;
@@ -160,25 +182,8 @@ void draw_scene(t_scene *scene)
 	printf("render time is %f\n", elapsed);
 
 
-	y = 0;
-	pixel = 0;
 	TICK(scale);
-	while (y < scene->win_h)
-	{
-		x = 0;
-		while (x < scene->win_w)
-		{
-			int src_x = roundf(((float)x / (float)scene->win_w) * scene->render_w);
-			int src_y = roundf(((float)y / (float)scene->win_h) * scene->render_h);
-			src_x = min(src_x, scene->render_w - 1);
-			src_y = min(src_y, scene->render_h - 1);
-			// printf("%d %d\n", src_x, src_y);
-			*(unsigned int *)(mlx->display_addr + pixel) = *(unsigned int *)(mlx->addr + (src_y * mlx->line_length + src_x * (mlx->bytes_per_pixel)));
-			pixel += mlx->bytes_per_pixel;
-			x++;
-		}
-		y++;
-	}
+	nearest_neighbours_scaling(scene);
 	TOCK(scale);
 
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);

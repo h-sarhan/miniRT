@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/03 22:24:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 16:23:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,45 @@
  * @param key Key that was pressed
  * @param scene The scene struct
  */
-int	transform_shape(int key, t_scene *scene)
+int	transform_shape(t_scene *scene)
 {
-	if (key == KEY_W)
+	if (scene->keys_held.w == true)
 		scene->shapes[0].origin.y += 0.1;
-	if (key == KEY_A)
+	if (scene->keys_held.a == true)
 		scene->shapes[0].origin.x -= 0.1;
-	if (key == KEY_S)
+	if (scene->keys_held.s == true)
 		scene->shapes[0].origin.y -= 0.1;
-	if (key == KEY_D)
+	if (scene->keys_held.d == true)
 		scene->shapes[0].origin.x += 0.1;
-	if (key == KEY_PLUS)
+	if (scene->keys_held.plus == true)
 		scene->shapes[0].radius += 0.1;
-	if (key == KEY_MINUS)
+	if (scene->keys_held.minus == true)
 		scene->shapes[0].radius -= 0.1;
-	if (key == KEY_UP)
+	if (scene->keys_held.up == true)
 		scene->lights[0].position.y += 0.3;
-	if (key == KEY_DOWN)
+	if (scene->keys_held.down == true)
 		scene->lights[0].position.y -= 0.3;
-	if (key == KEY_LEFT)
+	if (scene->keys_held.left == true)
 		scene->lights[0].position.x -= 0.3;
-	if (key == KEY_RIGHT)
+	if (scene->keys_held.right == true)
 		scene->lights[0].position.x += 0.3;
-	if (key == KEY_Q)
+	if (scene->keys_held.q == true)
 		scene->lights[0].intensity += 0.1;
-	if (key == KEY_E)
+	if (scene->keys_held.e == true)
 		scene->lights[0].intensity -= 0.1;
-	if (key == KEY_A || key == KEY_S || key == KEY_D || key == KEY_PLUS
-		|| key == KEY_MINUS || key == KEY_W || key == KEY_UP || key == KEY_DOWN
-		|| key == KEY_LEFT || key == KEY_RIGHT || key == KEY_E || key == KEY_Q)
+	if (scene->keys_held.w
+		|| scene->keys_held.a
+		|| scene->keys_held.s
+		|| scene->keys_held.d
+		|| scene->keys_held.up
+		|| scene->keys_held.down
+		|| scene->keys_held.left
+		|| scene->keys_held.right
+		|| scene->keys_held.q
+		|| scene->keys_held.e
+		|| scene->keys_held.plus
+		|| scene->keys_held.minus
+		)
 	{
 		calculate_transforms(scene);
 		draw_scene(scene);
