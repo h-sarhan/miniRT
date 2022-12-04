@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:41:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:46:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,7 @@ void	draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("render time is %f\n", elapsed);
-	// TICK(scale);
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	// nearest_neighbours_scaling(scene);
 	i = 0;
 	while (i < NUM_THREADS)
 	{
@@ -205,6 +203,5 @@ void	draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("scale time is %f\n", elapsed);
-	// TOCK(scale);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 }

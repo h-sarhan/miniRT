@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:18:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 20:15:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	main(int argc, char **argv)
 	// mlx_loop_hook(mlx.mlx, transform_shape, scene);
 	mlx_loop_hook(mlx.mlx, transform_camera, scene);
 	draw_scene(scene);
-
 	// ! Put this somewhere
 	// free_scene(scene);
 	mlx_loop(mlx.mlx);
