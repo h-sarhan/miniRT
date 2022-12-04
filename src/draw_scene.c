@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 16:41:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:09:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void	nearest_neighbours_scaling(t_scene *scene)
 		y++;
 	}
 }
-void	bilinear_scaling(t_scene *scene);
 
 /**
  * @brief Draws a scene

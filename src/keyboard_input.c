@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 16:23:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 17:07:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	transform_shape(t_scene *scene)
 	if (scene->keys_held.right == true)
 		scene->lights[0].position.x += 0.3;
 	if (scene->keys_held.q == true)
-		scene->lights[0].intensity += 0.1;
+		scene->shapes[0].origin.z += 0.1;
 	if (scene->keys_held.e == true)
-		scene->lights[0].intensity -= 0.1;
+		scene->shapes[0].origin.z -= 0.1;
 	if (scene->keys_held.w
 		|| scene->keys_held.a
 		|| scene->keys_held.s

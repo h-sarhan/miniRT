@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/01 22:05:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 17:32:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@ double	vec_magnitude(const t_vector *vec)
 			+ vec->z * vec->z + vec->w * vec->w));
 }
 
+float Q_rsqrt( float number )
+{
+	long i;
+	float x2, y;
+	const float threehalfs = 1.5F;
+
+	x2 = number * 0.5F;
+	y  = number;
+	i  = * ( long * ) &y;                       // evil floating point bit level hacking
+	i  = 0x5f3759df - ( i >> 1 );               // what the fuck? 
+	y  = * ( float * ) &i;
+	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+	return y;
+}
+
 /**
  * @brief Normalizes a vector
  * @param vec Vector to be normalized
@@ -34,7 +51,8 @@ void	normalize_vec(t_vector *vec)
 	mag = vec_magnitude(vec);
 	if (fabs(mag) > 0.001)
 	{
-		scale_vec(vec, vec, 1.0f / mag);
+		scale_vec(vec, vec, Q_rsqrt(vec->x * vec->x + vec->y * vec->y \
+			+ vec->z * vec->z + vec->w * vec->w));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/03 21:06:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/04 17:34:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ bool	is_shadowed(t_scene *scene, int	light_idx, t_vector *intersection_point)
 	else
 		return(false);
 }
+float Q_rsqrt( float number );
 
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
@@ -82,7 +83,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			return (false);
 		b *= -1;
 		a *= 2;
-		discriminant = sqrtf(discriminant);
+		discriminant = sqrt(discriminant);
 		xs->arr[xs->count].time = (b - discriminant) / a;
 		xs->arr[xs->count].shape = shape;
 		xs->arr[xs->count + 1].time = (b + discriminant) / a;
