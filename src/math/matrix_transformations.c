@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 19:07:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/05 09:06:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,21 +136,10 @@ void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, double angle)
 	(*rot_mat)[3][3] = 1;
 }
 
-/**
- * @brief Calculates the transformation matrices for every object in the scene
- * The chosen transformation order is scale -> rotation -> translation
- * @param scene The scene struct containing the objects
- */
-void	calculate_transforms(t_scene *scene)
+void	calculate_camera_transform(t_scene *scene)
 {
-	unsigned int	i;
-	t_mat4			scale_transform;
-	t_mat4			rot_transform;
-	t_mat4			translate_transform;
 	t_vector		from;
 	t_vector		up;
-	t_vector		ax;
-	double			angle;
 
 	from.x = scene->camera.position.x;
 	from.y = scene->camera.position.y;
@@ -161,37 +150,67 @@ void	calculate_transforms(t_scene *scene)
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-	view_transform(&scene->camera.transform, &from, &up, &scene->camera.orientation);
+	view_transform(&scene->camera.transform, &from, &up,
+		&scene->camera.orientation);
 	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
+}
+
+void	calculate_plane_rotation(t_mat4 *rot_transform, t_shape *plane)
+{
+	t_vector	up;
+	t_vector	ax;
+	double		angle;
+
+	ax.w = 0;
+	up.x = 1;
+	up.y = 0;
+	up.z = 0;
+	up.w = 0;
+	normalize_vec(&plane->orientation);
+	cross_product(&ax, &plane->orientation, &up);
+	angle = acos(dot_product(&plane->orientation, &up));
+	axis_angle(rot_transform, &ax, angle);
+}
+
+void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
+	t_mat4 *translate)
+{
+	mat_multiply(&shape->transf, translate, rot);
+	ft_memcpy(translate, &shape->transf, sizeof(t_mat4));
+	mat_multiply(&shape->transf, translate, scale);
+	mat_inverse(&shape->inv_transf, &shape->transf);
+	ft_memcpy(&shape->norm_transf, &shape->inv_transf, sizeof(t_mat4));
+	transpose_matrix(&shape->norm_transf);
+}
+
+/**
+ * @brief Calculates the transformation matrices for every object in the scene
+ * The chosen transformation order is scale -> rotation -> translation
+ * @param scene The scene struct containing the objects
+ */
+void	calculate_transforms(t_scene *scene)
+{
+	unsigned int	i;
+	t_mat4			scale;
+	t_mat4			rot;
+	t_mat4			translate;
+
+	calculate_camera_transform(scene);
 	i = 0;
 	while (i < scene->count.shape_count)
 	{
 		identity_matrix(&scene->shapes[i].transf);
-		identity_matrix(&scale_transform);
-		identity_matrix(&rot_transform);
-		identity_matrix(&translate_transform);
+		identity_matrix(&scale);
+		identity_matrix(&rot);
+		identity_matrix(&translate);
 		if (scene->shapes[i].type == SPHERE)
-		{
-			scaling_matrix(&scale_transform, scene->shapes[i].radius, scene->shapes[i].radius, scene->shapes[i].radius);
-		}
+			scaling_matrix(&scale, scene->shapes[i].radius,
+				scene->shapes[i].radius, scene->shapes[i].radius);
 		if (scene->shapes[i].type == PLANE)
-		{
-			ax.w = 0;
-			up.x = 1;
-			up.y = 0;
-			up.z = 0;
-			normalize_vec(&scene->shapes[i].orientation);
-			cross_product(&ax, &scene->shapes[i].orientation, &up);
-			angle = acos(dot_product(&scene->shapes[i].orientation, &up));
-			axis_angle(&rot_transform, &ax, angle);
-		}
-		translate_matrix(&translate_transform, scene->shapes[i].origin.x, scene->shapes[i].origin.y, scene->shapes[i].origin.z);
-		mat_multiply(&scene->shapes[i].transf, &translate_transform, &rot_transform);
-		ft_memcpy(&translate_transform, &scene->shapes[i].transf, sizeof(t_mat4));
-		mat_multiply(&scene->shapes[i].transf, &translate_transform, &scale_transform);
-		mat_inverse(&scene->shapes[i].inv_transf, &scene->shapes[i].transf);
-		ft_memcpy(&scene->shapes[i].norm_transf, &scene->shapes[i].inv_transf, sizeof(t_mat4));
-		transpose_matrix(&scene->shapes[i].norm_transf);
+			calculate_plane_rotation(&rot, &scene->shapes[i]);
+		translate_matrix(&translate, scene->shapes[i].origin.x,
+			scene->shapes[i].origin.y, scene->shapes[i].origin.z);
+		multiply_transforms(&scene->shapes[i], &scale, &rot, &translate);
 		i++;
 	}
 }
