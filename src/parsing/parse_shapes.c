@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 16:42:08 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/05 19:27:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
+	shape->reflectiveness = 0.1;
 }
 
 /**
@@ -86,6 +87,7 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
+	shape->reflectiveness = 0.05;
 }
 
 /**

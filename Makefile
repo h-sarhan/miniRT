@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/05 08:50:01 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/05 16:59:18 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c matrix_inverse2.c matrix_transformations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-INTERSECTION_SRC = intersections.c
+INTERSECTION_SRC = intersections.c reflections.c
 INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 
 LIGHTING_SRC = lighting.c camera.c

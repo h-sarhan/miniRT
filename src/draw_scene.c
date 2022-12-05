@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/05 14:19:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/05 20:01:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		while (light_idx < worker->scene->count.light_count)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
+			t_color	reflected = reflected_color(worker->scene, itx, REFLECTION_DEPTH, light_idx);
 			add_colors(&final_color, &final_color, &light_color);
+			add_colors(&final_color, &final_color, &reflected);
 			light_idx++;
 		}
 		itx->shape->mlx_color = create_mlx_color(&final_color);
