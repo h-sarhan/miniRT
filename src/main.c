@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 20:15:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/05 14:21:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	main(int argc, char **argv)
 	int			fd;
 	t_mlx		mlx;
 
-
 	fd = open_file(argc, argv);
 	if (fd == -1)
 		return (EXIT_FAILURE);
@@ -65,18 +64,15 @@ int	main(int argc, char **argv)
 	scene->win_w = 2560 * 0.6;
 	scene->win_h = 1440 * 0.6;
 	camera_init(&scene->camera, scene);
-
 	calculate_transforms(scene);
-
-	// print_scene(scene);
 	mlx.mlx = mlx_init();
-	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "Hello world!");
+	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "MiniRT");
 	mlx.img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
 	mlx.display_img = mlx_new_image(mlx.mlx, scene->win_w, scene->win_h);
-	mlx.display_addr = mlx_get_data_addr(mlx.display_img, &mlx.bytes_per_pixel, &mlx.line_length,
-								&mlx.endian);
-	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bytes_per_pixel, &mlx.line_length,
-								&mlx.endian);
+	mlx.display_addr = mlx_get_data_addr(mlx.display_img, &mlx.bytes_per_pixel,
+		&mlx.line_length,&mlx.endian);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bytes_per_pixel,
+		&mlx.line_length, &mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);

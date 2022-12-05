@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/04 19:45:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/05 12:24:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	t_ray			ray;
 	t_intersections	arr;
 	unsigned int	i;
-	int				itx_idx;
 	t_intersect		*intersection;
 
 	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
@@ -44,7 +43,6 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	ft_memcpy(&ray.origin, itx_point, sizeof(t_vector));
 	i = -1;
 	arr.count = 0;
-	itx_idx = -1;
 	while (++i < scene->count.shape_count)
 		intersect(&scene->shapes[i], &ray, &arr);
 	intersection = hit(&arr);
@@ -53,44 +51,46 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	return (false);
 }
 
-bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
+bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *shape)
 {
 	double		a;
 	double		b;
 	double		c;
 	double		discriminant;
-	t_vector	sphere_to_ray;
-	t_vector	center;
+
+	transf_ray->origin.w = 0;
+	a = dot_product(&transf_ray->direction, &transf_ray->direction);
+	b = 2 * dot_product(&transf_ray->direction, &transf_ray->origin);
+	c = dot_product(&transf_ray->origin, &transf_ray->origin) - 1;
+	discriminant = (b * b) - (4 * a * c);
+	if (discriminant < 0)
+		return (false);
+	b *= -1;
+	a *= 2;
+	discriminant = sqrt(discriminant);
+	xs->arr[xs->count].time = (b - discriminant) / a;
+	xs->arr[xs->count].shape = shape;
+	xs->arr[xs->count + 1].time = (b + discriminant) / a;
+	xs->arr[xs->count + 1].shape = shape;
+	xs->count += 2;
+	return (true);
+}
+
+bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
+{
 	t_ray		transf_ray;
 
-	center.x = 0;
-	center.y = 0;
-	center.z = 0;
-	center.w = 1;
 	transform_ray(&transf_ray, ray, shape);
 	if (shape->type == SPHERE)
 	{
-		sub_vec(&sphere_to_ray, &transf_ray.origin, &center);
-		a = dot_product(&transf_ray.direction, &transf_ray.direction);
-		b = 2 * dot_product(&transf_ray.direction, &sphere_to_ray);
-		c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
-		discriminant = (b * b) - (4 * a * c);
-		if (discriminant < 0)
-			return (false);
-		b *= -1;
-		a *= 2;
-		discriminant = sqrt(discriminant);
-		xs->arr[xs->count].time = (b - discriminant) / a;
-		xs->arr[xs->count].shape = shape;
-		xs->arr[xs->count + 1].time = (b + discriminant) / a;
-		xs->arr[xs->count + 1].shape = shape;
-		xs->count += 2;
+		return (intersect_sphere(&transf_ray, xs, shape));
 	}
 	if (shape->type == PLANE)
 	{
 		if (fabs(transf_ray.direction.y) < 0.001)
 			return (false);
-		xs->arr[xs->count].time = (transf_ray.origin.y * -1) / transf_ray.direction.y;
+		xs->arr[xs->count].time = (transf_ray.origin.y * -1) / \
+		transf_ray.direction.y;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
 	}

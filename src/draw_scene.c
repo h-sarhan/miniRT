@@ -6,19 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:46:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/05 14:19:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-// void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = data->addr + (y * data->line_length + x * (data->bytes_per_pixel));
-// 	*(unsigned int*) dst = color;
-// }
 
 void	prepare_computations(t_intersect *intersection, t_ray *ray)
 {
@@ -64,91 +56,85 @@ void	init_workers(t_worker *workers, t_scene *scene)
 	}
 }
 
-void	*render_scene(void *worker_ptr)
+void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
+	int pixel)
+{
+	t_intersect		*itx;
+	unsigned int	light_idx;
+	t_color			final_color;
+	t_color			light_color;
+
+	itx = hit(arr);
+	if (itx != NULL)
+	{
+		prepare_computations(itx, ray);
+		ft_bzero(&final_color, sizeof(t_color));
+		light_idx = 0;
+		while (light_idx < worker->scene->count.light_count)
+		{
+			light_color = lighting(itx, worker->scene, light_idx);
+			add_colors(&final_color, &final_color, &light_color);
+			light_idx++;
+		}
+		itx->shape->mlx_color = create_mlx_color(&final_color);
+		*(int *)(worker->scene->mlx->addr + pixel) = itx->shape->mlx_color;
+	}
+}
+
+void	*render_scene(t_worker *worker)
 {
 	t_intersections	arr;
-	t_worker		*worker;
 	int				x;
 	int				y;
-	t_color			light_color;
-	t_color			color;
-	t_intersect		*intersection;
-	int				pixel;
 	unsigned int	shape_idx;
-	unsigned int	light_idx;
 	t_ray			ray;
 
-	x = 0;
-	worker = worker_ptr;
-	y = worker->y_start;
-	arr.count = 0;
-	pixel = worker->scene->mlx->bytes_per_pixel * y * worker->scene->render_w;
-	while (y < worker->y_end)
+	y = worker->y_start - 1;
+	while (++y < worker->y_end)
 	{
-		x = 0;
-		while (x < worker->scene->render_w)
+		x = -1;
+		while (++x < worker->scene->render_w)
 		{
-			*(unsigned int *)(worker->scene->mlx->addr + pixel) = 0;
+			*(unsigned int *)(worker->scene->mlx->addr + \
+				(y * worker->scene->render_w + x) * \
+				worker->scene->mlx->bytes_per_pixel) = 0;
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
-			shape_idx = 0;
+			shape_idx = -1;
 			arr.count = 0;
-			while (shape_idx < worker->scene->count.shape_count)
-			{
+			while (++shape_idx < worker->scene->count.shape_count)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-				shape_idx++;
-			}
-			intersection = hit(&arr);
-			if (intersection != NULL)
-			{
-				prepare_computations(intersection, &ray);
-				ft_bzero(&color, sizeof(t_color));
-				light_idx = 0;
-				while (light_idx < worker->scene->count.light_count)
-				{
-					light_color = lighting(intersection, worker->scene, light_idx);
-					add_colors(&color, &color, &light_color);
-					light_idx++;
-				}
-				intersection->shape->mlx_color = create_mlx_color(&color);
-				*(unsigned int *)(worker->scene->mlx->addr + pixel) = intersection->shape->mlx_color;
-			}
-			pixel += worker->scene->mlx->bytes_per_pixel;
-			x++;
+			calculate_lighting(&arr, worker, &ray, (y * worker->scene->render_w \
+				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
-		y++;
 	}
 	return (NULL);
 }
 
-void	*nearest_neighbours_scaling(void *worker_ptr)
+void	*nearest_neighbours_scaling(t_worker *worker)
 {
-	int			pixel;
 	int			x;
 	int			y;
 	int			src_x;
 	int			src_y;
-	t_worker	*worker;
 
-	worker = worker_ptr;
-	x = 0;
-	y = worker->y_scale_start;
-	pixel = worker->scene->mlx->bytes_per_pixel * y * worker->scene->win_w;
-	while (y < worker->y_scale_end)
+	y = worker->y_scale_start - 1;
+	while (++y < worker->y_scale_end)
 	{
-		x = 0;
-		while (x < worker->scene->win_w)
+		x = -1;
+		while (++x < worker->scene->win_w)
 		{
-			src_x = round(((double)x / (double)worker->scene->win_w) * worker->scene->render_w);
-			src_y = round(((double)y / (double)worker->scene->win_h) * worker->scene->render_h);
+			src_x = round((x / (float)worker->scene->win_w) * \
+			worker->scene->render_w);
+			src_y = round((y / (float)worker->scene->win_h) * \
+			worker->scene->render_h);
 			src_x = min(src_x, worker->scene->render_w - 1);
 			src_y = min(src_y, worker->scene->render_h - 1);
-			*(unsigned int *)(worker->scene->mlx->display_addr + pixel) = \
+			*(unsigned int *)(worker->scene->mlx->display_addr + (y * \
+			worker->scene->win_w + x) * worker->scene->mlx->bytes_per_pixel) = \
 			*(unsigned int *)(worker->scene->mlx->addr + (src_y * \
-			worker->scene->mlx->line_length + src_x * (worker->scene->mlx->bytes_per_pixel)));
-			pixel += worker->scene->mlx->bytes_per_pixel;
-			x++;
+			worker->scene->mlx->line_length + src_x * \
+			(worker->scene->mlx->bytes_per_pixel)));
 		}
-		y++;
 	}
 	return (NULL);
 }
@@ -173,7 +159,7 @@ void	draw_scene(t_scene *scene)
 	i = 0;
 	while (i < NUM_THREADS)
 	{
-		pthread_create(&threads[i], NULL, render_scene, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
 		i++;
 	}
 	i = 0;
@@ -190,7 +176,8 @@ void	draw_scene(t_scene *scene)
 	i = 0;
 	while (i < NUM_THREADS)
 	{
-		pthread_create(&threads[i], NULL, nearest_neighbours_scaling, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)nearest_neighbours_scaling,
+			&workers[i]);
 		i++;
 	}
 	i = 0;
