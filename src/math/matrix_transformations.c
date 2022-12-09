@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/05 09:06:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/06 23:44:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,8 +162,8 @@ void	calculate_plane_rotation(t_mat4 *rot_transform, t_shape *plane)
 	double		angle;
 
 	ax.w = 0;
-	up.x = 1;
-	up.y = 0;
+	up.x = 0;
+	up.y = 1;
 	up.z = 0;
 	up.w = 0;
 	normalize_vec(&plane->orientation);

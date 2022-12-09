@@ -6,36 +6,40 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:27:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/06 23:56:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
 /**
- * @brief Checks wheter the orientation vector is valid and prints an
+ * @brief Checks whether the orientation vector is valid and prints an
  *  appropriate error message is it is not
  * @param orientation The orientation vector to check
  * @param line_num The line number where the vector is located
  * @param line The line where the vector is located
  * @param element The type of element the vector belongs to
- * @return True if the vector is valid
+ * @return True if the vector is invalid
  */
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 	const char *line, const char *element)
 {
-	if (orientation->x < 0.0 || orientation->x > 1.0
-		|| orientation->y < 0.0 || orientation->y > 1.0
-		|| orientation->z < 0.0 || orientation->z > 1.0)
+	if (orientation->x < -1.0 || orientation->x > 1.0
+		|| orientation->y < -1.0 || orientation->y > 1.0
+		|| orientation->z < -1.0 || orientation->z > 1.0
+		|| vec_magnitude(orientation) == 0.0)
 	{
 		printf(YELLOW"Error with parsing %s orientation on line #%ld\n"
 			RED"->\t%s\n"RESET, element, line_num, line);
-		if (orientation->x < 0.0 || orientation->x > 1.0)
+		if (orientation->x < -1.0 || orientation->x > 1.0)
 			printf(YELLOW"The x value is out of range\n"RESET);
-		if (orientation->y < 0.0 || orientation->y > 1.0)
+		if (orientation->y < -1.0 || orientation->y > 1.0)
 			printf(YELLOW"The y value is out of range\n"RESET);
-		if (orientation->z < 0.0 || orientation->z > 1.0)
+		if (orientation->z < -1.0 || orientation->z > 1.0)
 			printf(YELLOW"The z value is out of range\n"RESET);
+		if (vec_magnitude(orientation) == 0.0)
+			printf(YELLOW"The orientation vector cannot be the zero vector"
+			"\n"RESET);
 		return (true);
 	}
 	return (false);
@@ -48,7 +52,7 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
  * @param line_num The line number where the color is located
  * @param line The line where the color is located
  * @param element The type of element the color belongs to
- * @return True if the color is valid
+ * @return True if the color is invalid
  */
 bool	check_color(const t_color *color, size_t line_num, const char *line,
 	const char *element)

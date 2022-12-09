@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/05 19:27:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:01:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 	if (*success == false)
 		parse_success = false;
 	parse_orientation(&shape->orientation, splitted[2], success);
-	if (*success == false)
+	if (*success == false || vec_magnitude(&shape->orientation) == 0)
 		parse_success = false;
 	parse_color(&shape->color, splitted[3], success);
 	if (*success == false)
@@ -118,7 +118,7 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	if (*success == false)
 		parse_success = false;
 	parse_orientation(&shape->orientation, splitted[2], success);
-	if (*success == false)
+	if (*success == false || vec_magnitude(&shape->orientation) == 0)
 		parse_success = false;
 	parse_color(&shape->color, splitted[5], success);
 	if (*success == false)

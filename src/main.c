@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/05 20:05:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/09 19:48:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	main(int argc, char **argv)
 	scene->win_h = 1440 * 0.6;
 	camera_init(&scene->camera, scene);
 	calculate_transforms(scene);
+	scene->shapes[0].reflectiveness = 0;
+	scene->shapes[0].specular = 0;
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->win_w, scene->win_h, "MiniRT");
 	mlx.img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
@@ -77,8 +79,8 @@ int	main(int argc, char **argv)
 	scene->mlx = &mlx;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
 	mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
-	// mlx_loop_hook(mlx.mlx, transform_shape, scene);
-	mlx_loop_hook(mlx.mlx, transform_camera, scene);
+	mlx_loop_hook(mlx.mlx, transform_shape, scene);
+	// mlx_loop_hook(mlx.mlx, transform_camera, scene);
 	draw_scene(scene);
 	// ! Put this somewhere
 	// free_scene(scene);
