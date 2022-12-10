@@ -6,62 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 09:15:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 09:41:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-/**
- * @brief Function to transform a shape when a key is pressed
- * @param key Key that was pressed
- * @param scene The scene struct
- */
-int	transform_shape(t_scene *scene)
-{
-	if (scene->keys_held.w == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y += 0.1;
-	if (scene->keys_held.a == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.1;
-	if (scene->keys_held.s == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y -= 0.1;
-	if (scene->keys_held.d == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.1;
-	if (scene->keys_held.plus == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].radius += 0.1;
-	if (scene->keys_held.minus == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.1;
-	if (scene->keys_held.up == true)
-		scene->lights[0].position.y += 0.3;
-	if (scene->keys_held.down == true)
-		scene->lights[0].position.y -= 0.3;
-	if (scene->keys_held.left == true)
-		scene->lights[0].position.x -= 0.3;
-	if (scene->keys_held.right == true)
-		scene->lights[0].position.x += 0.3;
-	if (scene->keys_held.q == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.1;
-	if (scene->keys_held.e == true)
-		scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.1;
-	if (scene->keys_held.w
-		|| scene->keys_held.a
-		|| scene->keys_held.s
-		|| scene->keys_held.d
-		|| scene->keys_held.up
-		|| scene->keys_held.down
-		|| scene->keys_held.left
-		|| scene->keys_held.right
-		|| scene->keys_held.q
-		|| scene->keys_held.e
-		|| scene->keys_held.plus
-		|| scene->keys_held.minus
-		)
-	{
-		calculate_transforms(scene);
-		draw_scene(scene);
-	}
-	return (0);
-}
 
 int	set_key_down(int key, t_scene *scene)
 {
@@ -211,7 +160,10 @@ int	key_handler(t_scene *scene)
 		if (scene->keys_held.plus == true)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].radius += 0.1;
 		if (scene->keys_held.minus == true)
-			scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.1;
+		{
+			if (scene->shapes[scene->shape_idx % scene->count.shape_count].radius > 0.25)
+				scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.1;
+		}
 		if (scene->keys_held.up == true)
 			scene->lights[0].position.y += 0.3;
 		if (scene->keys_held.down == true)
