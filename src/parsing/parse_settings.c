@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:36:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 13:43:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,17 @@
 
 bool	is_settings(const char *line)
 {
-	(void)line;
+	size_t	i;
+	
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '{')
+			return (true);
+		if (is_space(line[i]) == false)
+			return (false);
+		i++;
+	}
 	return (false);
 }
 

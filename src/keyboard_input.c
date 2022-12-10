@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 12:35:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 14:36:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@ int	set_key_down(int key, t_scene *scene)
 	if (key == KEY_SPACE)
 	{
 		scene->edit_mode = !scene->edit_mode;
+		if (scene->edit_mode == true)
+		{
+			scene->reflection_depth = REFLECTION_DEPTH;
+		}
+		else
+		{
+			scene->reflection_depth = REFLECTION_DEPTH;
+		}
 		camera_init(&scene->camera, scene);
 		calculate_transforms(scene);
 		draw_scene(scene);

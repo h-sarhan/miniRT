@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:36:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 13:46:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,17 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 		success = parse_light(scene, splitted, line, line_num);
 	else if (is_shape(splitted[0]))
 		success = parse_shape(scene, splitted, line_num, line);
-	// else if (is_settings(line) == true)
-	// {
-	// 	free_split_array(splitted);
-	// 	return (parse_settings(scene, line, line_num, fd));
-	// }
+	else if (is_settings(line) == true)
+	{
+		printf("FOUND SETTINGS\n");
+		while (ft_strnstr(line, "}",ft_strlen(line)) == NULL)
+		{
+			free(line);
+			line = get_next_line(fd);
+		}
+		// free_split_array(splitted);
+		// return (parse_settings(scene, line, line_num, fd));
+	}
 	else
 		success = unknown_identifier(line, line_num, scene, splitted);
 	free(line);

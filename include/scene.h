@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 11:01:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 13:48:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ struct s_scene
 	int			shape_idx;
 	bool		camera_mode;
 	bool		edit_mode;
+	int			reflection_depth;
 };
 
 typedef struct s_worker		t_worker;
