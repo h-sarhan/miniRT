@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 13:43:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 14:44:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	parse_settings(t_scene *scene, char *line, size_t line_num, int fd)
 	(void)line;
 	(void)line_num;
 	(void)fd;
+	
 }

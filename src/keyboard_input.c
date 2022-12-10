@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 14:36:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 14:54:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ int	set_key_down(int key, t_scene *scene)
 		{
 			scene->shape_idx++;
 		}
+	}
+	if (key == KEY_ESC)
+	{
+		int y = 0;
+		while (y < scene->display_h)
+		{
+			int x = 0;
+			while (x < scene->display_w)
+			{
+				*(unsigned int *)(scene->mlx->display_addr + (y * \
+				scene->display_w + x) * scene->mlx->bytes_per_pixel) = 0xffffff;
+				x++;
+			}
+			y++;
+		}
+		// my_mlx_pixel_put();
+		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
 	}
 	if (key == KEY_C)
 		scene->camera_mode = !scene->camera_mode;

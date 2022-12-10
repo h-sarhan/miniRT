@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 14:34:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 14:59:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	main(int argc, char **argv)
 	scene->render_h = 1080 * 1;
 	scene->edit_w = 1920 * 0.25;
 	scene->edit_h = 1080 * 0.25;
-	scene->display_w = 2560 * 0.6;
-	scene->display_h = 1440 * 0.6;
+	scene->display_w = 2560 * 0.7;
+	scene->display_h = 1440 * 0.7;
 	scene->shapes[0].reflectiveness = 0;
 	scene->shapes[0].specular = 0;
 	scene->reflection_depth = REFLECTION_DEPTH;
