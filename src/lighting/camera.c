@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/10 09:13:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 11:27:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,18 @@ void	camera_init(t_camera *camera, t_scene *scene)
 {
 	double	half_view;
 	double	aspect;
+	double	h;
+	double	w;
 
+	h = scene->render_h;
+	w = scene->render_w;
+	if (scene->edit_mode == true)
+	{
+		h = scene->edit_h;
+		w = scene->edit_w;
+	}
 	half_view = tan((camera->fov / 2.0f) * M_PI / 180.0f);
-	aspect = scene->render_w / (double) scene->render_h;
+	aspect = w / h;
 	if (aspect >= 1)
 	{
 		camera->half_width = half_view;
@@ -57,9 +66,7 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_width = half_view * aspect;
 		camera->half_height = half_view;
 	}
-	camera->pixel_size = (camera->half_width * 2) / (double)scene->render_w;
-	camera->theta = atan(camera->orientation.z / camera->orientation.x);
-	camera->phi = acos(camera->orientation.y);
+	camera->pixel_size = (camera->half_width * 2) / w;
 }
 
 void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)

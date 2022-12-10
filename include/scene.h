@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 09:00:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 11:01:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,15 +203,18 @@ struct s_scene
 	t_light		*lights;
 	t_shape		*shapes;
 	t_el_count	count;
-	int			win_h;
-	int			win_w;
+	int			display_h;
+	int			display_w;
 	int			render_h;
 	int			render_w;
+	int			edit_h;
+	int			edit_w;
 	t_mlx		*mlx;
 	t_keys		keys_held;
 	// float		plane_angle;
 	int			shape_idx;
 	bool		camera_mode;
+	bool		edit_mode;
 };
 
 typedef struct s_worker		t_worker;
@@ -224,6 +227,9 @@ struct s_worker
 	int		y_scale_start;
 	int		y_scale_end;
 	int		max_workers;
+	int		height;
+	int		width;
+	char	*addr;
 	t_scene	*scene;
 };
 

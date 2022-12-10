@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/05 19:33:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 10:40:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ struct	s_mlx
 {
 	void	*mlx;
 	void	*mlx_win;
-	void	*img;
+	void	*edit_img;
+	char	*edit_addr;
 	void	*display_img;
-	char	*addr;
 	char	*display_addr;
+	void	*render_img;
+	char	*render_addr;
 	int		bytes_per_pixel;
 	int		line_length;
 	int		endian;

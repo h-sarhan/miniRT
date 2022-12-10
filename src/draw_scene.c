@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/09 19:50:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 11:29:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,25 @@ void	init_workers(t_worker *workers, t_scene *scene)
 	i = 0;
 	while (i < NUM_THREADS)
 	{
+		if (scene->edit_mode == true)
+		{
+			workers[i].height = scene->edit_h;
+			workers[i].width = scene->edit_w;
+			workers[i].addr = scene->mlx->edit_addr;
+		}
+		else
+		{
+			workers[i].height = scene->render_h;
+			workers[i].width = scene->render_w;
+			workers[i].addr = scene->mlx->render_addr;
+		}
 		workers[i].max_workers = NUM_THREADS;
 		workers[i].worker_id = i;
 		workers[i].scene = scene;
-		workers[i].y_start = (scene->render_h / (float)NUM_THREADS) * i;
-		workers[i].y_end = (scene->render_h / (float)NUM_THREADS) * (i + 1);
-		workers[i].y_scale_start = (scene->win_h / (float)NUM_THREADS) * i;
-		workers[i].y_scale_end = (scene->win_h / (float)NUM_THREADS) * (i + 1);
+		workers[i].y_start = (workers[i].height / (float)NUM_THREADS) * i;
+		workers[i].y_end = (workers[i].height / (float)NUM_THREADS) * (i + 1);
+		workers[i].y_scale_start = (scene->display_h / (float)NUM_THREADS) * i;
+		workers[i].y_scale_end = (scene->display_h / (float)NUM_THREADS) * (i + 1);
 		i++;
 	}
 }
@@ -79,7 +91,8 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 			light_idx++;
 		}
 		itx->shape->mlx_color = create_mlx_color(&final_color);
-		*(int *)(worker->scene->mlx->addr + pixel) = itx->shape->mlx_color;
+			*(int *)(worker->addr + pixel) = itx->shape->mlx_color;
+		
 	}
 }
 
@@ -95,17 +108,17 @@ void	*render_scene(t_worker *worker)
 	while (++y < worker->y_end)
 	{
 		x = -1;
-		while (++x < worker->scene->render_w)
+		while (++x < worker->width)
 		{
-			*(unsigned int *)(worker->scene->mlx->addr + \
-				(y * worker->scene->render_w + x) * \
+			*(unsigned int *)(worker->addr + \
+				(y * worker->width + x) * \
 				worker->scene->mlx->bytes_per_pixel) = 0;
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
 			while (++shape_idx < worker->scene->count.shape_count)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-			calculate_lighting(&arr, worker, &ray, (y * worker->scene->render_w \
+			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
 	}
@@ -119,23 +132,24 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 	int			src_x;
 	int			src_y;
 
+
 	y = worker->y_scale_start - 1;
 	while (++y < worker->y_scale_end)
 	{
 		x = -1;
-		while (++x < worker->scene->win_w)
+		while (++x < worker->scene->display_w)
 		{
-			src_x = round((x / (float)worker->scene->win_w) * \
-			worker->scene->render_w);
-			src_y = round((y / (float)worker->scene->win_h) * \
-			worker->scene->render_h);
-			src_x = min(src_x, worker->scene->render_w - 1);
-			src_y = min(src_y, worker->scene->render_h - 1);
+			src_x = round((x / (float)worker->scene->display_w) * \
+			worker->width);
+			src_y = round((y / (float)worker->scene->display_h) * \
+			worker->height);
+			src_x = min(src_x, worker->width - 1);
+			src_y = min(src_y, worker->height - 1);
 			*(unsigned int *)(worker->scene->mlx->display_addr + (y * \
-			worker->scene->win_w + x) * worker->scene->mlx->bytes_per_pixel) = \
-			*(unsigned int *)(worker->scene->mlx->addr + (src_y * \
-			worker->scene->mlx->line_length + src_x * \
-			(worker->scene->mlx->bytes_per_pixel)));
+			worker->scene->display_w + x) * worker->scene->mlx->bytes_per_pixel) = \
+			*(unsigned int *)(worker->addr + (src_y * \
+			worker->width + src_x) * \
+			worker->scene->mlx->bytes_per_pixel);
 		}
 	}
 	return (NULL);

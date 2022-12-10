@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:15:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 11:31:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 int	set_key_down(int key, t_scene *scene)
 {
+	if (key == KEY_SPACE)
+	{
+		scene->edit_mode = !scene->edit_mode;
+		camera_init(&scene->camera, scene);
+		calculate_transforms(scene);
+		draw_scene(scene);
+	}
 	if (key == KEY_TAB)
 	{
 		scene->shape_idx++;
@@ -86,7 +93,7 @@ int	set_key_up(int key, t_scene *scene)
 
 int	key_handler(t_scene *scene)
 {
-	if (scene->camera_mode == true)
+	if (scene->camera_mode == true && scene->edit_mode == true)
 	{
 		if (scene->keys_held.w == true)
 		{
@@ -147,7 +154,7 @@ int	key_handler(t_scene *scene)
 		if (scene->keys_held.e == true)
 			scene->camera.position.y -= 0.35;
 	}
-	else
+	else if (scene->edit_mode == true)
 	{
 		if (scene->keys_held.w == true)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y += 0.1;
@@ -177,7 +184,7 @@ int	key_handler(t_scene *scene)
 		if (scene->keys_held.e == true)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.1;
 	}
-	if (scene->keys_held.w
+	if (scene->edit_mode == true && (scene->keys_held.w
 		|| scene->keys_held.a
 		|| scene->keys_held.s
 		|| scene->keys_held.d
@@ -188,7 +195,7 @@ int	key_handler(t_scene *scene)
 		|| scene->keys_held.q
 		|| scene->keys_held.e
 		|| scene->keys_held.plus
-		|| scene->keys_held.minus
+		|| scene->keys_held.minus)
 		)
 	{
 		calculate_transforms(scene);
