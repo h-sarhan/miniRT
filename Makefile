@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/10 11:18:11 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/10 12:23:01 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ NAME = miniRT
 CC = gcc
 INC = -Iinclude -Ilibft -Imlx
 
-OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
+OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 
 CFLAGS = -Wall -Wextra  -Werror -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
