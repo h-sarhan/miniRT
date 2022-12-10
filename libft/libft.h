@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/20 16:26:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 10:28:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 double	ft_atof(const char *str, bool *success);
 char	**ft_split_whitespace(char const *s);
 int		ft_strcmp(const char *s1, const char *s2);
+int		is_space(char c);
 
 
 typedef struct s_list

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 10:36:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,12 @@ static bool	skip_line(char **line, int fd, size_t *line_count)
  * @param line_num The current line number
  * @return True if the line was parsed successfully
  */
-static bool	parse_line(t_scene *scene, char *line, size_t line_num)
+static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 {
 	bool	success;
 	char	**splitted;
 
+	(void)fd;
 	success = true;
 	splitted = ft_split_whitespace(line);
 	if (ft_strcmp(splitted[0], "A") == 0)
@@ -85,6 +86,11 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num)
 		success = parse_light(scene, splitted, line, line_num);
 	else if (is_shape(splitted[0]))
 		success = parse_shape(scene, splitted, line_num, line);
+	// else if (is_settings(line) == true)
+	// {
+	// 	free_split_array(splitted);
+	// 	return (parse_settings(scene, line, line_num, fd));
+	// }
 	else
 		success = unknown_identifier(line, line_num, scene, splitted);
 	free(line);
@@ -114,7 +120,7 @@ t_scene	*parse_scene(int fd)
 	{
 		if (skip_line(&line, fd, &line_count) == true)
 			continue ;
-		success = parse_line(scene, line, line_count);
+		success = parse_line(scene, line, line_count, fd);
 		if (success == false)
 			return (NULL);
 		line = get_next_line(fd);

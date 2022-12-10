@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:04:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 10:27:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,9 @@ void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene);
 void	*unknown_identifier(char *line, size_t line_num, t_scene *scene,
 			char **splitted);
 void	*light_parse_error(char *line, size_t line_count, t_scene *scene);
+
+// parse_settings.c
+bool	is_settings(const char *line);
+void	parse_settings(t_scene *scene, char *line, size_t line_num, int fd);
+
 #endif

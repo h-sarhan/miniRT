@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 09:41:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 10:15:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	set_key_down(int key, t_scene *scene)
 	if (key == KEY_TAB)
 	{
 		scene->shape_idx++;
-		while (scene->shapes[scene->shape_idx % scene->count.shape_count].type != SPHERE)
+		while (scene->shapes[scene->shape_idx % scene->count.shape_count].type == PLANE)
 		{
 			scene->shape_idx++;
 		}

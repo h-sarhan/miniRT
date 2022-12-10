@@ -6,12 +6,13 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/05 16:59:18 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/10 10:36:21 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PARSING_SRC = parse_utils.c shape_errors.c scene_errors.c \
-				parse_scene.c parse_shapes.c parse_elements.c parse_attributes.c
+				parse_scene.c parse_shapes.c parse_elements.c parse_attributes.c \
+				parse_settings.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c matrix_inverse2.c matrix_transformations.c
