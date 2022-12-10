@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/09 21:29:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,15 @@ void	*camera_parse_error(char *line, size_t line_num, t_scene *scene)
 
 	orientation = check_orientation(&scene->camera.orientation, line_num, line,
 			"camera");
-	if (!orientation && (scene->camera.fov < 0 || scene->camera.fov > 180))
+	if (scene->camera.orientation.x == 0 && scene->camera.orientation.y == 1 &&
+		scene->camera.orientation.z == 0)
+	{
+		printf(YELLOW"Error with parsing camera orientation on line #%ld\n"
+			RED"->\t%s\n"RESET, line_num, line);
+		printf(YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"
+			RESET);
+	}
+	else if (!orientation && (scene->camera.fov < 0 || scene->camera.fov > 180))
 	{
 		printf(YELLOW"Error with parsing camera fov on line #%ld\n"RED"->\t%s\n"
 			RESET, line_num, line);
