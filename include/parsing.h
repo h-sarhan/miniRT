@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:27:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 12:47:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	*shape_parse_error(char *line, size_t line_count, t_scene *scene,
 			char **splitted);
 
 // scene_errors.c
-void	*camera_parse_error(char *line, size_t line_num, t_scene *scene);
+void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
+			bool invalid_coords);
 void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene);
 void	*unknown_identifier(char *line, size_t line_num, t_scene *scene,
 			char **splitted);
