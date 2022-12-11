@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:07:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:58:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 # define L_KEY_C 99
 # define KEY_TAB 48
 # define KEY_SPACE 49
+# define KEY_R 15
 
-int	transform_shape(t_scene *scene);
 int	key_handler(t_scene *scene);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 11:23:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:15:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,6 @@ double	vec_magnitude(const t_vector *vec)
 			+ vec->z * vec->z + vec->w * vec->w));
 }
 
-// float	fast_inv_sqrt(double number)
-// {
-// 	long	i;
-// 	float	x2;
-// 	float	y;
-
-// 	x2 = number * 0.5F;
-// 	y = number;
-// 	i = *(long *) &y;
-// 	i = 0x5f3759df - (i >> 1);
-// 	y = *(float *) &i;
-// 	y = y * (1.5F - (x2 * y * y));
-// 	return (y);
-// }
-
 /**
  * @brief Normalizes a vector
  * @param vec Vector to be normalized
@@ -45,8 +30,6 @@ double	vec_magnitude(const t_vector *vec)
 void	normalize_vec(t_vector *vec)
 {
 	scale_vec(vec, vec, 1 / vec_magnitude(vec));
-	// scale_vec(vec, vec, fast_inv_sqrt(vec->x * vec->x + vec->y * vec->y \
-	// 		+ vec->z * vec->z + vec->w * vec->w));
 }
 
 /**

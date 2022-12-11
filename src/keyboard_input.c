@@ -6,11 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 14:54:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 12:57:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <unistd.h>
 
 int	set_key_down(int key, t_scene *scene)
 {
@@ -37,6 +38,16 @@ int	set_key_down(int key, t_scene *scene)
 			scene->shape_idx++;
 		}
 	}
+	if (key == KEY_R)
+	{
+		if (scene->reflection_depth == 0)
+			scene->reflection_depth = REFLECTION_DEPTH;
+		else
+			scene->reflection_depth = 0;
+		camera_init(&scene->camera, scene);
+		calculate_transforms(scene);
+		draw_scene(scene);
+	}
 	if (key == KEY_ESC)
 	{
 		int y = 0;
@@ -51,7 +62,7 @@ int	set_key_down(int key, t_scene *scene)
 			}
 			y++;
 		}
-		// my_mlx_pixel_put();
+		system("afplay sound.mp3");
 		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
 	}
 	if (key == KEY_C)
@@ -206,7 +217,7 @@ int	key_handler(t_scene *scene)
 		if (scene->keys_held.minus == true)
 		{
 			if (scene->shapes[scene->shape_idx % scene->count.shape_count].radius > 0.3)
-				scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.1;
+				scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.04;
 		}
 		if (scene->keys_held.up == true)
 			scene->lights[0].position.y += 0.3;
