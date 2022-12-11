@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 18:14:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 14:28:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	main(int argc, char **argv)
 {
 	t_scene		*scene;
 	int			fd;
-	// t_mlx		mlx;
 
 	fd = open_file(argc, argv);
 	if (fd == -1)
@@ -59,15 +58,16 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 1920 * 0.5;
-	scene->render_h = 1080 * 0.5;
-	scene->edit_w = 1920 * 0.25;
-	scene->edit_h = 1080 * 0.25;
-	scene->display_w = 2560 * 0.7;
-	scene->display_h = 1440 * 0.7;
-	scene->shapes[0].reflectiveness = 0;
-	scene->shapes[0].specular = 0;
-	scene->reflection_depth = REFLECTION_DEPTH;
+	// scene->render_w = 1920 * 0.5;
+	// scene->render_h = 1080 * 0.5;
+	// scene->edit_w = 1920 * 0.25;
+	// scene->edit_h = 1080 * 0.25;
+	// scene->display_w = 2560 * 0.7;
+	// scene->display_h = 1440 * 0.7;
+	// scene->shapes[0].reflectiveness = 0;
+	// scene->shapes[0].specular = 0;
+	// scene->reflection_depth = REFLECTION_DEPTH;
+	// t_mlx		mlx;
 	// mlx.mlx = mlx_init();
 	// mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
 	// mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
@@ -89,8 +89,8 @@ int	main(int argc, char **argv)
 	// scene->camera.phi = acos(scene->camera.orientation.y);
 	// calculate_transforms(scene);
 	// draw_scene(scene);
-	// ! Put this somewhere
-	// free_scene(scene);
+	// // ! Put this somewhere
+	// // free_scene(scene);
 	// mlx_loop(mlx.mlx);
 	return (EXIT_SUCCESS);
 }

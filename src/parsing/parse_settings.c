@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 19:01:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 14:32:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,18 @@ bool	is_settings(const char *line)
 	return (false);
 }
 
+bool	skip_settings(char **line, int fd)
+{
+	if (ft_strncmp(*line, "//", 2) == 0)
+	{
+		free(*line);
+		*line = ft_strtrim_free(get_next_line(fd), " \t\n");
+		printf("Skipped\n");
+		return (true);
+	}
+	return (false);
+}
+
 bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int fd)
 {
 	(void)scene;
@@ -64,10 +76,14 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 	parsed_str = ft_strdup(settings_start);
 	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL && line != NULL)
 	{
-		// line = get_next_line(fd);
 		line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		if (line == NULL)
 			break ;
+		while (ft_strncmp(line, "//", 2) == 0)
+		{
+			free(line);
+			line = ft_strtrim_free(get_next_line(fd), " \t\n");
+		}
 		parsed_str = ft_strjoin_free(ft_strtrim_free(parsed_str, " \n\t"),
 			line, 1);
 	}
@@ -87,10 +103,6 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 	}
 	// Check that it starts with only one curly brace and ends with one as well
 	
-	if (parsed_str[0] != '{' || parsed_str[1] == '{' || parsed_str[ft_strlen(parsed_str) - 1] != '}')
-	{
-
-	}
 	free(parsed_str);
 	return (true);
 }
