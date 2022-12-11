@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 15:50:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 16:59:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ bool	is_settings(const char *line)
 	return (false);
 }
 
-
-bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int fd)
+bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num, int fd)
 {
 	(void)scene;
 	(void)line_num;
@@ -62,8 +61,8 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 	char	*parsed_str;
 	char	*line;
 
-	parsed_str = ft_strdup(settings_start);
-	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL && line != NULL)
+	parsed_str = ft_strtrim(settings_start, " \n\t");
+	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
 		line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		if (line == NULL)
@@ -126,6 +125,19 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 		free(parsed_str);
 		return (false);
 	}
+	// Removing braces
+	parsed_str = ft_strtrim_free(parsed_str, "{}");
+
+	// Splitting on commas
+	char	**settings;
+	settings = ft_split(parsed_str, ',');
+	i = 0;
+	while (settings[i] != NULL)
+	{
+		printf("\t%s\n", settings[i]);
+		i++;
+	}
+	free_split_array(settings);
 	free(parsed_str);
 	return (true);
 }
