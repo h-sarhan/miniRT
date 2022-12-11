@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 13:46:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/10 18:33:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static bool	check_element_count(t_scene *scene)
  *  incremented if a line is skipped
  * @return True if a line is skipped
  */
-static bool	skip_line(char **line, int fd, size_t *line_count)
+bool	skip_line(char **line, int fd, size_t *line_count)
 {
 	if (ft_strlen(*line) == 0 || all_whitespace(*line) == true
 		|| ft_strncmp(*line, "//", 2) == 0 || ft_strncmp(*line, "#", 1) == 0)
@@ -89,13 +89,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 	else if (is_settings(line) == true)
 	{
 		printf("FOUND SETTINGS\n");
-		while (ft_strnstr(line, "}",ft_strlen(line)) == NULL)
-		{
-			free(line);
-			line = get_next_line(fd);
-		}
-		// free_split_array(splitted);
-		// return (parse_settings(scene, line, line_num, fd));
+		success = parse_settings(scene, line, line_num, fd);
 	}
 	else
 		success = unknown_identifier(line, line_num, scene, splitted);

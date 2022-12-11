@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/29 21:51:32 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/05 08:50:33 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/10 18:35:50 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,9 @@ CC = gcc
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS = -Werror -Wall -Wextra -g3 $(OPTIMIZATION_FLAGS) \
-		# -fsanitize=address
+CFLAGS = -Werror -Wall -Wextra -g3 \
+		-fsanitize=address \
+		# $(OPTIMIZATION_FLAGS) \
 
 all: $(NAME) bonus
 

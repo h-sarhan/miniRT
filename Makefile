@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/10 12:23:01 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/10 18:35:53 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,8 @@ INC = -Iinclude -Ilibft -Imlx
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 
 CFLAGS = -Wall -Wextra  -Werror -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address \
+			-fsanitize=address \
+			# $(OPTIMIZATION_FLAGS) \
 
 
 all: $(NAME)
@@ -61,7 +61,7 @@ $(NAME): $(LIBFT) $(OBJ)
 
 leakcheck: $(LIBFT) $(OBJ)
 	rm -f $(NAME)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lleaksan -llsan -lc++ -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lmlx -lmlx -framework OpenGL -framework AppKit -Lleaksan -llsan -lc++ -o $(NAME)
 
 clean:
 	make -C mlx clean
