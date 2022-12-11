@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 17:06:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 17:17:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 		parsed_str = ft_strjoin_free(ft_strtrim_free(parsed_str, " \n\t"),
 			line, 1);
 	}
-	printf("PARSED SETTINGS \n|%s|\n", parsed_str);
 	if (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
 		printf(RED"Unterminated shape settings starting at line %ld\n"RESET,
@@ -150,7 +149,12 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 			free(parsed_str);
 			return (false);
 		}
-		printf("\t%s\n", settings[i]);
+		char	**key_val = ft_split(settings[i], ':');
+		key_val[0] = ft_strtrim_free(key_val[0], " \n\t");
+		key_val[1] = ft_strtrim_free(key_val[1], " \n\t");
+		printf("Key == |%s|\n", key_val[0]);
+		printf("Val == |%s|\n", key_val[1]);
+		free_split_array(key_val);
 		i++;
 	}
 	free_split_array(settings);
