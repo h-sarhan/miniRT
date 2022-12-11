@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 16:59:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 17:06:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,22 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 	i = 0;
 	while (settings[i] != NULL)
 	{
+		int	colon_count = 0;
+		int	idx = 0;
+		while (settings[i][idx] != '\0')
+		{
+			if (settings[i][idx] == ':')
+				colon_count++;
+			idx++;
+		}
+		if (colon_count != 1)
+		{
+			printf(YELLOW"Error with parsing this property\n"RED"->\t%s\n"
+				YELLOW"Correct syntax is KEY : VALUE\n"RESET, settings[i]);
+			free_split_array(settings);
+			free(parsed_str);
+			return (false);
+		}
 		printf("\t%s\n", settings[i]);
 		i++;
 	}
