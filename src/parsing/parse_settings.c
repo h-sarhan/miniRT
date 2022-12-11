@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 14:32:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 15:50:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,6 @@ bool	is_settings(const char *line)
 	return (false);
 }
 
-bool	skip_settings(char **line, int fd)
-{
-	if (ft_strncmp(*line, "//", 2) == 0)
-	{
-		free(*line);
-		*line = ft_strtrim_free(get_next_line(fd), " \t\n");
-		printf("Skipped\n");
-		return (true);
-	}
-	return (false);
-}
 
 bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int fd)
 {
@@ -79,11 +68,13 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 		line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		if (line == NULL)
 			break ;
-		while (ft_strncmp(line, "//", 2) == 0)
+		while (ft_strncmp(line, "//", 2) == 0 && line != NULL)
 		{
 			free(line);
 			line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		}
+		if (line == NULL)
+			break ;
 		parsed_str = ft_strjoin_free(ft_strtrim_free(parsed_str, " \n\t"),
 			line, 1);
 	}
@@ -101,8 +92,40 @@ bool	parse_settings(t_scene *scene, char *settings_start, size_t line_num, int f
 		free(parsed_str);
 		return (false);
 	}
-	// Check that it starts with only one curly brace and ends with one as well
-	
+	// Count number of opening and closing braces
+	int	opening = 0;
+	int	closing = 0;
+	int	i = 0;
+	while (parsed_str[i] != '\0')
+	{
+		if (parsed_str[i] == '{')
+			opening++;
+		if (parsed_str[i] == '}')
+			closing++;
+		i++;
+	}
+	if (opening > 1)
+	{
+		printf(RED"Shape settings starting at line %ld"
+			" contains an extra opening brace\n"RESET, line_num);
+		free(parsed_str);
+		return (false);
+	}
+	if (closing > 1)
+	{
+		printf(RED"Shape settings starting at line %ld"
+			" contains an extra closing brace\n"RESET, line_num);
+		free(parsed_str);
+		return (false);
+	}
+	// Check that the parsed_string ends with a closing brace
+	if (parsed_str[ft_strlen(parsed_str) - 1] != '}')
+	{
+		printf(RED"Shape settings starting at line %ld is not terminated"
+			" correctly\n"RESET, line_num);
+		free(parsed_str);
+		return (false);
+	}
 	free(parsed_str);
 	return (true);
 }

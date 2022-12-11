@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 18:33:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/11 14:40:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	skip_line(char **line, int fd, size_t *line_count)
 		|| ft_strncmp(*line, "//", 2) == 0 || ft_strncmp(*line, "#", 1) == 0)
 	{
 		free(*line);
-		*line = get_next_line(fd);
+		*line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		*line_count += 1;
 		return (true);
 	}
