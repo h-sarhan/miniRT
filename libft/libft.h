@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 10:28:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 10:40:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <stdbool.h>
 # include "get_next_line.h"
 
-void	ft_free(void *memory);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -60,6 +59,7 @@ double	ft_atof(const char *str, bool *success);
 char	**ft_split_whitespace(char const *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		is_space(char c);
+int		ft_strcmp_case(const char *s1, const char *s2);
 
 
 typedef struct s_list

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 17:33:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 11:26:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	is_settings(const char *line)
 
 bool	is_valid_key(const char *key)
 {
-	if (ft_strcmp(key, "reflectiveness") == 0 ||
+	if (key != NULL && (ft_strcmp(key, "reflectiveness") == 0 ||
 		ft_strcmp(key, "diffuse") == 0 ||
 		ft_strcmp(key, "specular") == 0 ||
 		ft_strcmp(key, "shininess") == 0 ||
@@ -65,9 +65,41 @@ bool	is_valid_key(const char *key)
 		ft_strcmp(key, "scaleX") == 0 ||
 		ft_strcmp(key, "scaleY") == 0 ||
 		ft_strcmp(key, "scaleZ") == 0 ||
-		ft_strcmp(key, "color") == 0)
+		ft_strcmp(key, "color") == 0))
 		return (true);
 	return (false);
+}
+
+bool	is_valid_val(const char *key, const char *val)
+{
+	bool	success;
+	double	parsed_value;
+
+	success = true;
+	if (val == NULL || ft_strlen(val) == 0)
+		return (false);
+	if (ft_strcmp(key, "reflectiveness") == 0 ||
+		ft_strcmp(key, "diffuse") == 0 ||
+		ft_strcmp(key, "specular") == 0)
+	{
+		if (is_num(val, true) == false)
+		{
+			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
+			return (false);
+		}
+		else
+		{
+			parsed_value = ft_atof(val, &success);
+			if (success == false || parsed_value < 0.0 || parsed_value > 1.0)
+			{
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+					YELLOW"%s has to be between 0.0 and 1.0\n"RESET, key, val, key);
+				return (false);
+			}
+		}
+	}
+	return (true);
 }
 
 bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num, int fd)
@@ -167,12 +199,20 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 			return (false);
 		}
 		char	**key_val = ft_split(settings[i], ':');
+		
 		key_val[0] = ft_strtrim_free(key_val[0], " \n\t");
 		key_val[1] = ft_strtrim_free(key_val[1], " \n\t");
 		if (is_valid_key(key_val[0]) == false)
 		{
 			printf(YELLOW"Error with parsing this property\n"RED"->\t%s\n"
-				YELLOW"\"%s\" is not a valid key\n"RESET, settings[i], key_val[0]);
+				YELLOW"`%s` is not a valid key\n"RESET, settings[i], key_val[0]);
+			free_split_array(key_val);
+			free_split_array(settings);
+			free(parsed_str);
+			return (false);
+		}
+		if (is_valid_val(key_val[0], key_val[1]) == false)
+		{
 			free_split_array(key_val);
 			free_split_array(settings);
 			free(parsed_str);

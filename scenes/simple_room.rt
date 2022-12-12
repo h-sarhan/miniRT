@@ -17,17 +17,29 @@ L -10,10,-10 0.8 128,128,153
 // balls
 sp -0.5,1,0.5 1.6 255,0,0
 {
-	reflectiveness: 0 - 1.0,               
-	diffuse: 0 - 1.0,						
-	specular: 0 - 1.0,
-	shininess: 10 - 200,
-	rotX: 0 - 360º,						
-	rotY: 0 - 360º,
-	rotZ: 0 - 360º,
-	scaleX: 0.1 - 50,
-	scaleY: 0.1 - 50,
-	scaleZ: 0.1 - 50,
-	color: BLUE|RED|PURPLE|GREEN|YELLOW|PINK|BLACK|GRAY
+	// range is 0.0 - 1.0
+	reflectiveness:          0000.1,               
+	// range is 0.0 - 1.0
+	diffuse: 0.9,						
+	// range is 0.0 - 1.0
+	specular: 0.7,
+	// range is 10 - 200
+	shininess: 100,
+	// range is 0 - 360º
+	rotX: 0,						
+	// range is 0 - 360º
+	rotY: 0,
+	// range is 0 - 360º
+	rotZ: 0,
+	// range is 0.1 - 50
+	scaleX: 1,
+	// range is 0.1 - 50
+	scaleY: 1,
+	// range is 0.1 - 50
+	scaleZ: 1,
+	// Available colors are BLUE|RED|PURPLE|GREEN|YELLOW|PINK|BLACK|GRAY
+	// The color can be upper or lower case
+	color: BLUE
 }          							
 //
 sp -1.5,2,1.5 1.5 26,255,127
