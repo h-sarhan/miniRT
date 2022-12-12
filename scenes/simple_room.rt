@@ -17,8 +17,8 @@ L -10,10,-10 0.8 128,128,153
 // balls
 sp -0.5,1.5,0.5 1.6 255,0,0
 {
-	reflectiveness: 0.1,               
-	diffuse: 0.9,						
+	reflectiveness: 0.4,               
+	diffuse: 0.,						
 	specular: 0.5,
 	shininess: 200,
 	color: blue

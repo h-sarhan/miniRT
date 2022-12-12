@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 16:14:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 19:27:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color)
 	}
 }
 
-void	draw_point_on_center(t_scene *scene)
+void	draw_shape_info(t_scene *scene)
 {
 	if (scene->edit_mode == false)
 		return ;
@@ -175,8 +175,6 @@ void	draw_point_on_center(t_scene *scene)
 	t_shape	*shape;
 	t_vector	cam_point;
 	t_vector	info_point;
-	// int	x;
-	// int	y;
 
 	while (shape_idx < scene->count.shape_count)
 	{
@@ -187,8 +185,7 @@ void	draw_point_on_center(t_scene *scene)
 			continue;
 		}
 		ft_memcpy(&info_point, &shape->origin, sizeof(t_vector));
-		info_point.y += shape->radius + 0.15;
-		// mat_vec_multiply(&cam_point, &scene->camera.transform, &shape->origin);
+		info_point.y += shape->radius * 1.5;
 		mat_vec_multiply(&cam_point, &scene->camera.transform, &info_point);
 		if (shape->type == SPHERE)
 		{
@@ -196,35 +193,50 @@ void	draw_point_on_center(t_scene *scene)
 			cam_point.y /= -cam_point.z;
 			cam_point.x = (cam_point.x + scene->camera.half_width) / (scene->camera.half_width * 2);
 			cam_point.y = (cam_point.y + scene->camera.half_height) / (scene->camera.half_height * 2);
-			// cam_point.x += 0.5;
 			cam_point.x = 1 - cam_point.x;
-			// cam_point.y += 0.5;
 			cam_point.y = 1 - cam_point.y;
-			print_vector(&cam_point);
-			printf("x = %d, y = %d\n", (int)(cam_point.x * scene->edit_w) , (int)(cam_point.y * scene->edit_h));
 
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w), (int)(cam_point.y * scene->display_h), 0xffffff, "Sphere");
-			// char	*str = ft_strdup("x: ");
 			char str[1000];
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) - 2, 0xffffff, "Sphere");
 			sprintf(str, "x: %.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 12, 0xffffff, str);
-
-			// int i = -3;
-			// while (i <= 3)
-			// {
-			// 	if (i != 0)
-			// 		my_mlx_pixel_put(scene, (int)(cam_point.x * scene->edit_w) + i, (int)(cam_point.y  * scene->edit_h) , 0x00ff00);
-			// 	i++;
-			// }
-			// i = -3;
-			// while (i <= 3)
-			// {
-			// 	if (i != 0)
-			// 		my_mlx_pixel_put(scene, (int)(cam_point.x * scene->edit_w), (int)(cam_point.y * scene->edit_h) + i, 0x00ff00);
-			// 	i++;
-			// }
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 15, 0xffffff, str);
+			sprintf(str, "y: %.2f", shape->origin.y);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 32, 0xffffff, str);
+			sprintf(str, "z: %.2f", shape->origin.z);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 49, 0xffffff, str);
 		}
 		
+		shape_idx++;
+	}
+}
+
+void	draw_shape_marker(t_scene *scene)
+{
+	if (scene->edit_mode == false)
+		return ;
+	unsigned int	shape_idx = 0;
+	t_shape	*shape;
+	t_vector	cam_point;
+
+	while (shape_idx < scene->count.shape_count)
+	{
+		shape = &scene->shapes[shape_idx];
+		if (shape->highlighted == false)
+		{
+			shape_idx++;
+			continue;
+		}
+		mat_vec_multiply(&cam_point, &scene->camera.transform, &shape->origin);
+		if (shape->type == SPHERE)
+		{
+			cam_point.x /= -cam_point.z;
+			cam_point.y /= -cam_point.z;
+			cam_point.x = (cam_point.x + scene->camera.half_width) / (scene->camera.half_width * 2);
+			cam_point.y = (cam_point.y + scene->camera.half_height) / (scene->camera.half_height * 2);
+			cam_point.x = 1 - cam_point.x;
+			cam_point.y = 1 - cam_point.y;
+			my_mlx_pixel_put(scene, (int)(cam_point.x * scene->edit_w), (int)(cam_point.y  * scene->edit_h) , 0x00ffff);
+		}
 		shape_idx++;
 	}
 }
@@ -264,6 +276,7 @@ void	draw_scene(t_scene *scene)
 	printf("render time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	i = 0;
+	draw_shape_marker(scene);
 	while (i < NUM_THREADS)
 	{
 		pthread_create(&threads[i], NULL, (void *)nearest_neighbours_scaling,
@@ -281,7 +294,5 @@ void	draw_scene(t_scene *scene)
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("scale time is %f\n", elapsed);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
-	draw_point_on_center(scene);
-	// mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, 500, 500, 0xffffff, "SPHERE");
-	
+	draw_shape_info(scene);
 }

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 15:42:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 19:26:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,14 +179,14 @@ int	key_handler(t_scene *scene)
 		}
 		if (scene->keys_held.left == true)
 		{
-			scene->camera.theta += 0.15;
+			scene->camera.theta += 0.10;
 			scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
 			scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
 			scene->camera.orientation.y = cos(scene->camera.phi);
 		}
 		if (scene->keys_held.right == true)
 		{
-			scene->camera.theta -= 0.15;
+			scene->camera.theta -= 0.10;
 			scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
 			scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
 			scene->camera.orientation.y = cos(scene->camera.phi);
