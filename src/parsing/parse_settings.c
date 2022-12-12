@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:34:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 11:44:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,25 @@ bool	is_valid_key(const char *key)
 		ft_strcmp(key, "scaleZ") == 0 ||
 		ft_strcmp(key, "color") == 0))
 		return (true);
+	return (false);
+}
+
+bool	is_valid_color(const char *color)
+{
+	if (
+		ft_strcmp_case(color, "blue") == 0 ||
+		ft_strcmp_case(color, "red") == 0 ||
+		ft_strcmp_case(color, "purple") == 0 ||
+		ft_strcmp_case(color, "green") == 0 ||
+		ft_strcmp_case(color, "yellow") == 0 ||
+		ft_strcmp_case(color, "pink") == 0 ||
+		ft_strcmp_case(color, "black") == 0 ||
+		ft_strcmp_case(color, "gray") == 0
+	)
+		return (true);
+	printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+				YELLOW"`%s` is not a valid value\n"MAGENTA
+				"Available colors are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n"RESET, "color", color, color);
 	return (false);
 }
 
@@ -159,6 +178,10 @@ bool	is_valid_val(const char *key, const char *val)
 				return (false);
 			}
 		}
+	}
+	if (ft_strcmp(key, "color") == 0)
+	{
+		return (is_valid_color(val));
 	}
 
 	return (true);
