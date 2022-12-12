@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:26:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 11:34:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,68 @@ bool	is_valid_val(const char *key, const char *val)
 			}
 		}
 	}
+	if (ft_strcmp(key, "shininess") == 0)
+	{
+		if (is_num(val, true) == false)
+		{
+			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
+			return (false);
+		}
+		else
+		{
+			parsed_value = ft_atof(val, &success);
+			if (success == false || parsed_value < 10 || parsed_value > 200)
+			{
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+					YELLOW"%s has to be between 10.0 and 200.0\n"RESET, key, val, key);
+				return (false);
+			}
+		}
+	}
+	if (ft_strcmp(key, "rotX") == 0 ||
+		ft_strcmp(key, "rotY") == 0 ||
+		ft_strcmp(key, "rotZ") == 0)
+	{
+		if (is_num(val, false) == false)
+		{
+			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
+			return (false);
+		}
+		else
+		{
+			parsed_value = ft_atol(val, &success);
+			if (success == false || parsed_value < 0 || parsed_value > 360)
+			{
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+					YELLOW"%s has to be between 0 and 360 degrees\n"RESET, key, val, key);
+				return (false);
+			}
+		}
+	}
+	if (ft_strcmp(key, "scaleX") == 0 ||
+		ft_strcmp(key, "scaleY") == 0 ||
+		ft_strcmp(key, "scaleZ") == 0)
+	{
+		if (is_num(val, true) == false)
+		{
+			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
+			return (false);
+		}
+		else
+		{
+			parsed_value = ft_atof(val, &success);
+			if (success == false || parsed_value < 0.1 || parsed_value > 50)
+			{
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
+					YELLOW"%s has to be between 0.1 and 50\n"RESET, key, val, key);
+				return (false);
+			}
+		}
+	}
+
 	return (true);
 }
 
