@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/10 10:40:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 15:21:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ struct s_intersections
 	int			count;
 };
 // draw_scene.c
-void		my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void		my_mlx_pixel_put(t_scene *data, int x, int y, int color);
 void		draw_scene(t_scene *scene);
 
 // intersections.c

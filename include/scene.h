@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:56:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 13:46:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ struct s_shape
 	int				scale_x;
 	int				scale_y;
 	int				scale_z;
-	// bool			highlighted; A GOOD IDEA
+	bool			highlighted;
 };
 void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 13:12:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 15:42:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int	set_key_down(int key, t_scene *scene)
 {
+	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 	if (key == KEY_SPACE)
 	{
 		scene->edit_mode = !scene->edit_mode;
@@ -32,11 +33,16 @@ int	set_key_down(int key, t_scene *scene)
 	}
 	if (key == KEY_TAB)
 	{
+		scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 		scene->shape_idx++;
 		while (scene->shapes[scene->shape_idx % scene->count.shape_count].type == PLANE)
 		{
 			scene->shape_idx++;
 		}
+		scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = true;
+		camera_init(&scene->camera, scene);
+		calculate_transforms(scene);
+		draw_scene(scene);
 	}
 	if (key == KEY_R)
 	{
