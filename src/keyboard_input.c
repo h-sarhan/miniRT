@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 14:17:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 13:12:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.2 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 		}
 		if (scene->keys_held.plus == true)
-			scene->shapes[scene->shape_idx % scene->count.shape_count].radius += 0.1;
+			scene->shapes[scene->shape_idx % scene->count.shape_count].radius += 0.04;
 		if (scene->keys_held.minus == true)
 		{
 			if (scene->shapes[scene->shape_idx % scene->count.shape_count].radius > 0.3)

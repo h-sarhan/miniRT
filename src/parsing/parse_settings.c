@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:44:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 13:31:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ bool	is_valid_color(const char *color)
 		ft_strcmp_case(color, "yellow") == 0 ||
 		ft_strcmp_case(color, "pink") == 0 ||
 		ft_strcmp_case(color, "black") == 0 ||
-		ft_strcmp_case(color, "gray") == 0
+		ft_strcmp_case(color, "gray") == 0 ||
+		ft_strcmp_case(color, "white") == 0 ||
+		ft_strcmp_case(color, "cyan") == 0 ||
+		ft_strcmp_case(color, "orange") == 0 
 	)
 		return (true);
 	printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
@@ -187,14 +190,122 @@ bool	is_valid_val(const char *key, const char *val)
 	return (true);
 }
 
+t_color	parse_color_value(const char *str)
+{
+	t_color	color;
+
+	color.a = 0;
+	if (ft_strcmp_case(str, "blue") == 0)
+	{
+		color.r = 0x22 / 255.0;
+		color.g = 0x8b / 255.0;
+		color.b = 0xe6 / 255.0;
+	}
+	if (ft_strcmp_case(str, "red") == 0)
+	{
+		color.r = 0xf0 / 255.0;
+		color.g = 0x3e / 255.0;
+		color.b = 0x3e / 255.0;
+	}
+	if (ft_strcmp_case(str, "purple") == 0)
+	{
+		color.r = 0x70 / 255.0;
+		color.g = 0x48 / 255.0;
+		color.b = 0xe8 / 255.0;
+	}
+	if (ft_strcmp_case(str, "green") == 0)
+	{
+		color.r = 0x37 / 255.0;
+		color.g = 0xb2 / 255.0;
+		color.b = 0x4d / 255.0;
+	}
+	if (ft_strcmp_case(str, "yellow") == 0)
+	{
+		color.r = 0xf5 / 255.0;
+		color.g = 0x9f / 255.0;
+		color.b = 0x00 / 255.0;
+	}
+	if (ft_strcmp_case(str, "pink") == 0)
+	{
+		color.r = 0xe6 / 255.0;
+		color.g = 0x49 / 255.0;
+		color.b = 0x80 / 255.0;
+	}
+	if (ft_strcmp_case(str, "black") == 0)
+	{
+		color.r = 0x21 / 255.0;
+		color.g = 0x25 / 255.0;
+		color.b = 0x29 / 255.0;
+	}
+	if (ft_strcmp_case(str, "gray") == 0)
+	{
+		color.r = 0x6d / 255.0;
+		color.g = 0x65 / 255.0;
+		color.b = 0x6d / 255.0;
+	}
+	if (ft_strcmp_case(str, "white") == 0)
+	{
+		color.r = 0xf8 / 255.0;
+		color.g = 0xf9 / 255.0;
+		color.b = 0xfa / 255.0;
+	}
+	if (ft_strcmp_case(str, "cyan") == 0)
+	{
+		color.r = 0x15 / 255.0;
+		color.g = 0xaa / 255.0;
+		color.b = 0xbf / 255.0;
+	}
+	if (ft_strcmp_case(str, "orange") == 0)
+	{
+		color.r = 0xf7 / 255.0;
+		color.g = 0x67 / 255.0;
+		color.b = 0x07 / 255.0;
+	}
+	return (color);
+}
+
+void	parse_setting(t_scene *scene, char **key_val)
+{
+	bool	success;
+	t_shape	*shape;
+
+	shape = &scene->shapes[scene->count.shape_count - 1];
+	if (ft_strcmp("reflectiveness", key_val[0]) == 0)
+		shape->reflectiveness = ft_atof(key_val[1], &success);
+	if (ft_strcmp("diffuse", key_val[0]) == 0)
+		shape->diffuse = ft_atof(key_val[1], &success);
+	if (ft_strcmp("specular", key_val[0]) == 0)
+		shape->specular = ft_atof(key_val[1], &success);
+	if (ft_strcmp("shininess", key_val[0]) == 0)
+		shape->shininess = ft_atof(key_val[1], &success);
+	if (ft_strcmp("rotX", key_val[0]) == 0)
+		shape->rot_x = ft_atol(key_val[1], &success);
+	if (ft_strcmp("rotY", key_val[0]) == 0)
+		shape->rot_y = ft_atol(key_val[1], &success);
+	if (ft_strcmp("rotZ", key_val[0]) == 0)
+		shape->rot_z = ft_atol(key_val[1], &success);
+	if (ft_strcmp("scaleX", key_val[0]) == 0)
+		shape->scale_x = ft_atof(key_val[1], &success);
+	if (ft_strcmp("scaleY", key_val[0]) == 0)
+		shape->scale_y = ft_atof(key_val[1], &success);
+	if (ft_strcmp("scaleZ", key_val[0]) == 0)
+		shape->scale_z = ft_atof(key_val[1], &success);
+	if (ft_strcmp("color", key_val[0]) == 0)
+	{
+		shape->color = parse_color_value(key_val[1]);
+	}
+}
+
 bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num, int fd)
 {
-	(void)scene;
-	(void)line_num;
-	(void)fd;
 	char	*parsed_str;
 	char	*line;
 
+	if (scene->count.shape_count == 0)
+	{
+		printf(RED"Settings at line %ld do not belong to any shape\n"RESET, line_num);
+		return (false);
+	}
 	parsed_str = ft_strtrim(settings_start, " \n\t");
 	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
@@ -303,8 +414,9 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 			free(parsed_str);
 			return (false);
 		}
-		printf("Key == |%s|\n", key_val[0]);
-		printf("Val == |%s|\n", key_val[1]);
+		// printf("Key == |%s|\n", key_val[0]);
+		// printf("Val == |%s|\n", key_val[1]);
+		parse_setting(scene, key_val);
 		free_split_array(key_val);
 		i++;
 	}

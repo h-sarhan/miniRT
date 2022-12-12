@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:02:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 13:00:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,32 +64,30 @@ int	main(int argc, char **argv)
 	scene->edit_h = 1080 * 0.25;
 	scene->display_w = 2560 * 0.7;
 	scene->display_h = 1440 * 0.7;
-	scene->shapes[0].reflectiveness = 0;
-	scene->shapes[0].specular = 0;
 	scene->reflection_depth = REFLECTION_DEPTH;
-	// t_mlx		mlx;
-	// mlx.mlx = mlx_init();
-	// mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
-	// mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
-	// mlx.edit_img = mlx_new_image(mlx.mlx, scene->edit_w, scene->edit_h);
-	// mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
-	// mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
-	// 	&mlx.line_length,&mlx.endian);
-	// mlx.display_addr = mlx_get_data_addr(mlx.display_img, &mlx.bytes_per_pixel,
-	// 	&mlx.line_length,&mlx.endian);
-	// mlx.edit_addr = mlx_get_data_addr(mlx.edit_img, &mlx.bytes_per_pixel,
-	// 	&mlx.line_length, &mlx.endian);
-	// mlx.bytes_per_pixel /= 8;
-	// scene->mlx = &mlx;
-	// mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
-	// mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
-	// mlx_loop_hook(mlx.mlx, key_handler, scene);
-	// camera_init(&scene->camera, scene);
-	// scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
-	// scene->camera.phi = acos(scene->camera.orientation.y);
-	// calculate_transforms(scene);
-	// draw_scene(scene);
-	// mlx_loop(mlx.mlx);
+	t_mlx		mlx;
+	mlx.mlx = mlx_init();
+	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
+	mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
+	mlx.edit_img = mlx_new_image(mlx.mlx, scene->edit_w, scene->edit_h);
+	mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
+	mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
+		&mlx.line_length,&mlx.endian);
+	mlx.display_addr = mlx_get_data_addr(mlx.display_img, &mlx.bytes_per_pixel,
+		&mlx.line_length,&mlx.endian);
+	mlx.edit_addr = mlx_get_data_addr(mlx.edit_img, &mlx.bytes_per_pixel,
+		&mlx.line_length, &mlx.endian);
+	mlx.bytes_per_pixel /= 8;
+	scene->mlx = &mlx;
+	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
+	mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
+	mlx_loop_hook(mlx.mlx, key_handler, scene);
+	camera_init(&scene->camera, scene);
+	scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
+	scene->camera.phi = acos(scene->camera.orientation.y);
+	calculate_transforms(scene);
+	draw_scene(scene);
+	mlx_loop(mlx.mlx);
 	// // ! Put this somewhere
 	// // free_scene(scene);
 	return (EXIT_SUCCESS);

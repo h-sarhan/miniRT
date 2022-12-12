@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 14:40:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/12 12:56:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 	bool	success;
 	char	**splitted;
 
-	(void)fd;
 	success = true;
 	splitted = ft_split_whitespace(line);
 	if (ft_strcmp(splitted[0], "A") == 0)
@@ -87,10 +86,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 	else if (is_shape(splitted[0]))
 		success = parse_shape(scene, splitted, line_num, line);
 	else if (is_settings(line) == true)
-	{
-		printf("FOUND SETTINGS\n");
 		success = parse_settings(scene, line, line_num, fd);
-	}
 	else
 		success = unknown_identifier(line, line_num, scene, splitted);
 	free(line);
