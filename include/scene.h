@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 07:22:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 10:31:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,10 +217,10 @@ struct s_scene
 	int			edit_w;
 	t_mlx		*mlx;
 	t_keys		keys_held;
-	// float		plane_angle;
 	int			shape_idx;
 	bool		camera_mode;
 	bool		edit_mode;
+	bool		menu;
 	int			reflection_depth;
 };
 

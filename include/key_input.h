@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 12:58:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:02:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 #  define KEY_TAB 48
 #  define KEY_SPACE 49
 #  define KEY_R 15
+#  define KEY_M 46
 # endif
 int	key_handler(t_scene *scene);
 

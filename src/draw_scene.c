@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 10:12:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:03:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,8 +278,6 @@ void	draw_shape_info(t_scene *scene)
 		return ;
 	unsigned int	shape_idx = 0;
 	t_shape	*shape;
-	t_vector	cam_point;
-	t_vector	info_point;
 
 	while (shape_idx < scene->count.shape_count)
 	{
@@ -289,24 +287,19 @@ void	draw_shape_info(t_scene *scene)
 			shape_idx++;
 			continue;
 		}
-		ft_memcpy(&info_point, &shape->origin, sizeof(t_vector));
-		info_point.y += shape->radius + 0.65;
-		mat_vec_multiply(&cam_point, &scene->camera.transform, &info_point);
-		perspective_projection(&cam_point, scene);
 		if (shape->type == SPHERE)
 		{
 			char str[1000];
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
 			sprintf(str, "z: % 9.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
 			sprintf(str, "radius: %.2f", shape->radius);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
 		}
-		
 		shape_idx++;
 	}
 }
@@ -366,6 +359,31 @@ void	draw_shape_marker(t_scene *scene)
 	}
 }
 
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+
+void	draw_menu(t_scene *scene)
+{
+	int x = 0;
+	int y = 0;
+	char *dst;
+	while (y < scene->display_h)
+	{
+		x = 0;
+		while (x < scene->display_w * 0.12)
+		{
+			dst = scene->mlx->info_addr + (unsigned int)(y * scene->display_w * 0.12 + x) * scene->mlx->bytes_per_pixel;
+			*(unsigned int*)dst = create_trgb(30, (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12));
+			x++;
+		}
+		y++;
+	}
+
+}
+
 /**
  * @brief Draws a scene
  * @param scene A struct describing the current scene
@@ -419,5 +437,10 @@ void	draw_scene(t_scene *scene)
 	printf("scale time is %f\n", elapsed);
 	draw_shape_marker(scene);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
-	draw_shape_info(scene);
+	if (scene->menu == true && scene->edit_mode == true)
+	{
+		draw_menu(scene);
+		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
+		draw_shape_info(scene);
+	}
 }

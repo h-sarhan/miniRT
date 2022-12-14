@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 07:09:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 10:33:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,12 @@ int	main(int argc, char **argv)
 		&mlx.line_length,&mlx.endian);
 	mlx.edit_addr = mlx_get_data_addr(mlx.edit_img, &mlx.bytes_per_pixel,
 		&mlx.line_length, &mlx.endian);
+	mlx.info_img = mlx_new_image(mlx.mlx, scene->display_w * 0.12, scene->display_h);
+	mlx.info_addr = mlx_get_data_addr(mlx.info_img, &mlx.bytes_per_pixel,
+		&mlx.line_length, &mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
+	scene->menu = true;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
 	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
 	mlx_loop_hook(mlx.mlx, key_handler, scene);
