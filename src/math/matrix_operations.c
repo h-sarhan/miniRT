@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 04:54:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 05:39:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,21 @@ void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 {
 	__m256d vec_256 = _mm256_set_pd(vec->x, vec->y, vec->z, vec->w);
 	__m256d row = _mm256_set_pd((*mat)[0][0], (*mat)[0][1], (*mat)[0][2], (*mat)[0][3]);
-	__m256d resx_256 = _mm256_mul_pd(vec_256, row);
-	res->x = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	__m256d res_256 = _mm256_mul_pd(vec_256, row);
+	__m256d sum = _mm256_hadd_pd(res_256, res_256);
+	res->x = sum[0] + sum[2];
 	row = _mm256_set_pd((*mat)[1][0], (*mat)[1][1], (*mat)[1][2], (*mat)[1][3]);
-	resx_256 = _mm256_mul_pd(vec_256, row);
-	res->y = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	res_256 = _mm256_mul_pd(vec_256, row);
+	sum = _mm256_hadd_pd(res_256, res_256);
+	res->y = sum[0] + sum[2];
 	row = _mm256_set_pd((*mat)[2][0], (*mat)[2][1], (*mat)[2][2], (*mat)[2][3]);
-	resx_256 = _mm256_mul_pd(vec_256, row);
-	res->z = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	res_256 = _mm256_mul_pd(vec_256, row);
+	sum = _mm256_hadd_pd(res_256, res_256);
+	res->z = sum[0] + sum[2];
 	row = _mm256_set_pd((*mat)[3][0], (*mat)[3][1], (*mat)[3][2], (*mat)[3][3]);
-	resx_256 = _mm256_mul_pd(vec_256, row);
-	res->w = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	res_256 = _mm256_mul_pd(vec_256, row);
+	sum = _mm256_hadd_pd(res_256, res_256);
+	res->w = sum[0] + sum[2];
 }
 
 // void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
