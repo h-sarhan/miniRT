@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/12 18:00:08 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/13 17:08:13 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ $(LIBFT):
 
 $(NAME): $(LIBFT) $(OBJ)
 	make -s  all -C mlx
-	cp mlx/libmlx.dylib .
+	# cp mlx/libmlx.dylib .
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 
 leakcheck: $(LIBFT) $(OBJ)

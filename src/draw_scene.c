@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 19:27:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 03:45:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		while (light_idx < worker->scene->count.light_count)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
-			t_color	reflected = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
+			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
 			add_colors(&final_color, &final_color, &light_color);
 			add_colors(&final_color, &final_color, &reflected);
 			light_idx++;
@@ -155,7 +155,7 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 	return (NULL);
 }
 
-void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color)
+void	draw_marker(t_scene *scene, int x, int y, int color)
 {
 	char	*dst;
 	
@@ -165,6 +165,64 @@ void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color)
 		dst = scene->mlx->edit_addr + (y * scene->edit_w + x) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 	}
+	if (x < 0)
+	{
+		int x = 2;
+		while (x < 15)
+		{
+			dst = scene->mlx->edit_addr + ((scene->edit_h / 2) * scene->edit_w + x) * scene->mlx->bytes_per_pixel;
+			*(unsigned int*)dst = 0xffffff;
+			x++;
+		}
+		int	down_right = 0;
+		while (down_right < 8)
+		{
+			dst = scene->mlx->edit_addr + (((scene->edit_h / 2) + down_right) * scene->edit_w + down_right) * scene->mlx->bytes_per_pixel;
+			*(unsigned int*)dst = 0xffffff;
+			down_right++;
+		}
+		int	up_right = 0;
+		while (up_right < 8)
+		{
+			dst = scene->mlx->edit_addr + (((scene->edit_h / 2) - up_right) * scene->edit_w + up_right) * scene->mlx->bytes_per_pixel;
+			*(unsigned int*)dst = 0xffffff;
+			up_right++;
+		}
+	}
+	if (x >= scene->edit_w)
+	{
+		// int x = 15;
+		// while (x < 30)
+		// {
+		// 	dst = scene->mlx->edit_addr + ((scene->edit_h / 2) * scene->edit_w + (int)(scene->edit_w * 0.95 + x)) * scene->mlx->bytes_per_pixel;
+		// 	*(unsigned int*)dst = 0xffffff;
+		// 	x++;
+		// }
+		// int	down_right = -30;
+		// while (down_right < -15)
+		// {
+		// 	dst = scene->mlx->edit_addr + ((scene->edit_h / 2 - down_right + 15) * scene->edit_w + (int)(scene->edit_w * 0.95 - down_right)) * scene->mlx->bytes_per_pixel;
+		// 	*(unsigned int*)dst = 0xffffff;
+		// 	down_right++;
+		// }
+		// int	up_right = 0;
+		// while (up_right < 8)
+		// {
+		// 	dst = scene->mlx->edit_addr + (((scene->edit_h / 2) - up_right) * scene->edit_w + up_right) * scene->mlx->bytes_per_pixel;
+		// 	*(unsigned int*)dst = 0xffffff;
+		// 	up_right++;
+		// }
+	}
+}
+
+void	perspective_projection(t_vector *point, const t_scene *scene)
+{
+	point->x /= -point->z;
+	point->y /= -point->z;
+	point->x = (point->x + scene->camera.half_width) / (scene->camera.half_width * 2);
+	point->y = (point->y + scene->camera.half_height) / (scene->camera.half_height * 2);
+	point->x = 1 - point->x;
+	point->y = 1 - point->y;
 }
 
 void	draw_shape_info(t_scene *scene)
@@ -185,25 +243,21 @@ void	draw_shape_info(t_scene *scene)
 			continue;
 		}
 		ft_memcpy(&info_point, &shape->origin, sizeof(t_vector));
-		info_point.y += shape->radius * 1.5;
+		info_point.y += shape->radius + 0.65;
 		mat_vec_multiply(&cam_point, &scene->camera.transform, &info_point);
+		perspective_projection(&cam_point, scene);
 		if (shape->type == SPHERE)
 		{
-			cam_point.x /= -cam_point.z;
-			cam_point.y /= -cam_point.z;
-			cam_point.x = (cam_point.x + scene->camera.half_width) / (scene->camera.half_width * 2);
-			cam_point.y = (cam_point.y + scene->camera.half_height) / (scene->camera.half_height * 2);
-			cam_point.x = 1 - cam_point.x;
-			cam_point.y = 1 - cam_point.y;
-
 			char str[1000];
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) - 2, 0xffffff, "Sphere");
-			sprintf(str, "x: %.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 15, 0xffffff, str);
-			sprintf(str, "y: %.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 32, 0xffffff, str);
-			sprintf(str, "z: %.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (int)(cam_point.x * scene->display_w) + 5, (int)(cam_point.y * scene->display_h) + 49, 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
+			sprintf(str, "x: % 9.2f", shape->origin.x);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
+			sprintf(str, "y: % 9.2f", shape->origin.y);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
+			sprintf(str, "z: % 9.2f", shape->origin.z);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
+			sprintf(str, "radius: %.2f", shape->radius);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
 		}
 		
 		shape_idx++;
@@ -227,15 +281,10 @@ void	draw_shape_marker(t_scene *scene)
 			continue;
 		}
 		mat_vec_multiply(&cam_point, &scene->camera.transform, &shape->origin);
+		perspective_projection(&cam_point, scene);
 		if (shape->type == SPHERE)
 		{
-			cam_point.x /= -cam_point.z;
-			cam_point.y /= -cam_point.z;
-			cam_point.x = (cam_point.x + scene->camera.half_width) / (scene->camera.half_width * 2);
-			cam_point.y = (cam_point.y + scene->camera.half_height) / (scene->camera.half_height * 2);
-			cam_point.x = 1 - cam_point.x;
-			cam_point.y = 1 - cam_point.y;
-			my_mlx_pixel_put(scene, (int)(cam_point.x * scene->edit_w), (int)(cam_point.y  * scene->edit_h) , 0x00ffff);
+			draw_marker(scene, (int)(cam_point.x * scene->edit_w), (int)(cam_point.y  * scene->edit_h) , 0x00ffff);
 		}
 		shape_idx++;
 	}

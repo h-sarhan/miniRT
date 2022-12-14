@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 13:46:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 03:22:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ enum e_shape_type
 	PARABOLOID,
 	TRIANGLE,
 };
-
 /**
  * @brief Generic shape struct
  * @param type Type of shape. Sphere, plane, cylinder, etc.

@@ -50,7 +50,6 @@
 - (void) mlx_gl_draw_img:(mlx_img_list_t *)img andCtx:(mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y;
 - (void) mlx_gl_draw_font:(mlx_img_list_t *)img andCtx:(mlx_img_ctx_t *)imgctx andX:(int)x andY:(int)y andColor:(int)color glyphX:(int)gx glyphY:(int)gy;
 - (NSOpenGLContext *) ctx;
-- (NSWindowEvent *) win;
 - (void) setEvent:(int)event andFunc:(func_t)func andParam:(void *)param;
 - (void) setKeyRepeat:(int)mode;
 - (void) ctxNeedsUpdate;
