@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 03:50:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 04:54:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,29 @@ void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2)
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec)
 {
-	res->x = vec->x * (*mat)[0][0] + vec->y * (*mat)[0][1] + vec->z * (*mat)[0][2] + vec->w * (*mat)[0][3];
-	res->y = vec->x * (*mat)[1][0] + vec->y * (*mat)[1][1] + vec->z * (*mat)[1][2] + vec->w * (*mat)[1][3];
-	res->z = vec->x * (*mat)[2][0] + vec->y * (*mat)[2][1] + vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
-	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] + vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
+	__m256d vec_256 = _mm256_set_pd(vec->x, vec->y, vec->z, vec->w);
+	__m256d row = _mm256_set_pd((*mat)[0][0], (*mat)[0][1], (*mat)[0][2], (*mat)[0][3]);
+	__m256d resx_256 = _mm256_mul_pd(vec_256, row);
+	res->x = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	row = _mm256_set_pd((*mat)[1][0], (*mat)[1][1], (*mat)[1][2], (*mat)[1][3]);
+	resx_256 = _mm256_mul_pd(vec_256, row);
+	res->y = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	row = _mm256_set_pd((*mat)[2][0], (*mat)[2][1], (*mat)[2][2], (*mat)[2][3]);
+	resx_256 = _mm256_mul_pd(vec_256, row);
+	res->z = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
+	row = _mm256_set_pd((*mat)[3][0], (*mat)[3][1], (*mat)[3][2], (*mat)[3][3]);
+	resx_256 = _mm256_mul_pd(vec_256, row);
+	res->w = resx_256[0] + resx_256[1] + resx_256[2] + resx_256[3];
 }
+
+// void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
+// 			const t_vector *vec)
+// {
+// 	res->x = vec->x * (*mat)[0][0] + vec->y * (*mat)[0][1] + vec->z * (*mat)[0][2] + vec->w * (*mat)[0][3];
+// 	res->y = vec->x * (*mat)[1][0] + vec->y * (*mat)[1][1] + vec->z * (*mat)[1][2] + vec->w * (*mat)[1][3];
+// 	res->z = vec->x * (*mat)[2][0] + vec->y * (*mat)[2][1] + vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
+// 	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] + vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
+// }
 
 /**
  * @brief Sets the matrix to the identity matrix

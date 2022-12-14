@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/11 12:15:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 04:53:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,17 @@ void	normalize_vec(t_vector *vec)
  * @param v2 Second vector
  * @return The dot product of v1 and v2
  */
+// double	dot_product(const t_vector *v1, const t_vector *v2)
+// {
+// 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z + v1->w * v2->w);
+// }
 double	dot_product(const t_vector *v1, const t_vector *v2)
 {
-	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z + v1->w * v2->w);
+	__m256d vec1_256 = _mm256_set_pd(v1->x, v1->y, v1->z, v1->w);
+	__m256d vec2_256 = _mm256_set_pd(v2->x, v2->y, v2->z, v2->w);
+	__m256d res_256 = _mm256_mul_pd(vec1_256, vec2_256);
+	
+	return (res_256[0] + res_256[1] + res_256[2] + res_256[3]);
 }
 
 /**
