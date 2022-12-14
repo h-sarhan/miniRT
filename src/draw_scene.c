@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 11:03:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:35:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,15 +290,15 @@ void	draw_shape_info(t_scene *scene)
 		if (shape->type == SPHERE)
 		{
 			char str[1000];
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.06), 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.08), 0xffffff, str);
 			sprintf(str, "z: % 9.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.10), 0xffffff, str);
 			sprintf(str, "radius: %.2f", shape->radius);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.12), 0xffffff, str);
 		}
 		shape_idx++;
 	}
@@ -373,15 +373,38 @@ void	draw_menu(t_scene *scene)
 	while (y < scene->display_h)
 	{
 		x = 0;
-		while (x < scene->display_w * 0.12)
+		while (x < scene->display_w * 0.15)
 		{
-			dst = scene->mlx->info_addr + (unsigned int)(y * scene->display_w * 0.12 + x) * scene->mlx->bytes_per_pixel;
-			*(unsigned int*)dst = create_trgb(30, (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12));
+			dst = scene->mlx->info_addr + (unsigned int)(y * scene->display_w * 0.15 + x) * scene->mlx->bytes_per_pixel;
+			*(unsigned int*)dst = create_trgb(30, (x * 5) / (scene->display_w * 0.15 ), (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12));
 			x++;
 		}
 		y++;
 	}
-
+	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
+	if (scene->edit_mode == true && scene->camera_mode == false)
+	{
+		// Make starting point and distance variables to make it easy to adjust the spacing
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.035, (scene->display_h) * (0.75), 0xfd7e14, "[Edit mode]");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.79), 0xfd7e14, "WASDQE: Move");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.82), 0xfd7e14, "C:      Camera mode");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.85), 0xfd7e14, "TAB:    Switch Shape");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.88), 0xfd7e14, "+/-:    Scale Shape");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.91), 0xfd7e14, "R:      Reflections");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.94), 0xfd7e14, "M:      Menu");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.97), 0xfd7e14, "Space:  Render");
+	}
+	if (scene->edit_mode == true && scene->camera_mode == true)
+	{
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.035, (scene->display_h) * (0.75), 0xfd7e14, "[Camera mode]");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.79), 0xfd7e14, "WASDQE:     Move");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.82), 0xfd7e14, "C:          Edit mode");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.85), 0xfd7e14, "Arrow Keys: Look");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.88), 0xfd7e14, "R:          Reflect");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.91), 0xfd7e14, "M:          Menu");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.94), 0xfd7e14, "Space:      Render");
+	}
+	draw_shape_info(scene);
 }
 
 /**
@@ -440,7 +463,5 @@ void	draw_scene(t_scene *scene)
 	if (scene->menu == true && scene->edit_mode == true)
 	{
 		draw_menu(scene);
-		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
-		draw_shape_info(scene);
 	}
 }

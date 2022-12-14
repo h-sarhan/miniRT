@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 10:33:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:17:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	scene->render_w = 1920 * 1.2;
 	scene->render_h = 1080 * 1.2;
-	scene->edit_w = 1920 * 0.25;
-	scene->edit_h = 1080 * 0.25;
+	scene->edit_w = 1920 * 0.26;
+	scene->edit_h = 1080 * 0.26;
 	scene->display_w = 2560 * 0.6;
 	scene->display_h = 1440 * 0.6;
 	scene->reflection_depth = REFLECTION_DEPTH;
@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 		&mlx.line_length,&mlx.endian);
 	mlx.edit_addr = mlx_get_data_addr(mlx.edit_img, &mlx.bytes_per_pixel,
 		&mlx.line_length, &mlx.endian);
-	mlx.info_img = mlx_new_image(mlx.mlx, scene->display_w * 0.12, scene->display_h);
+	mlx.info_img = mlx_new_image(mlx.mlx, scene->display_w * 0.15, scene->display_h);
 	mlx.info_addr = mlx_get_data_addr(mlx.info_img, &mlx.bytes_per_pixel,
 		&mlx.line_length, &mlx.endian);
 	mlx.bytes_per_pixel /= 8;
