@@ -27,7 +27,8 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 		// {
 		light_color = lighting(itx, scene, light_idx);
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
-		add_colors(&final_color, &reflected, &light_color);
+		// add_colors(&final_color, &reflected, &light_color); ! WRONG
+		add_colors(&final_color, &final_color, &reflected);
 		add_colors(&final_color, &final_color, &light_color);
 		// light_idx++;
 		// }

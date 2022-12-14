@@ -159,59 +159,17 @@ void	draw_marker(t_scene *scene, int x, int y, int color)
 {
 	char	*dst;
 	
-	if (x > 0 && y > 0 && x < scene->edit_w && y < scene->edit_h)
+	if (x > 0 && y > 0 && x < scene->display_w && y < scene->display_h)
 	{
 
-		dst = scene->mlx->edit_addr + (y * scene->edit_w + x) * scene->mlx->bytes_per_pixel;
+		dst = scene->mlx->display_addr + (y * scene->display_w + x) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-	}
-	if (x < 0)
-	{
-		int x = 2;
-		while (x < 15)
-		{
-			dst = scene->mlx->edit_addr + ((scene->edit_h / 2) * scene->edit_w + x) * scene->mlx->bytes_per_pixel;
-			*(unsigned int*)dst = 0xffffff;
-			x++;
-		}
-		int	down_right = 0;
-		while (down_right < 8)
-		{
-			dst = scene->mlx->edit_addr + (((scene->edit_h / 2) + down_right) * scene->edit_w + down_right) * scene->mlx->bytes_per_pixel;
-			*(unsigned int*)dst = 0xffffff;
-			down_right++;
-		}
-		int	up_right = 0;
-		while (up_right < 8)
-		{
-			dst = scene->mlx->edit_addr + (((scene->edit_h / 2) - up_right) * scene->edit_w + up_right) * scene->mlx->bytes_per_pixel;
-			*(unsigned int*)dst = 0xffffff;
-			up_right++;
-		}
-	}
-	if (x >= scene->edit_w)
-	{
-		// int x = 15;
-		// while (x < 30)
-		// {
-		// 	dst = scene->mlx->edit_addr + ((scene->edit_h / 2) * scene->edit_w + (int)(scene->edit_w * 0.95 + x)) * scene->mlx->bytes_per_pixel;
-		// 	*(unsigned int*)dst = 0xffffff;
-		// 	x++;
-		// }
-		// int	down_right = -30;
-		// while (down_right < -15)
-		// {
-		// 	dst = scene->mlx->edit_addr + ((scene->edit_h / 2 - down_right + 15) * scene->edit_w + (int)(scene->edit_w * 0.95 - down_right)) * scene->mlx->bytes_per_pixel;
-		// 	*(unsigned int*)dst = 0xffffff;
-		// 	down_right++;
-		// }
-		// int	up_right = 0;
-		// while (up_right < 8)
-		// {
-		// 	dst = scene->mlx->edit_addr + (((scene->edit_h / 2) - up_right) * scene->edit_w + up_right) * scene->mlx->bytes_per_pixel;
-		// 	*(unsigned int*)dst = 0xffffff;
-		// 	up_right++;
-		// }
+		dst = scene->mlx->display_addr + (y * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
 	}
 }
 
@@ -284,7 +242,7 @@ void	draw_shape_marker(t_scene *scene)
 		perspective_projection(&cam_point, scene);
 		if (shape->type == SPHERE)
 		{
-			draw_marker(scene, (int)(cam_point.x * scene->edit_w), (int)(cam_point.y  * scene->edit_h) , 0x00ffff);
+			draw_marker(scene, (int)(cam_point.x * scene->display_w), (int)(cam_point.y  * scene->display_h) , 0x00ffff);
 		}
 		shape_idx++;
 	}
@@ -325,7 +283,6 @@ void	draw_scene(t_scene *scene)
 	printf("render time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	i = 0;
-	draw_shape_marker(scene);
 	while (i < NUM_THREADS)
 	{
 		pthread_create(&threads[i], NULL, (void *)nearest_neighbours_scaling,
@@ -342,6 +299,7 @@ void	draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("scale time is %f\n", elapsed);
+	draw_shape_marker(scene);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 	draw_shape_info(scene);
 }

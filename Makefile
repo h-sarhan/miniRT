@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/13 17:08:13 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/12 18:00:08 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,18 +33,26 @@ OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 OBJ += .obj/src/main.o
 
 LIBFT = libft/libft.a
-
 NAME = miniRT
 
+OS := $(shell uname)
 CC = gcc
-INC = -Iinclude -Ilibft -Imlx
+ifeq ($(OS),Linux)
+	INC = -Iinclude -Ilibft -Imlx -I/usr/include -Imlx_linux
+	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
+	LINK_FLAGS = -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+	MLX = mlx_linux
+else
+	INC = -Iinclude -Ilibft -Imlx 
+	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
+	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit 
+	MLX = mlx
+endif
 
-OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 
-CFLAGS = -Wall -Wextra  -Werror -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra  -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address \
-
 
 all: $(NAME)
 
@@ -56,16 +64,15 @@ $(LIBFT):
 	make -j10 -C libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	make -s  all -C mlx
-	# cp mlx/libmlx.dylib .
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
+	make -s  all -C $(MLX)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
-leakcheck: $(LIBFT) $(OBJ)
-	rm -f $(NAME)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lmlx -lmlx -framework OpenGL -framework AppKit -Lleaksan -llsan -lc++ -o $(NAME)
+# leakcheck: $(LIBFT) $(OBJ)
+# 	rm -f $(NAME)
+# 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lmlx -lmlx -framework OpenGL -framework AppKit -Lleaksan -llsan -lc++ -o $(NAME)
 
 clean:
-	make -C mlx clean
+	make -C $(MLX) clean
 	make -C libft clean
 	rm -rf $(OBJ_DIR)
 

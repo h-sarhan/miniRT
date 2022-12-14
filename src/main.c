@@ -58,13 +58,14 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 1920 * 1.2;
-	scene->render_h = 1080 * 1.2;
+	scene->render_w = 1920 * 0.5;
+	scene->render_h = 1080 * 0.5;
 	scene->edit_w = 1920 * 0.25;
 	scene->edit_h = 1080 * 0.25;
-	scene->display_w = 2560 * 0.7;
-	scene->display_h = 1440 * 0.7;
+	scene->display_w = 2560 * 0.4;
+	scene->display_h = 1440 * 0.4;
 	scene->reflection_depth = REFLECTION_DEPTH;
+	scene->shapes[0].highlighted = true;
 	t_mlx		mlx;
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
@@ -80,7 +81,7 @@ int	main(int argc, char **argv)
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
-	mlx_hook(mlx.mlx_win, 3, (1L << 0), set_key_up, scene);
+	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
 	mlx_loop_hook(mlx.mlx, key_handler, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);

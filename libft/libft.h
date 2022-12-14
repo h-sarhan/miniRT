@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <stdint.h>
 # include <math.h>
 # include <stdbool.h>
 # include "get_next_line.h"
