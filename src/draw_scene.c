@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 03:45:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 10:12:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,22 +155,111 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 	return (NULL);
 }
 
+void	draw_left_arrow(t_scene *scene, int y, int color)
+{
+	dda(scene, 0, 7, y, y + 7, color);
+
+	dda(scene, 0, 15, y, y, color);
+
+	dda(scene, 0, 7, y, y - 7, color);
+}
+
+void	draw_right_arrow(t_scene *scene, int y, int color)
+{
+	dda(scene, scene->display_w, scene->display_w - 7, y, y + 7, color);
+
+	dda(scene, scene->display_w, scene->display_w - 15, y, y, color);
+
+	dda(scene, scene->display_w, scene->display_w - 7, y, y - 7, color);
+}
+
+void	draw_up_arrow(t_scene *scene, int x, int color)
+{
+	dda(scene, x, x + 7, 0, 7, color);
+
+	dda(scene, x, x, 0, 15, color);
+
+	dda(scene, x, x - 7, 0, 7, color);
+}
+
+void	draw_down_arrow(t_scene *scene, int x, int color)
+{
+	dda(scene, x, x + 7, scene->display_h, scene->display_h - 7, color);
+
+	dda(scene, x, x, scene->display_h, scene->display_h - 15, color);
+
+	dda(scene, x, x - 7, scene->display_h, scene->display_h - 7, color);
+}
+
+void	draw_bottom_left_arrow(t_scene *scene, int color)
+{
+	dda(scene, 0, 10, scene->display_h - 5, scene->display_h - 5, color);
+	dda(scene, 0, 10, scene->display_h - 5, scene->display_h - 15, color);
+	dda(scene, 0, 0, scene->display_h - 5, scene->display_h - 15, color);
+}
+
+void	draw_bottom_right_arrow(t_scene *scene, int color)
+{
+	dda(scene, scene->display_w - 1, scene->display_w - 10, scene->display_h - 5, scene->display_h - 5, color);
+	dda(scene, scene->display_w - 1, scene->display_w - 10, scene->display_h - 5, scene->display_h - 15, color);
+	dda(scene, scene->display_w - 1, scene->display_w - 0, scene->display_h - 5, scene->display_h - 15, color);
+}
+
+void	draw_top_right_arrow(t_scene *scene, int color)
+{
+	dda(scene, scene->display_w - 1, scene->display_w - 10,  3, 3, color);
+	dda(scene, scene->display_w - 1, scene->display_w - 10, 3, 15, color);
+	dda(scene, scene->display_w - 1, scene->display_w - 0, 3, 15, color);
+}
+
+void	draw_top_left_arrow(t_scene *scene, int color)
+{
+	dda(scene, 1, 10,  3, 3, color);
+	dda(scene, 1, 10, 3, 15, color);
+	dda(scene, 1, 0, 3, 15, color);
+}
+
 void	draw_marker(t_scene *scene, int x, int y, int color)
 {
 	char	*dst;
 	
 	if (x > 0 && y > 0 && x < scene->display_w && y < scene->display_h)
 	{
-
 		dst = scene->mlx->display_addr + (y * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 		dst = scene->mlx->display_addr + (y * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + (y * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 	}
+	if (x <= 0 && y > 0 && y < scene->display_h)
+		draw_left_arrow(scene, y, 0x00ffff);
+	if (x >= scene->display_w && y > 0 && y < scene->display_h)
+		draw_right_arrow(scene, y, 0x00ffff);
+	if (y <= 0 && x >= 0 && x < scene->display_w)
+		draw_up_arrow(scene, x, 0x00ffff);
+	if (y >= scene->display_h && x > 0 && x < scene->display_w)
+		draw_down_arrow(scene, x, 0x00ffff);
+	if (x <= 0 && y >= scene->display_h)
+		draw_bottom_left_arrow(scene, 0x00ffff);
+	if (x >= scene->display_w && y >= scene->display_h)
+		draw_bottom_right_arrow(scene, 0x00ffff);
+	if (x >= scene->display_w && y <= 0)
+		draw_top_right_arrow(scene, 0x00ffff);
+	if (x <= 0 && y <= 0)
+		draw_top_left_arrow(scene, 0x00ffff);
 }
 
 void	perspective_projection(t_vector *point, const t_scene *scene)
@@ -207,20 +296,51 @@ void	draw_shape_info(t_scene *scene)
 		if (shape->type == SPHERE)
 		{
 			char str[1000];
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.05 - 0.01), 0xffffff, "Sphere");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.07 - 0.01), 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.09 - 0.01), 0xffffff, str);
 			sprintf(str, "z: % 9.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.11 - 0.01), 0xffffff, str);
 			sprintf(str, "radius: %.2f", shape->radius);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.92, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.9, (scene->display_h) * (0.13 - 0.01), 0xffffff, str);
 		}
 		
 		shape_idx++;
 	}
 }
+
+
+void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
+{
+	double	dy;
+	double	dx;
+	double	c;
+	int		i;
+	char	*dst;
+
+	dx = (x2 - x1);
+	dy = (y2 - y1);
+	if (fabs(dx) > fabs(dy))
+		c = fabs(dx);
+	else
+		c = fabs(dy);
+	i = 0;
+	dx /= c;
+	dy /= c;
+	while (i <= c)
+	{
+		if (y1 > scene->display_h || x1 > scene->display_w)
+			break ;
+		dst = scene->mlx->display_addr + (int)(y1 * scene->display_w + x1) * scene->mlx->bytes_per_pixel;
+		*(unsigned int*)dst = color;
+		y1 += dy;
+		x1 += dx;
+		i++;
+	}
+}
+
 
 void	draw_shape_marker(t_scene *scene)
 {
@@ -241,9 +361,7 @@ void	draw_shape_marker(t_scene *scene)
 		mat_vec_multiply(&cam_point, &scene->camera.transform, &shape->origin);
 		perspective_projection(&cam_point, scene);
 		if (shape->type == SPHERE)
-		{
 			draw_marker(scene, (int)(cam_point.x * scene->display_w), (int)(cam_point.y  * scene->display_h) , 0x00ffff);
-		}
 		shape_idx++;
 	}
 }

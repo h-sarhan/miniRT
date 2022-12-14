@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 03:22:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 07:22:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,5 +239,6 @@ struct s_worker
 	char	*addr;
 	t_scene	*scene;
 };
+void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color);
 
 #endif
