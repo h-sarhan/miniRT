@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 11:17:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 12:24:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_w = 1920 * 1.2;
-	scene->render_h = 1080 * 1.2;
+	scene->render_w = 1920 * 1.5;
+	scene->render_h = 1080 * 1.5;
 	scene->edit_w = 1920 * 0.26;
 	scene->edit_h = 1080 * 0.26;
 	scene->display_w = 2560 * 0.6;
 	scene->display_h = 1440 * 0.6;
 	scene->reflection_depth = REFLECTION_DEPTH;
 	scene->shapes[0].highlighted = true;
+	sem_unlink("/loading");
+	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	t_mlx		mlx;
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");

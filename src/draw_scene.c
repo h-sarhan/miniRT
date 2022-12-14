@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 11:35:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 12:23:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	*render_scene(t_worker *worker)
 	unsigned int	shape_idx;
 	t_ray			ray;
 
+	int	line_count =( worker->y_end - worker->y_start);
 	y = worker->y_start - 1;
 	while (++y < worker->y_end)
 	{
@@ -121,7 +122,16 @@ void	*render_scene(t_worker *worker)
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
+		if (worker->scene->edit_mode == false && (y - worker->y_start) % (line_count / 4) == 0)
+		{
+			// printf("%d\n", y - worker->y_start);
+			// printf("%d\n", line_count / 4);
+			sem_post(worker->scene->sem_loading);
+			// ft_putstr_fd("posted\n", 1);
+			
+		}
 	}
+	// sem_post(worker->scene->sem_loading);
 	return (NULL);
 }
 
@@ -430,6 +440,18 @@ void	draw_scene(t_scene *scene)
 		pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
 		i++;
 	}
+	if (scene->edit_mode == false)
+	{
+		int sem_counter = 0;
+		ft_putstr_fd("[", 1);
+		while (sem_counter < NUM_THREADS * 4)
+		{
+			ft_putstr_fd("=", 1);
+			sem_wait(scene->sem_loading);
+			sem_counter++;
+		}
+		ft_putstr_fd("]\n", 1);
+	}
 	i = 0;
 	while (i < NUM_THREADS)
 	{
@@ -458,10 +480,13 @@ void	draw_scene(t_scene *scene)
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("scale time is %f\n", elapsed);
+	clock_gettime(CLOCK_MONOTONIC, &start);
 	draw_shape_marker(scene);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 	if (scene->menu == true && scene->edit_mode == true)
-	{
 		draw_menu(scene);
-	}
+	clock_gettime(CLOCK_MONOTONIC, &finish);
+	elapsed = (finish.tv_sec - start.tv_sec);
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("draw time is %f\n", elapsed);
 }

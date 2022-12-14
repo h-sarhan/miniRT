@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 10:31:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:38:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ struct s_scene
 	bool		edit_mode;
 	bool		menu;
 	int			reflection_depth;
+	sem_t		*sem_loading;
 };
 
 typedef struct s_worker		t_worker;

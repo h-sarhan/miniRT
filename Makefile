@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/14 11:01:14 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/14 12:16:09 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ endif
 
 CFLAGS = -Wall -Wextra  -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address \
 
 all: $(NAME)
 

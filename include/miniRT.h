@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 04:17:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 11:36:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <immintrin.h>
 # include <fcntl.h>
+# include <semaphore.h>
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
 # include "intersection.h"
