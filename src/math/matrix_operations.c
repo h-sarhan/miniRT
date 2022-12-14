@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 05:39:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 13:45:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 	__m256d row = _mm256_set_pd((*mat)[0][0], (*mat)[0][1], (*mat)[0][2], (*mat)[0][3]);
 	__m256d res_256 = _mm256_mul_pd(vec_256, row);
 	__m256d sum = _mm256_hadd_pd(res_256, res_256);
+
 	res->x = sum[0] + sum[2];
 	row = _mm256_set_pd((*mat)[1][0], (*mat)[1][1], (*mat)[1][2], (*mat)[1][3]);
 	res_256 = _mm256_mul_pd(vec_256, row);

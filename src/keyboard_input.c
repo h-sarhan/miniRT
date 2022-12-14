@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 11:16:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 14:01:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int	set_key_down(int key, t_scene *scene)
 {
-	printf("%d\n", key);
 	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 	if (key == KEY_M)
 	{

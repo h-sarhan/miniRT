@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 13:40:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 14:01:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	*render_scene(t_worker *worker)
 	unsigned int	shape_idx;
 	t_ray			ray;
 
-	int	step_count =( worker->y_end - worker->y_start) / 5;
+	int	line_counter = 0;
 	y = worker->y_start - 1;
 	while (++y < worker->y_end)
 	{
@@ -121,8 +121,12 @@ void	*render_scene(t_worker *worker)
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
-		if (worker->scene->edit_mode == false && (y - worker->y_start) % (step_count) == 0)
+		line_counter++;
+		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 5))
+		{
 			sem_post(worker->scene->sem_loading);
+			line_counter = 0;
+		}
 	}
 	return (NULL);
 }
