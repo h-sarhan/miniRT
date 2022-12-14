@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 12:23:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 13:40:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 			add_colors(&final_color, &final_color, &reflected);
 			light_idx++;
 		}
-		itx->shape->mlx_color = create_mlx_color(&final_color);
-			*(int *)(worker->addr + pixel) = itx->shape->mlx_color;
+		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
 		
 	}
 }
@@ -104,7 +103,7 @@ void	*render_scene(t_worker *worker)
 	unsigned int	shape_idx;
 	t_ray			ray;
 
-	int	line_count =( worker->y_end - worker->y_start);
+	int	step_count =( worker->y_end - worker->y_start) / 5;
 	y = worker->y_start - 1;
 	while (++y < worker->y_end)
 	{
@@ -122,16 +121,9 @@ void	*render_scene(t_worker *worker)
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
-		if (worker->scene->edit_mode == false && (y - worker->y_start) % (line_count / 4) == 0)
-		{
-			// printf("%d\n", y - worker->y_start);
-			// printf("%d\n", line_count / 4);
+		if (worker->scene->edit_mode == false && (y - worker->y_start) % (step_count) == 0)
 			sem_post(worker->scene->sem_loading);
-			// ft_putstr_fd("posted\n", 1);
-			
-		}
 	}
-	// sem_post(worker->scene->sem_loading);
 	return (NULL);
 }
 
@@ -141,7 +133,6 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 	int			y;
 	int			src_x;
 	int			src_y;
-
 
 	y = worker->y_scale_start - 1;
 	while (++y < worker->y_scale_end)
@@ -444,13 +435,22 @@ void	draw_scene(t_scene *scene)
 	{
 		int sem_counter = 0;
 		ft_putstr_fd("[", 1);
-		while (sem_counter < NUM_THREADS * 4)
+		int load = 0;
+		while (load < NUM_THREADS * 5)
 		{
-			ft_putstr_fd("=", 1);
+			ft_putstr_fd(RED".", 1);
+			load++;
+		}
+		ft_putstr_fd(RESET"]", 1);
+		ft_putstr_fd("\r", 1);
+		ft_putstr_fd("[", 1);
+		while (sem_counter < NUM_THREADS * 5)
+		{
+			ft_putstr_fd(GREEN"=", 1);
 			sem_wait(scene->sem_loading);
 			sem_counter++;
 		}
-		ft_putstr_fd("]\n", 1);
+		ft_putstr_fd(RESET"]\n", 1);
 	}
 	i = 0;
 	while (i < NUM_THREADS)

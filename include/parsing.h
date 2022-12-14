@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 11:43:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 13:39:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define RESET "\x1b[0m"
 # define YELLOW "\x1b[33m"
 # define MAGENTA "\e[0;35m"
+# define GREEN  "\x1B[32m"
 # define LIGHT_MAX 20
 # define SHAPE_MAX 100
 
