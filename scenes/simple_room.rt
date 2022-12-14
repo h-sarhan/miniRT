@@ -115,4 +115,10 @@ pl 20,0,0 1,0,0 255,230,230
 
 
 // not implemented
-//cy 0.0,1.,20.6 0,0,1.0 1 21.42 10,10,255
+cy 2.0,3.,0 0,1,0.0 2 1.42 10,255,25
+{
+	reflectiveness: 0.1,
+	specular: 0.9,
+	shininess: 100,
+	color: green
+}

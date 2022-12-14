@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 14:01:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 15:02:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,10 +292,13 @@ void	draw_shape_info(t_scene *scene)
 			shape_idx++;
 			continue;
 		}
-		if (shape->type == SPHERE)
+		if (shape->type == SPHERE || shape->type == CYLINDER)
 		{
 			char str[1000];
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
+			if (shape->type == SPHERE)
+				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
+			if (shape->type == CYLINDER)
+				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Cylinder");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
 			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.06), 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);

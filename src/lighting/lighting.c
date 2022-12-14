@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/12 13:52:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 14:52:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,9 @@ t_color	lighting(t_intersect *itx, t_scene *scene, int light_idx)
 	t_color		diffuse;
 	t_color		specular;
 	t_color		result;
-	// t_color		highlighted_color;
 	
-	// highlighted_color.a = 0;
-	// highlighted_color.r = 0xff / 255.0;
-	// highlighted_color.g = 0xde / 255.0;
-	// highlighted_color.b = 0xeb / 255.0;
-	// if (itx->shape->highlighted == true)
-	// {
-	// 	blend_colors(&effective_color, &highlighted_color,
-	// 		&scene->lights[light_idx].color);
-	// }
-	// else
-	// {
-		blend_colors(&effective_color, &itx->shape->color,
-			&scene->lights[light_idx].color);
-	// }
+	blend_colors(&effective_color, &itx->shape->color,
+		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &diffuse,
 			&effective_color, &specular) == false)
 		return (get_ambient(&effective_color,

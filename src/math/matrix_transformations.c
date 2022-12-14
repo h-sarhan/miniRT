@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/06 23:44:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 15:00:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,10 +203,10 @@ void	calculate_transforms(t_scene *scene)
 		identity_matrix(&scale);
 		identity_matrix(&rot);
 		identity_matrix(&translate);
-		if (scene->shapes[i].type == SPHERE)
+		if (scene->shapes[i].type == SPHERE || scene->shapes[i].type == CYLINDER)
 			scaling_matrix(&scale, scene->shapes[i].radius,
 				scene->shapes[i].radius, scene->shapes[i].radius);
-		if (scene->shapes[i].type == PLANE)
+		if (scene->shapes[i].type == PLANE || scene->shapes[i].type == CYLINDER)
 			calculate_plane_rotation(&rot, &scene->shapes[i]);
 		translate_matrix(&translate, scene->shapes[i].origin.x,
 			scene->shapes[i].origin.y, scene->shapes[i].origin.z);

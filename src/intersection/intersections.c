@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/14 05:39:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/14 18:28:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,11 @@ bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *shape)
 
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
-	t_ray		transf_ray;
+	t_ray	transf_ray;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
 
 	transform_ray(&transf_ray, ray, shape);
 	if (shape->type == SPHERE)
@@ -93,6 +97,25 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		transf_ray.direction.y;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
+	}
+	if (shape->type == CYLINDER)
+	{
+		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
+		if (fabs(a) < 0.001)
+			return (false);
+		b = 2 * (transf_ray.direction.x * transf_ray.origin.x + transf_ray.direction.z * transf_ray.origin.z);
+		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
+		discriminant = b * b - 4 * a * c;
+		if (discriminant < 0)
+			return (false);
+		b *= -1;
+		a *= 2;
+		discriminant = sqrt(discriminant);
+		xs->arr[xs->count].time = (b - discriminant) / a;
+		xs->arr[xs->count].shape = shape;
+		xs->arr[xs->count + 1].time = (b + discriminant) / a;
+		xs->arr[xs->count + 1].shape = shape;
+		xs->count += 2;
 	}
 	return (true);
 }
@@ -137,6 +160,15 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 		object_normal.x = 0;
 		object_normal.y = 1;
 		object_normal.z = 0;
+		object_normal.w = 0;
+		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+		world_normal.w = 0;
+		normalize_vec(&world_normal);
+	}
+	if (shape->type == CYLINDER)
+	{
+		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
+		object_normal.y = 0;
 		object_normal.w = 0;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
