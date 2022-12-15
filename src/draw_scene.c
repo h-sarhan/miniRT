@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 15:02:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/15 18:25:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,22 +249,26 @@ void	draw_marker(t_scene *scene, int x, int y, int color)
 		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 	}
+}
+
+void	draw_arrow(t_scene *scene, int x, int y, int color)
+{
 	if (x <= 0 && y > 0 && y < scene->display_h)
-		draw_left_arrow(scene, y, 0x00ffff);
+		draw_left_arrow(scene, y, color);
 	if (x >= scene->display_w && y > 0 && y < scene->display_h)
-		draw_right_arrow(scene, y, 0x00ffff);
+		draw_right_arrow(scene, y, color);
 	if (y <= 0 && x >= 0 && x < scene->display_w)
-		draw_up_arrow(scene, x, 0x00ffff);
+		draw_up_arrow(scene, x, color);
 	if (y >= scene->display_h && x > 0 && x < scene->display_w)
-		draw_down_arrow(scene, x, 0x00ffff);
+		draw_down_arrow(scene, x, color);
 	if (x <= 0 && y >= scene->display_h)
-		draw_bottom_left_arrow(scene, 0x00ffff);
+		draw_bottom_left_arrow(scene, color);
 	if (x >= scene->display_w && y >= scene->display_h)
-		draw_bottom_right_arrow(scene, 0x00ffff);
+		draw_bottom_right_arrow(scene, color);
 	if (x >= scene->display_w && y <= 0)
-		draw_top_right_arrow(scene, 0x00ffff);
+		draw_top_right_arrow(scene, color);
 	if (x <= 0 && y <= 0)
-		draw_top_left_arrow(scene, 0x00ffff);
+		draw_top_left_arrow(scene, color);
 }
 
 void	perspective_projection(t_vector *point, const t_scene *scene)
@@ -283,7 +287,9 @@ void	draw_shape_info(t_scene *scene)
 		return ;
 	unsigned int	shape_idx = 0;
 	t_shape	*shape;
-
+	t_vector	origin_proj;
+	t_vector	origin;
+	
 	while (shape_idx < scene->count.shape_count)
 	{
 		shape = &scene->shapes[shape_idx];
@@ -292,21 +298,38 @@ void	draw_shape_info(t_scene *scene)
 			shape_idx++;
 			continue;
 		}
+		ft_memcpy(&origin, &shape->origin, sizeof(t_vector));
+		origin.x -= 0.2;
+		origin.y += shape->radius;
+		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
+		perspective_projection(&origin_proj, scene);
 		if (shape->type == SPHERE || shape->type == CYLINDER)
 		{
 			char str[1000];
 			if (shape->type == SPHERE)
-				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
+				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Sphere");
 			if (shape->type == CYLINDER)
-				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Cylinder");
+				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Cylinder");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.06), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.10) * scene->display_h , 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.08), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.08) * scene->display_h , 0xffffff, str);
 			sprintf(str, "z: % 9.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.10), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.06) * scene->display_h , 0xffffff, str);
 			sprintf(str, "radius: %.2f", shape->radius);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.12), 0xffffff, str);
+			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.04) * scene->display_h , 0xffffff, str);
+			// if (shape->type == SPHERE)
+			// 	mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
+			// if (shape->type == CYLINDER)
+			// 	mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Cylinder");
+			// sprintf(str, "x: % 9.2f", shape->origin.x);
+			// mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.06), 0xffffff, str);
+			// sprintf(str, "y: % 9.2f", shape->origin.y);
+			// mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.08), 0xffffff, str);
+			// sprintf(str, "z: % 9.2f", shape->origin.z);
+			// mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.10), 0xffffff, str);
+			// sprintf(str, "radius: %.2f", shape->radius);
+			// mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.12), 0xffffff, str);
 		}
 		shape_idx++;
 	}
@@ -345,12 +368,12 @@ void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
 
 void	draw_shape_marker(t_scene *scene)
 {
+	unsigned int	shape_idx = 0;
+	t_shape		*shape;
+	t_vector	origin_proj;
+
 	if (scene->edit_mode == false)
 		return ;
-	unsigned int	shape_idx = 0;
-	t_shape	*shape;
-	t_vector	cam_point;
-
 	while (shape_idx < scene->count.shape_count)
 	{
 		shape = &scene->shapes[shape_idx];
@@ -359,10 +382,13 @@ void	draw_shape_marker(t_scene *scene)
 			shape_idx++;
 			continue;
 		}
-		mat_vec_multiply(&cam_point, &scene->camera.transform, &shape->origin);
-		perspective_projection(&cam_point, scene);
+		mat_vec_multiply(&origin_proj, &scene->camera.transform, &shape->origin);
+		perspective_projection(&origin_proj, scene);
 		if (shape->type == SPHERE)
-			draw_marker(scene, (int)(cam_point.x * scene->display_w), (int)(cam_point.y  * scene->display_h) , 0x00ffff);
+		{
+			draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
+			draw_arrow(scene,  (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
+		}
 		shape_idx++;
 	}
 }
@@ -412,7 +438,6 @@ void	draw_menu(t_scene *scene)
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.91), 0xfd7e14, "M:          Menu");
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.94), 0xfd7e14, "Space:      Render");
 	}
-	draw_shape_info(scene);
 }
 
 /**
@@ -490,6 +515,7 @@ void	draw_scene(t_scene *scene)
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	draw_shape_marker(scene);
 	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
+	draw_shape_info(scene);
 	if (scene->menu == true && scene->edit_mode == true)
 		draw_menu(scene);
 	clock_gettime(CLOCK_MONOTONIC, &finish);
