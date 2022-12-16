@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:35:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:13:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,8 +349,16 @@ void	draw_shape_info(t_scene *scene)
 			continue;
 		}
 		ft_memcpy(&origin, &shape->origin, sizeof(t_vector));
-		origin.x -= 0.2;
-		origin.y += shape->radius;
+		if (shape->type == SPHERE)
+		{
+			origin.x -= 0.2;
+			origin.y += shape->radius;
+		}
+		if (shape->type == CYLINDER)
+		{
+			origin.x -= 0.2;
+			origin.y += shape->height;
+		}
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
 		if (origin_proj.z > 0)
 			return ;

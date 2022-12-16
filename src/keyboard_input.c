@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:32:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:03:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ int	key_handler(t_scene *scene)
 		}
 		if (scene->keys_held.minus == true)
 		{
-			if (scene->edit_scale > 0.1)
+			if (scene->edit_scale > 0.06)
 			{
 				scene->edit_scale -= 0.05;
 				scene->edit_w = 1920 * scene->edit_scale;

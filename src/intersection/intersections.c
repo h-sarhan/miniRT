@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/14 18:28:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:31:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,18 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		xs->arr[xs->count].shape = shape;
 		xs->arr[xs->count + 1].time = (b + discriminant) / a;
 		xs->arr[xs->count + 1].shape = shape;
-		xs->count += 2;
+		if (xs->arr[xs->count].time > xs->arr[xs->count + 1].time)
+			ft_swapd(&xs->arr[xs->count].time, &xs->arr[xs->count + 1].time);
+		double y0 = transf_ray.origin.y + xs->arr[xs->count].time * transf_ray.direction.y;
+		double cylinder_bottom = (shape->height / 2) ;
+		double cylinder_top = - (shape->height / 2);
+		double y1 = transf_ray.origin.y + xs->arr[xs->count + 1].time * transf_ray.direction.y;
+		if ((y0 > cylinder_bottom || y0 < cylinder_top) && (y1 > cylinder_bottom || y1 < cylinder_top))
+			return (false);
+		if (y0 < cylinder_bottom && y0 > cylinder_top)
+			xs->count += 1;
+		if (y1 < cylinder_bottom && y1 > cylinder_top)
+			xs->count += 1;
 	}
 	return (true);
 }

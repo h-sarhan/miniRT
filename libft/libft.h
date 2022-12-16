@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 10:40:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 16:16:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char	**ft_split_whitespace(char const *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		is_space(char c);
 int		ft_strcmp_case(const char *s1, const char *s2);
+void	ft_swap(int *a, int *b);
+void	ft_swapd(double *a, double *b);
 
 
 typedef struct s_list

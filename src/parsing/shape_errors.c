@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:24:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	cylinder_parse_error(const t_shape *shape, size_t line_num,
 		printf(YELLOW"Height has to be a positive number\n"RESET);
 	}
 	else if (!orientation_check && !color_check)
-		printf(YELLOW"Error with parsing cylinder on line #%ld\n"RED"->\t%s"
+		printf(YELLOW"Error with parsing cylinder on line #%ld\n"RED"->\t%s\n"
 			YELLOW"Correct syntax is "
 			"\"cy [origin] [orientation] [diameter] [height] [color]\"\n"
 			RESET, line_num, line);
