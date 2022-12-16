@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:09:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:39:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	scene->render_scale = 1;
 	scene->edit_scale = 0.3;
-	scene->render_w = 1920 * 1;
-	scene->render_h = 1080 * 1;
-	scene->edit_w = 1920 * 0.3;
-	scene->edit_h = 1080 * 0.3;
+	scene->render_w = 1920 * scene->render_scale;
+	scene->render_h = 1080 * scene->render_scale;
+	scene->edit_w = 1920 * scene->edit_scale;
+	scene->edit_h = 1080 * scene->edit_scale;
 	scene->display_w = 1920 * 0.8;
 	scene->display_h = 1080 * 0.8;
 	scene->reflection_depth = REFLECTION_DEPTH;

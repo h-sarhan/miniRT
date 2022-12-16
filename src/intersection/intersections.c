@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/16 19:55:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:39:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,23 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	}
 	if (shape->type == CYLINDER)
 	{
+		// local_point ← inverse(shape.transform) * point
+		// local_normal ← local_normal_at(shape, local_point)
+		// world_normal ← transpose(inverse(shape.transform)) * local_normal
+		// world_normal.w ← 0
+		// return normalize(world_normal)
+
+		// function local_normal_at(cylinder, point)
+		// # compute the square of the distance from the y axis
+		// dist ← point.x² + point.z²
+		// if dist < 1 and point.y >= cylinder.maximum - EPSILON
+		// return vector(0, 1, 0)
+		// else if dist < 1 and point.y <= cylinder.minimum + EPSILON
+		// return vector(0, -1, 0)
+		// else
+		// return vector(point.x, 0, point.z)
+		// end if
+		// end function
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
 		double	distance = object_normal.x * object_normal.x + object_normal.z * object_normal.z;
 		if (distance < 1 && object_normal.y >= (shape->height / 2) - EPSILON)
@@ -237,10 +254,11 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 			object_normal.y = 1;
 			object_normal.z = 0;
 			object_normal.w = 0;
-			mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
-			world_normal.w = 0;
-			normalize_vec(&world_normal);
-			return (world_normal);
+			// mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+			// world_normal.w = 0;
+			// normalize_vec(&world_normal);
+			// print_vector(&world_normal);
+			return (object_normal);
 		}
 		if (distance < 1 && object_normal.y <= -(shape->height / 2) + EPSILON)
 		{
@@ -248,10 +266,11 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 			object_normal.y = -1;
 			object_normal.z = 0;
 			object_normal.w = 0;
-			mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
-			world_normal.w = 0;
-			normalize_vec(&world_normal);
-			return (world_normal);
+			// mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+			// world_normal.w = 0;
+			// normalize_vec(&world_normal);
+			// print_vector(&world_normal);
+			return (object_normal);
 		}
 		object_normal.y = 0;
 		object_normal.w = 0;
