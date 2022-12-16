@@ -6,16 +6,93 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:15:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 15:32:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include <unistd.h>
 
+
+void	handle_color_change(int key, t_scene *scene)
+{
+	t_color	color;
+	if (key == KEY_1)
+	{
+		color.r = 0x22 / 255.0;
+		color.g = 0x8b / 255.0;
+		color.b = 0xe6 / 255.0;
+	}
+	if (key == KEY_2)
+	{
+		color.r = 0xf0 / 255.0;
+		color.g = 0x3e / 255.0;
+		color.b = 0x3e / 255.0;
+	}
+	if (key == KEY_3)
+	{
+		color.r = 0x70 / 255.0;
+		color.g = 0x48 / 255.0;
+		color.b = 0xe8 / 255.0;
+	}
+	if (key == KEY_4)
+	{
+		color.r = 0x37 / 255.0;
+		color.g = 0xb2 / 255.0;
+		color.b = 0x4d / 255.0;
+	}
+	if (key == KEY_5)
+	{
+		color.r = 0xf5 / 255.0;
+		color.g = 0x9f / 255.0;
+		color.b = 0x00 / 255.0;
+	}
+	if (key == KEY_6)
+	{
+		color.r = 0xe6 / 255.0;
+		color.g = 0x49 / 255.0;
+		color.b = 0x80 / 255.0;
+	}
+	if (key == KEY_7)
+	{
+		color.r = 0x6d / 255.0;
+		color.g = 0x65 / 255.0;
+		color.b = 0x6d / 255.0;
+	}
+	if (key == KEY_8)
+	{
+		color.r = 0x15 / 255.0;
+		color.g = 0xaa / 255.0;
+		color.b = 0xbf / 255.0;
+	}
+	if (key == KEY_9)
+	{
+		color.r = 0xf7 / 255.0;
+		color.g = 0x67 / 255.0;
+		color.b = 0x07 / 255.0;
+	}
+	scene->shapes[scene->shape_idx % scene->count.shape_count].color = color;
+}
+
 int	set_key_down(int key, t_scene *scene)
 {
+	printf("%d\n", key);
 	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
+	if (key == KEY_1
+	|| key == KEY_2
+	|| key == KEY_3
+	|| key == KEY_4
+	|| key == KEY_5
+	|| key == KEY_6
+	|| key == KEY_7
+	|| key == KEY_8
+	|| key == KEY_9
+	)
+	{
+		handle_color_change(key, scene);
+		calculate_transforms(scene);
+		draw_scene(scene);
+	}
 	if (key == KEY_M)
 	{
 		scene->menu = !scene->menu;

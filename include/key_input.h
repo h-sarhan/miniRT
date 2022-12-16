@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/14 11:02:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 15:25:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@
 #  define KEY_SPACE 49
 #  define KEY_R 15
 #  define KEY_M 46
+#  define KEY_1 18
+#  define KEY_2 19
+#  define KEY_3 20
+#  define KEY_4 21
+#  define KEY_5 23
+#  define KEY_6 22
+#  define KEY_7 26
+#  define KEY_8 28
+#  define KEY_9 25
 # endif
 int	key_handler(t_scene *scene);
 

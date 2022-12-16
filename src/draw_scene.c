@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:15:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 15:35:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -470,7 +470,7 @@ void	draw_menu(t_scene *scene)
 		y++;
 	}
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
-	int	starting_x = (scene->display_w) * 0.013;
+	int	starting_x = (scene->display_w) * 0.011;
 	int	starting_y = (scene->display_h) * (0.05);
 	int	gap = scene->display_h * 0.03;
 	int color = 0x99e9f2;
@@ -484,6 +484,7 @@ void	draw_menu(t_scene *scene)
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "R:      Reflections");
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "M:      Menu");
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 7, color, "Space:  Render");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:    Colors");
 	}
 	if (scene->edit_mode == true && scene->camera_mode == true)
 	{
@@ -495,6 +496,7 @@ void	draw_menu(t_scene *scene)
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "M:          Menu");
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "Space:      Render");
 		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 7, color, "+/-:        Res scale");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:        Colors");
 	}
 }
 
