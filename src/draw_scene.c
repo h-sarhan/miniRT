@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 18:13:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 19:47:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 	}
 	else
 		intersection->inside = false;
-	scale_vec(&intersection->over_point, &intersection->normal, 0.001);
+	scale_vec(&intersection->over_point, &intersection->normal, EPSILON);
 	add_vec(&intersection->over_point, &intersection->point,
 		&intersection->over_point);
 	reflect(&intersection->reflect_vec, &ray->direction, &intersection->normal);

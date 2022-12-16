@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/16 18:31:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 19:55:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,46 @@ bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *shape)
 	return (true);
 }
 
+bool	within_cylinder_radius(t_ray *ray, double t)
+{
+	double x = ray->origin.x + ray->direction.x * t;
+	double z = ray->origin.z + ray->direction.z * t;
+	if (x * x + z * z <= 1)
+		return (true);
+	return (false);
+}
+
+bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
+{
+	bool	intersected;
+
+	double cylinder_bottom = (shape->height / 2) ;
+	double cylinder_top = -(shape->height / 2);
+	intersected = false;
+	if (fabs(ray->direction.y) > EPSILON)
+	{
+		double t;
+		t = (cylinder_bottom - ray->origin.y) / ray->direction.y;
+		if (within_cylinder_radius(ray, t))
+		{
+			xs->arr[xs->count].time = t;
+			xs->arr[xs->count].shape = shape;
+			xs->count++;
+			intersected = true;
+		}
+		t = (cylinder_top - ray->origin.y) / ray->direction.y;
+		if (within_cylinder_radius(ray, t))
+		{
+			xs->arr[xs->count].time = t;
+			xs->arr[xs->count].shape = shape;
+			xs->count++;
+			intersected = true;
+		}
+	}
+	return (intersected);
+}
+
+
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
 	t_ray	transf_ray;
@@ -91,7 +131,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	if (shape->type == PLANE)
 	{
-		if (fabs(transf_ray.direction.y) < 0.001)
+		if (fabs(transf_ray.direction.y) < EPSILON)
 			return (false);
 		xs->arr[xs->count].time = (transf_ray.origin.y * -1) / \
 		transf_ray.direction.y;
@@ -100,14 +140,21 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	if (shape->type == CYLINDER)
 	{
+		double cylinder_bottom = (shape->height / 2) + EPSILON ;
+		double cylinder_top = - (shape->height / 2) - EPSILON;
 		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
-		if (fabs(a) < 0.001)
-			return (false);
-		b = 2 * (transf_ray.direction.x * transf_ray.origin.x + transf_ray.direction.z * transf_ray.origin.z);
+		if (fabs(a) < EPSILON)
+		{
+			return check_cylinder_caps(&transf_ray, shape, xs);
+		}
+		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
 		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
 		discriminant = b * b - 4 * a * c;
-		if (discriminant < 0)
-			return (false);
+		if (fabs(discriminant) < EPSILON)
+		{
+			return check_cylinder_caps(&transf_ray, shape, xs);
+			// return (false);
+		}
 		b *= -1;
 		a *= 2;
 		discriminant = sqrt(discriminant);
@@ -118,15 +165,19 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		if (xs->arr[xs->count].time > xs->arr[xs->count + 1].time)
 			ft_swapd(&xs->arr[xs->count].time, &xs->arr[xs->count + 1].time);
 		double y0 = transf_ray.origin.y + xs->arr[xs->count].time * transf_ray.direction.y;
-		double cylinder_bottom = (shape->height / 2) ;
-		double cylinder_top = - (shape->height / 2);
 		double y1 = transf_ray.origin.y + xs->arr[xs->count + 1].time * transf_ray.direction.y;
 		if ((y0 > cylinder_bottom || y0 < cylinder_top) && (y1 > cylinder_bottom || y1 < cylinder_top))
-			return (false);
+		{
+			// check_cylinder_caps(&transf_ray, shape, xs);
+			// return (false);
+			return check_cylinder_caps(&transf_ray, shape, xs);
+		}
 		if (y0 < cylinder_bottom && y0 > cylinder_top)
 			xs->count += 1;
 		if (y1 < cylinder_bottom && y1 > cylinder_top)
 			xs->count += 1;
+		check_cylinder_caps(&transf_ray, shape, xs);
+		return (true);
 	}
 	return (true);
 }
@@ -179,6 +230,29 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	if (shape->type == CYLINDER)
 	{
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
+		double	distance = object_normal.x * object_normal.x + object_normal.z * object_normal.z;
+		if (distance < 1 && object_normal.y >= (shape->height / 2) - EPSILON)
+		{
+			object_normal.x = 0;
+			object_normal.y = 1;
+			object_normal.z = 0;
+			object_normal.w = 0;
+			mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+			world_normal.w = 0;
+			normalize_vec(&world_normal);
+			return (world_normal);
+		}
+		if (distance < 1 && object_normal.y <= -(shape->height / 2) + EPSILON)
+		{
+			object_normal.x = 0;
+			object_normal.y = -1;
+			object_normal.z = 0;
+			object_normal.w = 0;
+			mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+			world_normal.w = 0;
+			normalize_vec(&world_normal);
+			return (world_normal);
+		}
 		object_normal.y = 0;
 		object_normal.w = 0;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);

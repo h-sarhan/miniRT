@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 12:44:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 19:10:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 	if (orientation->x < -1.0 || orientation->x > 1.0
 		|| orientation->y < -1.0 || orientation->y > 1.0
 		|| orientation->z < -1.0 || orientation->z > 1.0
-		|| vec_magnitude(orientation) == 0.0)
+		|| vec_magnitude(orientation) <= EPSILON)
 	{
 		printf(YELLOW"Error with parsing %s orientation on line #%ld\n"
 			RED"->\t%s\n"RESET, element, line_num, line);
@@ -37,7 +37,7 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 			printf(YELLOW"The y value is out of range\n"RESET);
 		if (orientation->z < -1.0 || orientation->z > 1.0)
 			printf(YELLOW"The z value is out of range\n"RESET);
-		if (vec_magnitude(orientation) == 0.0)
+		if (vec_magnitude(orientation) <= EPSILON)
 			printf(YELLOW"The orientation vector cannot be the zero vector"
 			"\n"RESET);
 		return (true);

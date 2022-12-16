@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 17:01:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/02 21:56:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 19:40:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	mat_inverse(t_mat4 *res, const t_mat4 *mat)
 	int		row;
 
 	det = det4(mat);
-	if (fabs(det) < 0.01)
+	if (fabs(det) < EPSILON)
 		return ;
 	row = 0;
 	while (row < 4)
