@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/15 18:25:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/16 09:33:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ void	*render_scene(t_worker *worker)
 			shape_idx = -1;
 			arr.count = 0;
 			while (++shape_idx < worker->scene->count.shape_count)
+			{
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+			}
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);
 		}
@@ -162,66 +164,114 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 
 void	draw_left_arrow(t_scene *scene, int y, int color)
 {
-	dda(scene, 0, 7, y, y + 7, color);
-
-	dda(scene, 0, 15, y, y, color);
-
-	dda(scene, 0, 7, y, y - 7, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./left_arrow.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, y - h / 2);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_right_arrow(t_scene *scene, int y, int color)
 {
-	dda(scene, scene->display_w, scene->display_w - 7, y, y + 7, color);
-
-	dda(scene, scene->display_w, scene->display_w - 15, y, y, color);
-
-	dda(scene, scene->display_w, scene->display_w - 7, y, y - 7, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./right_arrow.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 25, y - h / 2);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_up_arrow(t_scene *scene, int x, int color)
 {
-	dda(scene, x, x + 7, 0, 7, color);
-
-	dda(scene, x, x, 0, 15, color);
-
-	dda(scene, x, x - 7, 0, 7, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./up_arrow.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, 0);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_down_arrow(t_scene *scene, int x, int color)
 {
-	dda(scene, x, x + 7, scene->display_h, scene->display_h - 7, color);
-
-	dda(scene, x, x, scene->display_h, scene->display_h - 15, color);
-
-	dda(scene, x, x - 7, scene->display_h, scene->display_h - 7, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./down_arrow.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, scene->display_h - 25);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_bottom_left_arrow(t_scene *scene, int color)
 {
-	dda(scene, 0, 10, scene->display_h - 5, scene->display_h - 5, color);
-	dda(scene, 0, 10, scene->display_h - 5, scene->display_h - 15, color);
-	dda(scene, 0, 0, scene->display_h - 5, scene->display_h - 15, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./bottom_left.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, scene->display_h - 35);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_bottom_right_arrow(t_scene *scene, int color)
 {
-	dda(scene, scene->display_w - 1, scene->display_w - 10, scene->display_h - 5, scene->display_h - 5, color);
-	dda(scene, scene->display_w - 1, scene->display_w - 10, scene->display_h - 5, scene->display_h - 15, color);
-	dda(scene, scene->display_w - 1, scene->display_w - 0, scene->display_h - 5, scene->display_h - 15, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./bottom_right.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, scene->display_h - 35);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_top_right_arrow(t_scene *scene, int color)
 {
-	dda(scene, scene->display_w - 1, scene->display_w - 10,  3, 3, color);
-	dda(scene, scene->display_w - 1, scene->display_w - 10, 3, 15, color);
-	dda(scene, scene->display_w - 1, scene->display_w - 0, 3, 15, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./top_right.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, 0);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_top_left_arrow(t_scene *scene, int color)
 {
-	dda(scene, 1, 10,  3, 3, color);
-	dda(scene, 1, 10, 3, 15, color);
-	dda(scene, 1, 0, 3, 15, color);
+	int w;
+	int h;
+	(void)color;
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./top_left.xpm", &w, &h);
+	if (img == NULL)
+	{
+		printf("Could not open imaege file\n");
+	}
+	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, 0);
+	mlx_destroy_image(scene->mlx, img);
 }
 
 void	draw_marker(t_scene *scene, int x, int y, int color)
@@ -283,13 +333,13 @@ void	perspective_projection(t_vector *point, const t_scene *scene)
 
 void	draw_shape_info(t_scene *scene)
 {
-	if (scene->edit_mode == false)
-		return ;
 	unsigned int	shape_idx = 0;
-	t_shape	*shape;
+	t_shape		*shape;
 	t_vector	origin_proj;
 	t_vector	origin;
 	
+	if (scene->edit_mode == false)
+		return ;
 	while (shape_idx < scene->count.shape_count)
 	{
 		shape = &scene->shapes[shape_idx];
@@ -302,8 +352,10 @@ void	draw_shape_info(t_scene *scene)
 		origin.x -= 0.2;
 		origin.y += shape->radius;
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
+		if (origin_proj.z > 0)
+			return ;
 		perspective_projection(&origin_proj, scene);
-		if (shape->type == SPHERE || shape->type == CYLINDER)
+		if ((shape->type == SPHERE || shape->type == CYLINDER))
 		{
 			char str[1000];
 			if (shape->type == SPHERE)
@@ -384,9 +436,11 @@ void	draw_shape_marker(t_scene *scene)
 		}
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &shape->origin);
 		perspective_projection(&origin_proj, scene);
-		if (shape->type == SPHERE)
+		if (shape->type == SPHERE || shape->type == CYLINDER)
 		{
-			draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
+			if (origin_proj.z < 0)
+				draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
+			mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
 			draw_arrow(scene,  (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
 		}
 		shape_idx++;
@@ -416,27 +470,30 @@ void	draw_menu(t_scene *scene)
 		y++;
 	}
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
+	int	starting_x = (scene->display_w) * 0.013;
+	int	starting_y = (scene->display_h) * (0.05);
+	int	gap = scene->display_h * 0.03;
+	int color = 0x99e9f2;
 	if (scene->edit_mode == true && scene->camera_mode == false)
 	{
-		// Make starting point and distance variables to make it easy to adjust the spacing
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.035, (scene->display_h) * (0.75), 0xfd7e14, "[Edit mode]");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.79), 0xfd7e14, "WASDQE: Move");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.82), 0xfd7e14, "C:      Camera mode");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.85), 0xfd7e14, "TAB:    Switch Shape");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.88), 0xfd7e14, "+/-:    Scale Shape");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.91), 0xfd7e14, "R:      Reflections");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.94), 0xfd7e14, "M:      Menu");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.97), 0xfd7e14, "Space:  Render");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, scene->display_w * 0.035, starting_y, color, "[Edit mode]");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap, color, "WASDQE: Move");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 2, color, "C:      Camera mode");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 3, color, "TAB:    Switch Shape");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 4, color, "+/-:    Scale Shape");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "R:      Reflections");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "M:      Menu");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 7, color, "Space:  Render");
 	}
 	if (scene->edit_mode == true && scene->camera_mode == true)
 	{
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.035, (scene->display_h) * (0.75), 0xfd7e14, "[Camera mode]");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.79), 0xfd7e14, "WASDQE:     Move");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.82), 0xfd7e14, "C:          Edit mode");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.85), 0xfd7e14, "Arrow Keys: Look");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.88), 0xfd7e14, "R:          Reflect");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.91), 0xfd7e14, "M:          Menu");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.013, (scene->display_h) * (0.94), 0xfd7e14, "Space:      Render");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, scene->display_w * 0.035, starting_y, color, "[Camera mode]");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap, color, "WASDQE:     Move");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 2, color, "C:          Edit mode");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 3, color, "Arrow Keys: Look");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 4, color, "R:          Reflect");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "M:          Menu");
+		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "Space:      Render");
 	}
 }
 
@@ -514,7 +571,8 @@ void	draw_scene(t_scene *scene)
 	printf("scale time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	draw_shape_marker(scene);
-	mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
+	if (scene->edit_mode == false)
+		mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
 	draw_shape_info(scene);
 	if (scene->menu == true && scene->edit_mode == true)
 		draw_menu(scene);
