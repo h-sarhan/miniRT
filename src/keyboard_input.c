@@ -17,41 +17,54 @@
 void	handle_color_change(int key, t_scene *scene)
 {
 	t_color	color;
+	color = scene->shapes[scene->shape_idx % scene->count.shape_count].color;
 	if (key == KEY_1)
 	{
-		color.r = 0x22 / 255.0;
-		color.g = 0x8b / 255.0;
-		color.b = 0xe6 / 255.0;
+		if (color.r < 0.95)
+			color.r += 0.05;
+		// color.g = 0x8b / 255.0;
+		// color.b = 0xe6 / 255.0;
 	}
 	if (key == KEY_2)
 	{
-		color.r = 0xf0 / 255.0;
-		color.g = 0x3e / 255.0;
-		color.b = 0x3e / 255.0;
+		// color.r = 0xf0 / 255.0;
+		if (color.r > 0.05)
+			color.r -= 0.05;
+		// color.g = 0x3e / 255.0;
+		// color.b = 0x3e / 255.0;
 	}
 	if (key == KEY_3)
 	{
-		color.r = 0x70 / 255.0;
-		color.g = 0x48 / 255.0;
-		color.b = 0xe8 / 255.0;
+		if (color.g < 0.95)
+			color.g += 0.05;
+
+		// color.r = 0x70 / 255.0;
+		// color.g = 0x48 / 255.0;
+		// color.b = 0xe8 / 255.0;
 	}
 	if (key == KEY_4)
 	{
-		color.r = 0x37 / 255.0;
-		color.g = 0xb2 / 255.0;
-		color.b = 0x4d / 255.0;
+		if (color.g > 0.05)
+			color.g -= 0.05;
+		// color.r = 0x37 / 255.0;
+		// color.g = 0xb2 / 255.0;
+		// color.b = 0x4d / 255.0;
 	}
 	if (key == KEY_5)
 	{
-		color.r = 0xf5 / 255.0;
-		color.g = 0x9f / 255.0;
-		color.b = 0x00 / 255.0;
+		if (color.b < 0.95)
+			color.b += 0.05;
+		// color.r = 0xf5 / 255.0;
+		// color.g = 0x9f / 255.0;
+		// color.b = 0x00 / 255.0;
 	}
 	if (key == KEY_6)
 	{
-		color.r = 0xe6 / 255.0;
-		color.g = 0x49 / 255.0;
-		color.b = 0x80 / 255.0;
+		// color.r = 0xe6 / 255.0;
+		// color.g = 0x49 / 255.0;
+		if (color.b > 0.05)
+			color.b -= 0.05;
+		// color.b = 0x80 / 255.0;
 	}
 	if (key == KEY_7)
 	{

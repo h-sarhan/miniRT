@@ -52,7 +52,7 @@ endif
 
 CFLAGS = -Wall -Wextra  -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=thread\
+			# -fsanitize=address\
 
 all: $(NAME)
 
