@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 19:46:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 11:29:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include "utils.h"
 # include "vector.h"
 # include "key_input.h"
+# include "render.h"
 
 # define NUM_THREADS 12
 # define REFLECTION_DEPTH 1

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 11:22:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:14:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,70 +68,7 @@ void	init_workers(t_worker *workers, t_scene *scene)
 	}
 }
 
-void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
-	int pixel)
-{
-	t_intersect		*itx;
-	unsigned int	light_idx;
-	t_color			final_color;
-	t_color			light_color;
 
-	itx = hit(arr);
-	if (itx != NULL)
-	{
-		prepare_computations(itx, ray);
-		ft_bzero(&final_color, sizeof(t_color));
-		light_idx = 0;
-		while (light_idx < worker->scene->count.light_count)
-		{
-			light_color = lighting(itx, worker->scene, light_idx);
-			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			add_colors(&final_color, &final_color, &light_color);
-			add_colors(&final_color, &final_color, &reflected);
-			light_idx++;
-		}
-		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
-		
-	}
-}
-
-void	*render_scene(t_worker *worker)
-{
-	t_intersections	arr;
-	int				x;
-	int				y;
-	unsigned int	shape_idx;
-	t_ray			ray;
-
-	int	line_counter = 0;
-	y = worker->y_start - 1;
-	while (++y < worker->y_end)
-	{
-		x = -1;
-		while (++x < worker->width)
-		{
-			*(unsigned int *)(worker->addr + \
-				(y * worker->width + x) * \
-				worker->scene->mlx->bytes_per_pixel) = 0;
-			ray_for_pixel(&ray, &worker->scene->camera, x, y);
-			shape_idx = -1;
-			arr.count = 0;
-			while (++shape_idx < worker->scene->count.shape_count)
-			{
-				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-			}
-			calculate_lighting(&arr, worker, &ray, (y * worker->width \
-				+ x) * worker->scene->mlx->bytes_per_pixel);
-		}
-		line_counter++;
-		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 5))
-		{
-			sem_post(worker->scene->sem_loading);
-			line_counter = 0;
-		}
-	}
-	return (NULL);
-}
 
 void	*nearest_neighbours_scaling(t_worker *worker)
 {
@@ -528,7 +465,8 @@ void	draw_scene(t_scene *scene)
 	i = 0;
 	while (i < NUM_THREADS)
 	{
-		pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
+		// pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)render_scene_dirty, &workers[i]);
 		i++;
 	}
 	if (scene->edit_mode == false)

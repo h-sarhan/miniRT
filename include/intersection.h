@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/14 10:18:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 11:29:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ bool		is_shadowed(t_scene *scene, int light_idx,
 				t_vector *intersection_point);
 t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
 void	prepare_computations(t_intersect *intersection, t_ray *ray);
+void	*render_scene_dirty(t_worker *worker);
 
 
 #endif
