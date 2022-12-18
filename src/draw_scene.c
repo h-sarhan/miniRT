@@ -386,7 +386,9 @@ void	draw_shape_marker(t_scene *scene)
 			if (origin_proj.z < 0)
 				draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
 			mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
+			#ifdef __APPLE__
 			draw_arrow(scene,  (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
+			#endif
 		}
 		shape_idx++;
 	}
