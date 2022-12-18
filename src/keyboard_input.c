@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 18:03:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 11:22:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,27 +297,27 @@ int	key_handler(t_scene *scene)
 			scene->camera.position.y -= 0.35;
 		if (scene->keys_held.plus == true)
 		{
-			if (scene->edit_scale < 0.7)
-			{
-				scene->edit_scale += 0.05;
-				scene->edit_w = 1920 * scene->edit_scale;
-				scene->edit_h = 1080 * scene->edit_scale;
-				camera_init(&scene->camera, scene);
-				calculate_transforms(scene);
-				draw_scene(scene);
-			}
+			// if (scene->edit_scale < 0.7)
+			// {
+			// 	scene->edit_scale += 0.05;
+			// 	scene->edit_w = 1920 * scene->edit_scale;
+			// 	scene->edit_h = 1080 * scene->edit_scale;
+			// 	camera_init(&scene->camera, scene);
+			// 	calculate_transforms(scene);
+			// 	draw_scene(scene);
+			// }
 		}
 		if (scene->keys_held.minus == true)
 		{
-			if (scene->edit_scale > 0.06)
-			{
-				scene->edit_scale -= 0.05;
-				scene->edit_w = 1920 * scene->edit_scale;
-				scene->edit_h = 1080 * scene->edit_scale;
-				camera_init(&scene->camera, scene);
-				calculate_transforms(scene);
-				draw_scene(scene);
-			}
+			// if (scene->edit_scale > 0.06)
+			// {
+			// 	scene->edit_scale -= 0.05;
+			// 	scene->edit_w = 1920 * scene->edit_scale;
+			// 	scene->edit_h = 1080 * scene->edit_scale;
+			// 	camera_init(&scene->camera, scene);
+			// 	calculate_transforms(scene);
+			// 	draw_scene(scene);
+			// }
 		}
 	}
 	else if (scene->edit_mode == true)
