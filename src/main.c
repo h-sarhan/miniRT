@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 12:14:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 13:12:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 1.5;
-	scene->edit_scale = 0.65;
+	scene->render_scale = 2;
+	scene->edit_scale = 0.55;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
@@ -74,7 +74,7 @@ int	main(int argc, char **argv)
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
 	mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
-	mlx.edit_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
+	mlx.edit_img = mlx_new_image(mlx.mlx, scene->edit_w, scene->edit_w);
 	mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
 	mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
 		&mlx.line_length,&mlx.endian);
@@ -87,7 +87,6 @@ int	main(int argc, char **argv)
 		&mlx.line_length, &mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
-	scene->menu = true;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
 	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
 	mlx_loop_hook(mlx.mlx, key_handler, scene);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 12:14:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 13:25:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -519,15 +519,15 @@ void	draw_scene(t_scene *scene)
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("scale time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	if (scene->camera_mode == false)
+	if (scene->edit_mode == false)
+		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
+	else
+	{
 		draw_shape_marker(scene);
-	if (scene->edit_mode == false || scene->camera_mode == true)
-		mlx_put_image_to_window(mlx->mlx, mlx->mlx_win, mlx->display_img, 0, 0);
+		if (scene->camera_mode == false)
+			draw_shape_info(scene);
+	}
 		
-	if (scene->camera_mode == false)
-		draw_shape_info(scene);
-	// if (scene->menu == true && scene->edit_mode == true)
-	// 	draw_menu(scene);
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 12:13:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:28:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		
 	}
 }
-
 
 void	*render_scene(t_worker *worker)
 {
@@ -92,11 +91,6 @@ int	get_b(int col)
 {
 	return (col & 0xFF);
 }
-
-// int	create_trgb(int t, int r, int g, int b)
-// {
-// 	return (t << 24 | r << 16 | g << 8 | b);
-// }
 
 int	color_avg(int c1, int c2)
 {

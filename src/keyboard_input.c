@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 11:45:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 13:20:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,51 +20,33 @@ void	handle_color_change(int key, t_scene *scene)
 	color = scene->shapes[scene->shape_idx % scene->count.shape_count].color;
 	if (key == KEY_1)
 	{
-		if (color.r < 0.95)
-			color.r += 0.05;
-		// color.g = 0x8b / 255.0;
-		// color.b = 0xe6 / 255.0;
+		if (color.r + 5 / 255.0 < 1)
+			color.r += 5 / 255.0;
 	}
 	if (key == KEY_2)
 	{
-		// color.r = 0xf0 / 255.0;
-		if (color.r > 0.05)
-			color.r -= 0.05;
-		// color.g = 0x3e / 255.0;
-		// color.b = 0x3e / 255.0;
+		if (color.r - 5 / 255.0 > 0)
+			color.r -= 5 / 255.0;
 	}
 	if (key == KEY_3)
 	{
-		if (color.g < 0.95)
-			color.g += 0.05;
-
-		// color.r = 0x70 / 255.0;
-		// color.g = 0x48 / 255.0;
-		// color.b = 0xe8 / 255.0;
+		if (color.g  + 5 / 255.0 < 1)
+			color.g += 5 / 255.0;
 	}
 	if (key == KEY_4)
 	{
-		if (color.g > 0.05)
-			color.g -= 0.05;
-		// color.r = 0x37 / 255.0;
-		// color.g = 0xb2 / 255.0;
-		// color.b = 0x4d / 255.0;
+		if (color.g > 5 / 255.0)
+			color.g -= 5 / 255.0;
 	}
 	if (key == KEY_5)
 	{
-		if (color.b < 0.95)
-			color.b += 0.05;
-		// color.r = 0xf5 / 255.0;
-		// color.g = 0x9f / 255.0;
-		// color.b = 0x00 / 255.0;
+		if (color.b + 5 / 255.0 < 1)
+			color.b += 5 / 255.0;
 	}
 	if (key == KEY_6)
 	{
-		// color.r = 0xe6 / 255.0;
-		// color.g = 0x49 / 255.0;
-		if (color.b > 0.05)
-			color.b -= 0.05;
-		// color.b = 0x80 / 255.0;
+		if (color.b > 5 / 255.0)
+			color.b -= 5 / 255.0;
 	}
 	if (key == KEY_7)
 	{
@@ -85,6 +67,24 @@ void	handle_color_change(int key, t_scene *scene)
 		color.b = 0x07 / 255.0;
 	}
 	scene->shapes[scene->shape_idx % scene->count.shape_count].color = color;
+}
+
+
+void	look_at(t_scene *scene)
+{
+	t_shape *shape = &scene->shapes[scene->shape_idx % scene->count.shape_count];
+	t_vector	final_pos = shape->origin;
+	final_pos.z = final_pos.z - shape->radius - 2;
+	t_vector	final_dir;
+	sub_vec(&final_dir, &shape->origin, &final_pos);
+	normalize_vec(&final_dir);
+	// scene->camera.position.x = shape->origin.x;
+	// scene->camera.position.y = shape->origin.y;
+	// scene->camera.position.z = shape->origin.z - shape->radius - 2;
+	scene->camera.position = final_pos;
+	scene->camera.orientation = final_dir;
+	scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
+	scene->camera.phi = acos(scene->camera.orientation.y);
 }
 
 int	set_key_down(int key, t_scene *scene)
@@ -109,6 +109,13 @@ int	set_key_down(int key, t_scene *scene)
 	if (key == KEY_M)
 	{
 		scene->menu = !scene->menu;
+		calculate_transforms(scene);
+		draw_scene(scene);
+	}
+	if (key == KEY_O && scene->edit_mode == true)
+	{
+		look_at(scene);
+		camera_init(&scene->camera, scene);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
@@ -297,27 +304,27 @@ int	key_handler(t_scene *scene)
 			scene->camera.position.y -= 0.35;
 		if (scene->keys_held.plus == true)
 		{
-			if (scene->edit_scale < 0.7)
-			{
-				scene->edit_scale += 0.05;
-				scene->edit_w = 1920 * scene->edit_scale;
-				scene->edit_h = 1080 * scene->edit_scale;
-				camera_init(&scene->camera, scene);
-				calculate_transforms(scene);
-				draw_scene(scene);
-			}
+			// if (scene->edit_scale < 0.7)
+			// {
+			// 	scene->edit_scale += 0.05;
+			// 	scene->edit_w = 1920 * scene->edit_scale;
+			// 	scene->edit_h = 1080 * scene->edit_scale;
+			// 	camera_init(&scene->camera, scene);
+			// 	calculate_transforms(scene);
+			// 	draw_scene(scene);
+			// }
 		}
 		if (scene->keys_held.minus == true)
 		{
-			if (scene->edit_scale > 0.06)
-			{
-				scene->edit_scale -= 0.05;
-				scene->edit_w = 1920 * scene->edit_scale;
-				scene->edit_h = 1080 * scene->edit_scale;
-				camera_init(&scene->camera, scene);
-				calculate_transforms(scene);
-				draw_scene(scene);
-			}
+			// if (scene->edit_scale > 0.06)
+			// {
+			// 	scene->edit_scale -= 0.05;
+			// 	scene->edit_w = 1920 * scene->edit_scale;
+			// 	scene->edit_h = 1080 * scene->edit_scale;
+			// 	camera_init(&scene->camera, scene);
+			// 	calculate_transforms(scene);
+			// 	draw_scene(scene);
+			// }
 		}
 	}
 	else if (scene->edit_mode == true)
