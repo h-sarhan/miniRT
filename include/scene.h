@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 15:08:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 15:04:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,23 @@ struct s_keys
 int				set_key_down(int key, t_scene *scene);
 int				set_key_up(int key, t_scene *scene);
 
+
+typedef struct s_look_at		t_look_at;
+struct s_look_at
+{
+	t_vector	final_pos;
+	t_vector	current_pos;
+	t_vector	initial_orientation;
+	t_vector	final_dir;
+	t_vector	current_dir;
+	t_vector	pos_diff;
+	t_vector	dir_diff;
+	bool		trigger;
+	int			step_num;
+	int			step_amount;
+};
+
+
 /**
  * @brief A description of a 3D scene
  * @param ambient Ambient lighting information
@@ -225,6 +242,7 @@ struct s_scene
 	sem_t		*sem_loading;
 	double		edit_scale;
 	double		render_scale;
+	t_look_at	look_at;
 };
 
 typedef struct s_worker		t_worker;

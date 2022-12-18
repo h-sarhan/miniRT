@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 12:28:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 13:36:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void	fill_in_horizontal(t_worker *worker)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
+						
 				}
 				else
 				{

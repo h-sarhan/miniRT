@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 13:20:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/18 15:47:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,22 @@ void	look_at(t_scene *scene)
 {
 	t_shape *shape = &scene->shapes[scene->shape_idx % scene->count.shape_count];
 	t_vector	final_pos = shape->origin;
-	final_pos.z = final_pos.z - shape->radius - 2;
-	t_vector	final_dir;
-	sub_vec(&final_dir, &shape->origin, &final_pos);
-	normalize_vec(&final_dir);
-	// scene->camera.position.x = shape->origin.x;
-	// scene->camera.position.y = shape->origin.y;
-	// scene->camera.position.z = shape->origin.z - shape->radius - 2;
-	scene->camera.position = final_pos;
-	scene->camera.orientation = final_dir;
-	scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
-	scene->camera.phi = acos(scene->camera.orientation.y);
+	final_pos.z = final_pos.z - shape->radius * 8;
+	scene->look_at.final_pos = final_pos;
+	// t_vector	final_dir;
+	// sub_vec(&final_dir, &shape->origin, &final_pos);
+	// normalize_vec(&final_dir);
+	// scene->look_at.final_dir = final_dir;
+	scene->look_at.current_pos = scene->camera.position;
+	scene->look_at.current_dir = scene->camera.orientation;
+	scene->look_at.initial_orientation = scene->camera.orientation;
+	scene->look_at.trigger = true;
+	scene->look_at.step_num = 0;
+	sub_vec(&scene->look_at.pos_diff, &scene->look_at.final_pos, &scene->camera.position);
+	scene->look_at.step_amount = vec_magnitude(&scene->look_at.pos_diff) * 1.5;
+	printf("step amount = %d\n", scene->look_at.step_amount);
+	sub_vec(&scene->look_at.dir_diff, &scene->look_at.final_dir, &scene->camera.orientation);
+		
 }
 
 int	set_key_down(int key, t_scene *scene)
@@ -115,9 +120,9 @@ int	set_key_down(int key, t_scene *scene)
 	if (key == KEY_O && scene->edit_mode == true)
 	{
 		look_at(scene);
-		camera_init(&scene->camera, scene);
-		calculate_transforms(scene);
-		draw_scene(scene);
+		// camera_init(&scene->camera, scene);
+		// calculate_transforms(scene);
+		// draw_scene(scene);
 	}
 	if (key == KEY_SPACE)
 	{
@@ -368,6 +373,82 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y += 0.1;
 		if (scene->keys_held.e == true)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y -= 0.1;
+	}
+	if (scene->look_at.trigger == true)
+	{
+		if (scene->look_at.step_num != scene->look_at.step_amount)
+		{
+			scene->camera.position.x += scene->look_at.pos_diff.x / scene->look_at.step_amount;
+			scene->camera.position.y += scene->look_at.pos_diff.y / scene->look_at.step_amount;
+			scene->camera.position.z += scene->look_at.pos_diff.z / scene->look_at.step_amount;
+		}
+		if (fabs(scene->look_at.current_dir.x) > 0.01)
+		{
+			if (scene->look_at.current_dir.x < 0)
+			{
+				scene->look_at.current_dir.x += 0.04;
+				if (scene->look_at.current_dir.x > 0)
+					scene->look_at.current_dir.x = 0;
+			}
+			if (scene->look_at.current_dir.x > 0)
+			{
+				scene->look_at.current_dir.x -= 0.04;
+				if (scene->look_at.current_dir.x < 0)
+					scene->look_at.current_dir.x = 0;
+			}
+		}
+		if (fabs(scene->look_at.current_dir.y) > 0.01)
+		{
+			if (scene->look_at.current_dir.y < 0)
+			{
+				scene->look_at.current_dir.y += 0.04;
+				if (scene->look_at.current_dir.y > 0)
+					scene->look_at.current_dir.y = 0;
+			}
+			if (scene->look_at.current_dir.y > 0)
+			{
+				scene->look_at.current_dir.y -= 0.04;
+				if (scene->look_at.current_dir.y < 0)
+					scene->look_at.current_dir.y = 0;
+			}
+		}
+		if (fabs(scene->look_at.current_dir.z - 1) > 0.01)
+		{
+			if (scene->look_at.current_dir.z < 1)
+			{
+				scene->look_at.current_dir.z += 0.1;
+				if (fabs(scene->look_at.current_dir.z) > 1)
+					scene->look_at.current_dir.z = 1;
+			}
+			if (scene->look_at.current_dir.z > 1)
+			{
+				scene->look_at.current_dir.z -= 0.1;
+				if (fabs(scene->look_at.current_dir.z) < 1)
+					scene->look_at.current_dir.z = 1;
+			}
+		}
+		// scene->camera.position.y += scene->look_at.pos_diff.y / scene->look_at.step_amount;
+		// scene->camera.position.z += scene->look_at.pos_diff.z / scene->look_at.step_amount;
+		// sub_vec(&scene->camera.orientation, &scene->shapes[scene->shape_idx % scene->count.shape_count].origin, &scene->camera.position);
+		scene->camera.orientation = scene->look_at.current_dir;
+		// printf("Scene current direction: \n");
+		// print_vector(&scene->look_at.current_dir);
+		// print_vector(&scene->camera.orientation);
+		// normalize_vec(&scene->camera.orientation);
+		scene->camera.theta = fabs(atan(scene->camera.orientation.z / scene->camera.orientation.x));
+		scene->camera.phi = acos(scene->camera.orientation.y);
+		calculate_transforms(scene);
+		draw_scene(scene);
+		if (scene->look_at.step_num < scene->look_at.step_amount)
+			scene->look_at.step_num++;
+		if (scene->look_at.step_num == scene->look_at.step_amount && fabs(scene->look_at.current_dir.z - 1) < 0.01 && fabs(scene->look_at.current_dir.y) < 0.01 && fabs(scene->look_at.current_dir.x) < 0.01)
+		{
+			// printf("%f\n", scene->camera.theta);
+			// printf("%f\n", scene->camera.phi);
+			print_vector(&scene->camera.orientation);
+			scene->look_at.trigger = false;
+			scene->look_at.step_num = 0;
+		}
 	}
 	if (scene->edit_mode == true && (scene->keys_held.w
 		|| scene->keys_held.a
