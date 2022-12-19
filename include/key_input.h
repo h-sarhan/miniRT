@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:57:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 20:58:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 #  define KEY_7 55
 #  define KEY_8 56
 #  define KEY_9 57
+#  define KEY_RETURN 65293
 # else
 #  define KEY_ESC 53
 #  define KEY_W 13

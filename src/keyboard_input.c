@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 14:41:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 21:06:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,14 +373,14 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.2 *sin(scene->camera.phi)*cos(scene->camera.theta);
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.2 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			t_vector	offset;
-			offset.x = -0.001 *sin(scene->camera.phi)*cos(scene->camera.theta);
+			offset.x = -0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
 			offset.y = 0;
-			offset.z = -0.001 *sin(scene->camera.phi)*sin(scene->camera.theta);
+			offset.z = -0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			offset.w = 0;
 			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.001 *sin(scene->camera.phi)*sin(scene->camera.theta);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			}
 		}
 		if (scene->keys_held.a == true)
@@ -388,14 +388,14 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.2 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.2 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			t_vector	offset;
-			offset.x = -0.001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
+			offset.x = -0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
 			offset.y = 0;
-			offset.z = -0.001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
+			offset.z = -0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			offset.w = 0;
 			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			}
 		}
 		if (scene->keys_held.s == true)
@@ -403,14 +403,14 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.2 *sin(scene->camera.phi)*cos(scene->camera.theta);
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.2 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			t_vector	offset;
-			offset.x = 0.001 *sin(scene->camera.phi)*cos(scene->camera.theta);
+			offset.x = 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
 			offset.y = 0;
-			offset.z = 0.001 *sin(scene->camera.phi)*sin(scene->camera.theta);
+			offset.z = 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			offset.w = 0;
 			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.001 *sin(scene->camera.phi)*sin(scene->camera.theta);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			}
 		}
 		if (scene->keys_held.d == true)
@@ -419,14 +419,14 @@ int	key_handler(t_scene *scene)
 			scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.2 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			t_vector	offset;
 			
-			offset.x = 0.001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
+			offset.x = 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
 			offset.y = 0;
-			offset.z = 0.001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
+			offset.z = 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			offset.w = 0;
 			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
+				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			}
 		}
 		if (scene->keys_held.plus == true)
