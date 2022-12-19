@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 15:04:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 08:18:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,6 @@ typedef struct s_look_at		t_look_at;
 struct s_look_at
 {
 	t_vector	final_pos;
-	t_vector	current_pos;
 	t_vector	initial_orientation;
 	t_vector	final_dir;
 	t_vector	current_dir;
@@ -209,6 +208,7 @@ struct s_look_at
 	int			step_num;
 	int			step_amount;
 };
+void	perspective_projection(t_vector *point, const t_scene *scene);
 
 
 /**

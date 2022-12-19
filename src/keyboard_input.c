@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 15:47:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 09:09:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,17 @@ void	handle_color_change(int key, t_scene *scene)
 void	look_at(t_scene *scene)
 {
 	t_shape *shape = &scene->shapes[scene->shape_idx % scene->count.shape_count];
-	t_vector	final_pos = shape->origin;
-	final_pos.z = final_pos.z - shape->radius * 8;
+	t_vector	cam_to_object;
+	t_vector	final_pos;
+	sub_vec(&cam_to_object, &shape->origin, &scene->camera.position);
+	normalize_vec(&cam_to_object);
+	final_pos.x = cam_to_object.x *  -8 * shape->radius + shape->origin.x;
+	final_pos.z = cam_to_object.z *  -8 * shape->radius + shape->origin.z;
+	final_pos.y = shape->origin.y;
+	final_pos.w = 1;
 	scene->look_at.final_pos = final_pos;
-	// t_vector	final_dir;
-	// sub_vec(&final_dir, &shape->origin, &final_pos);
-	// normalize_vec(&final_dir);
-	// scene->look_at.final_dir = final_dir;
-	scene->look_at.current_pos = scene->camera.position;
+	sub_vec(&scene->look_at.final_dir, &shape->origin, &final_pos);
+	normalize_vec(&scene->look_at.final_dir);
 	scene->look_at.current_dir = scene->camera.orientation;
 	scene->look_at.initial_orientation = scene->camera.orientation;
 	scene->look_at.trigger = true;
@@ -382,70 +385,77 @@ int	key_handler(t_scene *scene)
 			scene->camera.position.y += scene->look_at.pos_diff.y / scene->look_at.step_amount;
 			scene->camera.position.z += scene->look_at.pos_diff.z / scene->look_at.step_amount;
 		}
-		if (fabs(scene->look_at.current_dir.x) > 0.01)
+		double x_diff = scene->look_at.current_dir.x - scene->look_at.final_dir.x;
+		double y_diff = scene->look_at.current_dir.y - scene->look_at.final_dir.y;
+		double z_diff = scene->look_at.current_dir.z - scene->look_at.final_dir.z;
+		if (fabs(x_diff) > 0.01)
 		{
-			if (scene->look_at.current_dir.x < 0)
+			if (x_diff < 0)
 			{
 				scene->look_at.current_dir.x += 0.04;
-				if (scene->look_at.current_dir.x > 0)
-					scene->look_at.current_dir.x = 0;
+				if (fabs(x_diff) < 0.1)
+					scene->look_at.current_dir.x = scene->look_at.final_dir.x;
 			}
-			if (scene->look_at.current_dir.x > 0)
+			if (x_diff > 0)
 			{
 				scene->look_at.current_dir.x -= 0.04;
-				if (scene->look_at.current_dir.x < 0)
-					scene->look_at.current_dir.x = 0;
+				if (fabs(x_diff) < 0.1)
+					scene->look_at.current_dir.x = scene->look_at.final_dir.x;
 			}
 		}
-		if (fabs(scene->look_at.current_dir.y) > 0.01)
+		if (fabs(y_diff) > 0.01)
 		{
-			if (scene->look_at.current_dir.y < 0)
+			if (y_diff < 0)
 			{
 				scene->look_at.current_dir.y += 0.04;
-				if (scene->look_at.current_dir.y > 0)
-					scene->look_at.current_dir.y = 0;
+				if (fabs(y_diff) < 0.1)
+					scene->look_at.current_dir.y = scene->look_at.final_dir.y;
 			}
-			if (scene->look_at.current_dir.y > 0)
+			if (y_diff > 0)
 			{
 				scene->look_at.current_dir.y -= 0.04;
-				if (scene->look_at.current_dir.y < 0)
-					scene->look_at.current_dir.y = 0;
+				if (fabs(y_diff) < 0.1)
+					scene->look_at.current_dir.y = scene->look_at.final_dir.y;
 			}
 		}
-		if (fabs(scene->look_at.current_dir.z - 1) > 0.01)
+		if (fabs(z_diff) > 0.01)
 		{
-			if (scene->look_at.current_dir.z < 1)
+			if (z_diff < 0)
 			{
-				scene->look_at.current_dir.z += 0.1;
-				if (fabs(scene->look_at.current_dir.z) > 1)
-					scene->look_at.current_dir.z = 1;
+				scene->look_at.current_dir.z += 0.04;
+				if (fabs(z_diff) < 0.1)
+					scene->look_at.current_dir.z = scene->look_at.final_dir.z;
 			}
-			if (scene->look_at.current_dir.z > 1)
+			if (z_diff > 0)
 			{
-				scene->look_at.current_dir.z -= 0.1;
-				if (fabs(scene->look_at.current_dir.z) < 1)
-					scene->look_at.current_dir.z = 1;
+				scene->look_at.current_dir.z -= 0.04;
+				if (fabs(z_diff) < 0.1)
+					scene->look_at.current_dir.z = scene->look_at.final_dir.z;
 			}
 		}
-		// scene->camera.position.y += scene->look_at.pos_diff.y / scene->look_at.step_amount;
-		// scene->camera.position.z += scene->look_at.pos_diff.z / scene->look_at.step_amount;
-		// sub_vec(&scene->camera.orientation, &scene->shapes[scene->shape_idx % scene->count.shape_count].origin, &scene->camera.position);
 		scene->camera.orientation = scene->look_at.current_dir;
-		// printf("Scene current direction: \n");
-		// print_vector(&scene->look_at.current_dir);
-		// print_vector(&scene->camera.orientation);
-		// normalize_vec(&scene->camera.orientation);
-		scene->camera.theta = fabs(atan(scene->camera.orientation.z / scene->camera.orientation.x));
-		scene->camera.phi = acos(scene->camera.orientation.y);
 		calculate_transforms(scene);
 		draw_scene(scene);
+		x_diff = scene->look_at.current_dir.x - scene->look_at.final_dir.x;
+		y_diff = scene->look_at.current_dir.y - scene->look_at.final_dir.y;
+		z_diff = scene->look_at.current_dir.z - scene->look_at.final_dir.z;
 		if (scene->look_at.step_num < scene->look_at.step_amount)
 			scene->look_at.step_num++;
-		if (scene->look_at.step_num == scene->look_at.step_amount && fabs(scene->look_at.current_dir.z - 1) < 0.01 && fabs(scene->look_at.current_dir.y) < 0.01 && fabs(scene->look_at.current_dir.x) < 0.01)
+		if (scene->look_at.step_num == scene->look_at.step_amount && fabs(x_diff) < 0.01 && fabs(y_diff) < 0.01 && fabs(z_diff) < 0.01)
 		{
-			// printf("%f\n", scene->camera.theta);
-			// printf("%f\n", scene->camera.phi);
-			print_vector(&scene->camera.orientation);
+			if (scene->camera.orientation.x > 0)
+			{
+				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
+			}
+			else if (scene->camera.orientation.x < 0 && scene->camera.orientation.z >= 0)
+			{
+				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x) + M_PI;
+			}
+			else if (scene->camera.orientation.x < 0 && scene->camera.orientation.z < 0)
+			{
+				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x) - M_PI;
+			}
+			scene->camera.phi = acos(scene->camera.orientation.y);
 			scene->look_at.trigger = false;
 			scene->look_at.step_num = 0;
 		}
