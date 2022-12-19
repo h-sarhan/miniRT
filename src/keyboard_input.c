@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 09:09:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 10:52:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,19 @@ int	set_key_down(int key, t_scene *scene)
 {
 	printf("%d\n", key);
 	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
+	if (key == KEY_M)
+	{
+		// if (scene->mouse.toggle == true)
+		// {
+		// 	scene->mouse.toggle = false;
+		// 	mlx_mouse_show();
+		// }
+		// else if (scene->mouse.toggle == false)
+		// {
+		// 	scene->mouse.toggle = true;
+		// 	mlx_mouse_hide();
+		// }
+	}
 	if (key == KEY_1
 	|| key == KEY_2
 	|| key == KEY_3
@@ -111,12 +124,6 @@ int	set_key_down(int key, t_scene *scene)
 	)
 	{
 		handle_color_change(key, scene);
-		calculate_transforms(scene);
-		draw_scene(scene);
-	}
-	if (key == KEY_M)
-	{
-		scene->menu = !scene->menu;
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
@@ -460,7 +467,8 @@ int	key_handler(t_scene *scene)
 			scene->look_at.step_num = 0;
 		}
 	}
-	if (scene->edit_mode == true && (scene->keys_held.w
+	mouse_rotate(scene);
+	if (scene->mouse.active == false && scene->edit_mode == true && (scene->keys_held.w
 		|| scene->keys_held.a
 		|| scene->keys_held.s
 		|| scene->keys_held.d

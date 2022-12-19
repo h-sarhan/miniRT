@@ -173,7 +173,11 @@ int mlx_shaders_font(glsl_info_t *glsl)
 		  "varying vec2 texcoord;"
 		  "void main()"
 		  "{"
+#ifdef STRINGPUTX11
+		  " texcoord = (position * vec2(1.4, -1.4) + fontposinatlas ) / fontatlassize;"
+#else
 		  " texcoord = (position * vec2(1.0, -1.0) + fontposinatlas ) / fontatlassize;"
+#endif
 		  " vec2 pos = position - winhalfsize + fontposinwin;"
 		  " pos = pos / winhalfsize;"
 		  " gl_Position = vec4( pos, 0.0, 1.0);"

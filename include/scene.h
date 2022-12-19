@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 08:18:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 10:54:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,18 @@ struct s_look_at
 void	perspective_projection(t_vector *point, const t_scene *scene);
 
 
+// Waste of time
+typedef struct s_mouse		t_mouse;
+struct	s_mouse
+{
+	bool	active;
+	bool	toggle;
+	int		prev_x;
+	int		prev_y;
+	int		x;
+	int		y;
+};
+
 /**
  * @brief A description of a 3D scene
  * @param ambient Ambient lighting information
@@ -243,6 +255,7 @@ struct s_scene
 	double		edit_scale;
 	double		render_scale;
 	t_look_at	look_at;
+	t_mouse		mouse;
 };
 
 typedef struct s_worker		t_worker;
