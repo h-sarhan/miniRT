@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 17:22:24 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/19 18:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	shape_check(t_intersect *intersection, t_shape **containers, int *count)
 	i = 0;
 	while (i < *count)
 	{
-		if (intersection->shape == containers[i])
+		if (intersection->shape->id == containers[i]->id)
 		{
 			j = i - 1;
 			while (j < *count - 1)
@@ -34,6 +34,7 @@ void	shape_check(t_intersect *intersection, t_shape **containers, int *count)
 		i++;
 	}
 	containers[*count] = intersection->shape;
+	*count += 1;
 }
 
 
@@ -45,6 +46,7 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections
 
 	i = 0;
 	count = 0;
+	// could be wrong
 	while (i < xs->count)
 	{
 		if (xs->arr[i].time == intersection->time)

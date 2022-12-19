@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reflections.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 17:31:37 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/19 17:56:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining
 	double	n_ratio;
 	double	cos_i;
 	double	sin2_t;
-	// double	cos_t;
 	t_intersections	arr;
 	unsigned int	shape_idx;
 	t_ray	refract_ray;

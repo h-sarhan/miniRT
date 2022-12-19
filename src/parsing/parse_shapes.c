@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/07 00:01:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:48:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,9 +156,11 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 		parse_cylinder(shape, splitted, &success);
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
+	shape->id = scene->count.shape_count;
 	scene->count.shape_count++;
 	shape->diffuse = 0.9;
 	shape->specular = 0.9;
+	shape->ior = 1;
 	shape->shininess = 200;
 	return (true);
 }
