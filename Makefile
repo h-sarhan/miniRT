@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
+#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/19 15:59:39 by mkhan            ###   ########.fr        #
+#    Updated: 2022/12/19 21:35:02 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror  -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra  -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 
