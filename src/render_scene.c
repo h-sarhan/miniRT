@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 18:02:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 18:04:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
 			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			// t_color	refracted  = refracted_color(worker->scene, itx, 4, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, 4, light_idx);
 			add_colors(&final_color, &final_color, &light_color);
 			add_colors(&final_color, &final_color, &reflected);
-			// add_colors(&final_color, &final_color, &refracted);
+			add_colors(&final_color, &final_color, &refracted);
 			light_idx++;
 		}
 		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
