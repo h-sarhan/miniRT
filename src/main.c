@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 14:30:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:32:43 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 4;
+	scene->render_scale = 0.7;
 	scene->edit_scale = 0.55;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
@@ -68,6 +68,10 @@ int	main(int argc, char **argv)
 	scene->display_h = 1080 * 0.8;
 	scene->reflection_depth = REFLECTION_DEPTH;
 	scene->shapes[0].highlighted = true;
+	scene->shapes[0].transparency = 0.5;
+	scene->shapes[0].reflectiveness = 0.5;
+	scene->shapes[0].ior = 2;
+	
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	t_mlx		mlx;

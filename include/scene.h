@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 14:39:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 16:38:53 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ struct s_shape
 	double			specular;
 	double			shininess;
 	double			reflectiveness;
+	double			transparency;
+	double			ior;
 	int				rot_x;
 	int				rot_y;
 	int				rot_z;
@@ -153,6 +155,7 @@ struct s_shape
 	int				scale_y;
 	int				scale_z;
 	bool			highlighted;
+	bool			in_containers;
 };
 void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 

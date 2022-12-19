@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/16 21:39:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 16:02:02 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,20 @@ t_intersect	*hit(t_intersections *xs)
 		return (NULL);
 	return (&xs->arr[idx]);
 }
+
+// t_intersect	*hit(t_intersections *xs)
+// {
+// 	int		i;
+
+// 	i = 0;
+// 	while (i < xs->count)
+// 	{
+// 		if (xs->arr[i].time >= 0)
+// 			return (&xs->arr[i]);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
 
 t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {

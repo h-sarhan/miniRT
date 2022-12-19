@@ -3,14 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/18 13:36:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:33:20 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+int t_cmp( const void *s1, const void *s2)
+{
+   t_intersect *no1 = (t_intersect *) s1;
+   t_intersect *no2 = (t_intersect *) s2;
+    
+   if ( no1->time < no2->time )
+      return -1;
+   else if ( no1->time > no2->time )
+      return 1;
+   else
+      return 0;
+}
+
+bool is_sorted(t_intersections *arr)
+{
+	int n = arr->count;
+	while ( --n >= 1) {
+		if ( arr->arr[n].time < arr->arr[n-1].time ) return false;
+	}
+	return true;
+}
+ 
+// void shuffle(t_intersections *arr)
+// {
+//   int i,n, r;
+//   t_intersect t;
+//   n = arr->count;
+//   for(i=0; i < n; i++) {
+//     t = arr->arr[i];
+//     r = rand() % n;
+//     arr->arr[i] = arr->arr[r];
+//     arr->arr[r] = t;
+//   }
+// }
+ #include <string.h>
+// void isort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *)) {
+//     for (size_t i = 1; i < nmemb; i++) {
+//         char * curr = (char *)base + i * size;
+//         char * insertion_point = base;
+
+//         if (compar(base, curr) <= 0) {
+//             insertion_point = find_insertion_point_unguarded(base, curr, compar, size);
+//         }
+
+//         char key_copy[size];
+//         memcpy(key_copy, curr, size);
+//         memmove(insertion_point + size, insertion_point, curr - insertion_point);
+//         memcpy(insertion_point, key_copy, size);
+//     }
+// }
+
+void sort_intersections(t_intersections *arr)
+{
+	(void)arr;
+	qsort(arr, arr->count, sizeof(t_intersect), &t_cmp);
+}
+void	swap_intersections(t_intersect *itx1, t_intersect *itx2)
+{
+	t_intersect tmp;
+
+	tmp = *itx1;
+	*itx1 = *itx2;
+	*itx2 = tmp;
+}
+ 
+// void sort_intersections(t_intersections *arr)
+// {
+//     int i, key, j;
+//     for (i = 1; i < arr->count; i++) {
+//         key = arr->arr[i].time;
+// 		t_intersect *itx = &(arr->arr[i]);
+// 		// t_shape *shape = (arr->arr[i].shape);
+//         j = i - 1;
+//         while (j >= 0 && arr->arr[j].time >= key) {
+//             // arr->arr[j + 1] = arr->arr[j];
+// 			ft_memcpy(&arr->arr[j + 1], &arr->arr[j], sizeof(t_intersect));
+//             j = j - 1;
+//         }
+		
+// 		// swap_intersections(&arr->arr[j + 1], &itx);
+// 		ft_memcpy(&arr->arr[j + 1], itx, sizeof(t_intersect));
+// 		// arr->arr[j + 1] = itx;
+//         // arr->arr[j + 1].time = key;
+//         // arr->arr[j + 1].shape = shape;
+//     }
+// }
+
 
 void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	int pixel)
@@ -20,18 +108,21 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	t_color			final_color;
 	t_color			light_color;
 
+	sort_intersections(arr);
 	itx = hit(arr);
 	if (itx != NULL)
 	{
-		prepare_computations(itx, ray);
+		prepare_computations(itx, ray, arr);
 		ft_bzero(&final_color, sizeof(t_color));
 		light_idx = 0;
 		while (light_idx < worker->scene->count.light_count)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
-			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
+			// t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, 5, light_idx);
 			add_colors(&final_color, &final_color, &light_color);
-			add_colors(&final_color, &final_color, &reflected);
+			// add_colors(&final_color, &final_color, &reflected);
+			add_colors(&final_color, &final_color, &refracted);
 			light_idx++;
 		}
 		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);

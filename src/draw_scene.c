@@ -3,17 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:10:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:22:24 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	prepare_computations(t_intersect *intersection, t_ray *ray)
+void	shape_check(t_intersect *intersection, t_shape **containers, int *count)
 {
+	int i;
+	int	j;
+
+	i = 0;
+	while (i < *count)
+	{
+		if (intersection->shape == containers[i])
+		{
+			j = i - 1;
+			while (j < *count - 1)
+			{
+				containers[j] = containers[j + 1];
+				j++;
+			}
+			*count -= 1;
+			return ;
+		}
+		i++;
+	}
+	containers[*count] = intersection->shape;
+}
+
+
+void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs)
+{
+	t_shape *containers[SHAPE_MAX];
+	int		i;
+	int 	count;
+
+	i = 0;
+	count = 0;
+	while (i < xs->count)
+	{
+		if (xs->arr[i].time == intersection->time)
+		{
+			if (count == 0)
+				intersection->n1 = 1.0;
+			else
+				intersection->n1 = containers[count - 1]->ior;
+		}
+		shape_check(intersection, containers, &count);
+		if (xs->arr[i].time == intersection->time)
+		{
+			if (count == 0)
+				intersection->n2 = 1.0;
+			else
+				intersection->n2 = containers[count - 1]->ior;
+			break ;
+		}
+		i++;
+	}
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->direction);
@@ -28,6 +79,9 @@ void	prepare_computations(t_intersect *intersection, t_ray *ray)
 	scale_vec(&intersection->over_point, &intersection->normal, EPSILON);
 	add_vec(&intersection->over_point, &intersection->point,
 		&intersection->over_point);
+	scale_vec(&intersection->under_point, &intersection->normal, EPSILON);
+	sub_vec(&intersection->under_point, &intersection->point,
+		&intersection->under_point);
 	reflect(&intersection->reflect_vec, &ray->direction, &intersection->normal);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   collisions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 14:45:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 15:08:59 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
 bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool offset_dir)
 {
 	t_shape	*other;
-	int		shape_idx;
+	unsigned int		shape_idx;
 
 	shape_idx = 0;
 	while (shape_idx < scene->count.shape_count)

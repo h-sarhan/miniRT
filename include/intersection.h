@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/18 11:29:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 17:20:01 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ struct s_intersect
 	t_vector	normal;
 	t_vector	eye;
 	t_vector	over_point;
+	t_vector	under_point;
 	t_vector	reflect_vec;
+	double		n1;
+	double		n2;
 	bool		inside;
 };
 
@@ -102,8 +105,11 @@ t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
 bool		is_shadowed(t_scene *scene, int light_idx,
 				t_vector *intersection_point);
 t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
-void	prepare_computations(t_intersect *intersection, t_ray *ray);
+void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs);
 void	*render_scene_dirty(t_worker *worker);
+void	bogosort(t_intersections *arr);
+void sort_intersections(t_intersections *arr);
+t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
 
 
 #endif
