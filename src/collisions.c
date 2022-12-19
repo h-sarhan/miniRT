@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 12:18:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 14:45:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
 	return (false);
 }
 
-bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset)
+bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool offset_dir)
 {
 	t_shape	*other;
 	int		shape_idx;
@@ -62,7 +62,22 @@ bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset)
 				if (sphere_sphere_collision(shape, other) == true)
 				{
 					// We can call is colliding recursively here
-					sub_vec(&other->origin, &other->origin, offset);
+					if (offset_dir == true)
+					{
+						t_vector	dir;
+						sub_vec(&dir, &other->origin, &shape->origin);
+						printf("direction vector\n");
+						print_vector(&dir);
+						normalize_vec(&dir);
+						scale_vec(&dir, &dir, offset->x);
+						printf("offset vector\n");
+						print_vector(&dir);
+						add_vec(&other->origin, &other->origin, &dir);
+					}
+					else
+					{
+						sub_vec(&other->origin, &other->origin, offset);
+					}
 					return (true);
 				}
 			}
