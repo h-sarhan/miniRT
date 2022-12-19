@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:52:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 11:14:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	look_at(t_scene *scene)
 int	set_key_down(int key, t_scene *scene)
 {
 	printf("%d\n", key);
+	static double new_shape_offset = 0;
 	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 	if (key == KEY_M)
 	{
@@ -111,6 +112,29 @@ int	set_key_down(int key, t_scene *scene)
 		// 	scene->mouse.toggle = true;
 		// 	mlx_mouse_hide();
 		// }
+	}
+	if (key == KEY_RETURN)
+	{
+		new_shape_offset += 2;
+		scene->shapes[scene->count.shape_count - 1].highlighted = false;
+		scene->shapes[scene->count.shape_count].color.r = 0xFF / 255.0;
+		scene->shapes[scene->count.shape_count].color.g = 0x10 / 255.0;
+		scene->shapes[scene->count.shape_count].color.b = 0xf0 / 255.0;
+		scene->shapes[scene->count.shape_count].color.a = 0;
+		scene->shapes[scene->count.shape_count].diffuse = 0.9;
+		scene->shapes[scene->count.shape_count].highlighted = true;
+		scene->shapes[scene->count.shape_count].origin.x = scene->camera.orientation.x * 5 + scene->camera.position.x;
+		scene->shapes[scene->count.shape_count].origin.y = scene->camera.orientation.y + scene->camera.position.y;
+		scene->shapes[scene->count.shape_count].origin.z = scene->camera.orientation.z * 5 + scene->camera.position.z;
+		scene->shapes[scene->count.shape_count].origin.w = 1;
+		scene->shapes[scene->count.shape_count].radius = 0.7;
+		scene->shapes[scene->count.shape_count].reflectiveness = 0.2;
+		scene->shapes[scene->count.shape_count].type = SPHERE;
+		scene->shapes[scene->count.shape_count].shininess = 50;
+		scene->shapes[scene->count.shape_count].specular = 0.8;
+		scene->count.shape_count++;
+		calculate_transforms(scene);
+		draw_scene(scene);
 	}
 	if (key == KEY_1
 	|| key == KEY_2

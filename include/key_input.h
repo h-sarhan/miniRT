@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:54:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 10:57:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@
 #  define KEY_7 26
 #  define KEY_8 28
 #  define KEY_9 25
+#  define KEY_RETURN 36
 # endif
 int	key_handler(t_scene *scene);
 int	mouse_rotate(t_scene *scene);
