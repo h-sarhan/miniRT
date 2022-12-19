@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 11:58:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 12:18:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,8 @@ bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
 	center.z = 0;
 	center.w = 1;
 	mat_vec_multiply(&point_on_plane, &plane->transf, &center);
-	// print_vector(&point_on_plane);
-	printf("Sphere origin: \n");
-	print_vector(&sphere->origin);
 	t_vector	sphere_to_plane;
 	sub_vec(&sphere_to_plane, &sphere->origin, &point_on_plane);
-	printf("Sphere to plane: \n");
-	print_vector(&sphere_to_plane);
-	// double distance = (sphere->origin - plane.p[0]) * plane->orientation;
 	double distance = dot_product(&sphere_to_plane, &plane->orientation);
 	if (fabs(distance) <= sphere->radius)
 	{
@@ -52,7 +46,7 @@ bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
 	return (false);
 }
 
-bool	is_colliding(const t_shape *shape, const t_scene *scene)
+bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset)
 {
 	t_shape	*other;
 	int		shape_idx;
@@ -66,7 +60,11 @@ bool	is_colliding(const t_shape *shape, const t_scene *scene)
 			if (shape->type == SPHERE && other->type == SPHERE)
 			{
 				if (sphere_sphere_collision(shape, other) == true)
+				{
+					// We can call is colliding recursively here
+					sub_vec(&other->origin, &other->origin, offset);
 					return (true);
+				}
 			}
 			else if (shape->type == SPHERE && other->type == PLANE)
 			{
