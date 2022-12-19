@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/19 10:29:19 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/19 11:17:27 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 LIGHTING_SRC = lighting.c camera.c
 LIGHTING_SRC := $(addprefix lighting/, $(LIGHTING_SRC))
 
-SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c render_scene.c mouse_controls.c
+SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) free_utils.c print_utils.c color.c keyboard_input.c draw_scene.c render_scene.c mouse_controls.c collisions.c
 
 SRC := $(addprefix src/, $(SRC))
 
