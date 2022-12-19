@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 14:24:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/19 20:55:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include "key_input.h"
 # include "render.h"
 
-# define NUM_THREADS 12
+# define NUM_THREADS 16
 # define REFLECTION_DEPTH 1
 # define EPSILON 0.001
 # define TICK(X) clock_t X = clock()
