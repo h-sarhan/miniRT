@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 19:23:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 20:24:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,73 +60,93 @@ void	camera_controls(t_scene *scene)
 			scene->camera.theta, 1);
 }
 
+void	move_object_fwd(t_scene *scene, t_shape *shape)
+{
+	t_vector	offset;
+	t_vector	increment;
+
+	ft_bzero(&offset, sizeof(t_vector));
+	ft_bzero(&increment, sizeof(t_vector));
+	if (scene->keys_held.w)
+	{
+		sphere_to_xyz(&offset, scene->camera.phi, scene->camera.theta, 0.2);
+		sphere_to_xyz(&increment, scene->camera.phi, scene->camera.theta,
+			-0.0001);
+	}
+	if (scene->keys_held.s)
+	{
+		sphere_to_xyz(&offset, scene->camera.phi, scene->camera.theta, -0.2);
+		sphere_to_xyz(&increment, scene->camera.phi, scene->camera.theta,
+			0.0001);
+	}
+	add_vec(&shape->origin, &shape->origin, &offset);
+	while (scene->collisions && is_colliding(shape, scene, &increment, 0))
+		add_vec(&shape->origin, &shape->origin, &increment);
+}
+
+void	move_object_h(t_scene *scene, t_shape *shape)
+{
+	t_vector	offset;
+	t_vector	increment;
+
+	ft_bzero(&offset, sizeof(t_vector));
+	ft_bzero(&increment, sizeof(t_vector));
+	if (scene->keys_held.a)
+	{
+		sphere_to_xyz(&offset, M_PI_2, scene->camera.theta + M_PI_2, 0.2);
+		sphere_to_xyz(&increment, M_PI_2, scene->camera.theta + M_PI_2,
+			-0.0001);
+	}
+	if (scene->keys_held.d)
+	{
+		sphere_to_xyz(&offset, M_PI_2, scene->camera.theta - M_PI_2, 0.2);
+		sphere_to_xyz(&increment, M_PI_2, scene->camera.theta - M_PI_2,
+			-0.0001);
+	}
+	add_vec(&shape->origin, &shape->origin, &offset);
+	while (scene->collisions && is_colliding(shape, scene, &increment, 0))
+		add_vec(&shape->origin, &shape->origin, &increment);
+}
+
+void	move_object_v(t_scene *scene, t_shape *shape)
+{
+	t_vector	offset;
+	t_vector	increment;
+
+	ft_bzero(&offset, sizeof(t_vector));
+	ft_bzero(&increment, sizeof(t_vector));
+	if (scene->keys_held.q)
+	{
+		offset.y = 0.2;
+		increment.y = -0.0001;
+	}
+	if (scene->keys_held.e)
+	{
+		offset.y = -0.2;
+		increment.y = 0.0001;
+	}
+	add_vec(&shape->origin, &shape->origin, &offset);
+	while (scene->collisions && is_colliding(shape, scene, &increment, 0))
+		add_vec(&shape->origin, &shape->origin, &increment);
+}
+
+void	transform_object(t_scene *scene)
+{
+	if (scene->keys_held.w == true || scene->keys_held.s == true)
+		move_object_fwd(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.a == true || scene->keys_held.d == true)
+		move_object_h(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.q == true || scene->keys_held.e == true)
+		move_object_v(scene, &scene->shapes[scene->shape_idx]);
+}
+
 int	key_handler(t_scene *scene)
 {
 	if (scene->camera_mode == true && scene->edit_mode == true)
 		camera_controls(scene);
 	else if (scene->edit_mode == true)
 	{
-		if (scene->keys_held.w == true)
-		{
-			scene->shapes[scene->shape_idx].origin.x += 0.2 *sin(scene->camera.phi)*cos(scene->camera.theta);
-			scene->shapes[scene->shape_idx].origin.z += 0.2 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			t_vector	offset;
-			offset.x = -0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-			offset.y = 0;
-			offset.z = -0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			offset.w = 0;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.x -= 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-				scene->shapes[scene->shape_idx].origin.z -= 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			}
-		}
-		if (scene->keys_held.a == true)
-		{
-			scene->shapes[scene->shape_idx].origin.x += 0.2 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-			scene->shapes[scene->shape_idx].origin.z += 0.2 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			t_vector	offset;
-			offset.x = -0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-			offset.y = 0;
-			offset.z = -0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			offset.w = 0;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.x -= 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-				scene->shapes[scene->shape_idx].origin.z -= 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			}
-		}
-		if (scene->keys_held.s == true)
-		{
-			scene->shapes[scene->shape_idx].origin.x -= 0.2 *sin(scene->camera.phi)*cos(scene->camera.theta);
-			scene->shapes[scene->shape_idx].origin.z -= 0.2 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			t_vector	offset;
-			offset.x = 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-			offset.y = 0;
-			offset.z = 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			offset.w = 0;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.x += 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
-				scene->shapes[scene->shape_idx].origin.z += 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
-			}
-		}
-		if (scene->keys_held.d == true)
-		{
-			scene->shapes[scene->shape_idx].origin.x -= 0.2 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-			scene->shapes[scene->shape_idx].origin.z -= 0.2 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			t_vector	offset;
-			
-			offset.x = 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-			offset.y = 0;
-			offset.z = 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			offset.w = 0;
-			while (scene->collisions && is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.x += 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
-				scene->shapes[scene->shape_idx].origin.z += 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
-			}
-		}
+		transform_object(scene);
 		if (scene->keys_held.plus == true)
 		{
 			scene->shapes[scene->shape_idx].radius += 0.04;
@@ -137,7 +157,6 @@ int	key_handler(t_scene *scene)
 			{
 				scene->shapes[scene->shape_idx].radius -= 0.002;
 			}
-
 		}
 		if (scene->keys_held.minus == true)
 		{
@@ -160,29 +179,7 @@ int	key_handler(t_scene *scene)
 			scene->lights[0].position.x -= 0.3;
 		if (scene->keys_held.right == true)
 			scene->lights[0].position.x += 0.3;
-		if (scene->keys_held.q == true)
-		{
-			scene->shapes[scene->shape_idx].origin.y += 0.1;
-			t_vector	offset;
-			ft_bzero(&offset, sizeof(t_vector));
-			offset.y = -0.01;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.y -= 0.01;
-			}
-		}
-		if (scene->keys_held.e == true)
-		{
-			scene->shapes[scene->shape_idx].origin.y -= 0.1;
-			t_vector	offset;
-			ft_bzero(&offset, sizeof(t_vector));
-			offset.y = 0.01;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, false) == true)
-			{
-				scene->shapes[scene->shape_idx].origin.y += 0.01;
-			}
-
-		}
+		
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)
 	{
