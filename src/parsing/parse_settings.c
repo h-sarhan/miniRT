@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:11:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:52:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,7 +269,7 @@ void	parse_setting(t_scene *scene, char **key_val)
 	bool	success;
 	t_shape	*shape;
 
-	shape = &scene->shapes[scene->count.shape_count - 1];
+	shape = &scene->shapes[scene->count.shapes - 1];
 	if (ft_strcmp("reflectiveness", key_val[0]) == 0)
 		shape->reflectiveness = ft_atof(key_val[1], &success);
 	if (ft_strcmp("diffuse", key_val[0]) == 0)
@@ -301,7 +301,7 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 	char	*parsed_str;
 	char	*line;
 
-	if (scene->count.shape_count == 0)
+	if (scene->count.shapes == 0)
 	{
 		printf(RED"Settings at line %ld do not belong to any shape\n"RESET, line_num);
 		return (false);

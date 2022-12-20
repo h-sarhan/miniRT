@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   collisions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 15:08:59 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/20 18:53:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool o
 	unsigned int		shape_idx;
 
 	shape_idx = 0;
-	while (shape_idx < scene->count.shape_count)
+	while (shape_idx < scene->count.shapes)
 	{
 		other = &scene->shapes[shape_idx];
 		if (other != shape)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 18:24:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	*light_parse_error(char *line, size_t line_num, t_scene *scene)
 	if (scene->lights == NULL)
 		light = NULL;
 	else
-		light = &scene->lights[scene->count.light_count];
-	if (light != NULL && scene->count.light_count >= LIGHT_MAX)
+		light = &scene->lights[scene->count.lights];
+	if (light != NULL && scene->count.lights >= LIGHT_MAX)
 		printf(RED"Error: Scene contains more than %d lights\n"
 			RESET, LIGHT_MAX);
 	else if (light && (light->intensity < 0.0 || light->intensity > 1.0))

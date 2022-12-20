@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/20 17:50:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	ft_memcpy(&ray.origin, itx_point, sizeof(t_vector));
 	i = -1;
 	arr.count = 0;
-	while (++i < scene->count.shape_count)
+	while (++i < scene->count.shapes)
 		intersect(&scene->shapes[i], &ray, &arr);
 	intersection = hit_skip_transparent(&arr);
 	if (intersection && intersection->time < distance)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/16 19:50:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	calculate_transforms(t_scene *scene)
 
 	calculate_camera_transform(scene);
 	i = 0;
-	while (i < scene->count.shape_count)
+	while (i < scene->count.shapes)
 	{
 		identity_matrix(&scene->shapes[i].transf);
 		identity_matrix(&scale);

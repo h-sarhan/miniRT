@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/16 18:24:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
 	if (scene->shapes == NULL)
 		shape = NULL;
 	else
-		shape = &scene->shapes[scene->count.shape_count];
-	if (shape && scene->count.shape_count >= SHAPE_MAX)
+		shape = &scene->shapes[scene->count.shapes];
+	if (shape && scene->count.shapes >= SHAPE_MAX)
 		printf(RED"Error: Scene contains more than %d shapes\n"RESET,
 			SHAPE_MAX);
 	else if (shape && shape->type == SPHERE && split_count(splitted) == 4)

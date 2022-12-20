@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 17:48:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,13 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 	bool	success;
 
 	success = true;
-	if (scene->count.shape_count == SHAPE_MAX)
+	if (scene->count.shapes == SHAPE_MAX)
 		return (shape_parse_error(line, line_num, scene, splitted));
 	if (scene->shapes == NULL)
 		scene->shapes = ft_calloc(SHAPE_MAX, sizeof(t_shape));
 	if (scene->shapes == NULL)
 		return (shape_parse_error(line, line_num, scene, splitted));
-	shape = &scene->shapes[scene->count.shape_count];
+	shape = &scene->shapes[scene->count.shapes];
 	if (ft_strcmp(splitted[0], "sp") == 0)
 		parse_sphere(shape, splitted, &success);
 	else if (ft_strcmp(splitted[0], "pl") == 0)
@@ -156,8 +156,8 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 		parse_cylinder(shape, splitted, &success);
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
-	shape->id = scene->count.shape_count;
-	scene->count.shape_count++;
+	shape->id = scene->count.shapes;
+	scene->count.shapes++;
 	shape->diffuse = 0.9;
 	shape->specular = 0.9;
 	shape->ior = 1;

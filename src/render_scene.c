@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:22:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	{
 		prepare_computations(itx, ray, arr);
 		light_idx = 0;
-		while (light_idx < worker->scene->count.light_count)
+		while (light_idx < worker->scene->count.lights)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
 			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
@@ -109,7 +109,7 @@ void	*render_scene(t_worker *worker)
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
-			while (++shape_idx < worker->scene->count.shape_count)
+			while (++shape_idx < worker->scene->count.shapes)
 			{
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 			}
@@ -200,7 +200,7 @@ void	fill_in_horizontal(t_worker *worker)
 					ray_for_pixel(&ray, &worker->scene->camera, x, y);
 					shape_idx = -1;
 					arr.count = 0;
-					while (++shape_idx < worker->scene->count.shape_count)
+					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
@@ -246,7 +246,7 @@ void	fill_in_vertical(t_worker *worker)
 					ray_for_pixel(&ray, &worker->scene->camera, x, y);
 					shape_idx = -1;
 					arr.count = 0;
-					while (++shape_idx < worker->scene->count.shape_count)
+					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
@@ -288,7 +288,7 @@ void	*render_scene_dirty(t_worker *worker)
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
-			while (++shape_idx < worker->scene->count.shape_count)
+			while (++shape_idx < worker->scene->count.shapes)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
 				+ x) * worker->scene->mlx->bytes_per_pixel);

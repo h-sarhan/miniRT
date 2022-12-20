@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:22:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:51:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining
 	ft_memcpy(&ray.direction, &intersection->reflect_vec, sizeof(t_vector));
 	shape_idx = -1;
 	arr.count = 0;
-	while (++shape_idx < scene->count.shape_count)
+	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &ray, &arr);
 	t_color reflected = calculate_reflected_color(&arr, scene, &ray, remaining, light_idx);
 	mult_color(&reflected, &reflected, intersection->shape->reflectiveness);
@@ -134,7 +134,7 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	refracted_ray(&refract_ray, intersection, n_ratio, cos_i);
 	shape_idx = -1;
 	arr.count = 0;
-	while (++shape_idx < scene->count.shape_count)
+	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &refract_ray, &arr);
 	color = calculate_refracted_color(&arr, scene, &refract_ray, remaining, light_idx);
 	mult_color(&color, &color, intersection->shape->transparency);

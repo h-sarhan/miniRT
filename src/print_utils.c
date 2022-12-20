@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/23 15:30:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	print_scene(const t_scene *scene)
 	printf("  Fov:\n");
 	printf("\t%d degrees\n", scene->camera.fov);
 	i = 0;
-	while (i < scene->count.light_count)
+	while (i < scene->count.lights)
 	{
 		printf("Light #%lu configuration:\n", i + 1);
 		printf("  Position:\n");
@@ -68,7 +68,7 @@ void	print_scene(const t_scene *scene)
 		i++;
 	}
 	i = 0;
-	while (i < scene->count.shape_count)
+	while (i < scene->count.shapes)
 	{
 		printf("Shape #%lu configuration:\n", i + 1);
 		printf("  Type:\n");

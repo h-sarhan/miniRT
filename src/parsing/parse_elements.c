@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/10 12:53:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ bool	parse_light(t_scene *scene, char **splitted, char *line,
 	bool	success;
 
 	success = true;
-	if (scene->count.light_count == LIGHT_MAX || split_count(splitted) != 4)
+	if (scene->count.lights == LIGHT_MAX || split_count(splitted) != 4)
 		return (light_parse_error(line, line_num, scene));
 	if (scene->lights == NULL)
 		scene->lights = ft_calloc(LIGHT_MAX, sizeof(t_light));
 	if (scene->lights == NULL)
 		return (light_parse_error(line, line_num, scene));
-	light = &scene->lights[scene->count.light_count];
+	light = &scene->lights[scene->count.lights];
 	parse_coordinates(&light->position, splitted[1], &success);
 	light->position.w = 1;
 	if (success == false)
@@ -45,7 +45,7 @@ bool	parse_light(t_scene *scene, char **splitted, char *line,
 	parse_color(&light->color, splitted[3], &success);
 	if (success == false)
 		return (light_parse_error(line, line_num, scene));
-	scene->count.light_count++;
+	scene->count.lights++;
 	return (true);
 }
 
@@ -83,7 +83,7 @@ bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
 		ambient_parse_error(line, line_num, scene);
 		return (false);
 	}
-	scene->count.ambient_count++;
+	scene->count.ambient_lights++;
 	return (true);
 }
 
@@ -116,6 +116,6 @@ bool	parse_camera(t_scene *scene, char **splitted, char *line,
 	scene->camera.fov = ft_atol(splitted[3], &success);
 	if (is_num(splitted[3], false) == false || success == false || scene->camera.fov < 0 || scene->camera.fov > 180)
 		return (camera_parse_error(line, line_num, scene, false));
-	scene->count.camera_count++;
+	scene->count.cameras++;
 	return (true);
 }

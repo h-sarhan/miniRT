@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:15:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,18 +162,18 @@ void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 
 /**
  * @brief Holds the number of elements in a scene
- * @param ambient_count Number of ambient lights. Should be 1
+ * @param ambient_lights Number of ambient lights. Should be 1
  * @param camera_count Number of cameras. Should be 1
- * @param light_count Number of lights
+ * @param lights Number of lights
  * @param shape_count Number of shapes
  */
 typedef struct s_el_count	t_el_count;
 struct	s_el_count
 {
-	unsigned int	ambient_count;
-	unsigned int	camera_count;
-	unsigned int	light_count;
-	unsigned int	shape_count;
+	unsigned int	ambient_lights;
+	unsigned int	cameras;
+	unsigned int	lights;
+	unsigned int	shapes;
 };
 
 typedef struct s_mlx		t_mlx;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:43:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,7 +350,7 @@ void	draw_shape_info(t_scene *scene)
 	
 	if (scene->edit_mode == false)
 		return ;
-	while (shape_idx < scene->count.shape_count)
+	while (shape_idx < scene->count.shapes)
 	{
 		shape = &scene->shapes[shape_idx];
 		if (shape->highlighted == false)
@@ -444,7 +444,7 @@ void	draw_shape_marker(t_scene *scene)
 
 	if (scene->edit_mode == false)
 		return ;
-	while (shape_idx < scene->count.shape_count)
+	while (shape_idx < scene->count.shapes)
 	{
 		shape = &scene->shapes[shape_idx];
 		if (shape->highlighted == false)

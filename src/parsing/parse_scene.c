@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 12:56:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@
  */
 static bool	check_element_count(t_scene *scene)
 {
-	if (scene->count.ambient_count > 1 || scene->count.ambient_count == 0)
+	if (scene->count.ambient_lights > 1 || scene->count.ambient_lights == 0)
 	{
-		if (scene->count.ambient_count > 1)
+		if (scene->count.ambient_lights > 1)
 			printf(RED"Error: Scene contains multiple ambient light\n"RESET);
 		else
 			printf(RED"Error: Scene contains no ambient lights\n"RESET);
 		free_scene(scene);
 		return (false);
 	}
-	if (scene->count.camera_count > 1 || scene->count.camera_count == 0)
+	if (scene->count.cameras > 1 || scene->count.cameras == 0)
 	{
-		if (scene->count.camera_count > 1)
+		if (scene->count.cameras > 1)
 			printf(RED"Error: Scene contains more than one camera\n"RESET);
 		else
 			printf(RED"Error: Scene contains no cameras\n"RESET);

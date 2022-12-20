@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:06:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 19:08:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # include "render.h"
 
 # define NUM_THREADS 12
-# define REFLECTION_DEPTH 4
+# define REFLECTION_DEPTH 1
+# define CAM_SPEED 0.5
 # define EPSILON 0.0001
 # define TICK(X) clock_t X = clock()
 # define TOCK(X) printf("time %s: %g sec.\n", (#X), (double)(clock() - (X)) / CLOCKS_PER_SEC)
