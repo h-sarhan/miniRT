@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 20:24:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 20:29:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,25 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		add_vec(&shape->origin, &shape->origin, &increment);
 }
 
+void	scale_object(t_scene *scene, t_shape *shape)
+{
+	t_vector	offset;
+
+	ft_bzero(&offset, sizeof(t_vector));
+	if (scene->keys_held.plus == true)
+	{
+		shape->radius += 0.04;
+		offset.x = 0.04;
+		while (scene->collisions && is_colliding(shape, scene, &offset, true))
+			shape->radius -= 0.002;
+	}
+	if (scene->keys_held.minus == true)
+	{
+		if (shape->radius > 0.3)
+			shape->radius -= 0.04;
+	}
+}
+
 void	transform_object(t_scene *scene)
 {
 	if (scene->keys_held.w == true || scene->keys_held.s == true)
@@ -138,6 +157,20 @@ void	transform_object(t_scene *scene)
 		move_object_h(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.q == true || scene->keys_held.e == true)
 		move_object_v(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.plus == true || scene->keys_held.minus == true)
+		scale_object(scene, &scene->shapes[scene->shape_idx]);
+}
+
+void	light_controls(t_scene *scene)
+{
+	if (scene->keys_held.up == true)
+		scene->lights[0].position.y += 0.3;
+	if (scene->keys_held.down == true)
+		scene->lights[0].position.y -= 0.3;
+	if (scene->keys_held.left == true)
+		scene->lights[0].position.x -= 0.3;
+	if (scene->keys_held.right == true)
+		scene->lights[0].position.x += 0.3;
 }
 
 int	key_handler(t_scene *scene)
@@ -147,39 +180,7 @@ int	key_handler(t_scene *scene)
 	else if (scene->edit_mode == true)
 	{
 		transform_object(scene);
-		if (scene->keys_held.plus == true)
-		{
-			scene->shapes[scene->shape_idx].radius += 0.04;
-			t_vector	offset;
-			ft_bzero(&offset, sizeof(t_vector));
-			offset.x = 0.04;
-			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx], scene, &offset, true) == true)
-			{
-				scene->shapes[scene->shape_idx].radius -= 0.002;
-			}
-		}
-		if (scene->keys_held.minus == true)
-		{
-			if (scene->shapes[scene->shape_idx].radius > 0.3)
-			{
-				scene->shapes[scene->shape_idx].radius -= 0.04;
-				// t_vector	offset;
-				// ft_bzero(&offset, sizeof(t_vector));
-				// while (is_colliding(&scene->shapes[scene->shape_idx], scene, &offset) == true)
-				// {
-				// 	scene->shapes[scene->shape_idx].radius += 0.002;
-				// }
-			}
-		}
-		if (scene->keys_held.up == true)
-			scene->lights[0].position.y += 0.3;
-		if (scene->keys_held.down == true)
-			scene->lights[0].position.y -= 0.3;
-		if (scene->keys_held.left == true)
-			scene->lights[0].position.x -= 0.3;
-		if (scene->keys_held.right == true)
-			scene->lights[0].position.x += 0.3;
-		
+		light_controls(scene);
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)
 	{
