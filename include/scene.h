@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 20:35:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_camera		t_camera;
 struct s_camera
 {
 	t_vector	position;
-	t_vector	orientation;
+	t_vector	dir;
 	int			fov;
 	double		pixel_size;
 	double		half_width;

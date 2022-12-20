@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 19:22:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:09:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,17 @@ void	look_at(t_scene *scene)
 	scene->look_at.final_pos = final_pos;
 	sub_vec(&scene->look_at.final_dir, &shape->origin, &final_pos);
 	normalize_vec(&scene->look_at.final_dir);
-	scene->look_at.current_dir = scene->camera.orientation;
-	scene->look_at.initial_orientation = scene->camera.orientation;
-	scene->look_at.trigger = true;
+	scene->look_at.current_dir = scene->camera.dir;
+	scene->look_at.initial_orientation = scene->camera.dir;
 	scene->look_at.step_num = 0;
 	sub_vec(&scene->look_at.pos_diff, &scene->look_at.final_pos,
 		&scene->camera.position);
-	scene->look_at.step_amount = vec_magnitude(&scene->look_at.pos_diff) * 1.5;
 	sub_vec(&scene->look_at.dir_diff, &scene->look_at.final_dir,
-		&scene->camera.orientation);
+		&scene->camera.dir);
+	scene->look_at.step_amount = (vec_magnitude(&scene->look_at.pos_diff) + \
+		vec_magnitude(&scene->look_at.dir_diff));
+	if (scene->look_at.step_amount > 0)
+		scene->look_at.trigger = true;
 }
 
 void	spawn_shape(t_scene *scene)
@@ -72,11 +74,11 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].diffuse = 0.9;
 	scene->shapes[scene->count.shapes].highlighted = true;
 	scene->shapes[scene->count.shapes].origin.x = \
-	scene->camera.orientation.x * 5 + scene->camera.position.x;
+	scene->camera.dir.x * 5 + scene->camera.position.x;
 	scene->shapes[scene->count.shapes].origin.y = \
-	scene->camera.orientation.y + scene->camera.position.y;
+	scene->camera.dir.y + scene->camera.position.y;
 	scene->shapes[scene->count.shapes].origin.z = \
-	scene->camera.orientation.z * 5 + scene->camera.position.z;
+	scene->camera.dir.z * 5 + scene->camera.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].radius = 0.7;
 	scene->shapes[scene->count.shapes].reflectiveness = 0.2;
@@ -200,7 +202,7 @@ int	set_key_down(int key, t_scene *scene)
 	if (key == KEY_RETURN && scene->edit_mode == true)
 		spawn_shape(scene);
 	handle_color_change(key, scene);
-	if (key == KEY_O && scene->edit_mode == true)
+	if (key == KEY_O && scene->edit_mode == true && !scene->look_at.trigger)
 		look_at(scene);
 	toggle_edit_mode(key, scene);
 	select_shape(key, scene);

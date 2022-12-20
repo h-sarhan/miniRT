@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 20:42:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:05:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include "render.h"
 
 # define NUM_THREADS 12
-# define REFLECTION_DEPTH 4
+# define REFLECTION_DEPTH 1
 # define CAM_SPEED 0.5
 # define EPSILON 0.0001
 # define TICK(X) clock_t X = clock()

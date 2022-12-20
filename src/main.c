@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:44:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ int	main(int argc, char **argv)
 	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
 	mlx_loop_hook(mlx.mlx, key_handler, scene);
 	camera_init(&scene->camera, scene);
-	scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
-	scene->camera.phi = acos(scene->camera.orientation.y);
+	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
+	scene->camera.phi = acos(scene->camera.dir.y);
 	calculate_transforms(scene);
 	draw_scene(scene);
 	mlx_loop(mlx.mlx);

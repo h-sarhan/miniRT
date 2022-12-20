@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 20:29:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:07:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	camera_controls(t_scene *scene)
 		scene->camera.theta -= 0.10;
 	if (scene->keys_held.up || scene->keys_held.left || scene->keys_held.right
 		|| scene->keys_held.down)
-		sphere_to_xyz(&scene->camera.orientation, scene->camera.phi,
+		sphere_to_xyz(&scene->camera.dir, scene->camera.phi,
 			scene->camera.theta, 1);
 }
 
@@ -173,6 +173,41 @@ void	light_controls(t_scene *scene)
 		scene->lights[0].position.x += 0.3;
 }
 
+void	reset_look_at(t_scene *scene)
+{
+	if (scene->camera.dir.x > 0)
+		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
+	else if (scene->camera.dir.x < 0 && scene->camera.dir.z >= 0)
+		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x) \
+		+ M_PI;
+	else if (scene->camera.dir.x < 0 && scene->camera.dir.z < 0)
+		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x) \
+		- M_PI;
+	scene->camera.phi = acos(scene->camera.dir.y);
+	scene->look_at.trigger = false;
+	scene->look_at.step_num = 0;
+}
+
+void	look_at_animation(t_scene *scene)
+{
+	t_vector	pos_step;
+	t_vector	dir_step;
+
+	scale_vec(&pos_step, &scene->look_at.pos_diff,\
+		1.0 / scene->look_at.step_amount);
+	scale_vec(&dir_step, &scene->look_at.dir_diff,\
+		1.0 / scene->look_at.step_amount);
+	add_vec(&scene->camera.position, &scene->camera.position, &pos_step);
+	add_vec(&scene->look_at.current_dir, &scene->look_at.current_dir,
+		&dir_step);
+	scene->camera.dir = scene->look_at.current_dir;
+	calculate_transforms(scene);
+	draw_scene(scene);
+	scene->look_at.step_num++;
+	if (scene->look_at.step_num >= scene->look_at.step_amount)
+		reset_look_at(scene);
+}
+
 int	key_handler(t_scene *scene)
 {
 	if (scene->camera_mode == true && scene->edit_mode == true)
@@ -184,88 +219,9 @@ int	key_handler(t_scene *scene)
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)
 	{
-		if (scene->look_at.step_num != scene->look_at.step_amount)
-		{
-			scene->camera.position.x += scene->look_at.pos_diff.x / scene->look_at.step_amount;
-			scene->camera.position.y += scene->look_at.pos_diff.y / scene->look_at.step_amount;
-			scene->camera.position.z += scene->look_at.pos_diff.z / scene->look_at.step_amount;
-		}
-		double x_diff = scene->look_at.current_dir.x - scene->look_at.final_dir.x;
-		double y_diff = scene->look_at.current_dir.y - scene->look_at.final_dir.y;
-		double z_diff = scene->look_at.current_dir.z - scene->look_at.final_dir.z;
-		if (fabs(x_diff) > 0.01)
-		{
-			if (x_diff < 0)
-			{
-				scene->look_at.current_dir.x += 0.04;
-				if (fabs(x_diff) < 0.1)
-					scene->look_at.current_dir.x = scene->look_at.final_dir.x;
-			}
-			if (x_diff > 0)
-			{
-				scene->look_at.current_dir.x -= 0.04;
-				if (fabs(x_diff) < 0.1)
-					scene->look_at.current_dir.x = scene->look_at.final_dir.x;
-			}
-		}
-		if (fabs(y_diff) > 0.01)
-		{
-			if (y_diff < 0)
-			{
-				scene->look_at.current_dir.y += 0.04;
-				if (fabs(y_diff) < 0.1)
-					scene->look_at.current_dir.y = scene->look_at.final_dir.y;
-			}
-			if (y_diff > 0)
-			{
-				scene->look_at.current_dir.y -= 0.04;
-				if (fabs(y_diff) < 0.1)
-					scene->look_at.current_dir.y = scene->look_at.final_dir.y;
-			}
-		}
-		if (fabs(z_diff) > 0.01)
-		{
-			if (z_diff < 0)
-			{
-				scene->look_at.current_dir.z += 0.04;
-				if (fabs(z_diff) < 0.1)
-					scene->look_at.current_dir.z = scene->look_at.final_dir.z;
-			}
-			if (z_diff > 0)
-			{
-				scene->look_at.current_dir.z -= 0.04;
-				if (fabs(z_diff) < 0.1)
-					scene->look_at.current_dir.z = scene->look_at.final_dir.z;
-			}
-		}
-		scene->camera.orientation = scene->look_at.current_dir;
-		calculate_transforms(scene);
-		draw_scene(scene);
-		x_diff = scene->look_at.current_dir.x - scene->look_at.final_dir.x;
-		y_diff = scene->look_at.current_dir.y - scene->look_at.final_dir.y;
-		z_diff = scene->look_at.current_dir.z - scene->look_at.final_dir.z;
-		if (scene->look_at.step_num < scene->look_at.step_amount)
-			scene->look_at.step_num++;
-		if (scene->look_at.step_num == scene->look_at.step_amount && fabs(x_diff) < 0.01 && fabs(y_diff) < 0.01 && fabs(z_diff) < 0.01)
-		{
-			if (scene->camera.orientation.x > 0)
-			{
-				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x);
-			}
-			else if (scene->camera.orientation.x < 0 && scene->camera.orientation.z >= 0)
-			{
-				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x) + M_PI;
-			}
-			else if (scene->camera.orientation.x < 0 && scene->camera.orientation.z < 0)
-			{
-				scene->camera.theta = atan(scene->camera.orientation.z / scene->camera.orientation.x) - M_PI;
-			}
-			scene->camera.phi = acos(scene->camera.orientation.y);
-			scene->look_at.trigger = false;
-			scene->look_at.step_num = 0;
-		}
+		look_at_animation(scene);
 	}
-	if (scene->mouse.active == false && scene->edit_mode == true
+	if (scene->look_at.trigger == false && scene->mouse.active == false && scene->edit_mode == true
 		&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
 		|| scene->keys_held.d
 		|| scene->keys_held.up

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:51:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:05:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	mouse_rotate(t_scene *scene)
 				if (scene->camera.phi > 0.5)
 					scene->camera.phi -= 0.05;
 			}
-			scene->camera.orientation.x = sin(scene->camera.phi) * cos(scene->camera.theta);
-			scene->camera.orientation.z = sin(scene->camera.phi) * sin(scene->camera.theta);
-			scene->camera.orientation.y = cos(scene->camera.phi);
+			scene->camera.dir.x = sin(scene->camera.phi) * cos(scene->camera.theta);
+			scene->camera.dir.z = sin(scene->camera.phi) * sin(scene->camera.theta);
+			scene->camera.dir.y = cos(scene->camera.phi);
 			calculate_transforms(scene);
 			draw_scene(scene);
 			scene->mouse.active = false;

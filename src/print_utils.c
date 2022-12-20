@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_scene(const t_scene *scene)
 	printf("  Position:\n");
 	print_vector(&scene->camera.position);
 	printf("  Orientation:\n");
-	print_vector(&scene->camera.orientation);
+	print_vector(&scene->camera.dir);
 	printf("  Fov:\n");
 	printf("\t%d degrees\n", scene->camera.fov);
 	i = 0;

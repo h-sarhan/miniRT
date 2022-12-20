@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,9 @@ void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
 
 	orientation = false;
 	if (!invalid_coords)
-		orientation = check_orientation(&scene->camera.orientation, line_num, line,
+		orientation = check_orientation(&scene->camera.dir, line_num, line,
 			"camera");
-	if (!invalid_coords && vec_magnitude(&scene->camera.orientation) == 1 && scene->camera.orientation.y == 1)
+	if (!invalid_coords && vec_magnitude(&scene->camera.dir) == 1 && scene->camera.dir.y == 1)
 	{
 		printf(YELLOW"Error with parsing camera orientation on line #%ld\n"
 			RED"->\t%s\n"RESET, line_num, line);
