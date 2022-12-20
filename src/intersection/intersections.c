@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/20 12:21:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 16:52:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	arr.count = 0;
 	while (++i < scene->count.shape_count)
 		intersect(&scene->shapes[i], &ray, &arr);
-	intersection = hit(&arr);
+	intersection = hit_skip_transparent(&arr);
 	if (intersection && intersection->time < distance)
 		return (true);
 	return (false);
@@ -193,6 +193,28 @@ t_intersect	*hit(t_intersections *xs)
 	while (i < xs->count)
 	{
 		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time)
+		{
+			min_time = xs->arr[i].time;
+			idx = i;
+		}
+		i++;
+	}
+	if (min_time == INFINITY)
+		return (NULL);
+	return (&xs->arr[idx]);
+}
+
+t_intersect	*hit_skip_transparent(t_intersections *xs)
+{
+	double	min_time;
+	int		i;
+	int		idx;
+
+	i = 0;
+	min_time = INFINITY;
+	while (i < xs->count)
+	{
+		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time && xs->arr[i].shape->transparency <= 0.5)
 		{
 			min_time = xs->arr[i].time;
 			idx = i;

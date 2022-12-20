@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/20 11:50:22 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/20 16:48:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ bool		is_shadowed(t_scene *scene, int light_idx,
 t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
 void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs);
 void	*render_scene_dirty(t_worker *worker);
-void	bogosort(t_intersections *arr);
 void sort_intersections(t_intersections *arr);
 t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
 double	schlick(t_intersect *intersection);
+t_intersect	*hit_skip_transparent(t_intersections *xs);
 
 
 #endif
