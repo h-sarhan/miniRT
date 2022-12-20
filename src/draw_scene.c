@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:20:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	get_iors(t_intersect *intersection, t_intersections *xs)
 
 void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs)
 {
-
-	get_iors(intersection, xs);
+	if (intersection->shape->transparency != 0)
+		get_iors(intersection, xs);
 
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
