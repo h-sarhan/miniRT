@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 11:31:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 12:05:33 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	main(int argc, char **argv)
 	// scene->shapes[0].color = color;
 	scene->shapes[0].highlighted = true;
 	scene->shapes[0].transparency = 1;
-	scene->shapes[0].reflectiveness = 0;
-	scene->shapes[0].ior = 1.5;
+	scene->shapes[0].reflectiveness = 1;
+	scene->shapes[0].ior = 1.1;
 	
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);

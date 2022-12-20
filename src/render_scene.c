@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 21:40:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 12:02:47 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	unsigned int	light_idx;
 	t_color			final_color;
 	t_color			light_color;
+	double			reflectance;
 
 	sort_intersections(arr);
 	itx = hit(arr);
@@ -70,14 +71,19 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
 			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			t_color	refracted  = refracted_color(worker->scene, itx, 5, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
+			if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+			{
+				reflectance = schlick(itx);
+				mult_color(&reflected, &reflected, reflectance);
+				mult_color(&refracted, &refracted, (1 - reflectance));
+			}
 			add_colors(&final_color, &final_color, &light_color);
 			add_colors(&final_color, &final_color, &reflected);
 			add_colors(&final_color, &final_color, &refracted);
 			light_idx++;
 		}
 		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
-		
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/19 17:20:01 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/20 11:50:22 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	*render_scene_dirty(t_worker *worker);
 void	bogosort(t_intersections *arr);
 void sort_intersections(t_intersections *arr);
 t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
+double	schlick(t_intersect *intersection);
 
 
 #endif

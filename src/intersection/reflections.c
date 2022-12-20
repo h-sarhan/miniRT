@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reflections.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 11:13:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 12:09:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_intersect		*itx;
 	t_color			final_color;
 	t_color			light_color;
+	double			reflectance;
 
 	ft_bzero(&final_color, sizeof(t_color));
 	sort_intersections(arr);
@@ -25,9 +26,20 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	{
 		prepare_computations(itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
-		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
-		add_colors(&final_color, &final_color, &reflected);
+		// t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
+		// add_colors(&final_color, &final_color, &reflected);
+		// add_colors(&final_color, &final_color, &light_color);
+		t_color	reflected  = reflected_color(scene, itx, remaining - 1, light_idx);
+		t_color	refracted  = refracted_color(scene, itx, remaining - 1, light_idx);
+		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		{
+			reflectance = schlick(itx);
+			mult_color(&reflected, &reflected, reflectance);
+			mult_color(&refracted, &refracted, (1 - reflectance));
+		}
 		add_colors(&final_color, &final_color, &light_color);
+		add_colors(&final_color, &final_color, &reflected);
+		add_colors(&final_color, &final_color, &refracted);
 	}
 	return (final_color);
 }
@@ -75,6 +87,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_intersect		*itx;
 	t_color			final_color;
 	t_color			light_color;
+	double			reflectance;
 
 	ft_bzero(&final_color, sizeof(t_color));
 	sort_intersections(arr);
@@ -83,9 +96,20 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	{
 		prepare_computations(itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
-		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
-		add_colors(&final_color, &final_color, &refracted);
+		// t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
+		// add_colors(&final_color, &final_color, &refracted);
+		// add_colors(&final_color, &final_color, &light_color);
+		t_color	reflected  = reflected_color(scene, itx, remaining - 1, light_idx);
+		t_color	refracted  = refracted_color(scene, itx, remaining - 1, light_idx);
+		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		{
+			reflectance = schlick(itx);
+			mult_color(&reflected, &reflected, reflectance);
+			mult_color(&refracted, &refracted, (1 - reflectance));
+		}
 		add_colors(&final_color, &final_color, &light_color);
+		add_colors(&final_color, &final_color, &reflected);
+		add_colors(&final_color, &final_color, &refracted);
 	}
 	return (final_color);
 }
@@ -121,4 +145,28 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	color = calculate_refracted_color(&arr, scene, &refract_ray, remaining, light_idx);
 	mult_color(&color, &color, intersection->shape->transparency);
 	return(color);
+}
+
+double	schlick(t_intersect *intersection)
+{
+	double	cos_angle;
+	double	n;
+	double	sin2_t;
+	double	cos_t;
+	double	r0;
+
+	cos_angle = dot_product(&intersection->eye, &intersection->normal);
+	
+	if (intersection->n1 > intersection->n2)
+	{
+		n = intersection->n1 / intersection->n2;
+		sin2_t = (n * n) * (1.0 - (cos_angle * cos_angle));
+		if (sin2_t > 1.0)
+			return (1.0);
+		cos_t = sqrt(1.0 - sin2_t);
+		cos_angle = cos_t;
+	}
+	r0 = (intersection->n1 - intersection->n2) / (intersection->n1 + intersection->n2);
+	r0 *= r0;
+	return (r0 + (1 - r0) * (pow(1 - cos_angle, 5)));
 }
