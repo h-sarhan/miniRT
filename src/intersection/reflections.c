@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 15:25:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 16:44:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,16 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	{
 		prepare_computations(itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
-		t_color	reflected  = reflected_color(scene, itx, remaining - 1, light_idx);
+		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
+		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
+		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		{
+			double reflectance = schlick(itx);
+			mult_color(&reflected, &reflected, reflectance);
+			mult_color(&refracted, &refracted, (1 - reflectance));
+		}
 		add_colors(&final_color, &final_color, &light_color);
+		add_colors(&final_color, &final_color, &refracted);
 		add_colors(&final_color, &final_color, &reflected);
 	}
 	return (final_color);
@@ -84,8 +92,16 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 		prepare_computations(itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
 		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
+		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
+		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		{
+			double reflectance = schlick(itx);
+			mult_color(&reflected, &reflected, reflectance);
+			mult_color(&refracted, &refracted, (1 - reflectance));
+		}
 		add_colors(&final_color, &final_color, &light_color);
 		add_colors(&final_color, &final_color, &refracted);
+		add_colors(&final_color, &final_color, &reflected);
 	}
 	return (final_color);
 }
