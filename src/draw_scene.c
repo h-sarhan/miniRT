@@ -6,67 +6,83 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 18:02:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 14:48:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	shape_check(t_intersect *intersection, t_shape **containers, int *count)
+void	remove_element_at(t_shape **containers, int idx, int *count)
 {
 	int i;
-	int	j;
+
+	for(i = idx; i < *count - 1; i++)
+	{
+		containers[i] = containers[i + 1];
+	}
+	*count -= 1;
+}
+
+bool	includes_shape(t_shape **containers, t_shape *shape, int count)
+{
+	int	i;
 
 	i = 0;
-	while (i < *count)
+	while (i < count)
 	{
-		if (intersection->shape->id == containers[i]->id)
+		if (containers[i]->id == shape->id)
 		{
-			j = i - 1;
-			while (j < *count - 1)
-			{
-				containers[j] = containers[j + 1];
-				j++;
-			}
-			*count -= 1;
-			return ;
+			return (true);
 		}
 		i++;
 	}
-	containers[*count] = intersection->shape;
-	*count += 1;
+	return (false);
 }
 
-
-void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs)
+void	get_iors(t_intersect *intersection, t_intersections *xs)
 {
-	t_shape *containers[SHAPE_MAX];
+	t_shape	*containers[SHAPE_MAX];
+	int		count;
 	int		i;
-	int 	count;
 
-	i = 0;
 	count = 0;
-	// could be wrong
+	i = 0;
 	while (i < xs->count)
 	{
-		if (xs->arr[i].time == intersection->time)
+		if (fabs(xs->arr[i].time - intersection->time) < 0.01 && xs->arr[i].shape == intersection->shape)
 		{
 			if (count == 0)
 				intersection->n1 = 1.0;
 			else
 				intersection->n1 = containers[count - 1]->ior;
 		}
-		shape_check(intersection, containers, &count);
-		if (xs->arr[i].time == intersection->time)
+		if (includes_shape(containers, xs->arr[i].shape, count) == true)
+		{
+			remove_element_at(containers, i, &count);
+			// i++;
+		}
+		else
+		{
+			containers[count] = xs->arr[i].shape;
+			count++;
+		}
+		if (fabs(xs->arr[i].time - intersection->time) < 0.01 && xs->arr[i].shape == intersection->shape)
 		{
 			if (count == 0)
 				intersection->n2 = 1.0;
 			else
 				intersection->n2 = containers[count - 1]->ior;
-			break ;
+			break;
 		}
 		i++;
 	}
+}
+
+void	prepare_computations(t_intersect *intersection, t_ray *ray, t_intersections *xs)
+{
+
+	get_iors(intersection, xs);
+
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->direction);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 12:19:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 14:50:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_intersect		*itx;
 	t_color			final_color;
 	t_color			light_color;
-	double			reflectance;
 
 	ft_bzero(&final_color, sizeof(t_color));
 	sort_intersections(arr);
@@ -76,7 +75,6 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_intersect		*itx;
 	t_color			final_color;
 	t_color			light_color;
-	double			reflectance;
 
 	ft_bzero(&final_color, sizeof(t_color));
 	sort_intersections(arr);
@@ -85,7 +83,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	{
 		prepare_computations(itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
-		t_color	refracted  = refracted_color(scene, itx, remaining - 1, light_idx);
+		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
 		add_colors(&final_color, &final_color, &light_color);
 		add_colors(&final_color, &final_color, &refracted);
 	}
@@ -134,7 +132,6 @@ double	schlick(t_intersect *intersection)
 	double	r0;
 
 	cos_angle = dot_product(&intersection->eye, &intersection->normal);
-	
 	if (intersection->n1 > intersection->n2)
 	{
 		n = intersection->n1 / intersection->n2;

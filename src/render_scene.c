@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 12:18:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 14:53:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		while (light_idx < worker->scene->count.light_count)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
-			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			t_color	refracted  = refracted_color(worker->scene, itx, 5, light_idx);
+			t_color	reflected  = reflected_color(worker->scene, itx, 4, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, 4, light_idx);
 			if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
 			{
 				reflectance = schlick(itx);
