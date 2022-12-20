@@ -52,7 +52,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra  -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 

@@ -39,7 +39,7 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 	t_vector	sphere_to_plane;
 	sub_vec(&sphere_to_plane, &sphere->origin, &point_on_plane);
 	double distance = dot_product(&sphere_to_plane, &plane->orientation);
-	if (fabs(distance) <= sphere->radius)
+	if (fabs(distance) < sphere->radius)
 	{
 		normalize_vec(offset);
 		// Point of intersection between plane and vector
@@ -47,7 +47,17 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 		// Get the distance
 		// scale offset with that
 		// Figure out how much to subtract the sphere's origin by to prevent it from colliding with a plane
-		sub_vec(&sphere->origin, &sphere->origin, &sphere_to_plane);
+		if (fabs(dot_product(&plane->orientation, offset)) < 0.01)
+			return (false);
+		double t = (dot_product(&plane->orientation, &plane->origin) - dot_product(&plane->orientation, &sphere->origin)) / dot_product(&plane->orientation, offset);
+		t_vector	point_on_plane;
+		scale_vec(&point_on_plane, offset, t);
+		add_vec(&point_on_plane, &sphere->origin, &point_on_plane);
+		t_vector	difference;
+		sub_vec(&difference, &sphere->origin, &point_on_plane);
+		double	offset_distance = sphere->radius - vec_magnitude(&difference);
+		scale_vec(offset, offset, offset_distance);
+		sub_vec(&sphere->origin, &sphere->origin, offset);
 		return (true);
 	}
 	return (false);
