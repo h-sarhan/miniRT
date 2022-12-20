@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 16:48:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:15:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ struct s_scene
 	bool		edit_mode;
 	bool		menu;
 	int			reflection_depth;
+	int			refraction_depth;
 	sem_t		*sem_loading;
 	double		edit_scale;
 	double		render_scale;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 15:36:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:19:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,10 +188,24 @@ int	set_key_down(int key, t_scene *scene)
 	}
 	if (key == KEY_R)
 	{
-		if (scene->reflection_depth == 0)
+		if (scene->reflection_depth == 0 && scene->refraction_depth == 0)
+		{
+			scene->edit_scale = 0.55;
 			scene->reflection_depth = REFLECTION_DEPTH;
-		else
+		}
+		else if (scene->reflection_depth != 0 && scene->refraction_depth == 0)
+		{
+			scene->edit_scale = 0.35;
+			scene->refraction_depth = 5;
+		}
+		else if (scene->reflection_depth != 0 && scene->refraction_depth != 0)
+		{
+			scene->edit_scale = 0.75;
 			scene->reflection_depth = 0;
+			scene->refraction_depth = 0;
+		}
+		scene->edit_w = 1920 * scene->edit_scale;
+		scene->edit_h = 1080 * scene->edit_scale;
 		camera_init(&scene->camera, scene);
 		calculate_transforms(scene);
 		draw_scene(scene);

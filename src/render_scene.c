@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:06:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:22:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	t_color			final_color;
 	t_color			light_color;
 	double			reflectance;
-
-	sort_intersections(arr);
+	
+	if (worker->scene->refraction_depth != 0)
+		sort_intersections(arr);
 	itx = hit(arr);
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
@@ -71,7 +72,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
 			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			t_color	refracted  = refracted_color(worker->scene, itx, 5, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, worker->scene->refraction_depth, light_idx);
 			if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
 			{
 				reflectance = schlick(itx);

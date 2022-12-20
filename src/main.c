@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:09:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:21:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	main(int argc, char **argv)
 	scene->display_w = 1920 * 0.8;
 	scene->display_h = 1080 * 0.8;
 	scene->reflection_depth = REFLECTION_DEPTH;
+	scene->refraction_depth = 0;
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
@@ -76,6 +77,7 @@ int	main(int argc, char **argv)
 	scene->shapes[1].transparency = 1;
 	scene->shapes[1].reflectiveness = 1;
 	scene->shapes[1].ior = 1.0039;
+	scene->refraction_depth = 5;
 	
 	
 	sem_unlink("/loading");
@@ -84,7 +86,7 @@ int	main(int argc, char **argv)
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
 	mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
-	mlx.edit_img = mlx_new_image(mlx.mlx, scene->edit_w, scene->edit_w);
+	mlx.edit_img = mlx_new_image(mlx.mlx, 1920 * 0.75, 1080 * 0.75);
 	mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
 	mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
 		&mlx.line_length,&mlx.endian);
