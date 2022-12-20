@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/12 13:31:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:11:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ bool	is_valid_val(const char *key, const char *val)
 		else
 		{
 			parsed_value = ft_atof(val, &success);
-			if (success == false || parsed_value < 10 || parsed_value > 200)
+			if (success == false || parsed_value < 10 || parsed_value > 400)
 			{
 				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
 					YELLOW"%s has to be between 10.0 and 200.0\n"RESET, key, val, key);

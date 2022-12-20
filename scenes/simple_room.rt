@@ -20,15 +20,15 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 {
 	reflectiveness: 0.9,               
 	diffuse: 0.,						
-	specular: 0.5,
-	shininess: 200,
+	specular: 1,
+	shininess: 300,
 }          							
 sp -3.5,1.5,0.5 1 0,0,0
 {
 	reflectiveness: 0.9,               
 	diffuse: 0.,						
-	specular: 0.5,
-	shininess: 200,
+	specular: 1,
+	shininess: 300,
 }          							
 
 sp -2.5,2,1.5 1.5 26,255,127
