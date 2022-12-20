@@ -156,6 +156,7 @@ struct s_shape
 	int				scale_y;
 	int				scale_z;
 	bool			highlighted;
+	bool			is_colliding;
 };
 void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 

@@ -39,6 +39,7 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 	t_vector	sphere_to_plane;
 	sub_vec(&sphere_to_plane, &sphere->origin, &point_on_plane);
 	double distance = dot_product(&sphere_to_plane, &plane->orientation);
+
 	if (fabs(distance) < sphere->radius)
 	{
 		normalize_vec(offset);
@@ -59,6 +60,14 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 		scale_vec(offset, offset, offset_distance);
 		add_vec(&sphere->origin, &sphere->origin, offset);
 		return (true);
+		
+
+		// t_vector	dp;
+		// t_vector	slide;
+		// scale_vec(&slide, &plane->orientation, dot_product(offset, &plane->orientation));
+		// sub_vec(&dp, offset, &slide);
+		// print_vector(&dp);
+		// sub_vec(&sphere->origin, &sphere->origin, &dp);
 	}
 	return (false);
 }
@@ -77,7 +86,7 @@ bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset)
 		{
 			if (shape->type == SPHERE && other->type == SPHERE)
 			{
-				if (sphere_sphere_collision(shape, other) == true)
+				if (sphere_sphere_collision(shape, other) == true && other->is_colliding == false)
 				{
 					// find direction from s1 to s2
 					t_vector	dir;
@@ -86,15 +95,19 @@ bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset)
 					normalize_vec(&dir);
 					scale_vec(&dir, &dir,  dist - (shape->radius + other->radius));
 					add_vec(&other->origin, &other->origin, &dir);
-					// collide(other, scene, &dir);
-					return (true);
+					shape->is_colliding = true;
+					// negate_vec(&dir, &dir);
+					// print_vector(&dir);
+					collide(other, scene, &dir);
+					shape->is_colliding = false;
+					// return (true);
 				}
 			}
 			else if (shape->type == SPHERE && other->type == PLANE)
 			{
 				if (sphere_plane_collision(shape, other, offset) == true)
 				{
-					return (true);
+					// return (true);
 				}
 			}
 		}

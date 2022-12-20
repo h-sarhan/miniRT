@@ -81,8 +81,6 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	collide(shape, scene, &offset);
-	// while (scene->collisions && is_colliding(shape, scene, &increment, 0))
-	// 	add_vec(&shape->origin, &shape->origin, &increment);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -106,8 +104,6 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	collide(shape, scene, &offset);
-	// while (scene->collisions && is_colliding(shape, scene, &increment, 0))
-	// 	add_vec(&shape->origin, &shape->origin, &increment);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -129,8 +125,6 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	collide(shape, scene, &offset);
-	// while (scene->collisions && is_colliding(shape, scene, &increment, 0))
-	// 	add_vec(&shape->origin, &shape->origin, &increment);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
@@ -143,8 +137,6 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		shape->radius += 0.04;
 		offset.x = 0.04;
 		collide(shape, scene, &offset);
-		// while (scene->collisions && is_colliding(shape, scene, &offset, true))
-		// 	shape->radius -= 0.002;
 	}
 	if (scene->keys_held.minus == true)
 	{
