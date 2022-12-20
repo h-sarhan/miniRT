@@ -23,7 +23,7 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	specular: 0.5,
 	shininess: 200,
 }          							
-sp -0.5,1.5,0.5 1 0,0,0
+sp -3.5,1.5,0.5 1 0,0,0
 {
 	reflectiveness: 0.9,               
 	diffuse: 0.,						
