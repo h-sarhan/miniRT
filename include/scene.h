@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 22:10:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,5 +280,6 @@ struct s_worker
 };
 void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color);
 bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool offset_dir);
+bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset);
 
 #endif

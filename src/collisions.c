@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:53:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 22:27:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 }
 
 // From: https://stackoverflow.com/questions/22093749/c-plane-sphere-collision-detection
-bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
+bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *offset)
 {
 	t_vector	point_on_plane;
 	t_vector	center;
@@ -41,11 +41,57 @@ bool	sphere_plane_collision(const t_shape *sphere, const t_shape *plane)
 	double distance = dot_product(&sphere_to_plane, &plane->orientation);
 	if (fabs(distance) <= sphere->radius)
 	{
+		normalize_vec(offset);
+		// Point of intersection between plane and vector
+		// https://math.stackexchange.com/questions/100439/determine-where-a-vector-will-intersect-a-plane
+		// Get the distance
+		// scale offset with that
+		// Figure out how much to subtract the sphere's origin by to prevent it from colliding with a plane
+		sub_vec(&sphere->origin, &sphere->origin, &sphere_to_plane);
 		return (true);
 	}
 	return (false);
 }
 
+// Sphere collision response
+bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset)
+{
+	t_shape			*other;
+	unsigned int	shape_idx;
+	(void)offset;
+	shape_idx = 0;
+	while (shape_idx < scene->count.shapes)
+	{
+		other = &scene->shapes[shape_idx];
+		if (other != shape)
+		{
+			if (shape->type == SPHERE && other->type == SPHERE)
+			{
+				if (sphere_sphere_collision(shape, other) == true)
+				{
+					// find direction from s1 to s2
+					t_vector	dir;
+					sub_vec(&dir, &shape->origin, &other->origin);
+					double dist = vec_magnitude(&dir);
+					normalize_vec(&dir);
+					scale_vec(&dir, &dir, (shape->radius + other->radius) - dist);
+					sub_vec(&other->origin, &other->origin, &dir);
+					// collide(other, scene);
+					return (true);
+				}
+			}
+			else if (shape->type == SPHERE && other->type == PLANE)
+			{
+				if (sphere_plane_collision(shape, other, offset) == true)
+				{
+					return (true);
+				}
+			}
+		}
+		shape_idx++;
+	}
+	return (false);
+}
 bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool offset_dir)
 {
 	t_shape	*other;
@@ -83,7 +129,7 @@ bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool o
 			}
 			else if (shape->type == SPHERE && other->type == PLANE)
 			{
-				if (sphere_plane_collision(shape, other) == true)
+				if (sphere_plane_collision(shape, other, offset) == true)
 					return (true);
 			}
 		}
