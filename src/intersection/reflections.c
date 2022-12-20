@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 21:37:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:13:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	refracted_ray(t_ray	*refract_ray, t_intersect *intersection, double n_ratio
 
 	sin2_t = (n_ratio * n_ratio) * (1 - (cos_i * cos_i));
 	cos_t = sqrt(1.0 - sin2_t);
-	scale_vec(&normal_v, &intersection->normal, (n_ratio * cos_i - cos_t));
+	scale_vec(&normal_v, &intersection->normal, n_ratio * cos_i - cos_t);
 	scale_vec(&eye_v, &intersection->eye, n_ratio);
 	sub_vec(&refract_ray->direction, &normal_v, &eye_v);
 	refract_ray->origin = intersection->under_point;
@@ -90,7 +90,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	return (final_color);
 }
 
-t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx)
+t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx)
 {
 	t_color	color;
 	double	n_ratio;
@@ -105,9 +105,6 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining
 		ft_bzero(&color, sizeof(t_color));
 		return (color);
 	}
-	color.r = 1;
-	color.g = 1;
-	color.b = 1;
 	n_ratio = intersection->n1 / intersection->n2;
 	cos_i = dot_product(&intersection->eye, &intersection->normal);
 	sin2_t = (n_ratio * n_ratio) * (1 - (cos_i * cos_i));
