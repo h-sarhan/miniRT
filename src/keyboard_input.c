@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:59:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 18:04:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,57 +19,20 @@ void	handle_color_change(int key, t_scene *scene)
 	t_color	color;
 
 	color = scene->shapes[scene->shape_idx].color;
-	if (key == KEY_1)
-	{
-		if (color.r + 5 / 255.0 < 1)
-			color.r += 5 / 255.0;
-	}
-	if (key == KEY_2)
-	{
-		if (color.r - 5 / 255.0 > 0)
-			color.r -= 5 / 255.0;
-	}
-	if (key == KEY_3)
-	{
-		if (color.g  + 5 / 255.0 < 1)
-			color.g += 5 / 255.0;
-	}
-	if (key == KEY_4)
-	{
-		if (color.g > 5 / 255.0)
-			color.g -= 5 / 255.0;
-	}
-	if (key == KEY_5)
-	{
-		if (color.b + 5 / 255.0 < 1)
-			color.b += 5 / 255.0;
-	}
-	if (key == KEY_6)
-	{
-		if (color.b > 5 / 255.0)
-			color.b -= 5 / 255.0;
-	}
-	if (key == KEY_7)
-	{
-		color.r = 0x6d / 255.0;
-		color.g = 0x65 / 255.0;
-		color.b = 0x6d / 255.0;
-	}
-	if (key == KEY_8)
-	{
-		color.r = 0x15 / 255.0;
-		color.g = 0xaa / 255.0;
-		color.b = 0xbf / 255.0;
-	}
-	if (key == KEY_9)
-	{
-		color.r = 0xf7 / 255.0;
-		color.g = 0x67 / 255.0;
-		color.b = 0x07 / 255.0;
-	}
+	if (key == KEY_1 && (color.r + 10 / 255.0) < 1)
+		color.r += 10 / 255.0;
+	if (key == KEY_2 && (color.r - 10 / 255.0) > 0)
+		color.r -= 10 / 255.0;
+	if (key == KEY_3 && (color.g + 10 / 255.0) < 1)
+		color.g += 10 / 255.0;
+	if (key == KEY_4 && (color.g - 10 / 255.0) > 0)
+		color.g -= 10 / 255.0;
+	if (key == KEY_5 && (color.b + 10 / 255.0) < 1)
+		color.b += 10 / 255.0;
+	if (key == KEY_6 && (color.b - 10 / 255.0) > 0)
+		color.b -= 10 / 255.0;
 	scene->shapes[scene->shape_idx].color = color;
 }
-
 
 void	look_at(t_scene *scene)
 {
