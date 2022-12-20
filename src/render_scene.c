@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 19:16:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:37:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	t_color			light_color;
 	double			reflectance;
 	
-	if (worker->scene->refraction_depth != 0)
-		sort_intersections(arr);
 	itx = hit(arr);
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
-		prepare_computations(itx, ray, arr);
+		if (worker->scene->refraction_depth != 0)
+			sort_intersections(arr);
+		itx = hit(arr);
+		prepare_computations(worker->scene, itx, ray, arr);
 		light_idx = 0;
 		while (light_idx < worker->scene->count.lights)
 		{

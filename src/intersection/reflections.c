@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:51:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:37:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_color			light_color;
 
 	ft_bzero(&final_color, sizeof(t_color));
-	if (scene->refraction_depth != 0)
-		sort_intersections(arr);
 	itx = hit(arr);
 	if (itx != NULL)
 	{
-		prepare_computations(itx, ray, arr);
+		if (scene->refraction_depth != 0)
+			sort_intersections(arr);
+		itx = hit(arr);
+		prepare_computations(scene, itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
 		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
@@ -86,12 +87,13 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	t_color			light_color;
 
 	ft_bzero(&final_color, sizeof(t_color));
-	if (scene->refraction_depth != 0)
-		sort_intersections(arr);
 	itx = hit(arr);
 	if (itx != NULL)
 	{
-		prepare_computations(itx, ray, arr);
+		if (scene->refraction_depth != 0)
+			sort_intersections(arr);
+		itx = hit(arr);
+		prepare_computations(scene, itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
 		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
