@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 21:06:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 15:36:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ int	key_handler(t_scene *scene)
 			offset.y = 0;
 			offset.z = -0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			offset.w = 0;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
@@ -392,7 +392,7 @@ int	key_handler(t_scene *scene)
 			offset.y = 0;
 			offset.z = -0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			offset.w = 0;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x -= 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z -= 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
@@ -407,7 +407,7 @@ int	key_handler(t_scene *scene)
 			offset.y = 0;
 			offset.z = 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
 			offset.w = 0;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.0001 *sin(scene->camera.phi)*cos(scene->camera.theta);
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.0001 *sin(scene->camera.phi)*sin(scene->camera.theta);
@@ -423,7 +423,7 @@ int	key_handler(t_scene *scene)
 			offset.y = 0;
 			offset.z = 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
 			offset.w = 0;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions && is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.x += 0.0001 *sin(M_PI / 2)*cos(scene->camera.theta + M_PI / 2);
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.z += 0.0001 *sin(M_PI / 2)*sin(scene->camera.theta + M_PI / 2);
@@ -435,7 +435,7 @@ int	key_handler(t_scene *scene)
 			t_vector	offset;
 			ft_bzero(&offset, sizeof(t_vector));
 			offset.x = 0.04;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, true) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, true) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].radius -= 0.002;
 			}
@@ -468,7 +468,7 @@ int	key_handler(t_scene *scene)
 			t_vector	offset;
 			ft_bzero(&offset, sizeof(t_vector));
 			offset.y = -0.01;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y -= 0.01;
 			}
@@ -479,7 +479,7 @@ int	key_handler(t_scene *scene)
 			t_vector	offset;
 			ft_bzero(&offset, sizeof(t_vector));
 			offset.y = 0.01;
-			while (is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
+			while (scene->collisions &&is_colliding(&scene->shapes[scene->shape_idx % scene->count.shape_count], scene, &offset, false) == true)
 			{
 				scene->shapes[scene->shape_idx % scene->count.shape_count].origin.y += 0.01;
 			}

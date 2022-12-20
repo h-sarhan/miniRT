@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/19 17:44:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 15:36:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ struct s_scene
 	double		render_scale;
 	t_look_at	look_at;
 	t_mouse		mouse;
+	bool		collisions;
 };
 
 typedef struct s_worker		t_worker;

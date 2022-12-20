@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 14:53:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 15:28:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 
 	sort_intersections(arr);
 	itx = hit(arr);
+	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
 		prepare_computations(itx, ray, arr);
-		ft_bzero(&final_color, sizeof(t_color));
 		light_idx = 0;
 		while (light_idx < worker->scene->count.light_count)
 		{
@@ -83,8 +83,8 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 			add_colors(&final_color, &final_color, &refracted);
 			light_idx++;
 		}
-		*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
 	}
+	*(int *)(worker->addr + pixel) = create_mlx_color(&final_color);
 }
 
 void	*render_scene(t_worker *worker)
