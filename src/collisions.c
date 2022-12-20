@@ -55,9 +55,9 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 		add_vec(&point_on_plane, &sphere->origin, &point_on_plane);
 		t_vector	difference;
 		sub_vec(&difference, &sphere->origin, &point_on_plane);
-		double	offset_distance = sphere->radius - vec_magnitude(&difference);
+		double	offset_distance = vec_magnitude(&difference) - sphere->radius;
 		scale_vec(offset, offset, offset_distance);
-		sub_vec(&sphere->origin, &sphere->origin, offset);
+		add_vec(&sphere->origin, &sphere->origin, offset);
 		return (true);
 	}
 	return (false);
@@ -84,9 +84,9 @@ bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset)
 					sub_vec(&dir, &shape->origin, &other->origin);
 					double dist = vec_magnitude(&dir);
 					normalize_vec(&dir);
-					scale_vec(&dir, &dir, (shape->radius + other->radius) - dist);
-					sub_vec(&other->origin, &other->origin, &dir);
-					// collide(other, scene);
+					scale_vec(&dir, &dir,  dist - (shape->radius + other->radius));
+					add_vec(&other->origin, &other->origin, &dir);
+					// collide(other, scene, &dir);
 					return (true);
 				}
 			}
