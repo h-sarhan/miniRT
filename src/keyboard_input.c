@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 17:19:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:39:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,8 @@ void	look_at(t_scene *scene)
 int	set_key_down(int key, t_scene *scene)
 {
 	printf("%d\n", key);
-	static double new_shape_offset = 0;
 	// scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
-	if (key == KEY_M)
+	if (key == KEY_M && scene->edit_mode == true)
 	{
 		// if (scene->mouse.toggle == true)
 		// {
@@ -113,10 +112,9 @@ int	set_key_down(int key, t_scene *scene)
 		// 	mlx_mouse_hide();
 		// }
 	}
-	if (key == KEY_RETURN)
+	if (key == KEY_RETURN && scene->edit_mode == true)
 	{
-		new_shape_offset += 2;
-		scene->shapes[scene->count.shape_count - 1].highlighted = false;
+		scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 		scene->shapes[scene->count.shape_count].color.r = 0xFF / 255.0;
 		scene->shapes[scene->count.shape_count].color.g = 0x10 / 255.0;
 		scene->shapes[scene->count.shape_count].color.b = 0xf0 / 255.0;
@@ -133,10 +131,11 @@ int	set_key_down(int key, t_scene *scene)
 		scene->shapes[scene->count.shape_count].shininess = 50;
 		scene->shapes[scene->count.shape_count].specular = 0.8;
 		scene->count.shape_count++;
+		scene->shape_idx = scene->count.shape_count - 1;
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
-	if (key == KEY_1
+	if ((key == KEY_1
 	|| key == KEY_2
 	|| key == KEY_3
 	|| key == KEY_4
@@ -144,7 +143,7 @@ int	set_key_down(int key, t_scene *scene)
 	|| key == KEY_6
 	|| key == KEY_7
 	|| key == KEY_8
-	|| key == KEY_9
+	|| key == KEY_9) && scene->edit_mode == true
 	)
 	{
 		handle_color_change(key, scene);
@@ -173,7 +172,7 @@ int	set_key_down(int key, t_scene *scene)
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
-	if (key == KEY_TAB)
+	if (key == KEY_TAB && scene->edit_mode == true)
 	{
 		scene->shapes[scene->shape_idx % scene->count.shape_count].highlighted = false;
 		scene->shape_idx++;
@@ -227,7 +226,7 @@ int	set_key_down(int key, t_scene *scene)
 		system("afplay sound.mp3");
 		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
 	}
-	if (key == KEY_C)
+	if (key == KEY_C && scene->edit_mode == true)
 	{
 		scene->camera_mode = !scene->camera_mode;
 		calculate_transforms(scene);
@@ -500,7 +499,7 @@ int	key_handler(t_scene *scene)
 
 		}
 	}
-	if (scene->look_at.trigger == true)
+	if (scene->look_at.trigger == true && scene->edit_mode == true)
 	{
 		if (scene->look_at.step_num != scene->look_at.step_amount)
 		{
