@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 21:07:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/20 21:14:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,9 +193,9 @@ void	look_at_animation(t_scene *scene)
 	t_vector	pos_step;
 	t_vector	dir_step;
 
-	scale_vec(&pos_step, &scene->look_at.pos_diff,\
+	scale_vec(&pos_step, &scene->look_at.pos_diff, \
 		1.0 / scene->look_at.step_amount);
-	scale_vec(&dir_step, &scene->look_at.dir_diff,\
+	scale_vec(&dir_step, &scene->look_at.dir_diff, \
 		1.0 / scene->look_at.step_amount);
 	add_vec(&scene->camera.position, &scene->camera.position, &pos_step);
 	add_vec(&scene->look_at.current_dir, &scene->look_at.current_dir,
@@ -218,21 +218,14 @@ int	key_handler(t_scene *scene)
 		light_controls(scene);
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)
-	{
 		look_at_animation(scene);
-	}
-	if (scene->look_at.trigger == false && scene->mouse.active == false && scene->edit_mode == true
-		&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
-		|| scene->keys_held.d
-		|| scene->keys_held.up
-		|| scene->keys_held.down
-		|| scene->keys_held.left
-		|| scene->keys_held.right
-		|| scene->keys_held.q
-		|| scene->keys_held.e
-		|| scene->keys_held.plus
-		|| scene->keys_held.minus)
-		)
+	if (scene->look_at.trigger == false && scene->mouse.active == false
+		&& scene->edit_mode == true && (scene->keys_held.w || scene->keys_held.a
+			|| scene->keys_held.s || scene->keys_held.d || scene->keys_held.up
+			|| scene->keys_held.right || scene->keys_held.q
+			|| scene->keys_held.e || scene->keys_held.down
+			|| scene->keys_held.left || scene->keys_held.plus
+			|| scene->keys_held.minus))
 	{
 		calculate_transforms(scene);
 		draw_scene(scene);
