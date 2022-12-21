@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 12:19:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:58:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ struct s_shape
 	int				scale_z;
 	bool			highlighted;
 	bool			is_colliding;
+	t_mat4			added_rots;
 };
 void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 
@@ -280,8 +281,9 @@ struct s_worker
 	t_scene	*scene;
 };
 void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color);
-bool	is_colliding(t_shape *shape, const t_scene *scene, t_vector *offset, bool offset_dir);
 void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset);
 void	collide_scale(t_shape *shape, const t_scene *scene, double radius, double height, double width);
+double	rad_to_deg(double r);
+double	deg_to_rad(double r);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:38:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/27 13:56:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:49:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	mat_inverse(t_mat4 *res, const t_mat4 *mat);
 // matrix_transformations.c
 void	calculate_transforms(t_scene *scene);
 void	identity_matrix(t_mat4 *mat);
+
+void	rotation_matrix_x(t_mat4 *mat, double r);
+void	rotation_matrix_y(t_mat4 *mat, double r);
+void	rotation_matrix_z(t_mat4 *mat, double r);
 
 // ! Wont be submitted
 void	print_mat4(const t_mat4 *mat);

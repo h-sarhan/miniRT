@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 17:15:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 18:02:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,11 @@ void	calculate_plane_rotation(t_mat4 *rot_transform, t_shape *plane)
 void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
 	t_mat4 *translate)
 {
-	mat_multiply(&shape->transf, translate, rot);
+	t_mat4	temp;
+
+	mat_multiply(&shape->transf, translate, &shape->added_rots);
+	ft_memcpy(&temp, &shape->transf, sizeof(t_mat4));	
+	mat_multiply(&shape->transf, &temp, rot);
 	ft_memcpy(translate, &shape->transf, sizeof(t_mat4));
 	mat_multiply(&shape->transf, translate, scale);
 	mat_inverse(&shape->inv_transf, &shape->transf);
