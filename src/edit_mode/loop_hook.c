@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:08:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 18:30:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,18 @@ void	scale_object(t_scene *scene, t_shape *shape)
 			shape->radius -= 0.04;
 	}
 }
+void	change_height(t_scene *scene, t_shape *shape)
+{
+	if (scene->keys_held.plus == true)
+	{
+		shape->height += 0.04;
+	}
+	if (scene->keys_held.minus == true)
+	{
+		if (shape->height > 0.1)
+			shape->height -= 0.04;
+	}
+}
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, double deg)
 {
@@ -175,8 +187,12 @@ void	transform_object(t_scene *scene)
 		move_object_h(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.q == true || scene->keys_held.e == true)
 		move_object_v(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.plus == true || scene->keys_held.minus == true)
+	if (scene->keys_held.shift == false
+		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
 		scale_object(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.shift == true
+		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
+		change_height(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.left == true || scene->keys_held.right == true)
 		rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 	if (scene->keys_held.up == true || scene->keys_held.down == true)

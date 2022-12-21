@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:02:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 18:25:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ void	toggle_keys_held(int key, t_scene *scene, bool on_off)
 		scene->keys_held.plus = on_off;
 	if (key == KEY_MINUS)
 		scene->keys_held.minus = on_off;
+	if (key == KEY_SHIFT)
+		scene->keys_held.shift = on_off;
 }
 
 void	select_shape(int key, t_scene *scene)

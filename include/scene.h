@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 17:58:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 18:24:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ struct s_keys
 	bool	minus;
 	bool	tab;
 	bool	c;
+	bool	shift;
 };
 int				set_key_down(int key, t_scene *scene);
 int				set_key_up(int key, t_scene *scene);
