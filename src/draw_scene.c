@@ -367,7 +367,7 @@ void	draw_shape_info(t_scene *scene)
 		if (shape->type == CYLINDER)
 		{
 			origin.x -= 0.2;
-			origin.y += shape->height;
+			origin.y += shape->height / 2;
 		}
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
 		if (origin_proj.z > 0)

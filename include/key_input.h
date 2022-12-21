@@ -47,7 +47,7 @@
 #  define KEY_8 56
 #  define KEY_9 57
 #  define KEY_RETURN 65293
-#  define KEY_SHIFT 0
+#  define KEY_SHIFT 65505
 # else
 #  define KEY_ESC 53
 #  define KEY_W 13

@@ -191,9 +191,9 @@ void	toggle_edit_mode(int key, t_scene *scene)
 	if (key == KEY_SPACE)
 	{
 		scene->edit_mode = !scene->edit_mode;
-		scene->reflection_depth = REFLECTION_DEPTH;
-		if (scene->edit_mode == false)
-			scene->reflection_depth = REFLECTION_DEPTH + 1;
+		// scene->reflection_depth = REFLECTION_DEPTH;
+		// if (scene->edit_mode == false)
+		// 	scene->reflection_depth = REFLECTION_DEPTH + 1;
 	}
 }
 

@@ -41,6 +41,7 @@ void	identity_matrix(t_mat4 *mat);
 void	rotation_matrix_x(t_mat4 *mat, double r);
 void	rotation_matrix_y(t_mat4 *mat, double r);
 void	rotation_matrix_z(t_mat4 *mat, double r);
+void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, double angle);
 
 // ! Wont be submitted
 void	print_mat4(const t_mat4 *mat);

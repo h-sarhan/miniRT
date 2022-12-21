@@ -32,7 +32,7 @@
 # include "render.h"
 
 # define NUM_THREADS 16
-# define REFLECTION_DEPTH 2
+# define REFLECTION_DEPTH 1
 # define CAM_SPEED 0.5
 # define EPSILON 0.001
 # define TICK(X) clock_t X = clock()
