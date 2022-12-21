@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 19:40:06 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/21 21:12:14 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,10 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		check_cylinder_caps(&transf_ray, shape, xs);
 		return (true);
 	}
+	else if (shape->type == CUBE)
+	{
+		local_intersect(shape, &transf_ray, xs);
+	}
 	return (true);
 }
 
@@ -243,6 +247,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	object_normal;
 	t_vector	world_normal;
+	double		maxc;
 
 	if (shape->type == SPHERE)
 	{
@@ -313,34 +318,85 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 		world_normal.w = 0;
 		normalize_vec(&world_normal);
 	}
+	if (shape->type == CUBE)
+	{
+		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
+		object_normal.w = 0;
+		maxc = find_max(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
+		// if (maxc == fabs(object_normal.x))
+		// {
+		// 	//
+		// }
+		// else if (maxc == fabs(object_normal.y))
+		// {
+		// 	//
+		// }
+		// else if (maxc == fabs(object_normal.z))
+		// {
+		// 	//
+		// }
+		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+		world_normal.w = 0;
+		normalize_vec(&world_normal);
+			
+	}
 	return (world_normal);
 }
 
-void	local_intersect(t_shape *shape, t_ray *ray)
+double	find_max(double n1, double n2, double n3)
 {
-	
+
+  if (n1 >= n2 && n1 >= n3)
+   return (n1);
+  if (n2 >= n1 && n2 >= n3)
+   return (n2);
+  if (n3 >= n1 && n3 >= n2)
+   return (n3);
 }
 
-void	check_axis(t_vector *origin, t_vector *direction)
+void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
-	t_vector	tmin_numerator;
-	t_vector	tmax_numerator;
-	t_vector	unit_vec;
-	t_vector	n_unit_vec;
+	double	xtmin;
+	double	xtmax;
+	double	ytmin;
+	double	ytmax;
+	double	ztmin;
+	double	ztmax;
+	double	tmin;
+	double	tmax;
+	
+	check_axis(&xtmin, &xtmin, ray->origin.x, ray->direction.x);
+	check_axis(&ytmin, &ytmin, ray->origin.y, ray->direction.y);
+	check_axis(&ztmin, &ztmin, ray->origin.z, ray->direction.z);
+	tmin = find_max(xtmin, ytmin, ztmin);
+	tmax = find_max(xtmax, ytmax, ztmax);
+	if (tmin > tmax)
+		return ;
+	xs->arr[xs->count].time = tmin;	
+	xs->arr[xs->count].shape = shape;	
+	xs->arr[xs->count + 1].time = tmax;	
+	xs->arr[xs->count + 1].shape = shape;
+	xs->count += 2;	
+}
+
+void	check_axis(double *t_min, double *t_max, double origin, double direction)
+{
+	double		tmin_numerator;
+	double		tmax_numerator;
 	double		dir_mag;
 	
-	unit_vec.x = 1;
-	unit_vec.y = 1;
-	unit_vec.z = 1;
-	unit_vec.w = 1;
-	
-	tmax_numerator = sub_vec(&tmax_numerator, &tmax_numerator, &unit_vec);
-	negate_vec(&n_unit_vector, &unit_vec);
-	tmin_numerator = sub_vec(&tmax_numerator, &tmax_numerator, &unit_vec);
-	
-	dir_mag = vec_magnitude(&direction);
-	if (fabs(dir_mag) >= EPSILON)
+	tmin_numerator = (-1 - origin);
+	tmax_numerator = 1 - origin;
+	if (fabs(direction) >= EPSILON)
 	{
-		
+		*t_min = tmin_numerator / direction;
+		*t_max = tmax_numerator / direction;
 	}
+	else
+	{
+		*t_min = tmin_numerator * INFINITY;
+		*t_max = tmax_numerator * INFINITY;
+	}
+	if (t_min > t_max)
+		ft_swapd(t_min, t_max);		
 }
