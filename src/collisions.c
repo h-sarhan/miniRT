@@ -42,32 +42,7 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane, t_vector *off
 
 	if (fabs(distance) < sphere->radius)
 	{
-		normalize_vec(offset);
-		// Point of intersection between plane and vector
-		// https://math.stackexchange.com/questions/100439/determine-where-a-vector-will-intersect-a-plane
-		// Get the distance
-		// scale offset with that
-		// Figure out how much to subtract the sphere's origin by to prevent it from colliding with a plane
-		if (fabs(dot_product(&plane->orientation, offset)) < 0.01)
-			return (false);
-		double t = (dot_product(&plane->orientation, &plane->origin) - dot_product(&plane->orientation, &sphere->origin)) / dot_product(&plane->orientation, offset);
-		t_vector	point_on_plane;
-		scale_vec(&point_on_plane, offset, t);
-		add_vec(&point_on_plane, &sphere->origin, &point_on_plane);
-		t_vector	difference;
-		sub_vec(&difference, &sphere->origin, &point_on_plane);
-		double	offset_distance = vec_magnitude(&difference) - sphere->radius;
-		scale_vec(offset, offset, offset_distance);
-		add_vec(&sphere->origin, &sphere->origin, offset);
 		return (true);
-		
-
-		// t_vector	dp;
-		// t_vector	slide;
-		// scale_vec(&slide, &plane->orientation, dot_product(offset, &plane->orientation));
-		// sub_vec(&dp, offset, &slide);
-		// print_vector(&dp);
-		// sub_vec(&sphere->origin, &sphere->origin, &dp);
 	}
 	return (false);
 }
@@ -96,17 +71,65 @@ bool	collide(t_shape *shape, const t_scene *scene, t_vector *offset)
 					scale_vec(&dir, &dir,  dist - (shape->radius + other->radius));
 					add_vec(&other->origin, &other->origin, &dir);
 					shape->is_colliding = true;
-					// negate_vec(&dir, &dir);
-					// print_vector(&dir);
 					collide(other, scene, &dir);
 					shape->is_colliding = false;
-					// return (true);
 				}
 			}
 			else if (shape->type == SPHERE && other->type == PLANE)
 			{
-				if (sphere_plane_collision(shape, other, offset) == true)
+				if (sphere_plane_collision(shape, other, offset) == true && shape->is_colliding == false)
 				{
+					printf("Colliding\n");
+					bool	collide_x;
+					bool	collide_y;
+					bool	collide_z;
+					sub_vec(&shape->origin, &shape->origin, offset);
+					t_vector	offset_copy = *offset;
+					offset_copy.y = 0;
+					offset_copy.z = 0;
+					add_vec(&shape->origin, &shape->origin, &offset_copy);
+					collide_x = sphere_plane_collision(shape, other, &offset_copy);
+					sub_vec(&shape->origin, &shape->origin, &offset_copy);
+					offset_copy = *offset;
+					offset_copy.x = 0;
+					offset_copy.z = 0;
+					add_vec(&shape->origin, &shape->origin, &offset_copy);
+					collide_y = sphere_plane_collision(shape, other, &offset_copy);
+					sub_vec(&shape->origin, &shape->origin, &offset_copy);
+					offset_copy = *offset;
+					offset_copy.x = 0;
+					offset_copy.y = 0;
+					add_vec(&shape->origin, &shape->origin, &offset_copy);
+					collide_z = sphere_plane_collision(shape, other, &offset_copy);
+					sub_vec(&shape->origin, &shape->origin, &offset_copy);
+					ft_bzero(&offset_copy, sizeof(t_vector));
+					if (collide_x == false)
+						offset_copy.x = offset->x;
+					if (collide_y == false)
+						offset_copy.y = offset->y;
+					if (collide_z == false)
+						offset_copy.z = offset->z;
+					print_vector(&offset_copy);
+					add_vec(&shape->origin, &shape->origin, &offset_copy);
+					scale_vec(&offset_copy, offset, 0.01);
+					int push_back_counter = 0;
+					while (!sphere_plane_collision(shape, other, &offset_copy) && push_back_counter < 100)
+					{
+						print_vector(&offset_copy);
+						add_vec(&shape->origin, &shape->origin, &offset_copy);
+						push_back_counter++;
+					}
+					sub_vec(&shape->origin, &shape->origin, &offset_copy);
+					int i = 0;
+					while (i < scene->count.shapes)
+					{
+						scene->shapes[i].is_colliding = false;
+						i++;
+					}
+					scale_vec(&offset_copy, offset, 0.01 * push_back_counter);
+					shape->is_colliding = true;
+					collide(shape, scene, &offset_copy);
+					shape->is_colliding = false;
 					// return (true);
 				}
 			}
