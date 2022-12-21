@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 12:28:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:38:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	scene->render_scale = 1;
-	scene->edit_scale = 0.45;
+	scene->edit_scale = 0.35;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
@@ -70,13 +70,13 @@ int	main(int argc, char **argv)
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
-	scene->shapes[0].transparency = 1;
-	scene->shapes[0].reflectiveness = 1;
-	scene->shapes[0].ior = 1.5;
-	scene->shapes[1].transparency = 1;
-	scene->shapes[1].reflectiveness = 0.0;
-	scene->shapes[1].ior = 1.0039;
-	scene->refraction_depth = 4;
+	// scene->shapes[0].transparency = 1;
+	// scene->shapes[0].reflectiveness = 1;
+	// scene->shapes[0].ior = 1.5;
+	// scene->shapes[1].transparency = 1;
+	// scene->shapes[1].reflectiveness = 0.0;
+	// scene->shapes[1].ior = 1.0039;
+	scene->refraction_depth = 5;
 	
 	
 	sem_unlink("/loading");

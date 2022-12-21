@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 12:27:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 15:17:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	mat_vec_multiply(&point_on_plane, &plane->transf, &center);
 	t_vector	sphere_to_plane;
 	sub_vec(&sphere_to_plane, &sphere->origin, &point_on_plane);
-	double distance = dot_product(&sphere_to_plane, &plane->orientation);
-
+	t_vector	normal2 = plane->orientation;
+	normal2.y *= -1;
+	// negate_vec(&normal2, &normal2);
+	double distance = dot_product(&sphere_to_plane, &normal2);
+	printf("distance == %f\n", distance);
 	if (fabs(distance) < sphere->radius)
 	{
 		return (true);
@@ -49,7 +52,6 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 
 void	sphere_sphere_collision_resolution(t_shape *shape, t_shape *other, const t_scene *scene)
 {
-	// find direction from s1 to s2
 	t_vector	dir;
 
 	sub_vec(&dir, &shape->origin, &other->origin);
@@ -127,10 +129,12 @@ void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_s
 		offset_copy.y = offset->y;
 	if (collide_z == false)
 		offset_copy.z = offset->z;
+	if (collide_x && collide_y && collide_z)
+		return;
 	add_vec(&shape->origin, &shape->origin, &offset_copy);
-	scale_vec(&offset_copy, offset, 0.01);
+	scale_vec(&offset_copy, offset, 0.05);
 	int push_back_counter = 0;
-	while (!sphere_plane_collision(shape, other) && push_back_counter < 100)
+	while (!sphere_plane_collision(shape, other) && push_back_counter < 200)
 	{
 		print_vector(&offset_copy);
 		add_vec(&shape->origin, &shape->origin, &offset_copy);
