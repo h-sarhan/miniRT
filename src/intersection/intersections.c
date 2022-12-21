@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 17:00:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 19:40:06 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,4 +314,33 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 		normalize_vec(&world_normal);
 	}
 	return (world_normal);
+}
+
+void	local_intersect(t_shape *shape, t_ray *ray)
+{
+	
+}
+
+void	check_axis(t_vector *origin, t_vector *direction)
+{
+	t_vector	tmin_numerator;
+	t_vector	tmax_numerator;
+	t_vector	unit_vec;
+	t_vector	n_unit_vec;
+	double		dir_mag;
+	
+	unit_vec.x = 1;
+	unit_vec.y = 1;
+	unit_vec.z = 1;
+	unit_vec.w = 1;
+	
+	tmax_numerator = sub_vec(&tmax_numerator, &tmax_numerator, &unit_vec);
+	negate_vec(&n_unit_vector, &unit_vec);
+	tmin_numerator = sub_vec(&tmax_numerator, &tmax_numerator, &unit_vec);
+	
+	dir_mag = vec_magnitude(&direction);
+	if (fabs(dir_mag) >= EPSILON)
+	{
+		
+	}
 }
