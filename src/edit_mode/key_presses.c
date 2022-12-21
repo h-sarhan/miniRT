@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:25:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 22:23:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,21 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].color.a = 0;
 	scene->shapes[scene->count.shapes].diffuse = 0.9;
 	scene->shapes[scene->count.shapes].highlighted = true;
-	scene->shapes[scene->count.shapes].origin.x = \
-	scene->camera.dir.x * 5 + scene->camera.position.x;
-	scene->shapes[scene->count.shapes].origin.y = \
-	scene->camera.dir.y + scene->camera.position.y;
-	scene->shapes[scene->count.shapes].origin.z = \
-	scene->camera.dir.z * 5 + scene->camera.position.z;
+	scene->shapes[scene->count.shapes].origin.x = scene->camera.dir.x * 5 + scene->camera.position.x;
+	scene->shapes[scene->count.shapes].origin.y = scene->camera.dir.y + scene->camera.position.y;
+	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + scene->camera.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].radius = 0.7;
 	scene->shapes[scene->count.shapes].reflectiveness = 0.2;
 	scene->shapes[scene->count.shapes].type = SPHERE;
 	scene->shapes[scene->count.shapes].shininess = 50;
 	scene->shapes[scene->count.shapes].specular = 0.8;
+	scene->shapes[scene->count.shapes].id = scene->count.shapes;
+	scene->shapes[scene->count.shapes].ior = 1;
+	identity_matrix(&scene->shapes[scene->count.shapes].added_rots);
 	scene->count.shapes++;
+	
+	
 	scene->shape_idx = scene->count.shapes - 1;
 }
 

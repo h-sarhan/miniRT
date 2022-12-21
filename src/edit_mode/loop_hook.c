@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:30:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 21:18:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 			0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -103,7 +104,8 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -124,7 +126,8 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
