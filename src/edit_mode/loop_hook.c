@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 22:11:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:17:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 			0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide(shape, scene, &offset);
+	collide_translate(shape, scene, &offset);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -103,7 +103,7 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide(shape, scene, &offset);
+	collide_translate(shape, scene, &offset);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -124,19 +124,15 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide(shape, scene, &offset);
+	collide_translate(shape, scene, &offset);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
 {
-	t_vector	offset;
-
-	ft_bzero(&offset, sizeof(t_vector));
 	if (scene->keys_held.plus == true)
 	{
 		shape->radius += 0.04;
-		offset.x = 0.04;
-		collide(shape, scene, &offset);
+		collide_scale(shape, scene, 0.04, 0, 0);
 	}
 	if (scene->keys_held.minus == true)
 	{
