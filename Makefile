@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/21 12:25:19 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/21 16:49:35 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ ifeq ($(OS),Linux)
 	MLX = mlx_linux
 else
 	INC = -Iinclude -Ilibft -Imlx 
-	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
+	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit 
 	MLX = mlx
 endif

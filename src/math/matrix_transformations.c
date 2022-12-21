@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 15:00:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:15:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,13 +161,17 @@ void	calculate_plane_rotation(t_mat4 *rot_transform, t_shape *plane)
 	t_vector	ax;
 	double		angle;
 
+	if (plane->orientation.x == 0 && fabs(plane->orientation.y) == 1 && plane->orientation.z == 0)
+		return ;
 	ax.w = 0;
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
 	normalize_vec(&plane->orientation);
-	cross_product(&ax, &plane->orientation, &up);
+	normalize_vec(&up);
+	cross_product(&ax, &up, &plane->orientation);
+	normalize_vec(&ax);
 	angle = acos(dot_product(&plane->orientation, &up));
 	axis_angle(rot_transform, &ax, angle);
 }

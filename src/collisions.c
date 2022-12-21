@@ -6,14 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 15:17:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:16:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
-
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
 	double		distance;
@@ -29,24 +28,12 @@ bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 // From: https://stackoverflow.com/questions/22093749/c-plane-sphere-collision-detection
 bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 {
-	t_vector	point_on_plane;
-	t_vector	center;
-	center.x = 0;
-	center.y = 0;
-	center.z = 0;
-	center.w = 1;
-	mat_vec_multiply(&point_on_plane, &plane->transf, &center);
-	t_vector	sphere_to_plane;
-	sub_vec(&sphere_to_plane, &sphere->origin, &point_on_plane);
-	t_vector	normal2 = plane->orientation;
-	normal2.y *= -1;
-	// negate_vec(&normal2, &normal2);
-	double distance = dot_product(&sphere_to_plane, &normal2);
-	printf("distance == %f\n", distance);
+	t_vector	normal;
+	normal = plane->orientation;
+	double d = - (normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
+	double distance = (normal.x *  sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
 	if (fabs(distance) < sphere->radius)
-	{
 		return (true);
-	}
 	return (false);
 }
 
@@ -96,8 +83,6 @@ void	collide_scale(t_shape *shape, const t_scene *scene,
 	}
 }
 
-
-
 void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_scene *scene, t_vector *offset)
 {
 	bool	collide_x;
@@ -136,7 +121,6 @@ void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_s
 	int push_back_counter = 0;
 	while (!sphere_plane_collision(shape, other) && push_back_counter < 200)
 	{
-		print_vector(&offset_copy);
 		add_vec(&shape->origin, &shape->origin, &offset_copy);
 		push_back_counter++;
 	}
@@ -155,7 +139,6 @@ void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_s
 		shape->is_colliding = false;
 	}
 }
-
 
 void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 {

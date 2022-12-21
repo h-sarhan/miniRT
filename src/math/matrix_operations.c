@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/15 21:00:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 16:18:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
  */
 void	identity_matrix(t_mat4 *mat)
 {
-	ft_bzero(mat, 16 * sizeof(double));
+	ft_bzero(mat, sizeof(t_mat4));
 	(*mat)[0][0] = 1;
 	(*mat)[1][1] = 1;
 	(*mat)[2][2] = 1;

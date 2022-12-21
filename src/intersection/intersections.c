@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 14:24:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 17:00:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	{
 		if (fabs(transf_ray.direction.y) < EPSILON)
 			return (false);
-		xs->arr[xs->count].time = (transf_ray.origin.y * -1) / transf_ray.direction.y;
+		xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
 	}
