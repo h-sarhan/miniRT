@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 22:23:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 13:09:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@ void	look_at(t_scene *scene)
 	sub_vec(&scene->look_at.dir_diff, &scene->look_at.final_dir,
 		&scene->camera.dir);
 	scene->look_at.step_amount = (vec_magnitude(&scene->look_at.pos_diff) + \
-		vec_magnitude(&scene->look_at.dir_diff));
-	if (scene->look_at.step_amount > 0)
-		scene->look_at.trigger = true;
+		vec_magnitude(&scene->look_at.dir_diff)) + 2;
+	scene->look_at.trigger = true;
 }
 
 void	spawn_shape(t_scene *scene)
