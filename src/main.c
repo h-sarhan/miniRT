@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 19:54:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/22 21:28:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,24 @@ int	main(int argc, char **argv)
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
 	scene->shapes[0].type = CUBE;
-	scene->shapes[0].transparency = 0;
+	scene->shapes[0].color.r = 0xFF / 255.0;
+	scene->shapes[0].color.g = 0x10 / 255.0;
+	scene->shapes[0].color.b = 0xf0 / 255.0;
+	scene->shapes[0].color.a = 0;
+	scene->shapes[0].diffuse = 0.9;
+	scene->shapes[0].origin.x = 0;
+	scene->shapes[0].origin.y = 0;
+	scene->shapes[0].origin.z = 0;
+	scene->shapes[0].origin.w = 1;
+	scene->shapes[0].radius = 0.7;
 	scene->shapes[0].reflectiveness = 0;
+	scene->shapes[0].shininess = 50;
+	scene->shapes[0].specular = 0.8;
+	scene->shapes[0].id = 0;
+	scene->shapes[0].ior = 0;
+	identity_matrix(&scene->shapes[0].added_rots);
+	
+	
 	// scene->shapes[0].ior = 1.5;
 	// scene->shapes[1].transparency = 1;
 	// scene->shapes[1].reflectiveness = 0.0;

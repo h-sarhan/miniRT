@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 19:36:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:18:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,7 +373,7 @@ void	draw_shape_info(t_scene *scene)
 		if (origin_proj.z > 0)
 			return ;
 		perspective_projection(&origin_proj, scene);
-		if ((shape->type == SPHERE || shape->type == CYLINDER))
+		if ((shape->type == SPHERE || shape->type == CYLINDER || shape->type == CUBE))
 		{
 			char str[1000];
 			if (shape->type == SPHERE)

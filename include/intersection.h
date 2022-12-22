@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 19:23:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:34:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ struct s_intersections
 	int			count;
 };
 // draw_scene.c
-void		my_mlx_pixel_put(t_scene *data, int x, int y, int color);
 void		draw_scene(t_scene *scene);
 
 // intersections.c
@@ -104,17 +103,15 @@ t_vector	normal_at(const t_shape *shape, const t_vector *intersection_point);
 t_color		lighting(t_intersect *intersection, t_scene *scene, int light_idx);
 bool		is_shadowed(t_scene *scene, int light_idx,
 				t_vector *intersection_point);
-t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
-void	prepare_computations(t_scene *scene, t_intersect *intersection, t_ray *ray, t_intersections *xs);
-void	*render_scene_fast(t_worker *worker);
-void sort_intersections(t_intersections *arr);
-t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
-double	schlick(t_intersect *intersection);
+t_color		reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
+void		prepare_computations(t_scene *scene, t_intersect *intersection, t_ray *ray, t_intersections *xs);
+void		*render_scene_fast(t_worker *worker);
+void		sort_intersections(t_intersections *arr);
+t_color		refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
+double		schlick(t_intersect *intersection);
 t_intersect	*hit_skip_transparent(t_intersections *xs);
-void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
-double	find_max(double n1, double n2, double n3);
-void	check_axis(double *t_min, double *t_max, double origin, double direction);
-
-
+bool		intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
+double		find_max(double n1, double n2, double n3);
+void		check_axis(double *t_min, double *t_max, double origin, double direction);
 
 #endif

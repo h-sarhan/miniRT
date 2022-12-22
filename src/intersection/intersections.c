@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 19:53:58 by mkhan            ###   ########.fr       */
+/*   Updated: 2022/12/22 21:33:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	else if (shape->type == CUBE)
 	{
 		// transf_ray = *ray;
-		intersect_cube(shape, &transf_ray, xs);
+		return (intersect_cube(shape, &transf_ray, xs));
 	}
 	return (true);
 }
@@ -320,7 +320,6 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	if (shape->type == CUBE)
 	{
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
-		// object_normal = *itx_point;
 		object_normal.w = 0;
 		maxc = find_max(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
 		if (maxc == fabs(object_normal.x))
@@ -339,10 +338,8 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 			object_normal.y = 0;
 		}
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
-		world_normal = object_normal;
 		world_normal.w = 0;
 		normalize_vec(&world_normal);
-			
 	}
 	return (world_normal);
 }
@@ -364,7 +361,7 @@ double	find_min(double n1, double n2, double n3)
 		return (n2);
 	return (n3);
 }
-void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
+bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	double	xtmin;
 	double	xtmax;
@@ -382,12 +379,13 @@ void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	tmax = find_min(xtmax, ytmax, ztmax);
 	// printf("tmin == %f --- tmax == %f\n", tmin, tmax);
 	if (tmin > tmax)
-		return ;
+		return (false);
 	xs->arr[xs->count].time = tmin;	
 	xs->arr[xs->count].shape = shape;	
 	xs->arr[xs->count + 1].time = tmax;	
 	xs->arr[xs->count + 1].shape = shape;
 	xs->count += 2;	
+	return (true);
 }
 
 void	check_axis(double *t_min, double *t_max, double origin, double direction)
@@ -408,6 +406,7 @@ void	check_axis(double *t_min, double *t_max, double origin, double direction)
 		*t_min = tmin_numerator * INFINITY;
 		*t_max = tmax_numerator * INFINITY;
 	}
-	if (t_min > t_max)
-		ft_swapd(t_min, t_max);		
+	// if (t_min > t_max) we were comparing two pointers
+	if (*t_min > *t_max)
+		ft_swapd(t_min, t_max);
 }
