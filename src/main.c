@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 18:00:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 18:02:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	main(int argc, char **argv)
 	// scene->shapes[1].transparency = 1;
 	// scene->shapes[1].reflectiveness = 0.0;
 	// scene->shapes[1].ior = 1.5;
-	scene->refraction_depth = 3;
-	scene->reflection_depth = 1;
+	// scene->refraction_depth = 3;
+	scene->reflection_depth = 2;
 	
 	
 	sem_unlink("/loading");
