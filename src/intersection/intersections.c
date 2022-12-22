@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 19:41:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:53:58 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,6 +339,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 			object_normal.y = 0;
 		}
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
+		world_normal = object_normal;
 		world_normal.w = 0;
 		normalize_vec(&world_normal);
 			
@@ -355,6 +356,14 @@ double	find_max(double n1, double n2, double n3)
 	return (n3);
 }
 
+double	find_min(double n1, double n2, double n3)
+{
+	if (n1 <= n2 && n1 <= n3)
+		return (n1);
+	if (n2 <= n1 && n2 <= n3)
+		return (n2);
+	return (n3);
+}
 void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	double	xtmin;
@@ -370,7 +379,8 @@ void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	check_axis(&ytmin, &ytmax, ray->origin.y, ray->direction.y);
 	check_axis(&ztmin, &ztmax, ray->origin.z, ray->direction.z);
 	tmin = find_max(xtmin, ytmin, ztmin);
-	tmax = find_max(xtmax, ytmax, ztmax);
+	tmax = find_min(xtmax, ytmax, ztmax);
+	// printf("tmin == %f --- tmax == %f\n", tmin, tmax);
 	if (tmin > tmax)
 		return ;
 	xs->arr[xs->count].time = tmin;	
