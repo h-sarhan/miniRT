@@ -284,6 +284,8 @@ int	key_handler(t_scene *scene)
 	else if (scene->edit_mode == true)
 	{
 		transform_object(scene);
+		mouse_rotate(scene);
+
 		// light_controls(scene);
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)

@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	scene->render_scale = 1;
-	scene->edit_scale = 0.35;
+	scene->edit_scale = 0.25;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
@@ -70,14 +70,14 @@ int	main(int argc, char **argv)
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
-	scene->shapes[0].transparency = 1;
+	// scene->shapes[0].transparency = 1;
 	scene->shapes[0].reflectiveness = 1;
-	scene->shapes[0].ior = 1.5;
+	// scene->shapes[0].ior = 1.5;
 	// scene->shapes[1].transparency = 1;
 	// scene->shapes[1].reflectiveness = 0.0;
 	// scene->shapes[1].ior = 1.5;
-	scene->refraction_depth = 5;
-	scene->reflection_depth = 1;
+	// scene->refraction_depth = 5;
+	scene->reflection_depth = 2;
 	
 	
 	sem_unlink("/loading");
@@ -101,6 +101,8 @@ int	main(int argc, char **argv)
 	scene->mlx = &mlx;
 	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
 	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
+	mlx_hook(mlx.mlx_win, 5, 0, handle_mouse_up, scene);
+	mlx_mouse_hook(mlx.mlx_win, handle_mouse_down, scene);
 	mlx_loop_hook(mlx.mlx, key_handler, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
