@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 22:13:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:52:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void	fill_in_horizontal(t_worker *worker)
 	}
 }
 
-void	fill_in_horizontal2(t_worker *worker)
+void	fill_in_horizontal2(t_worker *worker, int threshold)
 {
 	int				x;
 	int				y;
@@ -266,7 +266,7 @@ void	fill_in_horizontal2(t_worker *worker)
 			{
 				int c1 = get_color(worker, x - 1, y);
 				int c4 = get_color(worker, x + 2, y);
-				if (color_difference(c1, c4) > 5)
+				if (color_difference(c1, c4) > threshold)
 				{
 					ray_for_pixel(&ray, &worker->scene->camera, x, y);
 					shape_idx = -1;
@@ -276,7 +276,7 @@ void	fill_in_horizontal2(t_worker *worker)
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
-					if (color_difference(c2, 4) > 5)
+					if (color_difference(c2, 4) > threshold)
 					{
 						ray_for_pixel(&ray, &worker->scene->camera, x + 1, y);
 						shape_idx = -1;
@@ -314,7 +314,7 @@ void	fill_in_horizontal2(t_worker *worker)
 	}
 }
 
-void	fill_in_vertical2(t_worker *worker)
+void	fill_in_vertical2(t_worker *worker, int threshold)
 {
 	int				x;
 	int				y;
@@ -334,7 +334,7 @@ void	fill_in_vertical2(t_worker *worker)
 			{
 				int c1 = get_color(worker, x, y - 1);
 				int c4 = get_color(worker, x, y + 2);
-				if (color_difference(c1, c4) > 10)
+				if (color_difference(c1, c4) > threshold)
 				{
 					ray_for_pixel(&ray, &worker->scene->camera, x, y);
 					shape_idx = -1;
@@ -344,7 +344,7 @@ void	fill_in_vertical2(t_worker *worker)
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
-					if (color_difference(c2, 4) > 10)
+					if (color_difference(c2, 4) > threshold)
 					{
 						ray_for_pixel(&ray, &worker->scene->camera, x, y + 1);
 						shape_idx = -1;
@@ -504,8 +504,8 @@ void	*render_scene_faster(t_worker *worker)
 		}
 		y += 3;
 	}
-	fill_in_horizontal2(worker);
+	fill_in_horizontal2(worker, 20);
 	// fill_in_vertical(worker);
-	fill_in_vertical2(worker);
+	fill_in_vertical2(worker, 20);
 	return (NULL);
 }

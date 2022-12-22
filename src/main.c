@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 13:34:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 18:00:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,26 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 4;
-	scene->edit_scale = 0.25;
+	scene->render_scale = 2;
+	scene->edit_scale = 0.5;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
 	scene->edit_h = 1080 * scene->edit_scale;
-	scene->display_w = 1920 * 0.5;
-	scene->display_h = 1080 * 0.5;
+	scene->display_w = 1920 * 0.7;
+	scene->display_h = 1080 * 0.7;
 	scene->reflection_depth = REFLECTION_DEPTH;
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
-	// scene->shapes[0].transparency = 1;
+	scene->shapes[0].transparency = 1;
 	scene->shapes[0].reflectiveness = 1;
-	// scene->shapes[0].ior = 1.5;
+	scene->shapes[0].ior = 1.5;
 	// scene->shapes[1].transparency = 1;
 	// scene->shapes[1].reflectiveness = 0.0;
 	// scene->shapes[1].ior = 1.5;
-	// scene->refraction_depth = 5;
-	scene->reflection_depth = 2;
+	scene->refraction_depth = 3;
+	scene->reflection_depth = 1;
 	
 	
 	sem_unlink("/loading");
@@ -86,7 +86,7 @@ int	main(int argc, char **argv)
 	mlx.mlx = mlx_init();
 	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
 	mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
-	mlx.edit_img = mlx_new_image(mlx.mlx, 1920 * 0.75, 1080 * 0.75);
+	mlx.edit_img = mlx_new_image(mlx.mlx, 1920 * 1, 1080 * 1);
 	mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
 	mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
 		&mlx.line_length,&mlx.endian);
