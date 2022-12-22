@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 21:37:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:52:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,16 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	t_color			light_color;
 	double			reflectance;
 	
+	// sort_intersections(arr);
 	itx = hit(arr);
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
 		if (worker->scene->refraction_depth != 0)
+		{
 			sort_intersections(arr);
-		itx = hit(arr);
+			itx = hit(arr);
+		}
 		prepare_computations(worker->scene, itx, ray, arr);
 		light_idx = 0;
 		while (light_idx < worker->scene->count.lights)
@@ -127,6 +130,11 @@ void	*render_scene(t_worker *worker)
 	return (NULL);
 }
 
+int	get_t(int trgb)
+{
+	return ((trgb >> 24) & 0xFF);
+}
+
 int	get_r(int col)
 {
 	return ((col >> 16) & 0xFF);
@@ -145,6 +153,22 @@ int	get_b(int col)
 int	color_avg(int c1, int c2)
 {
 	return (create_trgb(0, (get_r(c1) + get_r(c2)) / 2, (get_g(c1) + get_g(c2)) / 2, (get_b(c1) + get_b(c2)) / 2));
+}
+
+int	color_mix(int c1, int c2, float mix)
+{
+	int	result;
+	int	t;
+	int	r;
+	int	g;
+	int	b;
+
+	t = get_t(c1) * mix + get_t(c2) * (1 - mix);
+	r = get_r(c1) * mix + get_r(c2) * (1 - mix);
+	g = get_g(c1) * mix + get_g(c2) * (1 - mix);
+	b = get_b(c1) * mix + get_b(c2) * (1 - mix);
+	result = create_trgb(t, r, g, b);
+	return (result);
 }
 
 int	get_color(t_worker *worker, int x, int y)
@@ -222,6 +246,143 @@ void	fill_in_horizontal(t_worker *worker)
 	}
 }
 
+void	fill_in_horizontal2(t_worker *worker, int threshold)
+{
+	int				x;
+	int				y;
+	int				avg_color;
+	t_intersections	arr;
+	unsigned int	shape_idx;
+	t_ray			ray;
+
+
+	y = worker->y_start - 1;
+	while (++y < worker->y_end)
+	{
+		x = 1;
+		while (x < worker->width)
+		{
+			if (x + 2 < worker->width)
+			{
+				int c1 = get_color(worker, x - 1, y);
+				int c4 = get_color(worker, x + 2, y);
+				if (color_difference(c1, c4) > threshold)
+				{
+					ray_for_pixel(&ray, &worker->scene->camera, x, y);
+					shape_idx = -1;
+					arr.count = 0;
+					while (++shape_idx < worker->scene->count.shapes)
+						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+					calculate_lighting(&arr, worker, &ray, (y * worker->width \
+						+ x) * worker->scene->mlx->bytes_per_pixel);
+					int c2 = get_color(worker, x, y);
+					if (color_difference(c2, 4) > threshold)
+					{
+						ray_for_pixel(&ray, &worker->scene->camera, x + 1, y);
+						shape_idx = -1;
+						arr.count = 0;
+						while (++shape_idx < worker->scene->count.shapes)
+							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+						calculate_lighting(&arr, worker, &ray, (y * worker->width \
+							+ x + 1) * worker->scene->mlx->bytes_per_pixel);
+					}
+					else
+					{
+						avg_color = color_avg(c2, c4);
+						set_color(worker, x + 1, y, avg_color);
+					}
+				}
+				else
+				{
+					// avg_color = color_avg(c1, c2);
+					int c2 = color_mix(c1, c4, 2.0 / 3.0);
+					int c3 = color_mix(c1, c4, 1.0 / 3.0);
+					set_color(worker, x, y, c2);
+					set_color(worker, x + 1, y, c3);
+				}
+			}
+			else
+			{
+				// Remove this if it looks bad on the edges
+				if (x  < worker->width)
+					set_color(worker, x, y, get_color(worker, x - 1, y));
+				if (x + 1 < worker->width)
+					set_color(worker, x + 1, y, get_color(worker, x, y));
+			}
+			x += 3;
+		}
+	}
+}
+
+void	fill_in_vertical2(t_worker *worker, int threshold)
+{
+	int				x;
+	int				y;
+	int				avg_color;
+	t_intersections	arr;
+	unsigned int	shape_idx;
+	t_ray			ray;
+
+
+	y = worker->y_start + 1;
+	while (y < worker->y_end)
+	{
+		x = 0;
+		while (x < worker->width)
+		{
+			if (y + 2 < worker->height)
+			{
+				int c1 = get_color(worker, x, y - 1);
+				int c4 = get_color(worker, x, y + 2);
+				if (color_difference(c1, c4) > threshold)
+				{
+					ray_for_pixel(&ray, &worker->scene->camera, x, y);
+					shape_idx = -1;
+					arr.count = 0;
+					while (++shape_idx < worker->scene->count.shapes)
+						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+					calculate_lighting(&arr, worker, &ray, (y * worker->width \
+						+ x) * worker->scene->mlx->bytes_per_pixel);
+					int c2 = get_color(worker, x, y);
+					if (color_difference(c2, 4) > threshold)
+					{
+						ray_for_pixel(&ray, &worker->scene->camera, x, y + 1);
+						shape_idx = -1;
+						arr.count = 0;
+						while (++shape_idx < worker->scene->count.shapes)
+							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+						calculate_lighting(&arr, worker, &ray, ((y + 1) * worker->width \
+							+ x) * worker->scene->mlx->bytes_per_pixel);
+					}
+					else
+					{
+						avg_color = color_avg(c2, c4);
+						set_color(worker, x, y + 1, avg_color);
+					}
+				}
+				else
+				{
+					// avg_color = color_avg(c1, c2);
+					int c2 = color_mix(c1, c4, 2.0 / 3.0);
+					int c3 = color_mix(c1, c4, 1.0 / 3.0);
+					set_color(worker, x, y, c2);
+					set_color(worker, x, y + 1, c3);
+				}
+			}
+			else
+			{
+				// Improve this
+				if (y < worker->height)
+					set_color(worker, x, y, get_color(worker, x, y - 1));
+				if (y + 1 < worker->height)
+					set_color(worker, x, y + 1, get_color(worker, x, y));
+			}
+			x++;
+		}
+		y += 3;
+	}
+}
+
 void	fill_in_vertical(t_worker *worker)
 {
 	int				x;
@@ -268,7 +429,7 @@ void	fill_in_vertical(t_worker *worker)
 	}
 }
 
-void	*render_scene_dirty(t_worker *worker)
+void	*render_scene_fast(t_worker *worker)
 {
 	t_intersections	arr;
 	int				x;
@@ -305,5 +466,46 @@ void	*render_scene_dirty(t_worker *worker)
 	}
 	fill_in_horizontal(worker);
 	fill_in_vertical(worker);
+	return (NULL);
+}
+
+void	*render_scene_faster(t_worker *worker)
+{
+	t_intersections	arr;
+	int				x;
+	int				y;
+	unsigned int	shape_idx;
+	t_ray			ray;
+
+	int	line_counter = 0;
+	y = worker->y_start;
+	while (y < worker->y_end)
+	{
+		x = 0;
+		while (x < worker->width)
+		{
+			*(unsigned int *)(worker->addr + \
+				(y * worker->width + x) * \
+				worker->scene->mlx->bytes_per_pixel) = 0;
+			ray_for_pixel(&ray, &worker->scene->camera, x, y);
+			shape_idx = -1;
+			arr.count = 0;
+			while (++shape_idx < worker->scene->count.shapes)
+				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
+			calculate_lighting(&arr, worker, &ray, (y * worker->width \
+				+ x) * worker->scene->mlx->bytes_per_pixel);
+			x += 3;
+		}
+		line_counter++;
+		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 15))
+		{
+			sem_post(worker->scene->sem_loading);
+			line_counter = 0;
+		}
+		y += 3;
+	}
+	fill_in_horizontal2(worker, 20);
+	// fill_in_vertical(worker);
+	fill_in_vertical2(worker, 20);
 	return (NULL);
 }

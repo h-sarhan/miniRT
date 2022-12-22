@@ -25,13 +25,12 @@ bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 	return (false);
 }
 
-// From: https://stackoverflow.com/questions/22093749/c-plane-sphere-collision-detection
 bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 {
 	t_vector	normal;
 	normal = plane->orientation;
-	double d = - (normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
-	double distance = (normal.x *  sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
+	double d = -(normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
+	double distance = (normal.x * sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
 	if (fabs(distance) < sphere->radius)
 		return (true);
 	return (false);
@@ -140,6 +139,26 @@ void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_s
 	}
 }
 
+
+bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
+{
+	t_vector	top_cap_center;
+	t_vector	bottom_cap_center;
+	t_vector	normal;
+	printf("cUP is \n");
+	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
+	normalize_vec(&normal);
+	print_vector(&normal);
+	scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
+	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+	scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
+	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+	printf("Bottom cap is \n");
+	print_vector(&bottom_cap_center);
+	printf("Top cap is \n");
+	print_vector(&top_cap_center);
+}
+
 void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 {
 	t_shape			*other;
@@ -163,6 +182,14 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
 					sphere_plane_translate_resolution(shape, other, scene, offset);
+				}
+			}
+			else if (shape->type == CYLINDER && other->type == PLANE)
+			{
+				if (cylinder_plane_collision(shape, other) == true && shape->is_colliding == false)
+				{
+					// sphere_plane_translate_resolution(shape, other, scene, offset);
+					printf("Collision\n");
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 21:37:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 17:57:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ void	draw_shape_info(t_scene *scene)
 		if (shape->type == CYLINDER)
 		{
 			origin.x -= 0.2;
-			origin.y += shape->height;
+			origin.y += shape->height / 2;
 		}
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
 		if (origin_proj.z > 0)
@@ -541,7 +541,8 @@ void	draw_scene(t_scene *scene)
 	while (i < NUM_THREADS)
 	{
 		// pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
-		pthread_create(&threads[i], NULL, (void *)render_scene_dirty, &workers[i]);
+		// pthread_create(&threads[i], NULL, (void *)render_scene_fast, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)render_scene_faster, &workers[i]);
 		i++;
 	}
 	if (scene->edit_mode == false)

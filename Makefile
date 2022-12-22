@@ -46,13 +46,13 @@ ifeq ($(OS),Linux)
 	MLX = mlx_linux
 else
 	INC = -Iinclude -Ilibft -Imlx 
-	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
+	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit 
 	MLX = mlx
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra  -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 

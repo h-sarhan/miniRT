@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:30:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/21 21:18:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 			0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -103,7 +104,8 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -124,7 +126,8 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	collide_translate(shape, scene, &offset);
+	if (scene->collisions)
+		collide_translate(shape, scene, &offset);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
@@ -155,12 +158,22 @@ void	change_height(t_scene *scene, t_shape *shape)
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, double deg)
 {
-	t_mat4	rot;
+	t_mat4		rot;
+	t_vector	ax;
+	t_vector	up;
 
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+	up.w = 0;
+
+	cross_product(&ax, &up, &scene->camera.dir);
 	if (scene->keys_held.down == true)
-		rotation_matrix_x(&rot, -deg);
+		// rotation_matrix_x(&rot, -deg);
+		axis_angle(&rot, &ax, -deg);
 	else
-		rotation_matrix_x(&rot, deg);
+		axis_angle(&rot, &ax, deg);
+		// rotation_matrix_x(&rot, deg);
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
@@ -174,6 +187,19 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, double deg)
 		rotation_matrix_y(&rot, deg);
 	else
 		rotation_matrix_y(&rot, -deg);
+	t_mat4	mat_copy;
+	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
+	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+}
+
+void	rotate_object_z(t_scene *scene, t_shape *shape, double deg)
+{
+	t_mat4	rot;
+
+	if (scene->keys_held.left == true)
+		axis_angle(&rot, &scene->camera.dir, deg);
+	else
+		axis_angle(&rot, &scene->camera.dir, -deg);
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
@@ -193,10 +219,15 @@ void	transform_object(t_scene *scene)
 	if (scene->keys_held.shift == true
 		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
 		change_height(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.left == true || scene->keys_held.right == true)
+	if (scene->keys_held.shift == false
+		&& (scene->keys_held.left == true || scene->keys_held.right == true))
 		rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+	if (scene->keys_held.shift == true
+		&& (scene->keys_held.left == true || scene->keys_held.right == true))
+		rotate_object_z(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
 		rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+	
 }
 
 void	light_controls(t_scene *scene)
@@ -253,6 +284,8 @@ int	key_handler(t_scene *scene)
 	else if (scene->edit_mode == true)
 	{
 		transform_object(scene);
+		mouse_rotate(scene);
+
 		// light_controls(scene);
 	}
 	if (scene->look_at.trigger == true && scene->edit_mode == true)
@@ -265,6 +298,27 @@ int	key_handler(t_scene *scene)
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 	{
+		t_shape *shape = &scene->shapes[scene->shape_idx];
+	if (shape->type == CYLINDER)
+	{
+	t_shape *cylinder = &scene->shapes[scene->shape_idx];
+
+		t_vector	top_cap_center;
+	t_vector	bottom_cap_center;
+	t_vector	normal;
+	printf("cUP is \n");
+	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
+	normalize_vec(&normal);
+	print_vector(&normal);
+	scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
+	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+	scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
+	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+	printf("Bottom cap is \n");
+	print_vector(&bottom_cap_center);
+	printf("Top cap is \n");
+	print_vector(&top_cap_center);
+	}
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

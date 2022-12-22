@@ -227,6 +227,7 @@ struct	s_mouse
 	int		prev_y;
 	int		x;
 	int		y;
+	int		key;
 };
 
 /**

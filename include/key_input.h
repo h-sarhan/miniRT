@@ -47,7 +47,8 @@
 #  define KEY_8 56
 #  define KEY_9 57
 #  define KEY_RETURN 65293
-#  define KEY_SHIFT 0
+#  define KEY_SHIFT 65505
+#  define LEFT_MOUSE_DOWN 1
 # else
 #  define KEY_ESC 53
 #  define KEY_W 13
@@ -80,8 +81,14 @@
 #  define KEY_9 25
 #  define KEY_RETURN 36
 #  define KEY_SHIFT 257
+#  define LEFT_MOUSE_DOWN 1
 # endif
 int	key_handler(t_scene *scene);
 int	mouse_rotate(t_scene *scene);
+int	handle_mouse_down(int key_code, int x, int y, t_scene *scene);
+int	handle_mouse_up(int key_code, int x, int y, t_scene *scene);
+void	rotate_object_x(t_scene *scene, t_shape *shape, double deg);
+void	rotate_object_y(t_scene *scene, t_shape *shape, double deg);
+void	rotate_object_z(t_scene *scene, t_shape *shape, double deg);
 
 #endif
