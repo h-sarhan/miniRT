@@ -106,7 +106,7 @@ bool		is_shadowed(t_scene *scene, int light_idx,
 				t_vector *intersection_point);
 t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx);
 void	prepare_computations(t_scene *scene, t_intersect *intersection, t_ray *ray, t_intersections *xs);
-void	*render_scene_dirty(t_worker *worker);
+void	*render_scene_fast(t_worker *worker);
 void sort_intersections(t_intersections *arr);
 t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
 double	schlick(t_intersect *intersection);

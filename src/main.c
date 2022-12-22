@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 1;
+	scene->render_scale = 4;
 	scene->edit_scale = 0.25;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;

@@ -16,7 +16,10 @@
 
 #include "scene.h"
 void	*render_scene(t_worker *worker);
-void	*render_scene_dirty(t_worker *worker);
+void	*render_scene_fast(t_worker *worker);
+void	*render_scene_faster(t_worker *worker);
+
+
 
 
 #endif

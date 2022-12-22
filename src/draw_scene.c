@@ -541,7 +541,8 @@ void	draw_scene(t_scene *scene)
 	while (i < NUM_THREADS)
 	{
 		// pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
-		pthread_create(&threads[i], NULL, (void *)render_scene_dirty, &workers[i]);
+		// pthread_create(&threads[i], NULL, (void *)render_scene_fast, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)render_scene_faster, &workers[i]);
 		i++;
 	}
 	if (scene->edit_mode == false)
