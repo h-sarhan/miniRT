@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 22:20:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:09:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,46 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 		parse_success = false;
 	*success = parse_success;
 	shape->reflectiveness = 0.1;
+}
+
+/**
+ * @brief Parses a cube object
+ * @param shape The shape to parse
+ * @param splitted The tokens containing the sphere configuration
+ * @param success A boolean pointer set to false if there are any errors while
+ *  parsing
+ */
+static void	parse_cube(t_shape *shape, char **splitted, bool *success)
+{
+	bool	parse_success;
+	double	side_len;
+
+	parse_success = true;
+	shape->type = CUBE;
+	if (split_count(splitted) != 4)
+	{
+		*success = false;
+		side_len = 0.1;
+		return ;
+	}
+	side_len = ft_atof(splitted[2], success);
+	if (*success == false || side_len <= 0.0)
+		parse_success = false;
+	parse_coordinates(&shape->origin, splitted[1], success);
+	shape->origin.w = 1;
+	if (*success == false)
+		parse_success = false;
+	parse_color(&shape->color, splitted[3], success);
+	if (*success == false)
+		parse_success = false;
+	*success = parse_success;
+	ft_bzero(&shape->orientation, sizeof(t_vector));
+	shape->orientation.y = 1;
+	shape->reflectiveness = 0.1;
+	shape->scale_x = side_len;
+	shape->scale_y = side_len;
+	shape->scale_z = side_len;
+	printf("%f\n", side_len);
 }
 
 /**
@@ -154,6 +194,8 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 		parse_plane(shape, splitted, &success);
 	else if (ft_strcmp(splitted[0], "cy") == 0)
 		parse_cylinder(shape, splitted, &success);
+	else if (ft_strcmp(splitted[0], "cu") == 0)
+		parse_cube(shape, splitted, &success);
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
 	shape->id = scene->count.shapes;

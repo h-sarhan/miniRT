@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 13:09:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:02:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,27 @@ void	look_at(t_scene *scene)
 	shape = &scene->shapes[scene->shape_idx];
 	sub_vec(&cam_to_object, &shape->origin, &scene->camera.position);
 	normalize_vec(&cam_to_object);
-	final_pos.x = cam_to_object.x * -8 * shape->radius + shape->origin.x;
-	final_pos.z = cam_to_object.z * -8 * shape->radius + shape->origin.z;
-	final_pos.y = shape->origin.y;
-	final_pos.w = 1;
+	if (shape->type == SPHERE)
+	{
+		final_pos.x = cam_to_object.x * -8 * shape->radius + shape->origin.x;
+		final_pos.z = cam_to_object.z * -8 * shape->radius + shape->origin.z;
+		final_pos.y = shape->origin.y;
+		final_pos.w = 1;
+	}
+	if (shape->type == CUBE)
+	{
+		final_pos.x = cam_to_object.x * -8 * shape->scale_x + shape->origin.x;
+		final_pos.z = cam_to_object.z * -8 * shape->scale_z + shape->origin.z;
+		final_pos.y = shape->origin.y;
+		final_pos.w = 1;
+	}
+	if (shape->type == CYLINDER)
+	{
+		final_pos.x = cam_to_object.x * -4 * shape->radius + shape->origin.x;
+		final_pos.z = cam_to_object.z * -4 * shape->radius + shape->origin.z;
+		final_pos.y = shape->origin.y;
+		final_pos.w = 1;
+	}
 	scene->look_at.final_pos = final_pos;
 	sub_vec(&scene->look_at.final_dir, &shape->origin, &final_pos);
 	normalize_vec(&scene->look_at.final_dir);
@@ -85,8 +102,6 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].ior = 1;
 	identity_matrix(&scene->shapes[scene->count.shapes].added_rots);
 	scene->count.shapes++;
-	
-	
 	scene->shape_idx = scene->count.shapes - 1;
 }
 

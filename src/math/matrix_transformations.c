@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/21 18:02:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:11:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,24 +155,24 @@ void	calculate_camera_transform(t_scene *scene)
 	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
 }
 
-void	calculate_plane_rotation(t_mat4 *rot_transform, t_shape *plane)
+void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 {
 	t_vector	up;
 	t_vector	ax;
 	double		angle;
 
-	if (plane->orientation.x == 0 && fabs(plane->orientation.y) == 1 && plane->orientation.z == 0)
+	if (shape->orientation.x == 0 && fabs(shape->orientation.y) == 1 && shape->orientation.z == 0)
 		return ;
 	ax.w = 0;
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-	normalize_vec(&plane->orientation);
+	normalize_vec(&shape->orientation);
 	normalize_vec(&up);
-	cross_product(&ax, &up, &plane->orientation);
+	cross_product(&ax, &up, &shape->orientation);
 	normalize_vec(&ax);
-	angle = acos(dot_product(&plane->orientation, &up));
+	angle = acos(dot_product(&shape->orientation, &up));
 	axis_angle(rot_transform, &ax, angle);
 }
 
@@ -214,14 +214,23 @@ void	calculate_transforms(t_scene *scene)
 		if (scene->shapes[i].type == SPHERE)
 			scaling_matrix(&scale, scene->shapes[i].radius,
 				scene->shapes[i].radius, scene->shapes[i].radius);
+		if (scene->shapes[i].type == CUBE)
+			scaling_matrix(&scale, scene->shapes[i].scale_x,
+				scene->shapes[i].scale_y, scene->shapes[i].scale_z);
 		if (scene->shapes[i].type == CYLINDER)
 			scaling_matrix(&scale, scene->shapes[i].radius,
 				1, scene->shapes[i].radius);
-		if (scene->shapes[i].type == PLANE || scene->shapes[i].type == CYLINDER)
-			calculate_plane_rotation(&rot, &scene->shapes[i]);
+		if (scene->shapes[i].type == PLANE
+			|| scene->shapes[i].type == CYLINDER)
+			calculate_orientation(&rot, &scene->shapes[i]);
 		translate_matrix(&translate, scene->shapes[i].origin.x,
 			scene->shapes[i].origin.y, scene->shapes[i].origin.z);
 		multiply_transforms(&scene->shapes[i], &scale, &rot, &translate);
+		if (scene->shapes[i].type == CUBE)
+		{
+			printf("scale x%f\n", scene->shapes[i].scale_x);
+			print_mat4(&scale);
+		}
 		i++;
 	}
 }

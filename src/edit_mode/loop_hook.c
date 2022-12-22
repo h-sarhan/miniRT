@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 21:18:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:14:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,39 @@ void	move_cam(t_scene *scene)
 
 	ft_bzero(&vec, sizeof(t_vector));
 	if (scene->keys_held.w == true)
+	{
 		sphere_to_xyz(&vec, scene->camera.phi, scene->camera.theta, CAM_SPEED);
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+	}
 	if (scene->keys_held.a == true)
+	{
 		sphere_to_xyz(&vec, M_PI_2, scene->camera.theta - M_PI_2, -CAM_SPEED);
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+
+	}
 	if (scene->keys_held.s == true)
+	{
+		
 		sphere_to_xyz(&vec, scene->camera.phi, scene->camera.theta, -CAM_SPEED);
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+	}
 	if (scene->keys_held.d == true)
+	{
 		sphere_to_xyz(&vec, M_PI_2, scene->camera.theta - M_PI_2, CAM_SPEED);
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+	}
 	if (scene->keys_held.q == true)
+	{
 		vec.y = 0.35;
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+
+	}
 	if (scene->keys_held.e == true)
+	{
 		vec.y = -0.35;
-	add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		
+	}
 }
 
 void	camera_controls(t_scene *scene)
@@ -134,13 +155,34 @@ void	scale_object(t_scene *scene, t_shape *shape)
 {
 	if (scene->keys_held.plus == true)
 	{
-		shape->radius += 0.04;
+		if (shape->type == CUBE)
+		{
+			shape->scale_x += 0.04;
+			shape->scale_y += 0.04;
+			shape->scale_z += 0.04;
+		}
+		else
+		{
+			shape->radius += 0.04;
+		}
 		collide_scale(shape, scene, 0.04, 0, 0);
 	}
 	if (scene->keys_held.minus == true)
 	{
-		if (shape->radius > 0.3)
-			shape->radius -= 0.04;
+		if (shape->type == CUBE)
+		{
+			if (shape->scale_x > 0.3)
+				shape->scale_x -= 0.04;
+			if (shape->scale_y > 0.3)
+				shape->scale_y -= 0.04;
+			if (shape->scale_z > 0.3)
+				shape->scale_z -= 0.04;
+		}
+		else
+		{
+			if (shape->radius > 0.3)
+				shape->radius -= 0.04;
+		}
 	}
 }
 void	change_height(t_scene *scene, t_shape *shape)
@@ -299,26 +341,26 @@ int	key_handler(t_scene *scene)
 			|| scene->keys_held.minus))
 	{
 		t_shape *shape = &scene->shapes[scene->shape_idx];
-	if (shape->type == CYLINDER)
-	{
-	t_shape *cylinder = &scene->shapes[scene->shape_idx];
-
-		t_vector	top_cap_center;
-	t_vector	bottom_cap_center;
-	t_vector	normal;
-	printf("cUP is \n");
-	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
-	normalize_vec(&normal);
-	print_vector(&normal);
-	scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
-	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
-	scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
-	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
-	printf("Bottom cap is \n");
-	print_vector(&bottom_cap_center);
-	printf("Top cap is \n");
-	print_vector(&top_cap_center);
-	}
+		if (shape->type == CYLINDER)
+		{
+			t_shape *cylinder = &scene->shapes[scene->shape_idx];
+	
+			t_vector	top_cap_center;
+			t_vector	bottom_cap_center;
+			t_vector	normal;
+			printf("cUP is \n");
+			mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
+			normalize_vec(&normal);
+			print_vector(&normal);
+			scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
+			add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+			scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
+			add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+			printf("Bottom cap is \n");
+			print_vector(&bottom_cap_center);
+			printf("Top cap is \n");
+			print_vector(&top_cap_center);
+		}
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

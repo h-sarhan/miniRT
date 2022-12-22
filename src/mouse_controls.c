@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 19:24:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:52:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,19 @@ int	mouse_rotate(t_scene *scene)
 		{
 			if (scene->mouse.prev_x < scene->mouse.x)
 			{
-				rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(3));
+				rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 			}
 			else if (scene->mouse.prev_x > scene->mouse.x)
 			{
-				rotate_object_y(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(3));
+				rotate_object_y(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(5));
 			}
 			if (scene->mouse.prev_y < scene->mouse.y)
 			{
-				rotate_object_x(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(3));
+				rotate_object_x(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(5));
 			}
 			else if (scene->mouse.prev_y > scene->mouse.y)
 			{
-				rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(3));
+				rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 			}
 			calculate_transforms(scene);
 			draw_scene(scene);

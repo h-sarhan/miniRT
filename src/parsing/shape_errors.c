@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:35:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:00:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,32 @@ static void	cylinder_parse_error(const t_shape *shape, size_t line_num,
 
 /**
  * @brief Prints the appropriate error message when an error occurs while
+ * parsing a cube
+ * @param shape The cube being parsed
+ * @param line_num The number of the line containing the cube
+ * @param line The line containing the cube
+ */
+static void	cube_parse_error(const t_shape *shape, size_t line_num,
+	const char *line)
+{
+	bool	color_check;
+
+	color_check = check_color(&shape->color, line_num, line, "cube");
+	if (!color_check && shape->scale_x <= 0)
+	{
+		printf(YELLOW"Error with cube side length on line #%ld\n"
+			RED"->\t%s\n"RESET, line_num, line);
+		printf(YELLOW"Side length has to be a positive number\n"RESET);
+	}
+	else if (!color_check)
+		printf(YELLOW"Error with parsing cube on line #%ld\n"RED"->\t%s\n"
+			YELLOW"Correct syntax is "
+			"\"cu [origin] [side length] [color]\"\n"
+			RESET, line_num, line);
+}
+
+/**
+ * @brief Prints the appropriate error message when an error occurs while
  * parsing a shape
  * @param line Line where the parse error occured
  * @param line_num Number of the line where the error occured
@@ -124,6 +150,8 @@ void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
 		plane_parse_error(shape, line_num, line);
 	else if (shape && shape->type == CYLINDER && split_count(splitted) == 6)
 		cylinder_parse_error(shape, line_num, line);
+	else if (shape && shape->type == CUBE && split_count(splitted) == 4)
+		cube_parse_error(shape, line_num, line);
 	else
 		printf(YELLOW"Error with parsing shape on line #%ld\n"RED"->\t%s"RESET,
 			line_num, line);

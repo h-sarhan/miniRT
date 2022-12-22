@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 18:24:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:12:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,12 @@ struct s_shape
 	double			reflectiveness;
 	double			transparency;
 	double			ior;
-	int				rot_x;
-	int				rot_y;
-	int				rot_z;
-	int				scale_x;
-	int				scale_y;
-	int				scale_z;
+	double			rot_x;
+	double			rot_y;
+	double			rot_z;
+	double			scale_x;
+	double			scale_y;
+	double			scale_z;
 	bool			highlighted;
 	bool			is_colliding;
 	t_mat4			added_rots;
