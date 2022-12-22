@@ -227,6 +227,7 @@ void	transform_object(t_scene *scene)
 		rotate_object_z(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
 		rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+	
 }
 
 void	light_controls(t_scene *scene)
@@ -295,6 +296,27 @@ int	key_handler(t_scene *scene)
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 	{
+		t_shape *shape = &scene->shapes[scene->shape_idx];
+	if (shape->type == CYLINDER)
+	{
+	t_shape *cylinder = &scene->shapes[scene->shape_idx];
+
+		t_vector	top_cap_center;
+	t_vector	bottom_cap_center;
+	t_vector	normal;
+	printf("cUP is \n");
+	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
+	normalize_vec(&normal);
+	print_vector(&normal);
+	scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
+	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+	scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
+	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+	printf("Bottom cap is \n");
+	print_vector(&bottom_cap_center);
+	printf("Top cap is \n");
+	print_vector(&top_cap_center);
+	}
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
