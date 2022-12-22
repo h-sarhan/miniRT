@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 22:12:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:37:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 		if (scene->refraction_depth != 0)
 		{
 			sort_intersections(arr);
-			itx = hit(arr);
+			itx = hit_sorted(arr);
 		}
 		prepare_computations(scene, itx, ray, arr);
 		light_color = lighting(itx, scene, light_idx);
@@ -91,7 +91,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 
 	ft_bzero(&final_color, sizeof(t_color));
 	sort_intersections(arr);
-	itx = hit(arr);
+	itx = hit_sorted(arr);
 	if (itx != NULL)
 	{
 		prepare_computations(scene, itx, ray, arr);

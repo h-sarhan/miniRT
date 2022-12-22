@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 21:34:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:37:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,6 @@ t_intersect	*hit_skip_transparent(t_intersections *xs);
 bool		intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
 double		find_max(double n1, double n2, double n3);
 void		check_axis(double *t_min, double *t_max, double origin, double direction);
+t_intersect	*hit_sorted(t_intersections *xs);
 
 #endif
