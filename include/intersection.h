@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/20 21:37:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:23:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ void sort_intersections(t_intersections *arr);
 t_color	refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
 double	schlick(t_intersect *intersection);
 t_intersect	*hit_skip_transparent(t_intersections *xs);
+void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
+double	find_max(double n1, double n2, double n3);
+void	check_axis(double *t_min, double *t_max, double origin, double direction);
+
 
 
 #endif

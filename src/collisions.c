@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/21 17:16:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:24:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
 	t_vector	normal;
+	(void)plane;
 	printf("cUP is \n");
 	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
 	normalize_vec(&normal);
@@ -157,6 +158,7 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	print_vector(&bottom_cap_center);
 	printf("Top cap is \n");
 	print_vector(&top_cap_center);
+	return (false);
 }
 
 void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)

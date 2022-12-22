@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 19:21:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:24:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,11 +182,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	else if (shape->type == CUBE)
 	{
-		local_intersect(shape, &transf_ray, xs);
-	}
-	else if (shape->type == CUBE)
-	{
-		local_intersect(shape, &transf_ray, xs);
+		intersect_cube(shape, &transf_ray, xs);
 	}
 	return (true);
 }
@@ -369,13 +365,11 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 
 double	find_max(double n1, double n2, double n3)
 {
-
-  if (n1 >= n2 && n1 >= n3)
-   return (n1);
-  if (n2 >= n1 && n2 >= n3)
-   return (n2);
-  if (n3 >= n1 && n3 >= n2)
-   return (n3);
+	if (n1 >= n2 && n1 >= n3)
+		return (n1);
+	if (n2 >= n1 && n2 >= n3)
+		return (n2);
+	return (n3);
 }
 
 void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
@@ -389,9 +383,9 @@ void	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	double	tmin;
 	double	tmax;
 	
-	check_axis(&xtmin, &xtmin, ray->origin.x, ray->direction.x);
-	check_axis(&ytmin, &ytmin, ray->origin.y, ray->direction.y);
-	check_axis(&ztmin, &ztmin, ray->origin.z, ray->direction.z);
+	check_axis(&xtmin, &xtmax, ray->origin.x, ray->direction.x);
+	check_axis(&ytmin, &ytmax, ray->origin.y, ray->direction.y);
+	check_axis(&ztmin, &ztmax, ray->origin.z, ray->direction.z);
 	tmin = find_max(xtmin, ytmin, ztmin);
 	tmax = find_max(xtmax, ytmax, ztmax);
 	if (tmin > tmax)
@@ -407,7 +401,7 @@ void	check_axis(double *t_min, double *t_max, double origin, double direction)
 {
 	double		tmin_numerator;
 	double		tmax_numerator;
-	double		dir_mag;
+	// double		dir_mag;
 	
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
