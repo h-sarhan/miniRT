@@ -64,8 +64,8 @@ int	main(int argc, char **argv)
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
 	scene->edit_h = 1080 * scene->edit_scale;
-	scene->display_w = 1920 * 0.7;
-	scene->display_h = 1080 * 0.7;
+	scene->display_w = 1920 * 0.5;
+	scene->display_h = 1080 * 0.5;
 	scene->reflection_depth = REFLECTION_DEPTH;
 	
 	scene->collisions = true;
