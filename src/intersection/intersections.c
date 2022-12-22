@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 19:24:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:41:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	else if (shape->type == CUBE)
 	{
+		// transf_ray = *ray;
 		intersect_cube(shape, &transf_ray, xs);
 	}
 	return (true);
@@ -319,42 +320,24 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	if (shape->type == CUBE)
 	{
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
+		// object_normal = *itx_point;
 		object_normal.w = 0;
 		maxc = find_max(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
-		// if (maxc == fabs(object_normal.x))
-		// {
-		// 	//
-		// }
-		// else if (maxc == fabs(object_normal.y))
-		// {
-		// 	//
-		// }
-		// else if (maxc == fabs(object_normal.z))
-		// {
-		// 	//
-		// }
-		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
-		world_normal.w = 0;
-		normalize_vec(&world_normal);
-			
-	}
-	if (shape->type == CUBE)
-	{
-		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
-		object_normal.w = 0;
-		maxc = find_max(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
-		// if (maxc == fabs(object_normal.x))
-		// {
-		// 	//
-		// }
-		// else if (maxc == fabs(object_normal.y))
-		// {
-		// 	//
-		// }
-		// else if (maxc == fabs(object_normal.z))
-		// {
-		// 	//
-		// }
+		if (maxc == fabs(object_normal.x))
+		{
+			object_normal.y = 0;
+			object_normal.z = 0;
+		}
+		else if (maxc == fabs(object_normal.y))
+		{
+			object_normal.x = 0;
+			object_normal.z = 0;
+		}
+		else if (maxc == fabs(object_normal.z))
+		{
+			object_normal.x = 0;
+			object_normal.y = 0;
+		}
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
 		normalize_vec(&world_normal);

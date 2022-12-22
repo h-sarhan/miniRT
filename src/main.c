@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 19:25:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/22 19:40:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ int	main(int argc, char **argv)
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
-	// scene->shapes[0].transparency = 1;
-	// scene->shapes[0].reflectiveness = 1;
+	scene->shapes[0].type = CUBE;
+	scene->shapes[0].transparency = 0;
+	scene->shapes[0].reflectiveness = 0;
 	// scene->shapes[0].ior = 1.5;
 	// scene->shapes[1].transparency = 1;
 	// scene->shapes[1].reflectiveness = 0.0;
