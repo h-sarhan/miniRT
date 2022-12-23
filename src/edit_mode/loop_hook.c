@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 21:34:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 00:49:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ void	scale_object(t_scene *scene, t_shape *shape)
 			shape->scale_z = shape->radius;
 		}
 	}
+	shape->radius_squared = shape->radius * shape->radius;
 }
 void	change_height(t_scene *scene, t_shape *shape)
 {

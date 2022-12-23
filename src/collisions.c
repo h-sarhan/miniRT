@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 21:59:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 00:48:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	collide_scale(t_shape *shape, const t_scene *scene,
 				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
 					shape->radius -= radius;
+					shape->radius_squared = shape->radius * shape->radius;
 				}
 			}
 			// else if (shape->type == CYLINDER && other->type == PLANE)

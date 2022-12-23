@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 18:27:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:14:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *spher
 	t_vector	oc;
 	sub_vec(&oc, &ray->origin, &sphere->origin);
 	float	b = dot_product(&oc, &ray->direction);
-	// ? Consider caching radius squared to avoid calculating it every time
-	float	c = dot_product(&oc, &oc) - (sphere->radius * sphere->radius);
+	float	c = dot_product(&oc, &oc) - sphere->radius_squared;
 	float	h = b * b - c;
 	if (h < 0.0)
 		return (false);
@@ -365,28 +364,40 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	float	c;
 	float	discriminant;
 
-	// if (shape->type == SPHERE)
-	// {
-	// 	return (intersect_sphere_fast(ray, xs, shape));
-	// }
-	transform_ray(&transf_ray, ray, shape);
 	if (shape->type == SPHERE)
 	{
-		return (intersect_sphere(&transf_ray, xs, shape));
+		return (intersect_sphere_fast(ray, xs, shape));
 	}
 	if (shape->type == PLANE)
 	{
-		if (fabs(transf_ray.direction.y) < 0.00001)
+		double	denom = dot_product(&ray->direction, &shape->orientation);
+		if (fabs(denom) < 0.00001)
 			return (false);
-		xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
+		xs->arr[xs->count].time = -(dot_product(&ray->origin, &shape->orientation) \
+			- shape->distance_from_origin) / denom;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
+		return (true);
 	}
+	transform_ray(&transf_ray, ray, shape);
+	// if (shape->type == SPHERE)
+	// {
+	// 	return (intersect_sphere(&transf_ray, xs, shape));
+	// }
+	// if (shape->type == PLANE)
+	// {
+	// 	if (fabs(transf_ray.direction.y) < 0.00001)
+	// 		return (false);
+	// 	xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
+	// 	xs->arr[xs->count].shape = shape;
+	// 	xs->count++;
+	// 	return (true);
+	// }
 	if (shape->type == CYLINDER)
 	{
 		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
 		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
-		if (fabs(a) < 0.00001)
+		if (fabs(a) < 0.0001)
 		{
 			return (intersected);
 		}
@@ -397,14 +408,14 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		{
 			return (intersected);
 		}
+		b *= -1;
+		a *= 2;
 		discriminant = sqrt(discriminant);
-		float t0 = (-b - discriminant) / (a * 2);
-		float t1 = (-b + discriminant) / (a * 2);
+		float t0 = (b - discriminant) / (a);
+		float t1 = (b + discriminant) / (a);
 		if (t0 > t1)
 		{
-			float temp = t0;
-			t0 = t1;
-			t1 = temp;
+			ft_swapd(&t0, &t1);
 		}
 		
 		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;

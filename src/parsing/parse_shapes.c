@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 13:34:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 00:50:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 	shape->scale_x = shape->radius;
 	shape->scale_y = shape->radius;
 	shape->scale_z = shape->radius;
+	shape->radius_squared = shape->radius * shape->radius;
 }
 
 /**
@@ -130,6 +131,7 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 		parse_success = false;
 	*success = parse_success;
 	shape->reflectiveness = 0.05;
+	shape->distance_from_origin = dot_product(&shape->orientation, &shape->origin);
 }
 
 /**
@@ -169,6 +171,7 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	shape->scale_x = shape->radius;
 	shape->scale_y = 1;
 	shape->scale_z = shape->radius;
+	shape->radius_squared = shape->radius * shape->radius;
 }
 
 /**

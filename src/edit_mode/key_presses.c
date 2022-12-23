@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 21:29:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 00:49:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + scene->camera.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].radius = 0.7;
+	scene->shapes[scene->count.shapes].radius_squared = 0.7 * 0.7;
 	scene->shapes[scene->count.shapes].scale_x = 0.7;
 	scene->shapes[scene->count.shapes].scale_y = 0.7;
 	scene->shapes[scene->count.shapes].scale_z = 0.7;
@@ -258,6 +259,7 @@ void	toggle_shape(t_scene *scene)
 		shape->scale_z = shape->radius;
 		shape->type = SPHERE;
 	}
+	shape->radius_squared = shape->radius * shape->radius;
 }
 
 int	set_key_down(int key, t_scene *scene)

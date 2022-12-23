@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 18:26:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 00:41:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -573,7 +573,7 @@ void	draw_scene(t_scene *scene)
 	clock_gettime(CLOCK_MONOTONIC, &finish);
 	elapsed = (finish.tv_sec - start.tv_sec);
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
-	// printf("render time is %f\n", elapsed);
+	printf("render time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	i = 0;
 	while (i < NUM_THREADS)
