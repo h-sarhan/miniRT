@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 21:37:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 11:40:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,30 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	return (false);
 }
 
-bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *shape)
+bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *sphere)
 {
-	double		a;
-	double		b;
-	double		c;
-	double		discriminant;
+	t_vector	oc;
+	sub_vec(&oc, &ray->origin, &sphere->origin);
+	double	b = dot_product(&oc, &ray->direction);
+	double	c = dot_product(&oc, &oc) - (sphere->radius * sphere->radius);
+	double	h = b * b - c;
+	if (h < 0.0)
+		return (false);
+	h = sqrt(h);
+	xs->arr[xs->count].time = - b - h;
+	xs->arr[xs->count].shape = sphere;
+	xs->arr[xs->count + 1].time = -b + h;
+	xs->arr[xs->count + 1].shape = sphere;
+	xs->count += 2;
+	return (true);
+}
 
+bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *sphere)
+{
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
 	transf_ray->origin.w = 0;
 	a = dot_product(&transf_ray->direction, &transf_ray->direction);
 	b = 2 * dot_product(&transf_ray->direction, &transf_ray->origin);
@@ -69,13 +86,12 @@ bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *shape)
 	a *= 2;
 	discriminant = sqrt(discriminant);
 	xs->arr[xs->count].time = (b - discriminant) / a;
-	xs->arr[xs->count].shape = shape;
+	xs->arr[xs->count].shape = sphere;
 	xs->arr[xs->count + 1].time = (b + discriminant) / a;
-	xs->arr[xs->count + 1].shape = shape;
+	xs->arr[xs->count + 1].shape = sphere;
 	xs->count += 2;
 	return (true);
 }
-
 bool	within_cylinder_radius(t_ray *ray, double t)
 {
 	double x = ray->origin.x + ray->direction.x * t;
@@ -115,78 +131,6 @@ bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 	return (intersected);
 }
 
-
-bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
-{
-	t_ray	transf_ray;
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-
-	transform_ray(&transf_ray, ray, shape);
-	if (shape->type == SPHERE)
-	{
-		return (intersect_sphere(&transf_ray, xs, shape));
-	}
-	if (shape->type == PLANE)
-	{
-		if (fabs(transf_ray.direction.y) < 0.00001)
-			return (false);
-		xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
-		xs->arr[xs->count].shape = shape;
-		xs->count++;
-	}
-	if (shape->type == CYLINDER)
-	{
-		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
-		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
-		if (fabs(a) < 0.00001)
-		{
-			return (intersected);
-		}
-		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
-		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
-		discriminant = b * b - 4 * a * c;
-		if (discriminant < 0)
-		{
-			return (intersected);
-		}
-		discriminant = sqrt(discriminant);
-		double t0 = (-b - discriminant) / (a * 2);
-		double t1 = (-b + discriminant) / (a * 2);
-		if (t0 > t1)
-		{
-			double temp = t0;
-			t0 = t1;
-			t1 = temp;
-		}
-		
-		double	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
-		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
-		{
-			xs->arr[xs->count].time = t0;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		double	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
-		if (y1 > (-shape->height / 2) && y1 < (shape->height / 2))
-		{
-			xs->arr[xs->count].time = t1;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		return (intersected);
-	}
-	else if (shape->type == CUBE)
-	{
-		// transf_ray = *ray;
-		return (intersect_cube(shape, &transf_ray, xs));
-	}
-	return (true);
-}
 
 t_intersect	*hit(t_intersections *xs)
 {
@@ -361,6 +305,7 @@ double	find_min(double n1, double n2, double n3)
 		return (n2);
 	return (n3);
 }
+
 bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	double	xtmin;
@@ -408,4 +353,76 @@ void	check_axis(double *t_min, double *t_max, double origin, double direction)
 	// if (t_min > t_max) we were comparing two pointers
 	if (*t_min > *t_max)
 		ft_swapd(t_min, t_max);
+}
+
+bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
+{
+	t_ray	transf_ray;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+
+	if (shape->type == SPHERE)
+	{
+		return (intersect_sphere_fast(ray, xs, shape));
+	}
+	transform_ray(&transf_ray, ray, shape);
+	if (shape->type == PLANE)
+	{
+		if (fabs(transf_ray.direction.y) < 0.00001)
+			return (false);
+		xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
+		xs->arr[xs->count].shape = shape;
+		xs->count++;
+	}
+	if (shape->type == CYLINDER)
+	{
+		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
+		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
+		if (fabs(a) < 0.00001)
+		{
+			return (intersected);
+		}
+		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
+		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
+		discriminant = b * b - 4 * a * c;
+		if (discriminant < 0)
+		{
+			return (intersected);
+		}
+		discriminant = sqrt(discriminant);
+		double t0 = (-b - discriminant) / (a * 2);
+		double t1 = (-b + discriminant) / (a * 2);
+		if (t0 > t1)
+		{
+			double temp = t0;
+			t0 = t1;
+			t1 = temp;
+		}
+		
+		double	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
+		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
+		{
+			xs->arr[xs->count].time = t0;
+			xs->arr[xs->count].shape = shape;
+			xs->count++;
+			intersected = true;
+		}
+		double	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
+		if (y1 > (-shape->height / 2) && y1 < (shape->height / 2))
+		{
+			xs->arr[xs->count].time = t1;
+			xs->arr[xs->count].shape = shape;
+			xs->count++;
+			intersected = true;
+		}
+		return (intersected);
+	}
+	else if (shape->type == CUBE)
+	{
+		// transf_ray = *ray;
+		return (intersect_cube(shape, &transf_ray, xs));
+	}
+	return (true);
 }
