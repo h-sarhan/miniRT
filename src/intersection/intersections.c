@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 11:40:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ray_position(t_vector *pos, const t_ray *ray, double time)
+void	ray_position(t_vector *pos, const t_ray *ray, float time)
 {
 	pos->x = ray->direction.x * time + ray->origin.x;
 	pos->y = ray->direction.y * time + ray->origin.y;
@@ -31,7 +31,7 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
-	double			distance;
+	float			distance;
 	t_ray			ray;
 	t_intersections	arr;
 	unsigned int	i;
@@ -55,9 +55,10 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *spher
 {
 	t_vector	oc;
 	sub_vec(&oc, &ray->origin, &sphere->origin);
-	double	b = dot_product(&oc, &ray->direction);
-	double	c = dot_product(&oc, &oc) - (sphere->radius * sphere->radius);
-	double	h = b * b - c;
+	float	b = dot_product(&oc, &ray->direction);
+	// ? Consider caching radius squared to avoid calculating it every time
+	float	c = dot_product(&oc, &oc) - (sphere->radius * sphere->radius);
+	float	h = b * b - c;
 	if (h < 0.0)
 		return (false);
 	h = sqrt(h);
@@ -71,10 +72,10 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *spher
 
 bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *sphere)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
 	transf_ray->origin.w = 0;
 	a = dot_product(&transf_ray->direction, &transf_ray->direction);
 	b = 2 * dot_product(&transf_ray->direction, &transf_ray->origin);
@@ -92,10 +93,10 @@ bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *sphere)
 	xs->count += 2;
 	return (true);
 }
-bool	within_cylinder_radius(t_ray *ray, double t)
+bool	within_cylinder_radius(t_ray *ray, float t)
 {
-	double x = ray->origin.x + ray->direction.x * t;
-	double z = ray->origin.z + ray->direction.z * t;
+	float x = ray->origin.x + ray->direction.x * t;
+	float z = ray->origin.z + ray->direction.z * t;
 	if ((x * x + z * z) <= 1)
 		return (true);
 	return (false);
@@ -105,12 +106,12 @@ bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 {
 	bool	intersected;
 
-	double cylinder_bottom = (shape->height / 2);
-	double cylinder_top = -(shape->height / 2);
+	float cylinder_bottom = (shape->height / 2);
+	float cylinder_top = -(shape->height / 2);
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
-		double t;
+		float t;
 		t = (cylinder_top - ray->origin.y) / ray->direction.y;
 		if (within_cylinder_radius(ray, t))
 		{
@@ -134,7 +135,7 @@ bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 
 t_intersect	*hit(t_intersections *xs)
 {
-	double	min_time;
+	float	min_time;
 	int		i;
 	int		idx;
 
@@ -156,7 +157,7 @@ t_intersect	*hit(t_intersections *xs)
 
 t_intersect	*hit_skip_transparent(t_intersections *xs)
 {
-	double	min_time;
+	float	min_time;
 	int		i;
 	int		idx;
 
@@ -193,9 +194,9 @@ t_intersect	*hit_sorted(t_intersections *xs)
 t_vector	cylinder_normal(const t_shape *shape, t_vector *point)
 {
 	(void)shape;
-	double		distance = point->x * point->x + point->z * point->z;
-	double		cylinder_bottom = (shape->height / 2);
-	double		cylinder_top = -(shape->height / 2);
+	float		distance = point->x * point->x + point->z * point->z;
+	float		cylinder_bottom = (shape->height / 2);
+	float		cylinder_top = -(shape->height / 2);
 	t_vector	normal;
 	if (distance < 1 && (point->y >= cylinder_bottom - EPSILON))
 	{
@@ -227,7 +228,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	object_normal;
 	t_vector	world_normal;
-	double		maxc;
+	float		maxc;
 
 	if (shape->type == SPHERE)
 	{
@@ -288,7 +289,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	return (world_normal);
 }
 
-double	find_max(double n1, double n2, double n3)
+float	find_max(float n1, float n2, float n3)
 {
 	if (n1 >= n2 && n1 >= n3)
 		return (n1);
@@ -297,7 +298,7 @@ double	find_max(double n1, double n2, double n3)
 	return (n3);
 }
 
-double	find_min(double n1, double n2, double n3)
+float	find_min(float n1, float n2, float n3)
 {
 	if (n1 <= n2 && n1 <= n3)
 		return (n1);
@@ -308,14 +309,14 @@ double	find_min(double n1, double n2, double n3)
 
 bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
-	double	xtmin;
-	double	xtmax;
-	double	ytmin;
-	double	ytmax;
-	double	ztmin;
-	double	ztmax;
-	double	tmin;
-	double	tmax;
+	float	xtmin;
+	float	xtmax;
+	float	ytmin;
+	float	ytmax;
+	float	ztmin;
+	float	ztmax;
+	float	tmin;
+	float	tmax;
 	
 	check_axis(&xtmin, &xtmax, ray->origin.x, ray->direction.x);
 	check_axis(&ytmin, &ytmax, ray->origin.y, ray->direction.y);
@@ -332,11 +333,11 @@ bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	return (true);
 }
 
-void	check_axis(double *t_min, double *t_max, double origin, double direction)
+void	check_axis(float *t_min, float *t_max, float origin, float direction)
 {
-	double		tmin_numerator;
-	double		tmax_numerator;
-	// double		dir_mag;
+	float		tmin_numerator;
+	float		tmax_numerator;
+	// float		dir_mag;
 	
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
@@ -350,7 +351,6 @@ void	check_axis(double *t_min, double *t_max, double origin, double direction)
 		*t_min = tmin_numerator * INFINITY;
 		*t_max = tmax_numerator * INFINITY;
 	}
-	// if (t_min > t_max) we were comparing two pointers
 	if (*t_min > *t_max)
 		ft_swapd(t_min, t_max);
 }
@@ -358,10 +358,10 @@ void	check_axis(double *t_min, double *t_max, double origin, double direction)
 bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
 	t_ray	transf_ray;
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
 
 	if (shape->type == SPHERE)
 	{
@@ -392,16 +392,16 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			return (intersected);
 		}
 		discriminant = sqrt(discriminant);
-		double t0 = (-b - discriminant) / (a * 2);
-		double t1 = (-b + discriminant) / (a * 2);
+		float t0 = (-b - discriminant) / (a * 2);
+		float t1 = (-b + discriminant) / (a * 2);
 		if (t0 > t1)
 		{
-			double temp = t0;
+			float temp = t0;
 			t0 = t1;
 			t1 = temp;
 		}
 		
-		double	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
+		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
 		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
 		{
 			xs->arr[xs->count].time = t0;
@@ -409,7 +409,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			xs->count++;
 			intersected = true;
 		}
-		double	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
+		float	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
 		if (y1 > (-shape->height / 2) && y1 < (shape->height / 2))
 		{
 			xs->arr[xs->count].time = t1;

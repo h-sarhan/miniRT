@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 21:52:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	handle_mouse_up(int key_code, int x, int y, t_scene *scene)
 
 int	mouse_rotate(t_scene *scene)
 {
-	// double sensitivity = 0.06;
+	// float sensitivity = 0.06;
 	if (scene->mouse.key == LEFT_MOUSE_DOWN && scene->edit_mode == true)
 	{
 		scene->mouse.prev_x = scene->mouse.x;

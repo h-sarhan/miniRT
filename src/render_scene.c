@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 10:23:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	unsigned int	light_idx;
 	t_color			final_color;
 	t_color			light_color;
-	double			reflectance;
+	float			reflectance;
 	
 	// sort_intersections(arr);
 	itx = hit(arr);

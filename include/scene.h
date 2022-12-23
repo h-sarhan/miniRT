@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 22:12:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ enum e_light_type
 typedef struct s_color		t_color;
 struct s_color
 {
-	double	r;
-	double	g;
-	double	b;
-	double	a;
+	float	r;
+	float	g;
+	float	b;
+	float	a;
 };
 
 // color.c
 unsigned int	create_mlx_color(t_color *color);
 void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
 void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
-void			mult_color(t_color *res, const t_color *color, double val);
+void			mult_color(t_color *res, const t_color *color, float val);
 void			blend_colors(t_color *res, const t_color *c1,
 					const t_color *c2);
 
@@ -63,7 +63,7 @@ struct s_light
 {
 	t_light_type	type;
 	t_vector		position;
-	double			intensity;
+	float			intensity;
 	t_color			color;
 };
 
@@ -75,7 +75,7 @@ struct s_light
 typedef struct s_ambient	t_ambient;
 struct s_ambient
 {
-	double	intensity;
+	float	intensity;
 	t_color	color;
 };
 
@@ -92,9 +92,9 @@ struct s_camera
 	t_vector	position;
 	t_vector	dir;
 	int			fov;
-	double		pixel_size;
-	double		half_width;
-	double		half_height;
+	float		pixel_size;
+	float		half_width;
+	float		half_height;
 	t_mat4		transform;
 	t_mat4		inv_trans;
 	float		phi;
@@ -134,8 +134,8 @@ struct s_shape
 {
 	t_shape_type	type;
 	int				id;
-	double			radius;
-	double			height;
+	float			radius;
+	float			height;
 	t_vector		origin;
 	t_vector		orientation;
 	t_color			color;
@@ -143,18 +143,18 @@ struct s_shape
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
 	unsigned int	mlx_color;
-	double			diffuse;
-	double			specular;
-	double			shininess;
-	double			reflectiveness;
-	double			transparency;
-	double			ior;
-	double			rot_x;
-	double			rot_y;
-	double			rot_z;
-	double			scale_x;
-	double			scale_y;
-	double			scale_z;
+	float			diffuse;
+	float			specular;
+	float			shininess;
+	float			reflectiveness;
+	float			transparency;
+	float			ior;
+	float			rot_x;
+	float			rot_y;
+	float			rot_z;
+	float			scale_x;
+	float			scale_y;
+	float			scale_z;
 	bool			highlighted;
 	bool			is_colliding;
 	t_mat4			added_rots;
@@ -260,8 +260,8 @@ struct s_scene
 	int			reflection_depth;
 	int			refraction_depth;
 	sem_t		*sem_loading;
-	double		edit_scale;
-	double		render_scale;
+	float		edit_scale;
+	float		render_scale;
 	t_look_at	look_at;
 	t_mouse		mouse;
 	bool		collisions;
@@ -282,10 +282,10 @@ struct s_worker
 	char	*addr;
 	t_scene	*scene;
 };
-void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color);
+void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color);
 void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset);
-void	collide_scale(t_shape *shape, const t_scene *scene, double radius, double height, double width);
-double	rad_to_deg(double r);
-double	deg_to_rad(double r);
+void	collide_scale(t_shape *shape, const t_scene *scene, float radius, float height, float width);
+float	rad_to_deg(float r);
+float	deg_to_rad(float r);
 
 #endif

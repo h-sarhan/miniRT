@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 22:09:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 static void	parse_cube(t_shape *shape, char **splitted, bool *success)
 {
 	bool	parse_success;
-	double	side_len;
+	float	side_len;
 
 	parse_success = true;
 	shape->type = CUBE;

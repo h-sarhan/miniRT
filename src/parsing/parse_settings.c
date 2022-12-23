@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 18:52:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ bool	is_valid_color(const char *color)
 bool	is_valid_val(const char *key, const char *val)
 {
 	bool	success;
-	double	parsed_value;
+	float	parsed_value;
 
 	success = true;
 	if (val == NULL || ft_strlen(val) == 0)

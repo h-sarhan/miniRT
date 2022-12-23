@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 21:55:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	key_handler(t_scene *scene);
 int	mouse_rotate(t_scene *scene);
 int	handle_mouse_down(int key_code, int x, int y, t_scene *scene);
 int	handle_mouse_up(int key_code, int x, int y, t_scene *scene);
-void	rotate_object_x(t_scene *scene, t_shape *shape, double deg);
-void	rotate_object_y(t_scene *scene, t_shape *shape, double deg);
-void	rotate_object_z(t_scene *scene, t_shape *shape, double deg);
+void	rotate_object_x(t_scene *scene, t_shape *shape, float deg);
+void	rotate_object_y(t_scene *scene, t_shape *shape, float deg);
+void	rotate_object_z(t_scene *scene, t_shape *shape, float deg);
 
 #endif

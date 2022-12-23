@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 21:18:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,11 +406,11 @@ void	draw_shape_info(t_scene *scene)
 }
 
 
-void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
+void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 {
-	double	dy;
-	double	dx;
-	double	c;
+	float	dy;
+	float	dx;
+	float	c;
 	int		i;
 	char	*dst;
 
@@ -531,7 +531,7 @@ void	draw_scene(t_scene *scene)
 	pthread_t		threads[NUM_THREADS];
 	struct timespec	start;
 	struct timespec	finish;
-	double			elapsed;
+	float			elapsed;
 	int				i;
 
 	mlx = scene->mlx;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/20 16:43:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersect *itx, t_color *diffuse, t_color *effective_color,
 	t_color *specular)
 {
-	double		reflect_dot_eye;
-	double		light_dot_normal;
+	float		reflect_dot_eye;
+	float		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
 

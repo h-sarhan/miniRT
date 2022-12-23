@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 21:37:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
 		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
 		{
-			double reflectance = schlick(itx);
+			float reflectance = schlick(itx);
 			mult_color(&reflected, &reflected, reflectance);
 			mult_color(&refracted, &refracted, (1 - reflectance));
 		}
@@ -68,12 +68,12 @@ t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining
 	return (reflected);
 }
 
-void	refracted_ray(t_ray	*refract_ray, t_intersect *intersection, double n_ratio, double cos_i)
+void	refracted_ray(t_ray	*refract_ray, t_intersect *intersection, float n_ratio, float cos_i)
 {
 	t_vector normal_v;
 	t_vector eye_v;
-	double 	cos_t;
-	double	sin2_t;
+	float 	cos_t;
+	float	sin2_t;
 
 	sin2_t = (n_ratio * n_ratio) * (1 - (cos_i * cos_i));
 	cos_t = sqrt(1.0 - sin2_t);
@@ -100,7 +100,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
 		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
 		{
-			double reflectance = schlick(itx);
+			float reflectance = schlick(itx);
 			mult_color(&reflected, &reflected, reflectance);
 			mult_color(&refracted, &refracted, (1 - reflectance));
 		}
@@ -114,9 +114,9 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx)
 {
 	t_color	color;
-	double	n_ratio;
-	double	cos_i;
-	double	sin2_t;
+	float	n_ratio;
+	float	cos_i;
+	float	sin2_t;
 	t_intersections	arr;
 	unsigned int	shape_idx;
 	t_ray	refract_ray;
@@ -144,13 +144,13 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	return(color);
 }
 
-double	schlick(t_intersect *intersection)
+float	schlick(t_intersect *intersection)
 {
-	double	cos_angle;
-	double	n;
-	double	sin2_t;
-	double	cos_t;
-	double	r0;
+	float	cos_angle;
+	float	n;
+	float	sin2_t;
+	float	cos_t;
+	float	r0;
 
 	cos_angle = dot_product(&intersection->eye, &intersection->normal);
 	if (intersection->n1 > intersection->n2)

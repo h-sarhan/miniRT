@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/04 19:12:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	clamp_color(double color)
+unsigned int	clamp_color(float color)
 {
 	color *= 256;
 	if (color > 255)
@@ -65,7 +65,7 @@ void	sub_colors(t_color *res, const t_color *c1, const t_color *c2)
  * @param color The color to be multiplied
  * @param val The value to multiply the color with
  */
-void	mult_color(t_color *res, const t_color *color, double val)
+void	mult_color(t_color *res, const t_color *color, float val)
 {
 	res->r = color->r * val;
 	res->g = color->g * val;

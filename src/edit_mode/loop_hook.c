@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 22:14:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_vector	*sphere_to_xyz(t_vector *vec, double phi, double theta, double r)
+t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
 {
 	vec->x = r * sin(phi) * cos(theta);
 	vec->z = r * sin(phi) * sin(theta);
@@ -198,7 +198,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	}
 }
 
-void	rotate_object_x(t_scene *scene, t_shape *shape, double deg)
+void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 {
 	t_mat4		rot;
 	t_vector	ax;
@@ -221,7 +221,7 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, double deg)
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
 
-void	rotate_object_y(t_scene *scene, t_shape *shape, double deg)
+void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 {
 	t_mat4	rot;
 
@@ -234,7 +234,7 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, double deg)
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
 
-void	rotate_object_z(t_scene *scene, t_shape *shape, double deg)
+void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 {
 	t_mat4	rot;
 

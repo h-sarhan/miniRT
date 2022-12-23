@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 19:24:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
-	double		distance;
+	float		distance;
 	t_vector	center_diff;
 
 	sub_vec(&center_diff, &sphere1->origin, &sphere2->origin);
@@ -29,8 +29,8 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 {
 	t_vector	normal;
 	normal = plane->orientation;
-	double d = -(normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
-	double distance = (normal.x * sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
+	float d = -(normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
+	float distance = (normal.x * sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
 	if (fabs(distance) < sphere->radius)
 		return (true);
 	return (false);
@@ -41,7 +41,7 @@ void	sphere_sphere_collision_resolution(t_shape *shape, t_shape *other, const t_
 	t_vector	dir;
 
 	sub_vec(&dir, &shape->origin, &other->origin);
-	double dist = vec_magnitude(&dir);
+	float dist = vec_magnitude(&dir);
 	normalize_vec(&dir);
 	scale_vec(&dir, &dir,  dist - (shape->radius + other->radius));
 	add_vec(&other->origin, &other->origin, &dir);
@@ -51,7 +51,7 @@ void	sphere_sphere_collision_resolution(t_shape *shape, t_shape *other, const t_
 }
 
 void	collide_scale(t_shape *shape, const t_scene *scene,
-		double radius, double height, double width)
+		float radius, float height, float width)
 {
 	t_shape			*other;
 	unsigned int	shape_idx;

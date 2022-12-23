@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/15 21:02:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param vec A vector
  * @return vec's magnitude
  */
-double	vec_magnitude(const t_vector *vec)
+float	vec_magnitude(const t_vector *vec)
 {
 	return (sqrt(vec->x * vec->x + vec->y * vec->y \
 			+ vec->z * vec->z + vec->w * vec->w));
@@ -38,7 +38,7 @@ void	normalize_vec(t_vector *vec)
  * @param v2 Second vector
  * @return The dot product of v1 and v2
  */
-double	dot_product(const t_vector *v1, const t_vector *v2)
+float	dot_product(const t_vector *v1, const t_vector *v2)
 {
 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z + v1->w * v2->w);
 }

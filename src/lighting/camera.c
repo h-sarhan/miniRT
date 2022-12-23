@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/10 11:27:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 
 void	camera_init(t_camera *camera, t_scene *scene)
 {
-	double	half_view;
-	double	aspect;
-	double	h;
-	double	w;
+	float	half_view;
+	float	aspect;
+	float	h;
+	float	w;
 
 	h = scene->render_h;
 	w = scene->render_w;
@@ -71,8 +71,8 @@ void	camera_init(t_camera *camera, t_scene *scene)
 
 void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
 {
-	double		world_x;
-	double		world_y;
+	float		world_x;
+	float		world_y;
 	t_vector	pixel;
 	t_vector	world_point;
 	t_vector	center;

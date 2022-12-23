@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/22 21:37:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ struct	s_mlx
 typedef struct s_intersect		t_intersect;
 struct s_intersect
 {	
-	double		time;
+	float		time;
 	t_shape		*shape;
 	t_vector	point;
 	t_vector	normal;
@@ -74,8 +74,8 @@ struct s_intersect
 	t_vector	over_point;
 	t_vector	under_point;
 	t_vector	reflect_vec;
-	double		n1;
-	double		n2;
+	float		n1;
+	float		n2;
 	bool		inside;
 };
 
@@ -94,7 +94,7 @@ struct s_intersections
 void		draw_scene(t_scene *scene);
 
 // intersections.c
-void		ray_position(t_vector *pos, const t_ray *ray, double time);
+void		ray_position(t_vector *pos, const t_ray *ray, float time);
 void		transform_ray(t_ray *transformed_ray, const t_ray *ray,
 				const t_shape *shape);
 bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
@@ -108,11 +108,11 @@ void		prepare_computations(t_scene *scene, t_intersect *intersection, t_ray *ray
 void		*render_scene_fast(t_worker *worker);
 void		sort_intersections(t_intersections *arr);
 t_color		refracted_color(t_scene *scene, t_intersect *intersection, int	remaining, int light_idx);
-double		schlick(t_intersect *intersection);
+float		schlick(t_intersect *intersection);
 t_intersect	*hit_skip_transparent(t_intersections *xs);
 bool		intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
-double		find_max(double n1, double n2, double n3);
-void		check_axis(double *t_min, double *t_max, double origin, double direction);
+float		find_max(float n1, float n2, float n3);
+void		check_axis(float *t_min, float *t_max, float origin, float direction);
 t_intersect	*hit_sorted(t_intersections *xs);
 
 #endif

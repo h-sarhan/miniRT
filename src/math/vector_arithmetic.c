@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:46:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/15 21:01:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
  * @param v Vector to be scaled
  * @param scale scaling factor
  */
-void	scale_vec(t_vector *res, const t_vector *v, double scale)
+void	scale_vec(t_vector *res, const t_vector *v, float scale)
 {
 	res->x = scale * v->x;
 	res->y = scale * v->y;
