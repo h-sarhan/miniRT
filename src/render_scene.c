@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 21:37:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 10:23:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void	fill_in_horizontal(t_worker *worker)
 	}
 }
 
-void	fill_in_horizontal2(t_worker *worker, int threshold)
+void	fill_in_horizontal2(t_worker *worker, int threshold, bool show_recalculated)
 {
 	int				x;
 	int				y;
@@ -276,6 +276,8 @@ void	fill_in_horizontal2(t_worker *worker, int threshold)
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
+					if (show_recalculated == true)
+						set_color(worker, x, y, 0xff0000);
 					if (color_difference(c2, 4) > threshold)
 					{
 						ray_for_pixel(&ray, &worker->scene->camera, x + 1, y);
@@ -285,6 +287,8 @@ void	fill_in_horizontal2(t_worker *worker, int threshold)
 							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 						calculate_lighting(&arr, worker, &ray, (y * worker->width \
 							+ x + 1) * worker->scene->mlx->bytes_per_pixel);
+						if (show_recalculated == true)
+							set_color(worker, x + 1, y, 0xff0000);
 					}
 					else
 					{
@@ -314,7 +318,7 @@ void	fill_in_horizontal2(t_worker *worker, int threshold)
 	}
 }
 
-void	fill_in_vertical2(t_worker *worker, int threshold)
+void	fill_in_vertical2(t_worker *worker, int threshold, bool show_recalculated)
 {
 	int				x;
 	int				y;
@@ -344,6 +348,8 @@ void	fill_in_vertical2(t_worker *worker, int threshold)
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
 						+ x) * worker->scene->mlx->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
+					if (show_recalculated == true)
+						set_color(worker, x, y, 0xff0000);
 					if (color_difference(c2, 4) > threshold)
 					{
 						ray_for_pixel(&ray, &worker->scene->camera, x, y + 1);
@@ -353,6 +359,8 @@ void	fill_in_vertical2(t_worker *worker, int threshold)
 							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 						calculate_lighting(&arr, worker, &ray, ((y + 1) * worker->width \
 							+ x) * worker->scene->mlx->bytes_per_pixel);
+						if (show_recalculated == true)
+							set_color(worker, x, y, 0xff0000);
 					}
 					else
 					{
@@ -504,8 +512,9 @@ void	*render_scene_faster(t_worker *worker)
 		}
 		y += 3;
 	}
-	fill_in_horizontal2(worker, 20);
-	// fill_in_vertical(worker);
-	fill_in_vertical2(worker, 20);
+	bool	show_recalculated = false;
+	int		thresh = 20;
+	fill_in_horizontal2(worker, thresh, show_recalculated);
+	fill_in_vertical2(worker, thresh, show_recalculated);
 	return (NULL);
 }
