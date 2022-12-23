@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 01:41:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:57:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,32 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	return (false);
 }
 
-void	sphere_sphere_collision_resolution(t_shape *shape, t_shape *other, const t_scene *scene)
+void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2, const t_scene *scene)
 {
 	t_vector	dir;
 
-	sub_vec(&dir, &shape->origin, &other->origin);
+	sub_vec(&dir, &sphere1->origin, &sphere2->origin);
 	float dist = vec_magnitude(&dir);
 	normalize_vec(&dir);
-	scale_vec(&dir, &dir,  dist - (shape->radius + other->radius) + 0.001);
-	add_vec(&other->origin, &other->origin, &dir);
-	shape->is_colliding = true;
-	collide(other, scene);
-	shape->is_colliding = false;
+	scale_vec(&dir, &dir,  dist - (sphere1->radius + sphere2->radius) + 0.001);
+	add_vec(&sphere2->origin, &sphere2->origin, &dir);
+	sphere1->is_colliding = true;
+	collide(sphere2, scene);
+	sphere1->is_colliding = false;
 }
 
-// REWRITE THIS
-// void	sphere_plane_collision_resolution(t_shape *shape, t_shape *other, const t_scene *scene)
-// {
+void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
+{
+	t_vector	resolution;
+	t_vector	origin_to_plane;
+	double		distance;
 
-// }
+	sub_vec(&origin_to_plane, &sphere->origin, &plane->origin);
+	distance = sphere->radius - fabs(dot_product(&origin_to_plane, &plane->orientation));
+	resolution = plane->orientation;
+	scale_vec(&resolution, &resolution, distance + 0.001);
+	add_vec(&sphere->origin, &sphere->origin, &resolution);
+}
 
 bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 {
@@ -96,7 +103,7 @@ void	collide(t_shape *shape, const t_scene *scene)
 			{
 				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
-					// sphere_plane_collision_resolution(shape, other, scene);
+					sphere_plane_collision_resolution(shape, other);
 				}
 			}
 			else if (shape->type == CYLINDER && other->type == PLANE)
@@ -153,10 +160,10 @@ void	collide(t_shape *shape, const t_scene *scene)
 						double	dist = fabs(dot_product(&plane_to_end_point, &other->orientation));
 						t_vector	resolution;
 						// resolution = *offset;
-						negate_vec(&resolution, &other->orientation);
-						normalize_vec(&resolution);
+						// negate_vec(&resolution, &other->orientation);
+						resolution = other->orientation;
 						scale_vec(&resolution, &resolution, dist);
-						sub_vec(&shape->origin, &shape->origin, &resolution);
+						add_vec(&shape->origin, &shape->origin, &resolution);
 					}
 					else
 					{
@@ -166,11 +173,12 @@ void	collide(t_shape *shape, const t_scene *scene)
 						
 						double	dist = fabs(dot_product(&center_to_point, &other->orientation));
 						t_vector	resolution;
-						negate_vec(&resolution, &other->orientation);
+						resolution = other->orientation;
+						// negate_vec(&resolution, &other->orientation);
 						// resolution = *offset;
-						normalize_vec(&resolution);
+						// normalize_vec(&resolution);
 						scale_vec(&resolution, &resolution, shape->radius - dist + 0.001);
-						sub_vec(&shape->origin, &shape->origin, &resolution);
+						add_vec(&shape->origin, &shape->origin, &resolution);
 					}
 				}
 			}
