@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 13:46:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:26:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	deploy_flashbang(t_scene *scene)
 		}
 		y++;
 	}
-	system("afplay sound.mp3");
+	(void)! system("afplay sound.mp3");
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win,
 		scene->mlx->display_img, 0, 0);
 }

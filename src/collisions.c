@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 15:32:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:42:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	collide_scale(t_shape *shape, const t_scene *scene,
 	}
 }
 
+// REWRITE THIS
 void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_scene *scene, t_vector *offset)
 {
 	bool	collide_x;
@@ -158,23 +159,7 @@ void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_s
 
 bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 {
-	// t_vector	top_cap_center;
-	// t_vector	bottom_cap_center;
-	// t_vector	normal;
-	// (void)plane;
-	// printf("cUP is \n");
-	// mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
-	// normalize_vec(&normal);
-	// print_vector(&normal);
-	// scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
-	// add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
-	// scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
-	// add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
-	// printf("Bottom cap is \n");
-	// print_vector(&bottom_cap_center);
-	// printf("Top cap is \n");
-	// print_vector(&top_cap_center);
-	// return (false);
+	
 	t_vector	cylinder_normal;
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
 	// normalize_vec(&cylinder_normal);
@@ -188,6 +173,7 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	if (cylinder_to_plane_proj <= cylinder->radius * sqrt(1 - normal_dot_product * normal_dot_product) + (cylinder->height / 2) * normal_dot_product)
 	{
 		printf("COLLISION\n");
+		
 		return (true);
 	}
 	return (false);
@@ -222,15 +208,50 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 			{
 				if (cylinder_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
-					t_vector	offset_copy;
-					scale_vec(&offset_copy, offset, 0.01);
-					int	counter = 0;
-					while (counter < 200 && cylinder_plane_collision(shape, other) == true)
-					{
-						sub_vec(&shape->origin, &shape->origin, &offset_copy);
-						counter ++;
-					}
-					// sphere_plane_translate_resolution(shape, other, scene, offset);
+					t_vector	normal;
+					// (void)plane;
+					// printf("cUP is \n");
+					mat_vec_multiply(&normal, &shape->added_rots, &shape->orientation);
+					normalize_vec(&normal);
+					printf("Cylinder normal: \n");
+					print_vector(&normal);
+					printf("Motion vector: \n");
+					print_vector(offset);
+					t_vector	cross;
+					t_vector	into;
+					ft_bzero(&into, sizeof(t_vector));
+					into.z = -1;
+					cross_product(&cross, &normal, &into);
+					cross.w = 0;
+					normalize_vec(&cross);
+					printf("Cross product: \n");
+					print_vector(&cross);
+					// t_vector	point1;
+					// t_vector	point2;
+					// t_vector	top_cap_center;
+					// t_vector	bottom_cap_center;
+					// t_vector	normal;
+					// // (void)plane;
+					// // printf("cUP is \n");
+					// mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
+					// normalize_vec(&normal);
+					// // print_vector(&normal);
+					// scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
+					// add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+					// scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
+					// add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+					// printf("Bottom cap is \n");
+					// print_vector(&bottom_cap_center);
+					// printf("Top cap is \n");
+					// print_vector(&top_cap_center);
+					// t_vector	offset_copy;
+					// scale_vec(&offset_copy, offset, 0.01);
+					// int	counter = 0;
+					// while (counter < 200 && cylinder_plane_collision(shape, other) == true)
+					// {
+					// 	sub_vec(&shape->origin, &shape->origin, &offset_copy);
+					// 	counter ++;
+					// }
 					// printf("Collision\n");
 				}
 			}

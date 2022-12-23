@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:27:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_color	get_ambient(t_color *effective_color,
 {
 	t_color	ambient;
 
+	ambient.a = 0;
 	mult_color(&ambient, effective_color,
 		scene->ambient.intensity * light->intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);

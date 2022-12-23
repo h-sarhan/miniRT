@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 13:33:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:27:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ t_intersect	*hit(t_intersections *xs)
 	int		idx;
 
 	i = 0;
+	idx = 0;
 	min_time = INFINITY;
 	while (i < xs->count)
 	{
@@ -163,6 +164,7 @@ t_intersect	*hit_skip_transparent(t_intersections *xs)
 
 	i = 0;
 	min_time = INFINITY;
+	idx = 0;
 	while (i < xs->count)
 	{
 		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time && xs->arr[i].shape->transparency <= 0.5)

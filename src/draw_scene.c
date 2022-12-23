@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 15:10:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:26:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -526,7 +526,6 @@ void	draw_menu(t_scene *scene)
  */
 void	draw_scene(t_scene *scene)
 {
-	t_mlx			*mlx;
 	t_worker		workers[NUM_THREADS];
 	pthread_t		threads[NUM_THREADS];
 	struct timespec	start;
@@ -534,7 +533,6 @@ void	draw_scene(t_scene *scene)
 	float			elapsed;
 	int				i;
 
-	mlx = scene->mlx;
 	init_workers(workers, scene);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	i = 0;

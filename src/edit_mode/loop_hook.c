@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 15:09:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 18:24:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,9 @@ int	key_handler(t_scene *scene)
 	else if (scene->edit_mode == true)
 	{
 		transform_object(scene);
+		#ifndef __linux__
 		mouse_rotate(scene);
+		#endif
 
 		// light_controls(scene);
 	}
