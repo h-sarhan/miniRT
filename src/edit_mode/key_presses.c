@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 13:25:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 13:46:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,9 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + scene->camera.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].radius = 0.7;
+	scene->shapes[scene->count.shapes].scale_x = 0.7;
+	scene->shapes[scene->count.shapes].scale_y = 0.7;
+	scene->shapes[scene->count.shapes].scale_z = 0.7;
 	scene->shapes[scene->count.shapes].reflectiveness = 0.2;
 	scene->shapes[scene->count.shapes].type = SPHERE;
 	scene->shapes[scene->count.shapes].shininess = 50;
@@ -177,6 +180,12 @@ void	toggle_keys_held(int key, t_scene *scene, bool on_off)
 		scene->keys_held.minus = on_off;
 	if (key == KEY_SHIFT)
 		scene->keys_held.shift = on_off;
+	if (key == KEY_X)
+		scene->keys_held.x = on_off;
+	if (key == KEY_Y)
+		scene->keys_held.y = on_off;
+	if (key == KEY_Z)
+		scene->keys_held.z = on_off;
 }
 
 void	select_shape(int key, t_scene *scene)
@@ -227,11 +236,28 @@ void	toggle_shape(t_scene *scene)
 	if (shape->scale_z < 0.2)
 		shape->scale_z = 1;
 	if (shape->type == SPHERE)
+	{
+		shape->scale_x = shape->radius;
+		shape->scale_y = shape->radius;
+		shape->scale_z = shape->radius;
 		shape->type = CUBE;
+	}
 	else if (shape->type == CUBE)
+	{
+		shape->height = shape->scale_y * 2;
+		shape->scale_y = 1;
+		shape->radius = shape->scale_x;
+		shape->scale_x = shape->radius;
+		shape->scale_z = shape->radius;
 		shape->type = CYLINDER;
+	}
 	else if (shape->type == CYLINDER)
+	{
+		shape->scale_x = shape->radius;
+		shape->scale_y = shape->radius;
+		shape->scale_z = shape->radius;
 		shape->type = SPHERE;
+	}
 }
 
 int	set_key_down(int key, t_scene *scene)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 13:26:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 14:06:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,15 +211,12 @@ void	calculate_transforms(t_scene *scene)
 		identity_matrix(&scale);
 		identity_matrix(&rot);
 		identity_matrix(&translate);
-		if (scene->shapes[i].type == SPHERE)
-			scaling_matrix(&scale, scene->shapes[i].radius,
-				scene->shapes[i].radius, scene->shapes[i].radius);
-		if (scene->shapes[i].type == CUBE)
+		if (scene->shapes[i].type == CUBE || scene->shapes[i].type == SPHERE)
 			scaling_matrix(&scale, scene->shapes[i].scale_x,
 				scene->shapes[i].scale_y, scene->shapes[i].scale_z);
 		if (scene->shapes[i].type == CYLINDER)
-			scaling_matrix(&scale, scene->shapes[i].radius,
-				1, scene->shapes[i].radius);
+			scaling_matrix(&scale, scene->shapes[i].scale_x,
+				1, scene->shapes[i].scale_z);
 		if (scene->shapes[i].type == PLANE
 			|| scene->shapes[i].type == CYLINDER)
 			calculate_orientation(&rot, &scene->shapes[i]);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 13:30:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ struct s_shape
 	t_shape_type	type;
 	int				id;
 	float			radius;
+	float			radius_squared;
 	float			height;
 	t_vector		origin;
 	t_vector		orientation;
@@ -196,6 +197,9 @@ struct s_keys
 	bool	tab;
 	bool	c;
 	bool	shift;
+	bool	x;
+	bool	y;
+	bool	z;
 };
 int				set_key_down(int key, t_scene *scene);
 int				set_key_up(int key, t_scene *scene);
