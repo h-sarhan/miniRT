@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 00:42:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:29:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,8 +288,7 @@ struct s_worker
 	t_scene	*scene;
 };
 void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color);
-void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset);
-void	collide_scale(t_shape *shape, const t_scene *scene, float radius, float height, float width);
+void	collide(t_shape *shape, const t_scene *scene);
 float	rad_to_deg(float r);
 float	deg_to_rad(float r);
 

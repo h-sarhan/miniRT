@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 00:48:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:41:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,147 +44,41 @@ void	sphere_sphere_collision_resolution(t_shape *shape, t_shape *other, const t_
 	sub_vec(&dir, &shape->origin, &other->origin);
 	float dist = vec_magnitude(&dir);
 	normalize_vec(&dir);
-	scale_vec(&dir, &dir,  dist - (shape->radius + other->radius));
+	scale_vec(&dir, &dir,  dist - (shape->radius + other->radius) + 0.001);
 	add_vec(&other->origin, &other->origin, &dir);
 	shape->is_colliding = true;
-	collide_translate(other, scene, &dir);
+	collide(other, scene);
 	shape->is_colliding = false;
 }
 
-void	collide_scale(t_shape *shape, const t_scene *scene,
-		float radius, float height, float width)
-{
-	t_shape			*other;
-	unsigned int	shape_idx;
-	shape_idx = 0;
-	(void)height;
-	(void)width;
-	while (shape_idx < scene->count.shapes)
-	{
-		other = &scene->shapes[shape_idx];
-		if (other != shape)
-		{
-			if (shape->type == SPHERE && other->type == SPHERE)
-			{
-				if (sphere_sphere_collision(shape, other) == true && other->is_colliding == false)
-				{
-					sphere_sphere_collision_resolution(shape, other, scene);
-				}
-			}
-			else if (shape->type == SPHERE && other->type == PLANE)
-			{
-				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
-				{
-					shape->radius -= radius;
-					shape->radius_squared = shape->radius * shape->radius;
-				}
-			}
-			// else if (shape->type == CYLINDER && other->type == PLANE)
-			// {
-			// 	if (cylinder_plane_collision(shape, other) == true && shape->is_colliding == false)
-			// 	{
-			// 		t_vector	offset_copy;
-			// 		scale_vec(&offset_copy, offset, 0.01);
-			// 		int	counter = 0;
-			// 		while (counter < 200 && cylinder_plane_collision(shape, other) == true)
-			// 		{
-			// 			sub_vec(&shape->origin, &shape->origin, &offset_copy);
-			// 			counter ++;
-			// 		}
-			// 		// sphere_plane_translate_resolution(shape, other, scene, offset);
-			// 		// printf("Collision\n");
-			// 	}
-			// }
-		}
-		shape_idx++;
-	}
-}
-
 // REWRITE THIS
-void	sphere_plane_translate_resolution(t_shape *shape, t_shape *other, const t_scene *scene, t_vector *offset)
-{
-	bool	collide_x;
-	bool	collide_y;
-	bool	collide_z;
-	sub_vec(&shape->origin, &shape->origin, offset);
-	t_vector	offset_copy = *offset;
-	offset_copy.y = 0;
-	offset_copy.z = 0;
-	add_vec(&shape->origin, &shape->origin, &offset_copy);
-	collide_x = sphere_plane_collision(shape, other);
-	sub_vec(&shape->origin, &shape->origin, &offset_copy);
-	offset_copy = *offset;
-	offset_copy.x = 0;
-	offset_copy.z = 0;
-	add_vec(&shape->origin, &shape->origin, &offset_copy);
-	collide_y = sphere_plane_collision(shape, other);
-	sub_vec(&shape->origin, &shape->origin, &offset_copy);
-	offset_copy = *offset;
-	offset_copy.x = 0;
-	offset_copy.y = 0;
-	add_vec(&shape->origin, &shape->origin, &offset_copy);
-	collide_z = sphere_plane_collision(shape, other);
-	sub_vec(&shape->origin, &shape->origin, &offset_copy);
-	ft_bzero(&offset_copy, sizeof(t_vector));
-	if (collide_x == false)
-		offset_copy.x = offset->x;
-	if (collide_y == false)
-		offset_copy.y = offset->y;
-	if (collide_z == false)
-		offset_copy.z = offset->z;
-	if (collide_x && collide_y && collide_z)
-		return;
-	add_vec(&shape->origin, &shape->origin, &offset_copy);
-	scale_vec(&offset_copy, offset, 0.05);
-	int push_back_counter = 0;
-	while (!sphere_plane_collision(shape, other) && push_back_counter < 200)
-	{
-		add_vec(&shape->origin, &shape->origin, &offset_copy);
-		push_back_counter++;
-	}
-	sub_vec(&shape->origin, &shape->origin, &offset_copy);
-	unsigned int i = 0;
-	while (i < scene->count.shapes)
-	{
-		scene->shapes[i].is_colliding = false;
-		i++;
-	}
-	scale_vec(&offset_copy, offset, 0.01 * push_back_counter);
-	if (fabs(offset_copy.x) + fabs(offset_copy.y) + fabs(offset_copy.z) > 0.01)
-	{
-		shape->is_colliding = true;
-		collide_translate(shape, scene, &offset_copy);
-		shape->is_colliding = false;
-	}
-}
+// void	sphere_plane_collision_resolution(t_shape *shape, t_shape *other, const t_scene *scene)
+// {
 
+// }
 
 bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 {
 	
 	t_vector	cylinder_normal;
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
-	// normalize_vec(&cylinder_normal);
 	t_vector	cylinder_to_plane;
 	sub_vec(&cylinder_to_plane, &cylinder->origin, &plane->origin);
-	// normalize_vec(&cylinder_to_plane);
 	double	cylinder_to_plane_proj;
 	cylinder_to_plane_proj = fabs(dot_product(&plane->orientation, &cylinder_to_plane));
 	double	normal_dot_product;
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
 	if (cylinder_to_plane_proj <= cylinder->radius * sqrt(1 - normal_dot_product * normal_dot_product) + (cylinder->height / 2) * normal_dot_product)
 	{
-		
 		return (true);
 	}
 	return (false);
 }
 
-void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
+void	collide(t_shape *shape, const t_scene *scene)
 {
 	t_shape			*other;
 	unsigned int	shape_idx;
-	(void)offset;
 	shape_idx = 0;
 	while (shape_idx < scene->count.shapes)
 	{
@@ -202,7 +96,7 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 			{
 				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
-					sphere_plane_translate_resolution(shape, other, scene, offset);
+					// sphere_plane_collision_resolution(shape, other, scene);
 				}
 			}
 			else if (shape->type == CYLINDER && other->type == PLANE)
@@ -239,7 +133,8 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 					// We intersect a ray starting from the cylinder center in the direction of motion
 					t_ray ray;
 					ray.origin = shape->origin;
-					ray.direction = *offset;
+					// This should be the vector from the cylinder center to the plane
+					negate_vec(&ray.direction, &other->orientation);
 					normalize_vec(&ray.direction);
 					if (fabs(dot_product(&cylinder_normal, &ray.direction)) > 0.001)
 					{
@@ -257,7 +152,8 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 						sub_vec(&plane_to_end_point, &end_point, &other->origin);
 						double	dist = fabs(dot_product(&plane_to_end_point, &other->orientation));
 						t_vector	resolution;
-						resolution = *offset;
+						// resolution = *offset;
+						negate_vec(&resolution, &other->orientation);
 						normalize_vec(&resolution);
 						scale_vec(&resolution, &resolution, dist);
 						sub_vec(&shape->origin, &shape->origin, &resolution);
@@ -270,7 +166,8 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 						
 						double	dist = fabs(dot_product(&center_to_point, &other->orientation));
 						t_vector	resolution;
-						resolution = *offset;
+						negate_vec(&resolution, &other->orientation);
+						// resolution = *offset;
 						normalize_vec(&resolution);
 						scale_vec(&resolution, &resolution, shape->radius - dist + 0.001);
 						sub_vec(&shape->origin, &shape->origin, &resolution);

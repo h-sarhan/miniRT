@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:39:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -513,7 +513,7 @@ void	*render_scene_faster(t_worker *worker)
 		y += 3;
 	}
 	bool	show_recalculated = false;
-	int		thresh = 20;
+	int		thresh = 10;
 	fill_in_horizontal2(worker, thresh, show_recalculated);
 	fill_in_vertical2(worker, thresh, show_recalculated);
 	return (NULL);

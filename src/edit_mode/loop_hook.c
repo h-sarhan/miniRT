@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 00:49:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 01:40:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	if (scene->collisions)
-		collide_translate(shape, scene, &offset);
+		collide(shape, scene);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -126,7 +126,7 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	if (scene->collisions)
-		collide_translate(shape, scene, &offset);
+		collide(shape, scene);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -148,7 +148,7 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	if (scene->collisions)
-		collide_translate(shape, scene, &offset);
+		collide(shape, scene);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
@@ -173,7 +173,7 @@ void	scale_object(t_scene *scene, t_shape *shape)
 				shape->scale_y = shape->radius;
 			shape->scale_z = shape->radius;
 		}
-		collide_scale(shape, scene, 0.04, 0, 0);
+		// collide_scale(shape, scene, 0.04, 0, 0);
 	}
 	if (scene->keys_held.minus == true)
 	{
@@ -201,7 +201,9 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		}
 	}
 	shape->radius_squared = shape->radius * shape->radius;
+	collide(shape, scene);
 }
+
 void	change_height(t_scene *scene, t_shape *shape)
 {
 	if (scene->keys_held.plus == true)
@@ -213,6 +215,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 		if (shape->height > 0.1)
 			shape->height -= 0.04;
 	}
+	collide(shape, scene);
 }
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
@@ -236,6 +239,7 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	collide(shape, scene);
 }
 
 void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
@@ -249,6 +253,7 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	collide(shape, scene);
 }
 
 void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
@@ -262,6 +267,7 @@ void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	collide(shape, scene);
 }
 
 void	transform_object(t_scene *scene)
