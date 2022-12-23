@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 13:21:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 #  define KEY_RETURN 65293
 #  define KEY_SHIFT 65505
 #  define LEFT_MOUSE_DOWN 1
+#  define KEY_T 0
 # else
 #  define KEY_ESC 53
 #  define KEY_W 13
@@ -82,6 +83,7 @@
 #  define KEY_RETURN 36
 #  define KEY_SHIFT 257
 #  define LEFT_MOUSE_DOWN 1
+#  define KEY_T 17
 # endif
 int	key_handler(t_scene *scene);
 int	mouse_rotate(t_scene *scene);

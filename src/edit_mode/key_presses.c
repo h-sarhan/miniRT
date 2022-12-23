@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 22:02:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 13:25:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ void	look_at(t_scene *scene)
 void	spawn_shape(t_scene *scene)
 {
 	scene->shapes[scene->shape_idx].highlighted = false;
-	scene->shapes[scene->count.shapes].color.r = 0xFF / 255.0;
-	scene->shapes[scene->count.shapes].color.g = 0x10 / 255.0;
-	scene->shapes[scene->count.shapes].color.b = 0xf0 / 255.0;
+	scene->shapes[scene->count.shapes].color.r = 0x00 / 255.0;
+	scene->shapes[scene->count.shapes].color.g = 0x00 / 255.0;
+	scene->shapes[scene->count.shapes].color.b = 0x00 / 255.0;
 	scene->shapes[scene->count.shapes].color.a = 0;
 	scene->shapes[scene->count.shapes].diffuse = 0.9;
 	scene->shapes[scene->count.shapes].highlighted = true;
@@ -197,7 +197,7 @@ bool	is_toggle_key(int key, t_scene *scene)
 		|| (scene->edit_mode == true
 			&& (key == KEY_RETURN || key == KEY_1 || key == KEY_2
 				|| key == KEY_3 || key == KEY_4 || key == KEY_5 || key == KEY_6
-				|| key == KEY_TAB || key == KEY_C)));
+				|| key == KEY_TAB || key == KEY_C || key == KEY_T)));
 }
 
 void	toggle_edit_mode(int key, t_scene *scene)
@@ -211,6 +211,29 @@ void	toggle_edit_mode(int key, t_scene *scene)
 	}
 }
 
+void	toggle_shape(t_scene *scene)
+{
+	t_shape *shape;
+
+	shape = &scene->shapes[scene->shape_idx];
+	if (shape->radius < 0.2)
+		shape->radius = 1;
+	if (shape->height < 0.2)
+		shape->height = 1;
+	if (shape->scale_x < 0.2)
+		shape->scale_x = 1;
+	if (shape->scale_y < 0.2)
+		shape->scale_y = 1;
+	if (shape->scale_z < 0.2)
+		shape->scale_z = 1;
+	if (shape->type == SPHERE)
+		shape->type = CUBE;
+	else if (shape->type == CUBE)
+		shape->type = CYLINDER;
+	else if (shape->type == CYLINDER)
+		shape->type = SPHERE;
+}
+
 int	set_key_down(int key, t_scene *scene)
 {
 	printf("%d\n", key);
@@ -219,6 +242,8 @@ int	set_key_down(int key, t_scene *scene)
 	}
 	if (key == KEY_RETURN && scene->edit_mode == true)
 		spawn_shape(scene);
+	if (key == KEY_T && scene->edit_mode == true)
+		toggle_shape(scene);
 	handle_color_change(key, scene);
 	if (key == KEY_O && scene->edit_mode == true && !scene->look_at.trigger)
 		look_at(scene);
