@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 18:42:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 21:59:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 {
 	t_vector	normal;
 	normal = plane->orientation;
-	float d = -(normal.x * plane->origin.x + normal.y * plane->origin.y + normal.z * plane->origin.z);
-	float distance = (normal.x * sphere->origin.x + normal.y *  sphere->origin.y + normal.z *  sphere->origin.z + d);
+	normal.w = 0;
+	float d = - (dot_product(&normal, &plane->origin));
+	float distance = (dot_product(&normal, &sphere->origin) + d);
 	if (fabs(distance) < sphere->radius)
 		return (true);
 	return (false);
@@ -172,7 +173,6 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
 	if (cylinder_to_plane_proj <= cylinder->radius * sqrt(1 - normal_dot_product * normal_dot_product) + (cylinder->height / 2) * normal_dot_product)
 	{
-		printf("COLLISION\n");
 		
 		return (true);
 	}
@@ -208,51 +208,72 @@ void	collide_translate(t_shape *shape, const t_scene *scene, t_vector *offset)
 			{
 				if (cylinder_plane_collision(shape, other) == true && shape->is_colliding == false)
 				{
-					t_vector	normal;
-					// (void)plane;
-					// printf("cUP is \n");
-					mat_vec_multiply(&normal, &shape->added_rots, &shape->orientation);
-					normalize_vec(&normal);
-					printf("Cylinder normal: \n");
-					print_vector(&normal);
-					printf("Motion vector: \n");
-					print_vector(offset);
-					t_vector	cross;
-					t_vector	into;
-					ft_bzero(&into, sizeof(t_vector));
-					into.z = -1;
-					cross_product(&cross, &normal, &into);
-					cross.w = 0;
-					normalize_vec(&cross);
-					printf("Cross product: \n");
-					print_vector(&cross);
-					// t_vector	point1;
-					// t_vector	point2;
-					// t_vector	top_cap_center;
-					// t_vector	bottom_cap_center;
-					// t_vector	normal;
-					// // (void)plane;
-					// // printf("cUP is \n");
-					// mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
-					// normalize_vec(&normal);
-					// // print_vector(&normal);
-					// scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
-					// add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
-					// scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
-					// add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
-					// printf("Bottom cap is \n");
-					// print_vector(&bottom_cap_center);
-					// printf("Top cap is \n");
-					// print_vector(&top_cap_center);
-					// t_vector	offset_copy;
-					// scale_vec(&offset_copy, offset, 0.01);
-					// int	counter = 0;
-					// while (counter < 200 && cylinder_plane_collision(shape, other) == true)
-					// {
-					// 	sub_vec(&shape->origin, &shape->origin, &offset_copy);
-					// 	counter ++;
-					// }
-					// printf("Collision\n");
+					t_vector	cylinder_normal;
+					t_vector	top_cap_center;
+					t_vector	bottom_cap_center;
+
+					mat_vec_multiply(&cylinder_normal, &shape->added_rots, &shape->orientation);
+					normalize_vec(&cylinder_normal);
+					scale_vec(&top_cap_center, &cylinder_normal, shape->height / 2);
+					add_vec(&top_cap_center, &top_cap_center, &shape->origin);
+					scale_vec(&bottom_cap_center, &cylinder_normal, -shape->height / 2);
+					add_vec(&bottom_cap_center, &bottom_cap_center, &shape->origin);
+					t_vector	cap_to_plane;
+					sub_vec(&cap_to_plane, &top_cap_center, &other->origin);
+					double d1 = fabs(dot_product(&cap_to_plane, &other->orientation));
+					sub_vec(&cap_to_plane, &bottom_cap_center, &other->origin);
+					double d2 = fabs(dot_product(&cap_to_plane, &other->orientation));
+					t_vector	cap_center;
+					if (d1 < d2)
+						cap_center = top_cap_center;
+					else
+						cap_center = bottom_cap_center;
+					// Form a secondary plane at the cylinder cap
+					// This plane will have the equation
+					// Ax + By + Cz + D = 0
+					// A, B, C are the xyz values of the normal to the plane.
+					// D can be found by plugging a point in. The point will just be the cylinder cap
+					float		d = -(dot_product(&cylinder_normal, &cap_center));
+					// Normal of the secondary plane is the normal of the cylinder
+					// We intersect a ray starting from the cylinder center in the direction of motion
+					t_ray ray;
+					ray.origin = shape->origin;
+					ray.direction = *offset;
+					normalize_vec(&ray.direction);
+					if (fabs(dot_product(&cylinder_normal, &ray.direction)) > 0.001)
+					{
+						double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.direction);
+						t_vector	point_on_secondary_plane;
+						ray_position(&point_on_secondary_plane, &ray, t);
+						t_vector	dir;
+						sub_vec(&dir, &point_on_secondary_plane, &cap_center);
+						if (vec_magnitude(&dir) > 0.001)
+							normalize_vec(&dir);
+						scale_vec(&dir, &dir, shape->radius + 0.01);
+						t_vector	end_point;
+						add_vec(&end_point, &cap_center, &dir);
+						t_vector	plane_to_end_point;
+						sub_vec(&plane_to_end_point, &end_point, &other->origin);
+						double	dist = fabs(dot_product(&plane_to_end_point, &other->orientation));
+						t_vector	resolution;
+						resolution = *offset;
+						normalize_vec(&resolution);
+						scale_vec(&resolution, &resolution, dist);
+						sub_vec(&shape->origin, &shape->origin, &resolution);
+					}
+					else
+					{
+						// This is the case when the direction of motion is perpendicular to the cylinder normal
+						t_vector	center_to_point;
+						sub_vec(&center_to_point, &other->origin, &shape->origin);
+						
+						double	dist = fabs(dot_product(&center_to_point, &other->orientation));
+						t_vector	resolution;
+						resolution = *offset;
+						normalize_vec(&resolution);
+						scale_vec(&resolution, &resolution, shape->radius - dist + 0.001);
+						sub_vec(&shape->origin, &shape->origin, &resolution);
+					}
 				}
 			}
 		}

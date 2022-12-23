@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 18:26:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 21:29:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	look_at(t_scene *scene)
 	}
 	if (shape->type == CYLINDER)
 	{
-		final_pos.x = cam_to_object.x * -4 * shape->radius + shape->origin.x;
-		final_pos.z = cam_to_object.z * -4 * shape->radius + shape->origin.z;
+		final_pos.x = cam_to_object.x * -7 * shape->radius + shape->origin.x;
+		final_pos.z = cam_to_object.z * -7 * shape->radius + shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
