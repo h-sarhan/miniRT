@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 13:32:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 15:59:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		{
 			shape->radius += 0.04;
 			shape->scale_x = shape->radius;
-			if (shape->type == CYLINDER)
+			if (shape->type == CYLINDER || shape->type == CONE)
 			{
 				shape->scale_y = 1;
 			}
@@ -185,7 +185,7 @@ void	scale_object(t_scene *scene, t_shape *shape)
 			if (shape->radius > 0.3)
 				shape->radius -= 0.04;
 			shape->scale_x = shape->radius;
-			if (shape->type == CYLINDER)
+			if (shape->type == CYLINDER || shape->type == CONE)
 			{
 				shape->scale_y = 1;
 			}
