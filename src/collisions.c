@@ -109,17 +109,17 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	scale_vec(&bottom_cap_center, &cylinder_normal, -cylinder->height / 2);
 	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
 
-	t_vector	cap_center;
-	if (v_dist < - cylinder->height / 2)
-	{
-		cap_center = top_cap_center;
-	}
-	else if (v_dist > cylinder->height / 2)
-	{
-		cap_center = bottom_cap_center;
-	}
 	if (v_dist < - cylinder->height / 2 || v_dist > cylinder->height / 2)
 	{
+		t_vector	cap_center;
+		if (v_dist < - cylinder->height / 2)
+		{
+			cap_center = top_cap_center;
+		}
+		else if (v_dist > cylinder->height / 2)
+		{
+			cap_center = bottom_cap_center;
+		}
 		t_vector	cap_to_sphere;
 
 		sub_vec(&cap_to_sphere, &cap_center, &sphere->origin);

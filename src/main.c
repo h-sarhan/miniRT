@@ -58,14 +58,14 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 5;
-	scene->edit_scale = 0.5;
+	scene->render_scale = 0.5;
+	scene->edit_scale = 0.4;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
 	scene->edit_h = 1080 * scene->edit_scale;
-	scene->display_w = 1920 * 0.7;
-	scene->display_h = 1080 * 0.7;
+	scene->display_w = 1920 * 0.5;
+	scene->display_h = 1080 * 0.5;
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
@@ -75,7 +75,7 @@ int	main(int argc, char **argv)
 	// scene->shapes[0].reflectiveness = 0.9;
 	// scene->shapes[0].ior = 1.5;
 	// scene->refraction_depth = 6;
-	scene->reflection_depth = 3;
+	scene->reflection_depth = 1;
 	
 	
 	sem_unlink("/loading");

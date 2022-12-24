@@ -485,17 +485,18 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	// }
 	if (shape->type == CYLINDER)
 	{
+		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
 		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
 		if (fabs(a) < 0.0001)
 		{
-			return (false);
+			return (intersected);
 		}
 		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
 		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
 		discriminant = b * b - 4 * a * c;
 		if (discriminant < 0)
 		{
-			return (false);
+			return (intersected);
 		}
 		a *= 2;
 		b *= -1;
@@ -506,7 +507,6 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		{
 			ft_swapd(&t0, &t1);
 		}
-		bool	intersected = false;
 		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
 		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
 		{
@@ -523,8 +523,6 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			xs->count++;
 			intersected = true;
 		}
-		if (!intersected)
-			intersected = check_cylinder_caps(&transf_ray, shape, xs);
 		return (intersected);
 	}
 	if (shape->type == CONE)
@@ -573,7 +571,6 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	}
 	else if (shape->type == CUBE)
 	{
-		// transf_ray = *ray;
 		return (intersect_cube(shape, &transf_ray, xs));
 	}
 	return (true);

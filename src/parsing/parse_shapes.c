@@ -146,7 +146,7 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	bool	parse_success;
 
 	parse_success = true;
-	shape->type = CONE;
+	shape->type = CYLINDER;
 	if (split_count(splitted) != 6)
 		*success = false;
 	if (*success == false)
