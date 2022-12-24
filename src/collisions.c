@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 01:57:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 04:18:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	return (false);
 }
 
-void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2, const t_scene *scene)
+void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2, t_scene *scene)
 {
 	t_vector	dir;
 
@@ -82,7 +82,58 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	return (false);
 }
 
-void	collide(t_shape *shape, const t_scene *scene)
+void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
+{
+	cylinder->is_colliding = false;
+	t_vector	cylinder_to_sphere;
+	t_vector	cylinder_normal;
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
+	sub_vec(&cylinder_to_sphere, &sphere->origin, &cylinder->origin);
+	normalize_vec(&cylinder_normal);
+	float		delta_scale = dot_product(&cylinder_to_sphere, &cylinder_normal);
+	printf("delta scale = %f\n", delta_scale);
+	printf("Cylinder height = %f\n", cylinder->height);
+	t_vector	top_cap_center;
+	t_vector	bottom_cap_center;
+
+	scale_vec(&top_cap_center, &cylinder_normal, cylinder->height / 2);
+	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+	scale_vec(&bottom_cap_center, &cylinder_normal, -cylinder->height / 2);
+	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+	if (delta_scale > cylinder->height / 2)
+	{
+		printf("Above cylinder\n");
+		t_vector	sphere_to_top;
+		sub_vec(&sphere_to_top, &sphere->origin, &top_cap_center);
+		float dist = fabs(dot_product(&sphere_to_top, &cylinder_normal));
+		if (dist < cylinder->radius)
+		{
+			printf("Collision with top\n");
+		}
+	}
+	else if (delta_scale < - cylinder->height / 2)
+	{
+		printf("Below cylinder\n");
+	}
+	else
+	{
+		printf("In between\n");
+		t_vector	center_delta;
+		scale_vec(&center_delta, &cylinder_normal, delta_scale);
+		t_vector	center_adjusted;
+		add_vec(&center_adjusted, &center_delta, &cylinder->origin);
+		float	dist = vec_distance(&center_adjusted, &sphere->origin);
+		printf("Distance from center line to sphere origin == %f\n", dist);
+		// printf("Radius sum == %f\n", (cylinder->radius + sphere->radius + 0.001));
+		if (dist < (cylinder->radius + sphere->radius + 0.001))
+		{
+			printf("COLLISION\n");
+		}
+	}
+	cylinder->is_colliding = false;
+}
+
+void	collide(t_shape *shape, t_scene *scene)
 {
 	t_shape			*other;
 	unsigned int	shape_idx;
@@ -182,6 +233,19 @@ void	collide(t_shape *shape, const t_scene *scene)
 					}
 				}
 			}
+			else if (shape->type == CYLINDER && other->type == SPHERE)
+			{
+				sphere_cylinder_collision(shape, other);
+			}
+			else if (shape->type == SPHERE && other->type == CYLINDER)
+			{
+				sphere_cylinder_collision(other, shape);
+			}
+			// t_vector	local_sphere_origin;
+			// mat_vec_multiply(&local_sphere_origin, &shape->inv_transf, &other->origin);
+			// print_vector(&local_sphere_origin);
+			// float	dist = sqrt(local_sphere_origin.x * local_sphere_origin.x + local_sphere_origin.z * local_sphere_origin.z);
+			// printf("Distance from center line to sphere origin == %f\n", dist);
 		}
 		shape_idx++;
 	}
