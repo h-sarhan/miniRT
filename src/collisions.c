@@ -57,7 +57,7 @@ void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
 	sub_vec(&origin_to_plane, &sphere->origin, &plane->origin);
 	distance = sphere->radius - fabs(dot_product(&origin_to_plane, &plane->orientation));
 	resolution = plane->orientation;
-	scale_vec(&resolution, &resolution, distance - 0.001);
+	scale_vec(&resolution, &resolution, distance + 0.001);
 	add_vec(&sphere->origin, &sphere->origin, &resolution);
 }
 
@@ -81,7 +81,7 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	return (false);
 }
 
-bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder_sphere)
+bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder_sphere, bool resolve)
 {
 	t_vector	resolution;
 	t_vector	cylinder_to_sphere;
@@ -128,11 +128,16 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 			resolution = cylinder_normal;
 			if (v_dist > cylinder->height / 2)
 				negate_vec(&resolution, &resolution);
-			scale_vec(&resolution, &resolution, sphere->radius - v_cap_distance + 0.001);
-			if (cylinder_sphere == true)
+			if (cylinder_sphere == true && resolve)
+			{
+				scale_vec(&resolution, &resolution, sphere->radius - v_cap_distance - 0.001);
 				add_vec(&sphere->origin, &sphere->origin, &resolution);
-			else
+			}
+			else if (resolve)
+			{
+				scale_vec(&resolution, &resolution, sphere->radius - v_cap_distance + 0.001);
 				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			}
 			return true;
 		}
 		t_vector	dir;
@@ -163,11 +168,18 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 				exit(1);
 			}
 			normalize_vec(&resolution);
-			scale_vec(&resolution, &resolution, sphere->radius - edge_distance + 0.001);
-			if (cylinder_sphere == true)
+			if (cylinder_sphere == true && resolve)
+			{
+
+				scale_vec(&resolution, &resolution, sphere->radius - edge_distance - 0.001);
 				add_vec(&sphere->origin, &sphere->origin, &resolution);
-			else
+			}
+			else if (resolve)
+			{
+
+				scale_vec(&resolution, &resolution, sphere->radius - edge_distance + 0.001);
 				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			}
 			return true;
 		}
 	}
@@ -178,7 +190,7 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 		t_vector	center_adjusted;
 		add_vec(&center_adjusted, &cylinder->origin, &center_delta);
 		float	dist = vec_distance(&center_adjusted, &sphere->origin);
-		if (dist < (cylinder->radius + sphere->radius + 0.001))
+		if (dist < (cylinder->radius + sphere->radius))
 		{
 			sub_vec(&resolution, &center_adjusted, &sphere->origin);
 			negate_vec(&resolution, &resolution);
@@ -188,15 +200,19 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 				exit(1);
 			}
 			normalize_vec(&resolution);
-			scale_vec(&resolution, &resolution, sphere->radius + cylinder->radius - dist + 0.001);
-			if (cylinder_sphere == true)
+			if (cylinder_sphere == true && resolve)
+			{
+				scale_vec(&resolution, &resolution, sphere->radius + cylinder->radius - dist - 0.001);
 				add_vec(&sphere->origin, &sphere->origin, &resolution);
-			else
+			}
+			else if (resolve)
+			{
+				scale_vec(&resolution, &resolution, sphere->radius + cylinder->radius - dist + 0.001);
 				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			}
 			return true;
 		}
 	}
-	// cylinder->is_colliding = false;
 	return (false);
 }
 
@@ -274,7 +290,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	}
 }
 
-void	collide(t_scene *scene)
+bool	collide(t_scene *scene, bool resolve, int depth)
 {
 	t_shape			*shape1;
 	t_shape			*shape2;
@@ -322,16 +338,27 @@ void	collide(t_scene *scene)
 			}
 			else if (shape1->type == CYLINDER && shape2->type == SPHERE)
 			{
-				collided = cylinder_sphere_collision(shape1, shape2, true);
+				if (cylinder_sphere_collision(shape1, shape2, true, resolve))
+				{
+					collided = true;
+					printf("cylinder sphere collision\n");
+				}
 			}
 			else if (shape1->type == SPHERE && shape2->type == CYLINDER)
 			{
-				collided = cylinder_sphere_collision(shape2, shape1, false);
+				if (cylinder_sphere_collision(shape2, shape1, false, resolve))
+				{
+					collided = true;
+					printf("sphere cylinder collision\n");
+				}
 			}
 			idx2++;
 		}
 		idx1++;
 	}
-	if (collided)
-		collide(scene);
+	if (!resolve)
+		return (collided);
+	if (collide(scene, false, 0) == true && depth > 0)
+		collide(scene, true, depth - 1);
+	return (collided);
 }

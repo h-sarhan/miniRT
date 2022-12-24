@@ -385,7 +385,7 @@ int	key_handler(t_scene *scene)
 		// 	printf("Top cap is \n");
 		// 	print_vector(&top_cap_center);
 		// }
-		collide(scene);
+		collide(scene, true, 100);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

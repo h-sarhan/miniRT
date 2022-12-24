@@ -288,7 +288,7 @@ struct s_worker
 	t_scene	*scene;
 };
 void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color);
-void	collide(t_scene *scene);
+bool	collide(t_scene *scene, bool resolve, int depth);
 float	rad_to_deg(float r);
 float	deg_to_rad(float r);
 
