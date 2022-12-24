@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 11:07:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:01:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,18 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	return (false);
 }
 
-void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
+bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder_sphere)
 {
-	cylinder->is_colliding = true;
+	t_vector	resolution;
 	t_vector	cylinder_to_sphere;
 	t_vector	cylinder_normal;
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
 	sub_vec(&cylinder_to_sphere, &cylinder->origin, &sphere->origin);
 	normalize_vec(&cylinder_normal);
 	float		v_dist = dot_product(&cylinder_to_sphere, &cylinder_normal);
-	printf("vertical distance = %f\n", v_dist);
-	printf("Cylinder height = %f\n", cylinder->height);
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
 
-	sphere->color.r = 0;
-	sphere->color.g = 255;
-	sphere->color.b = 0;
 	scale_vec(&top_cap_center, &cylinder_normal, cylinder->height / 2);
 	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
 	scale_vec(&bottom_cap_center, &cylinder_normal, -cylinder->height / 2);
@@ -108,12 +103,10 @@ void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
 	if (v_dist < - cylinder->height / 2)
 	{
 		cap_center = top_cap_center;
-		printf("Above cylinder\n");
 	}
 	else if (v_dist > cylinder->height / 2)
 	{
 		cap_center = bottom_cap_center;
-		printf("Below cylinder\n");
 	}
 	if (v_dist < - cylinder->height / 2 || v_dist > cylinder->height / 2)
 	{
@@ -121,20 +114,19 @@ void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
 
 		sub_vec(&cap_to_sphere, &cap_center, &sphere->origin);
 		float	dist = vec_magnitude(&cap_to_sphere);
-		printf("Distance from cap  == %f\n", dist);
-		printf("vertical distance  == %f\n", fabs(v_dist));
-		printf("cylinder height / 2  == %f\n", cylinder->height / 2);
 		float	v_cap_distance = fabs(fabs(v_dist) - (cylinder->height / 2));
-		printf("Vetical cap distance == %f\n", v_cap_distance);
 		float	h_cap_distance = sqrt(dist * dist - v_cap_distance * v_cap_distance);
-		printf("Horizontal cap distance == %f\n\n", h_cap_distance);
-		if (h_cap_distance < cylinder->radius + 0.001 && v_cap_distance < sphere->radius + 0.001)
+		if (h_cap_distance < cylinder->radius && v_cap_distance < sphere->radius)
 		{
-			sphere->color.r = 255;
-			sphere->color.g = 0;
-			sphere->color.b = 0;
-			cylinder->is_colliding = false;
-			return ;
+			resolution = cylinder_normal;
+			if (v_dist > cylinder->height / 2)
+				negate_vec(&resolution, &resolution);
+			scale_vec(&resolution, &resolution, sphere->radius - v_cap_distance + 0.001);
+			if (cylinder_sphere == true)
+				add_vec(&sphere->origin, &sphere->origin, &resolution);
+			else
+				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			return true;
 		}
 		t_vector	dir;
 		scale_vec(&dir, &cylinder_normal, v_cap_distance);
@@ -149,39 +141,41 @@ void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
 		t_vector	edge;
 		add_vec(&edge, &cap_center, &dir);
 		float	edge_distance = vec_distance(&edge, &sphere->origin);
-		printf("Distance from edge == %f\n", edge_distance);
 		if (edge_distance < sphere->radius && v_cap_distance < sphere->radius)
 		{
-			sphere->color.r = 255;
-			sphere->color.g = 0;
-			sphere->color.b = 0;
-			cylinder->is_colliding = false;
-			return ;
+			sub_vec(&resolution, &edge, &sphere->origin);
+			negate_vec(&resolution, &resolution);
+			normalize_vec(&resolution);
+			scale_vec(&resolution, &resolution, sphere->radius - edge_distance);
+			if (cylinder_sphere == true)
+				add_vec(&sphere->origin, &sphere->origin, &resolution);
+			else
+				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			return true;
 		}
 	}
 	else
 	{
-		printf("In between\n");
 		t_vector	center_delta;
-		printf("vertical distance  == %f\n", -(v_dist));
 		scale_vec(&center_delta, &cylinder_normal, -(v_dist));
 		t_vector	center_adjusted;
 		add_vec(&center_adjusted, &cylinder->origin, &center_delta);
-		printf("Adjusted center\n");
-		print_vector(&center_adjusted);
-		printf("\n");
 		float	dist = vec_distance(&center_adjusted, &sphere->origin);
-		printf("Distance from center line to sphere origin == %f\n\n", dist);
 		if (dist < (cylinder->radius + sphere->radius + 0.001))
 		{
-			sphere->color.r = 255;
-			sphere->color.g = 0;
-			sphere->color.b = 0;
-			cylinder->is_colliding = false;
-			return ;
+			sub_vec(&resolution, &center_adjusted, &sphere->origin);
+			negate_vec(&resolution, &resolution);
+			normalize_vec(&resolution);
+			scale_vec(&resolution, &resolution, sphere->radius + cylinder->radius - dist);
+			if (cylinder_sphere == true)
+				add_vec(&sphere->origin, &sphere->origin, &resolution);
+			else
+				sub_vec(&cylinder->origin, &cylinder->origin, &resolution);
+			return true;
 		}
 	}
-	cylinder->is_colliding = false;
+	// cylinder->is_colliding = false;
+	return (false);
 }
 
 void	collide(t_shape *shape, t_scene *scene)
@@ -284,13 +278,19 @@ void	collide(t_shape *shape, t_scene *scene)
 					}
 				}
 			}
-			else if (shape->type == CYLINDER && other->type == SPHERE)
+			else if (shape->type == CYLINDER && other->type == SPHERE && shape->is_colliding == false)
 			{
-				sphere_cylinder_collision(shape, other);
+				shape->is_colliding = true;
+				if (cylinder_sphere_collision(shape, other, true) == true)
+					collide(other, scene);
+				shape->is_colliding = false;
 			}
-			else if (shape->type == SPHERE && other->type == CYLINDER)
+			else if (shape->type == SPHERE && other->type == CYLINDER && shape->is_colliding == false)
 			{
-				sphere_cylinder_collision(other, shape);
+				// shape->is_colliding = true;
+				// cylinder_sphere_collision(other, shape, false);
+				// collide(shape, scene);
+				// shape->is_colliding = false;
 			}
 			// t_vector	local_sphere_origin;
 			// mat_vec_multiply(&local_sphere_origin, &shape->inv_transf, &other->origin);
