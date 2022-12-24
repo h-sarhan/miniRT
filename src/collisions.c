@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 04:18:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 11:07:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,50 +84,101 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 
 void	sphere_cylinder_collision(t_shape *cylinder, t_shape *sphere)
 {
-	cylinder->is_colliding = false;
+	cylinder->is_colliding = true;
 	t_vector	cylinder_to_sphere;
 	t_vector	cylinder_normal;
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
-	sub_vec(&cylinder_to_sphere, &sphere->origin, &cylinder->origin);
+	sub_vec(&cylinder_to_sphere, &cylinder->origin, &sphere->origin);
 	normalize_vec(&cylinder_normal);
-	float		delta_scale = dot_product(&cylinder_to_sphere, &cylinder_normal);
-	printf("delta scale = %f\n", delta_scale);
+	float		v_dist = dot_product(&cylinder_to_sphere, &cylinder_normal);
+	printf("vertical distance = %f\n", v_dist);
 	printf("Cylinder height = %f\n", cylinder->height);
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
 
+	sphere->color.r = 0;
+	sphere->color.g = 255;
+	sphere->color.b = 0;
 	scale_vec(&top_cap_center, &cylinder_normal, cylinder->height / 2);
 	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
 	scale_vec(&bottom_cap_center, &cylinder_normal, -cylinder->height / 2);
 	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
-	if (delta_scale > cylinder->height / 2)
+
+	t_vector	cap_center;
+	if (v_dist < - cylinder->height / 2)
 	{
+		cap_center = top_cap_center;
 		printf("Above cylinder\n");
-		t_vector	sphere_to_top;
-		sub_vec(&sphere_to_top, &sphere->origin, &top_cap_center);
-		float dist = fabs(dot_product(&sphere_to_top, &cylinder_normal));
-		if (dist < cylinder->radius)
-		{
-			printf("Collision with top\n");
-		}
 	}
-	else if (delta_scale < - cylinder->height / 2)
+	else if (v_dist > cylinder->height / 2)
 	{
+		cap_center = bottom_cap_center;
 		printf("Below cylinder\n");
+	}
+	if (v_dist < - cylinder->height / 2 || v_dist > cylinder->height / 2)
+	{
+		t_vector	cap_to_sphere;
+
+		sub_vec(&cap_to_sphere, &cap_center, &sphere->origin);
+		float	dist = vec_magnitude(&cap_to_sphere);
+		printf("Distance from cap  == %f\n", dist);
+		printf("vertical distance  == %f\n", fabs(v_dist));
+		printf("cylinder height / 2  == %f\n", cylinder->height / 2);
+		float	v_cap_distance = fabs(fabs(v_dist) - (cylinder->height / 2));
+		printf("Vetical cap distance == %f\n", v_cap_distance);
+		float	h_cap_distance = sqrt(dist * dist - v_cap_distance * v_cap_distance);
+		printf("Horizontal cap distance == %f\n\n", h_cap_distance);
+		if (h_cap_distance < cylinder->radius + 0.001 && v_cap_distance < sphere->radius + 0.001)
+		{
+			sphere->color.r = 255;
+			sphere->color.g = 0;
+			sphere->color.b = 0;
+			cylinder->is_colliding = false;
+			return ;
+		}
+		t_vector	dir;
+		scale_vec(&dir, &cylinder_normal, v_cap_distance);
+		if (v_dist < - cylinder->height / 2)
+		{
+			negate_vec(&dir, &dir);
+		}
+		add_vec(&dir, &cap_center, &dir);
+		sub_vec(&dir, &sphere->origin, &dir);
+		normalize_vec(&dir);
+		scale_vec(&dir, &dir, cylinder->radius);
+		t_vector	edge;
+		add_vec(&edge, &cap_center, &dir);
+		float	edge_distance = vec_distance(&edge, &sphere->origin);
+		printf("Distance from edge == %f\n", edge_distance);
+		if (edge_distance < sphere->radius && v_cap_distance < sphere->radius)
+		{
+			sphere->color.r = 255;
+			sphere->color.g = 0;
+			sphere->color.b = 0;
+			cylinder->is_colliding = false;
+			return ;
+		}
 	}
 	else
 	{
 		printf("In between\n");
 		t_vector	center_delta;
-		scale_vec(&center_delta, &cylinder_normal, delta_scale);
+		printf("vertical distance  == %f\n", -(v_dist));
+		scale_vec(&center_delta, &cylinder_normal, -(v_dist));
 		t_vector	center_adjusted;
-		add_vec(&center_adjusted, &center_delta, &cylinder->origin);
+		add_vec(&center_adjusted, &cylinder->origin, &center_delta);
+		printf("Adjusted center\n");
+		print_vector(&center_adjusted);
+		printf("\n");
 		float	dist = vec_distance(&center_adjusted, &sphere->origin);
-		printf("Distance from center line to sphere origin == %f\n", dist);
-		// printf("Radius sum == %f\n", (cylinder->radius + sphere->radius + 0.001));
+		printf("Distance from center line to sphere origin == %f\n\n", dist);
 		if (dist < (cylinder->radius + sphere->radius + 0.001))
 		{
-			printf("COLLISION\n");
+			sphere->color.r = 255;
+			sphere->color.g = 0;
+			sphere->color.b = 0;
+			cylinder->is_colliding = false;
+			return ;
 		}
 	}
 	cylinder->is_colliding = false;
