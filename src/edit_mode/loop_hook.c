@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 04:17:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 13:32:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,15 @@ void	camera_controls(t_scene *scene)
 void	move_object_fwd(t_scene *scene, t_shape *shape)
 {
 	t_vector	offset;
-	t_vector	increment;
 
 	ft_bzero(&offset, sizeof(t_vector));
-	ft_bzero(&increment, sizeof(t_vector));
 	if (scene->keys_held.w)
 	{
-		sphere_to_xyz(&offset, scene->camera.phi, scene->camera.theta, 0.2);
-		sphere_to_xyz(&increment, scene->camera.phi, scene->camera.theta,
-			-0.0001);
+		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, 0.2);
 	}
 	if (scene->keys_held.s)
 	{
-		sphere_to_xyz(&offset, scene->camera.phi, scene->camera.theta, -0.2);
-		sphere_to_xyz(&increment, scene->camera.phi, scene->camera.theta,
-			0.0001);
+		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, -0.2);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 	if (scene->collisions)
