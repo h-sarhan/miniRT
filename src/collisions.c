@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 12:01:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 12:07:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,10 @@ void	collide(t_shape *shape, t_scene *scene)
 			}
 			else if (shape->type == SPHERE && other->type == CYLINDER && shape->is_colliding == false)
 			{
+				shape->is_colliding = true;
+				if (cylinder_sphere_collision(other, shape, false) == true)
+					collide(other, scene);
+				shape->is_colliding = false;
 				// shape->is_colliding = true;
 				// cylinder_sphere_collision(other, shape, false);
 				// collide(shape, scene);
