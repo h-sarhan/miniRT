@@ -290,7 +290,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	}
 }
 
-bool	collide(t_scene *scene, bool resolve, int depth)
+bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape)
 {
 	t_shape			*shape1;
 	t_shape			*shape2;
@@ -317,7 +317,10 @@ bool	collide(t_scene *scene, bool resolve, int depth)
 				if (sphere_sphere_collision(shape1, shape2) == true)
 				{
 					collided = true;
-					sphere_sphere_collision_resolution(shape1, shape2);
+					if (shape2 == transformed_shape)
+						sphere_sphere_collision_resolution(shape2, shape1);
+					else
+						sphere_sphere_collision_resolution(shape1, shape2);
 				}
 			}
 			else if (shape1->type == SPHERE && shape2->type == PLANE)
@@ -336,20 +339,20 @@ bool	collide(t_scene *scene, bool resolve, int depth)
 					cylinder_plane_collision_resolution(shape1, shape2);
 				}
 			}
-			else if (shape1->type == CYLINDER && shape2->type == SPHERE)
+			else if (shape1->type == CYLINDER && shape2->type == SPHERE && transformed_shape != shape2)
 			{
 				if (cylinder_sphere_collision(shape1, shape2, true, resolve))
 				{
 					collided = true;
-					printf("cylinder sphere collision\n");
+					// printf("cylinder sphere collision\n");
 				}
 			}
-			else if (shape1->type == SPHERE && shape2->type == CYLINDER)
+			else if (shape1->type == SPHERE && shape2->type == CYLINDER && transformed_shape != shape2)
 			{
 				if (cylinder_sphere_collision(shape2, shape1, false, resolve))
 				{
 					collided = true;
-					printf("sphere cylinder collision\n");
+					// printf("sphere cylinder collision\n");
 				}
 			}
 			idx2++;
@@ -358,7 +361,7 @@ bool	collide(t_scene *scene, bool resolve, int depth)
 	}
 	if (!resolve)
 		return (collided);
-	if (collide(scene, false, 0) == true && depth > 0)
-		collide(scene, true, depth - 1);
+	if (collide(scene, false, 0, NULL) == true && depth > 0)
+		collide(scene, true, depth - 1, NULL);
 	return (collided);
 }
