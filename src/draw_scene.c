@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 00:41:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 14:36:42 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,7 +454,7 @@ void	draw_shape_marker(t_scene *scene)
 		}
 		mat_vec_multiply(&origin_proj, &scene->camera.transform, &shape->origin);
 		perspective_projection(&origin_proj, scene);
-		if (shape->type == SPHERE || shape->type == CYLINDER || shape->type == CUBE)
+		if (shape->type == SPHERE || shape->type == CYLINDER || shape->type == CUBE || shape->type == CONE)
 		{
 			if (origin_proj.z < 0)
 				draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);

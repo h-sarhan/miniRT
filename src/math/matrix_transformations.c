@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transformations.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 14:06:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 14:02:51 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,11 +214,11 @@ void	calculate_transforms(t_scene *scene)
 		if (scene->shapes[i].type == CUBE || scene->shapes[i].type == SPHERE)
 			scaling_matrix(&scale, scene->shapes[i].scale_x,
 				scene->shapes[i].scale_y, scene->shapes[i].scale_z);
-		if (scene->shapes[i].type == CYLINDER)
+		if (scene->shapes[i].type == CYLINDER || scene->shapes[i].type == CONE)
 			scaling_matrix(&scale, scene->shapes[i].scale_x,
 				1, scene->shapes[i].scale_z);
 		if (scene->shapes[i].type == PLANE
-			|| scene->shapes[i].type == CYLINDER)
+			|| scene->shapes[i].type == CYLINDER || scene->shapes[i].type == CONE)
 			calculate_orientation(&rot, &scene->shapes[i]);
 		translate_matrix(&translate, scene->shapes[i].origin.x,
 			scene->shapes[i].origin.y, scene->shapes[i].origin.z);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 00:50:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 13:57:41 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	bool	parse_success;
 
 	parse_success = true;
-	shape->type = CYLINDER;
+	shape->type = CONE;
 	if (split_count(splitted) != 6)
 		*success = false;
 	if (*success == false)
