@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/24 16:29:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/24 16:52:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,18 +485,17 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	// }
 	if (shape->type == CYLINDER)
 	{
-		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
 		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
 		if (fabs(a) < 0.0001)
 		{
-			return (intersected);
+			return (false);
 		}
 		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
 		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
 		discriminant = b * b - 4 * a * c;
 		if (discriminant < 0)
 		{
-			return (intersected);
+			return (false);
 		}
 		a *= 2;
 		b *= -1;
@@ -507,7 +506,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		{
 			ft_swapd(&t0, &t1);
 		}
-		
+		bool	intersected = false;
 		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
 		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
 		{
@@ -524,6 +523,8 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			xs->count++;
 			intersected = true;
 		}
+		if (!intersected)
+			intersected = check_cylinder_caps(&transf_ray, shape, xs);
 		return (intersected);
 	}
 	if (shape->type == CONE)
@@ -532,11 +533,18 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		a = transf_ray.direction.x * transf_ray.direction.x - transf_ray.direction.y * transf_ray.direction.y + transf_ray.direction.z * transf_ray.direction.z;
 		b = 2 * transf_ray.direction.x * transf_ray.origin.x - 2 * transf_ray.direction.y * transf_ray.origin.y + 2 * transf_ray.direction.z * transf_ray.origin.z;
 		c = transf_ray.origin.x * transf_ray.origin.x - transf_ray.origin.y * transf_ray.origin.y + transf_ray.origin.z * transf_ray.origin.z;
-		if (fabs(a) < EPSILON)
-			return (intersected);
 		discriminant = b * b - 4 * a * c;
 		if (discriminant < 0)
 			return (intersected);
+		if (fabs(a) < 0.000001 && fabs(b) > 0.1)
+		{
+			xs->arr[xs->count].time = - c / (2 * b);
+			xs->arr[xs->count].shape = shape;
+			xs->count++;
+			return (intersected);
+		}
+		// if (fabs(a) < EPSILON)
+		// 	return (intersected);
 		discriminant = sqrt(discriminant);
 		float t0 = (-b - discriminant) / (a * 2);
 		float t1 = (-b + discriminant) / (a * 2);
