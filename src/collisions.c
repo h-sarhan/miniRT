@@ -37,18 +37,15 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	return (false);
 }
 
-void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2, t_scene *scene)
+void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2)
 {
 	t_vector	dir;
 
 	sub_vec(&dir, &sphere1->origin, &sphere2->origin);
 	float dist = vec_magnitude(&dir);
 	normalize_vec(&dir);
-	scale_vec(&dir, &dir,  dist - (sphere1->radius + sphere2->radius) + 0.001);
+	scale_vec(&dir, &dir,  dist - (sphere1->radius + sphere2->radius) - 0.001);
 	add_vec(&sphere2->origin, &sphere2->origin, &dir);
-	sphere1->is_colliding = true;
-	collide(sphere2, scene);
-	sphere1->is_colliding = false;
 }
 
 void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
@@ -60,7 +57,7 @@ void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
 	sub_vec(&origin_to_plane, &sphere->origin, &plane->origin);
 	distance = sphere->radius - fabs(dot_product(&origin_to_plane, &plane->orientation));
 	resolution = plane->orientation;
-	scale_vec(&resolution, &resolution, distance + 0.001);
+	scale_vec(&resolution, &resolution, distance - 0.001);
 	add_vec(&sphere->origin, &sphere->origin, &resolution);
 }
 
@@ -203,130 +200,138 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	return (false);
 }
 
-void	collide(t_shape *shape, t_scene *scene)
+void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 {
-	t_shape			*other;
-	unsigned int	shape_idx;
-	shape_idx = 0;
-	while (shape_idx < scene->count.shapes)
-	{
-		other = &scene->shapes[shape_idx];
-		if (other != shape)
-		{
-			if (shape->type == SPHERE && other->type == SPHERE)
-			{
-				if (sphere_sphere_collision(shape, other) == true && other->is_colliding == false)
-				{
-					sphere_sphere_collision_resolution(shape, other, scene);
-				}
-			}
-			else if (shape->type == SPHERE && other->type == PLANE)
-			{
-				if (sphere_plane_collision(shape, other) == true && shape->is_colliding == false)
-				{
-					sphere_plane_collision_resolution(shape, other);
-				}
-			}
-			else if (shape->type == CYLINDER && other->type == PLANE)
-			{
-				if (cylinder_plane_collision(shape, other) == true && shape->is_colliding == false)
-				{
-					t_vector	cylinder_normal;
-					t_vector	top_cap_center;
-					t_vector	bottom_cap_center;
+	t_vector	cylinder_normal;
+	t_vector	top_cap_center;
+	t_vector	bottom_cap_center;
 
-					mat_vec_multiply(&cylinder_normal, &shape->added_rots, &shape->orientation);
-					normalize_vec(&cylinder_normal);
-					scale_vec(&top_cap_center, &cylinder_normal, shape->height / 2);
-					add_vec(&top_cap_center, &top_cap_center, &shape->origin);
-					scale_vec(&bottom_cap_center, &cylinder_normal, -shape->height / 2);
-					add_vec(&bottom_cap_center, &bottom_cap_center, &shape->origin);
-					t_vector	cap_to_plane;
-					sub_vec(&cap_to_plane, &top_cap_center, &other->origin);
-					double d1 = fabs(dot_product(&cap_to_plane, &other->orientation));
-					sub_vec(&cap_to_plane, &bottom_cap_center, &other->origin);
-					double d2 = fabs(dot_product(&cap_to_plane, &other->orientation));
-					t_vector	cap_center;
-					if (d1 < d2)
-						cap_center = top_cap_center;
-					else
-						cap_center = bottom_cap_center;
-					// Form a secondary plane at the cylinder cap
-					// This plane will have the equation
-					// Ax + By + Cz + D = 0
-					// A, B, C are the xyz values of the normal to the plane.
-					// D can be found by plugging a point in. The point will just be the cylinder cap
-					float		d = -(dot_product(&cylinder_normal, &cap_center));
-					// Normal of the secondary plane is the normal of the cylinder
-					// We intersect a ray starting from the cylinder center in the direction of motion
-					t_ray ray;
-					ray.origin = shape->origin;
-					// This should be the vector from the cylinder center to the plane
-					negate_vec(&ray.direction, &other->orientation);
-					normalize_vec(&ray.direction);
-					if (fabs(dot_product(&cylinder_normal, &ray.direction)) > 0.001)
-					{
-						double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.direction);
-						t_vector	point_on_secondary_plane;
-						ray_position(&point_on_secondary_plane, &ray, t);
-						t_vector	dir;
-						sub_vec(&dir, &point_on_secondary_plane, &cap_center);
-						if (vec_magnitude(&dir) > 0.001)
-							normalize_vec(&dir);
-						scale_vec(&dir, &dir, shape->radius + 0.01);
-						t_vector	end_point;
-						add_vec(&end_point, &cap_center, &dir);
-						t_vector	plane_to_end_point;
-						sub_vec(&plane_to_end_point, &end_point, &other->origin);
-						double	dist = fabs(dot_product(&plane_to_end_point, &other->orientation));
-						t_vector	resolution;
-						// resolution = *offset;
-						// negate_vec(&resolution, &other->orientation);
-						resolution = other->orientation;
-						scale_vec(&resolution, &resolution, dist + 0.001);
-						add_vec(&shape->origin, &shape->origin, &resolution);
-					}
-					else
-					{
-						// This is the case when the direction of motion is perpendicular to the cylinder normal
-						t_vector	center_to_point;
-						sub_vec(&center_to_point, &other->origin, &shape->origin);
-						
-						double	dist = fabs(dot_product(&center_to_point, &other->orientation));
-						t_vector	resolution;
-						resolution = other->orientation;
-						// negate_vec(&resolution, &other->orientation);
-						// resolution = *offset;
-						// normalize_vec(&resolution);
-						scale_vec(&resolution, &resolution, shape->radius - dist + 0.001);
-						add_vec(&shape->origin, &shape->origin, &resolution);
-					}
+	mat_vec_multiply(&cylinder_normal, &cylinder->added_rots, &cylinder->orientation);
+	normalize_vec(&cylinder_normal);
+	scale_vec(&top_cap_center, &cylinder_normal, cylinder->height / 2);
+	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
+	scale_vec(&bottom_cap_center, &cylinder_normal, -cylinder->height / 2);
+	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
+	t_vector	cap_to_plane;
+	sub_vec(&cap_to_plane, &top_cap_center, &plane->origin);
+	double d1 = fabs(dot_product(&cap_to_plane, &plane->orientation));
+	sub_vec(&cap_to_plane, &bottom_cap_center, &plane->origin);
+	double d2 = fabs(dot_product(&cap_to_plane, &plane->orientation));
+	t_vector	cap_center;
+	if (d1 < d2)
+		cap_center = top_cap_center;
+	else
+		cap_center = bottom_cap_center;
+	// Form a secondary plane at the cylinder cap
+	// This plane will have the equation
+	// Ax + By + Cz + D = 0
+	// A, B, C are the xyz values of the normal to the plane.
+	// D can be found by plugging a point in. The point will just be the cylinder cap
+	float		d = -(dot_product(&cylinder_normal, &cap_center));
+	// Normal of the secondary plane is the normal of the cylinder
+	// We intersect a ray starting from the cylinder center in the direction of motion
+	t_ray ray;
+	ray.origin = cylinder->origin;
+	// This should be the vector from the cylinder center to the plane
+	negate_vec(&ray.direction, &plane->orientation);
+	normalize_vec(&ray.direction);
+	if (fabs(dot_product(&cylinder_normal, &ray.direction)) > 0.001)
+	{
+		double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.direction);
+		t_vector	point_on_secondary_plane;
+		ray_position(&point_on_secondary_plane, &ray, t);
+		t_vector	dir;
+		sub_vec(&dir, &point_on_secondary_plane, &cap_center);
+		if (vec_magnitude(&dir) > 0.001)
+			normalize_vec(&dir);
+		scale_vec(&dir, &dir, cylinder->radius + 0.01);
+		t_vector	end_point;
+		add_vec(&end_point, &cap_center, &dir);
+		t_vector	plane_to_end_point;
+		sub_vec(&plane_to_end_point, &end_point, &plane->origin);
+		double	dist = fabs(dot_product(&plane_to_end_point, &plane->orientation));
+		t_vector	resolution;
+		// resolution = *offset;
+		// negate_vec(&resolution, &plane->orientation);
+		resolution = plane->orientation;
+		scale_vec(&resolution, &resolution, dist + 0.001);
+		add_vec(&cylinder->origin, &cylinder->origin, &resolution);
+	}
+	else
+	{
+		// This is the case when the direction of motion is perpendicular to the cylinder normal
+		t_vector	center_to_point;
+		sub_vec(&center_to_point, &plane->origin, &cylinder->origin);
+		
+		double	dist = fabs(dot_product(&center_to_point, &plane->orientation));
+		t_vector	resolution;
+		resolution = plane->orientation;
+		// negate_vec(&resolution, &plane->orientation);
+		// resolution = *offset;
+		// normalize_vec(&resolution);
+		scale_vec(&resolution, &resolution, cylinder->radius - dist + 0.001);
+		add_vec(&cylinder->origin, &cylinder->origin, &resolution);
+	}
+}
+
+void	collide(t_scene *scene)
+{
+	t_shape			*shape1;
+	t_shape			*shape2;
+	unsigned int	idx1;
+	unsigned int	idx2;
+	bool			collided;
+	idx1 = 0;
+	collided = false;
+	(void)collided;
+	while (idx1 < scene->count.shapes)
+	{
+		shape1 = &scene->shapes[idx1];
+		idx2 = 0;
+		while (idx2 < scene->count.shapes)
+		{
+			if (idx1 == idx2)
+			{
+				idx2++;
+				continue;
+			}
+			shape2 = &scene->shapes[idx2];
+			if (shape1->type == SPHERE && shape2->type == SPHERE)
+			{
+				if (sphere_sphere_collision(shape1, shape2) == true)
+				{
+					collided = true;
+					sphere_sphere_collision_resolution(shape1, shape2);
 				}
 			}
-			else if (shape->type == CYLINDER && other->type == SPHERE && shape->is_colliding == false)
+			else if (shape1->type == SPHERE && shape2->type == PLANE)
 			{
-				shape->is_colliding = true;
-				if (cylinder_sphere_collision(shape, other, true) == true)
-					collide(other, scene);
-				shape->is_colliding = false;
+				if (sphere_plane_collision(shape1, shape2) == true)
+				{
+					collided = true;
+					sphere_plane_collision_resolution(shape1, shape2);
+				}
 			}
-			else if (shape->type == SPHERE && other->type == CYLINDER && shape->is_colliding == false)
+			else if (shape1->type == CYLINDER && shape2->type == PLANE)
 			{
-				shape->is_colliding = true;
-				if (cylinder_sphere_collision(other, shape, false) == true)
-					collide(other, scene);
-				shape->is_colliding = false;
-				// shape->is_colliding = true;
-				// cylinder_sphere_collision(other, shape, false);
-				// collide(shape, scene);
-				// shape->is_colliding = false;
+				if (cylinder_plane_collision(shape1, shape2) == true)
+				{
+					collided = true;
+					cylinder_plane_collision_resolution(shape1, shape2);
+				}
 			}
-			// t_vector	local_sphere_origin;
-			// mat_vec_multiply(&local_sphere_origin, &shape->inv_transf, &other->origin);
-			// print_vector(&local_sphere_origin);
-			// float	dist = sqrt(local_sphere_origin.x * local_sphere_origin.x + local_sphere_origin.z * local_sphere_origin.z);
-			// printf("Distance from center line to sphere origin == %f\n", dist);
+			else if (shape1->type == CYLINDER && shape2->type == SPHERE)
+			{
+				collided = cylinder_sphere_collision(shape1, shape2, true);
+			}
+			else if (shape1->type == SPHERE && shape2->type == CYLINDER)
+			{
+				collided = cylinder_sphere_collision(shape2, shape1, false);
+			}
+			idx2++;
 		}
-		shape_idx++;
+		idx1++;
 	}
+	if (collided)
+		collide(scene);
 }

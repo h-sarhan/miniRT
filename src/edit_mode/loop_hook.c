@@ -95,8 +95,8 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, -0.2);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -119,8 +119,8 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -141,8 +141,8 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
@@ -195,8 +195,8 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		}
 	}
 	shape->radius_squared = shape->radius * shape->radius;
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	change_height(t_scene *scene, t_shape *shape)
@@ -210,8 +210,8 @@ void	change_height(t_scene *scene, t_shape *shape)
 		if (shape->height > 0.1)
 			shape->height -= 0.04;
 	}
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
@@ -235,8 +235,8 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
@@ -250,8 +250,8 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
@@ -265,8 +265,8 @@ void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	if (scene->collisions)
-		collide(shape, scene);
+	// if (scene->collisions)
+		// collide(shape, scene);
 }
 
 void	transform_object(t_scene *scene)
@@ -385,6 +385,7 @@ int	key_handler(t_scene *scene)
 		// 	printf("Top cap is \n");
 		// 	print_vector(&top_cap_center);
 		// }
+		collide(scene);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
