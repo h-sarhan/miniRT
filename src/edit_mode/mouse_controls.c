@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 22:26:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:28:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	handle_mouse_down(int key_code, int x, int y, t_scene *scene)
+int	mouse_down(int key_code, int x, int y, t_scene *scene)
 {
 	(void)x;
 	(void)y;
@@ -22,7 +22,7 @@ int	handle_mouse_down(int key_code, int x, int y, t_scene *scene)
 	return (0);
 }
 
-int	handle_mouse_up(int key_code, int x, int y, t_scene *scene)
+int	mouse_up(int key_code, int x, int y, t_scene *scene)
 {
 	(void)x;
 	(void)y;

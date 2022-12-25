@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/22 19:24:26 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/26 00:19:04 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,12 +26,12 @@ INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 LIGHTING_SRC = lighting.c camera.c
 LIGHTING_SRC := $(addprefix lighting/, $(LIGHTING_SRC))
 
-EDIT_MODE_SRC = key_presses.c loop_hook.c
+EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c collisions.c 
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) $(EDIT_MODE_SRC) \
 				free_utils.c print_utils.c color.c draw_scene.c render_scene.c \
-				mouse_controls.c collisions.c main.c
+				main.c
 
 SRC := $(addprefix src/, $(SRC))
 
@@ -62,7 +62,8 @@ CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
 			# -fsanitize=address\
 
 all:
-	make  -j20 $(NAME)
+	# make  -j20 $(NAME)
+	make $(NAME)
 
 $(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)

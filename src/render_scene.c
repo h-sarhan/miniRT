@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 13:19:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:25:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,46 +130,7 @@ void	*render_scene(t_worker *worker)
 	return (NULL);
 }
 
-int	get_t(int trgb)
-{
-	return ((trgb >> 24) & 0xFF);
-}
 
-int	get_r(int col)
-{
-	return ((col >> 16) & 0xFF);
-}
-
-int	get_g(int col)
-{
-	return ((col >> 8) & 0xFF);
-}
-
-int	get_b(int col)
-{
-	return (col & 0xFF);
-}
-
-int	color_avg(int c1, int c2)
-{
-	return (create_trgb(0, (get_r(c1) + get_r(c2)) / 2, (get_g(c1) + get_g(c2)) / 2, (get_b(c1) + get_b(c2)) / 2));
-}
-
-int	color_mix(int c1, int c2, float mix)
-{
-	int	result;
-	int	t;
-	int	r;
-	int	g;
-	int	b;
-
-	t = get_t(c1) * mix + get_t(c2) * (1 - mix);
-	r = get_r(c1) * mix + get_r(c2) * (1 - mix);
-	g = get_g(c1) * mix + get_g(c2) * (1 - mix);
-	b = get_b(c1) * mix + get_b(c2) * (1 - mix);
-	result = create_trgb(t, r, g, b);
-	return (result);
-}
 
 int	get_color(t_worker *worker, int x, int y)
 {
@@ -185,18 +146,6 @@ void	set_color(t_worker *worker, int x, int y, int color)
 
 	bpp = worker->scene->mlx->bytes_per_pixel;
 	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
-}
-
-int	color_difference(int c1, int c2)
-{
-	int	r_diff;
-	int	g_diff;
-	int	b_diff;
-
-	r_diff = abs(get_r(c1) - get_r(c2));
-	g_diff = abs(get_g(c1) - get_g(c2));
-	b_diff = abs(get_b(c1) - get_b(c2));
-	return (r_diff + g_diff + b_diff);
 }
 
 

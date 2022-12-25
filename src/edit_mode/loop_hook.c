@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 22:55:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:29:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,7 +363,7 @@ void	look_at_animation(t_scene *scene)
 		reset_look_at(scene);
 }
 
-int	key_handler(t_scene *scene)
+int	render_loop(t_scene *scene)
 {
 	if (scene->camera_mode == true && scene->edit_mode == true)
 		camera_controls(scene);

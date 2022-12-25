@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/25 22:32:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 23:57:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
  * @param y The value along the y-axis to be translated.
  * @param z The value along the z-axis to be translated.
  */
-
 void	translate_matrix(t_mat4 *mat, float x, float y, float z)
 {
 	ft_bzero(mat, sizeof(t_mat4));
@@ -168,13 +167,10 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 		rotation_matrix_x(rot_transform, -M_PI);
 		return ;
 	}
-	else
-	{
-		up.x = 0;
-		up.y = 1;
-		up.z = 0;
-		up.w = 0;
-	}
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+	up.w = 0;
 	ax.w = 0;
 	normalize_vec(&shape->orientation);
 	normalize_vec(&up);

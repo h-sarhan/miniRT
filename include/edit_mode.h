@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_input.h                                        :+:      :+:    :+:   */
+/*   edit_mode.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 18:24:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:29:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEY_INPUT_H
 # define KEY_INPUT_H
 
-# include "scene.h"
 # define ON_DESTROY 17
-# define PI           3.14159265358979323846F
+# define CAM_SPEED 0.5
+
+typedef struct s_shape	t_shape; // forward declaration
+
 # ifdef __linux__
 #  define KEY_ESC 65307
 #  define KEY_W 119
@@ -91,12 +93,40 @@
 #  define KEY_Y 16
 #  define KEY_Z 6
 # endif
-int	key_handler(t_scene *scene);
-int	mouse_rotate(t_scene *scene);
-int	handle_mouse_down(int key_code, int x, int y, t_scene *scene);
-int	handle_mouse_up(int key_code, int x, int y, t_scene *scene);
+
+typedef struct s_keys		t_keys;
+struct s_keys
+{
+	bool	w;
+	bool	a;
+	bool	s;
+	bool	d;
+	bool	up;
+	bool	down;
+	bool	left;
+	bool	right;
+	bool	q;
+	bool	e;
+	bool	plus;
+	bool	minus;
+	bool	tab;
+	bool	c;
+	bool	shift;
+	bool	x;
+	bool	y;
+	bool	z;
+};
+
+bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape);
+int		mouse_rotate(t_scene *scene);
+
 void	rotate_object_x(t_scene *scene, t_shape *shape, float deg);
 void	rotate_object_y(t_scene *scene, t_shape *shape, float deg);
 void	rotate_object_z(t_scene *scene, t_shape *shape, float deg);
+int		mouse_down(int key_code, int x, int y, t_scene *scene);
+int		mouse_up(int key_code, int x, int y, t_scene *scene);
+int		key_press(int key, t_scene *scene);
+int		key_release(int key, t_scene *scene);
+int		render_loop(t_scene *scene);
 
 #endif

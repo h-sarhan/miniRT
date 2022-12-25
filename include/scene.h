@@ -6,162 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 02:49:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:11:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCENE_H
 # define SCENE_H
-
-# include "vector.h"
-# include "matrix.h"
-# include <pthread.h>
-
-/**
- * @brief Type of light
- */
-typedef enum e_light_type	t_light_type;
-enum e_light_type
-{
-	POINT,
-	SPOT
-};
-
-/**
- * @brief Represents a color.
- * @param r Red
- * @param g Green
- * @param b Blue
- * @param a Transparency
- */
-typedef struct s_color		t_color;
-struct s_color
-{
-	float	r;
-	float	g;
-	float	b;
-	float	a;
-};
-
-// color.c
-unsigned int	create_mlx_color(t_color *color);
-void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
-void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
-void			mult_color(t_color *res, const t_color *color, float val);
-void			blend_colors(t_color *res, const t_color *c1,
-					const t_color *c2);
-
-/**
- * @brief A light source
- * @param type Type of light
- * @param position Origin of the light
- * @param intensity Strength of the light
- * @param color Color of the light
- */
-typedef struct s_light		t_light;
-struct s_light
-{
-	t_light_type	type;
-	t_vector		position;
-	float			intensity;
-	t_color			color;
-};
-
-/**
- * @brief An approximation of indirect lighting
- * @param intensity How strong the light is
- * @param color The color of the light
- */
-typedef struct s_ambient	t_ambient;
-struct s_ambient
-{
-	float	intensity;
-	t_color	color;
-};
-
-/**
- * @brief The camera defines the viewport position
- * @param position Origin of the camera
- * @param orientation Normalized vector representing the direction
- * where the camera is pointing
- * @param fov Field of view of the camera
- */
-typedef struct s_camera		t_camera;
-struct s_camera
-{
-	t_vector	position;
-	t_vector	dir;
-	int			fov;
-	float		pixel_size;
-	float		half_width;
-	float		half_height;
-	t_mat4		transform;
-	t_mat4		inv_trans;
-	float		phi;
-	float		theta;
-};
-void			camera_init(t_camera *camera, t_scene *scene);
-void			view_transform(t_mat4 *res, const t_vector *from,
-					const t_vector *up, const t_vector *forward);
-
-/**
- * @brief Type of shape
- */
-typedef enum e_shape_type	t_shape_type;
-enum e_shape_type
-{
-	SPHERE,
-	PLANE,
-	CYLINDER,
-	CONE,
-	CUBE,
-	HYPERBOLOID,
-	PARABOLOID,
-	TRIANGLE,
-};
-/**
- * @brief Generic shape struct
- * @param type Type of shape. Sphere, plane, cylinder, etc.
- * @param radius Radius of the shape. Relevant for sphere, cylinder, and
- *  cone
- * @param height Height of the shape. Relevant for cylinder
- * @param origin Origin of the shape. Relevant for sphere, cylinder, and plane
- * @param orientation Orientation of the shape. Relevant for plane and cylinder
- * @param color Color of the shape
- */
-typedef struct s_shape		t_shape;
-struct s_shape
-{
-	t_shape_type	type;
-	int				id;
-	float			radius;
-	float			radius_squared;
-	float			height;
-	t_vector		origin;
-	t_vector		orientation;
-	t_color			color;
-	t_mat4			transf;
-	t_mat4			inv_transf;
-	t_mat4			norm_transf;
-	unsigned int	mlx_color;
-	float			diffuse;
-	float			specular;
-	float			shininess;
-	float			reflectiveness;
-	float			transparency;
-	float			ior;
-	float			rot_x;
-	float			rot_y;
-	float			rot_z;
-	float			scale_x;
-	float			scale_y;
-	float			scale_z;
-	bool			highlighted;
-	bool			is_colliding;
-	float			distance_from_origin;
-	t_mat4			added_rots;
-};
-void			reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
 
 /**
  * @brief Holds the number of elements in a scene
@@ -179,32 +29,6 @@ struct	s_el_count
 	unsigned int	shapes;
 };
 
-typedef struct s_mlx		t_mlx;
-typedef struct s_keys		t_keys;
-struct s_keys
-{
-	bool	w;
-	bool	a;
-	bool	s;
-	bool	d;
-	bool	up;
-	bool	down;
-	bool	left;
-	bool	right;
-	bool	q;
-	bool	e;
-	bool	plus;
-	bool	minus;
-	bool	tab;
-	bool	c;
-	bool	shift;
-	bool	x;
-	bool	y;
-	bool	z;
-};
-int				set_key_down(int key, t_scene *scene);
-int				set_key_up(int key, t_scene *scene);
-
 
 typedef struct s_look_at		t_look_at;
 struct s_look_at
@@ -219,7 +43,6 @@ struct s_look_at
 	int			step_num;
 	int			step_amount;
 };
-void	perspective_projection(t_vector *point, const t_scene *scene);
 
 
 // Waste of time
@@ -272,24 +95,10 @@ struct s_scene
 	bool		collisions;
 };
 
-typedef struct s_worker		t_worker;
+void	free_scene(t_scene *scene);
 
-struct s_worker
-{
-	int		worker_id;
-	int		y_start;
-	int		y_end;
-	int		y_scale_start;
-	int		y_scale_end;
-	int		max_workers;
-	int		height;
-	int		width;
-	char	*addr;
-	t_scene	*scene;
-};
-void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color);
-bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape);
-float	rad_to_deg(float r);
-float	deg_to_rad(float r);
+void	calculate_transforms(t_scene *scene);
+
+void	draw_scene(t_scene *scene);
 
 #endif

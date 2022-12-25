@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 22:25:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:29:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ void	toggle_shape(t_scene *scene)
 	shape->radius_squared = shape->radius * shape->radius;
 }
 
-int	set_key_down(int key, t_scene *scene)
+int	key_press(int key, t_scene *scene)
 {
 	printf("%d\n", key);
 	if (key == KEY_M && scene->edit_mode == true)
@@ -285,7 +285,7 @@ int	set_key_down(int key, t_scene *scene)
 	return (0);
 }
 
-int	set_key_up(int key, t_scene *scene)
+int	key_release(int key, t_scene *scene)
 {
 	toggle_keys_held(key, scene, false);
 	return (0);

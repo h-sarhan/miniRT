@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/24 16:52:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:02:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,7 +357,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	{
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
 		object_normal.w = 0;
-		maxc = find_max(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
+		maxc = max3(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
 		if (maxc == fabs(object_normal.x))
 		{
 			object_normal.y = 0;
@@ -380,7 +380,7 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	return (world_normal);
 }
 
-float	find_max(float n1, float n2, float n3)
+float	max3(float n1, float n2, float n3)
 {
 	if (n1 >= n2 && n1 >= n3)
 		return (n1);
@@ -389,7 +389,7 @@ float	find_max(float n1, float n2, float n3)
 	return (n3);
 }
 
-float	find_min(float n1, float n2, float n3)
+float	min3(float n1, float n2, float n3)
 {
 	if (n1 <= n2 && n1 <= n3)
 		return (n1);
@@ -412,8 +412,8 @@ bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	check_axis(&xtmin, &xtmax, ray->origin.x, ray->direction.x);
 	check_axis(&ytmin, &ytmax, ray->origin.y, ray->direction.y);
 	check_axis(&ztmin, &ztmax, ray->origin.z, ray->direction.z);
-	tmin = find_max(xtmin, ytmin, ztmin);
-	tmax = find_min(xtmax, ytmax, ztmax);
+	tmin = max3(xtmin, ytmin, ztmin);
+	tmax = min3(xtmax, ytmax, ztmax);
 	if (tmin > tmax)
 		return (false);
 	xs->arr[xs->count].time = tmin;	

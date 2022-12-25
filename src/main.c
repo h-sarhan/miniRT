@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 22:45:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:28:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,11 @@ int	main(int argc, char **argv)
 		&mlx.line_length, &mlx.endian);
 	mlx.bytes_per_pixel /= 8;
 	scene->mlx = &mlx;
-	mlx_hook(mlx.mlx_win, 2, (1L << 0), set_key_down, scene);
-	mlx_hook(mlx.mlx_win, 3, (1L << 1), set_key_up, scene);
-	mlx_hook(mlx.mlx_win, 5, 0, handle_mouse_up, scene);
-	mlx_mouse_hook(mlx.mlx_win, handle_mouse_down, scene);
-	mlx_loop_hook(mlx.mlx, key_handler, scene);
+	mlx_hook(mlx.mlx_win, 2, (1L << 0), key_press, scene);
+	mlx_hook(mlx.mlx_win, 3, (1L << 1), key_release, scene);
+	mlx_hook(mlx.mlx_win, 5, 0, mouse_up, scene);
+	mlx_mouse_hook(mlx.mlx_win, mouse_down, scene);
+	mlx_loop_hook(mlx.mlx, render_loop, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
 	scene->camera.phi = acos(scene->camera.dir.y);

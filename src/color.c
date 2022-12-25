@@ -6,13 +6,72 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:26:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	clamp_color(float color)
+int	get_t(int trgb)
+{
+	return ((trgb >> 24) & 0xFF);
+}
+
+int	get_r(int col)
+{
+	return ((col >> 16) & 0xFF);
+}
+
+int	get_g(int col)
+{
+	return ((col >> 8) & 0xFF);
+}
+
+int	get_b(int col)
+{
+	return (col & 0xFF);
+}
+
+int	color_avg(int c1, int c2)
+{
+	return (create_trgb(0, (get_r(c1) + get_r(c2)) / 2, (get_g(c1) + get_g(c2)) / 2, (get_b(c1) + get_b(c2)) / 2));
+}
+
+int	color_mix(int c1, int c2, float mix)
+{
+	int	result;
+	int	t;
+	int	r;
+	int	g;
+	int	b;
+
+	t = get_t(c1) * mix + get_t(c2) * (1 - mix);
+	r = get_r(c1) * mix + get_r(c2) * (1 - mix);
+	g = get_g(c1) * mix + get_g(c2) * (1 - mix);
+	b = get_b(c1) * mix + get_b(c2) * (1 - mix);
+	result = create_trgb(t, r, g, b);
+	return (result);
+}
+
+int	color_difference(int c1, int c2)
+{
+	int	r_diff;
+	int	g_diff;
+	int	b_diff;
+
+	r_diff = abs(get_r(c1) - get_r(c2));
+	g_diff = abs(get_g(c1) - get_g(c2));
+	b_diff = abs(get_b(c1) - get_b(c2));
+	return (r_diff + g_diff + b_diff);
+}
+
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+
+static unsigned int	clamp_color(float color)
 {
 	color *= 256;
 	if (color > 255)
