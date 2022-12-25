@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 13:25:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 22:56:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,19 @@ void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
 bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 {
 	t_vector	cylinder_normal;
-	t_vector	up;
-	ft_bzero(&up, sizeof(t_vector));
-	up.y = 1;
-	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up);
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
+	normalize_vec(&cylinder_normal);
 	t_vector	cylinder_to_plane;
 	sub_vec(&cylinder_to_plane, &cylinder->origin, &plane->origin);
 	double	cylinder_to_plane_proj;
 	cylinder_to_plane_proj = fabs(dot_product(&plane->orientation, &cylinder_to_plane));
 	double	normal_dot_product;
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
-	if (cylinder_to_plane_proj <= cylinder->radius * sqrt(1 - normal_dot_product * normal_dot_product) + (cylinder->height / 2) * normal_dot_product)
+	if (fabs(normal_dot_product - 1) < 0.00001)
+	{
+		return (cylinder_to_plane_proj < cylinder->height / 2);
+	}
+	if (cylinder_to_plane_proj < cylinder->radius * sqrt(1 - normal_dot_product * normal_dot_product) + (cylinder->height / 2) * normal_dot_product)
 	{
 		return (true);
 	}
@@ -86,10 +88,7 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	t_vector	resolution;
 	t_vector	cylinder_to_sphere;
 	t_vector	cylinder_normal;
-	t_vector	up;
-	ft_bzero(&up, sizeof(t_vector));
-	up.y = 1;
-	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up);
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
 	if (fabs(vec_magnitude(&cylinder_normal)) < 0.001)
 	{
 		printf("THIS SHHOULDNT HAPPEN1\n");

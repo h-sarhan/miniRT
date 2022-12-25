@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 15:59:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 22:55:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	}
 	if (scene->keys_held.minus == true)
 	{
-		if (shape->height > 0.1)
+		if (shape->height > 0.2)
 			shape->height -= 0.04;
 	}
 	// if (scene->collisions)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 22:26:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	mouse_rotate(t_scene *scene)
 			{
 				rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 			}
+			collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 			calculate_transforms(scene);
 			draw_scene(scene);
 		}

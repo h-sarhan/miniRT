@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 13:28:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 22:25:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,24 +135,14 @@ void	deploy_flashbang(t_scene *scene)
 
 void	toggle_reflections(t_scene *scene)
 {
-	if (scene->reflection_depth == 0 && scene->refraction_depth == 0)
+	if (scene->reflection_depth == 0)
 	{
-		scene->edit_scale = 0.55;
 		scene->reflection_depth = REFLECTION_DEPTH;
 	}
-	else if (scene->reflection_depth != 0 && scene->refraction_depth == 0)
+	else if (scene->reflection_depth != 0)
 	{
-		scene->edit_scale = 0.35;
-		scene->refraction_depth = 5;
-	}
-	else if (scene->reflection_depth != 0 && scene->refraction_depth != 0)
-	{
-		scene->edit_scale = 0.75;
 		scene->reflection_depth = 0;
-		scene->refraction_depth = 0;
 	}
-	scene->edit_w = 1920 * scene->edit_scale;
-	scene->edit_h = 1080 * scene->edit_scale;
 }
 
 void	toggle_keys_held(int key, t_scene *scene, bool on_off)

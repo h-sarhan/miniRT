@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/24 16:38:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/25 22:45:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 0.5;
-	scene->edit_scale = 0.4;
+	scene->render_scale = 2;
+	scene->edit_scale = 0.6;
 	scene->render_w = 1920 * scene->render_scale;
 	scene->render_h = 1080 * scene->render_scale;
 	scene->edit_w = 1920 * scene->edit_scale;
 	scene->edit_h = 1080 * scene->edit_scale;
-	scene->display_w = 1920 * 0.5;
-	scene->display_h = 1080 * 0.5;
+	scene->display_w = 1920 * 0.8;
+	scene->display_h = 1080 * 0.8;
 	
 	scene->collisions = true;
 	scene->shapes[0].highlighted = true;
