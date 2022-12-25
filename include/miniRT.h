@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:47:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:58:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@
 # include <pthread.h>
 # include "../libft/libft.h"
 # ifdef __linux__
-# include "../mlx_linux/mlx.h"
-#else
-# include "../mlx/mlx.h"
-#endif
-
-typedef struct s_scene	t_scene;
+#  include "../mlx_linux/mlx.h"
+# else
+#  include "../mlx/mlx.h"
+# endif
 # include "mathRT.h"
 # include "color.h"
 # include "display.h"

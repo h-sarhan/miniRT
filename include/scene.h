@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:55:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:03:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ struct	s_el_count
 	unsigned int	shapes;
 };
 
-
-typedef struct s_look_at		t_look_at;
+typedef struct s_look_at	t_look_at;
 struct s_look_at
 {
 	t_vector	final_pos;
@@ -44,8 +43,6 @@ struct s_look_at
 	int			step_amount;
 };
 
-
-// Waste of time
 typedef struct s_mouse		t_mouse;
 struct	s_mouse
 {
@@ -99,6 +96,5 @@ void	free_scene(t_scene *scene);
 
 void	calculate_transforms(t_scene *scene);
 void	draw_scene(t_scene *scene);
-
 
 #endif

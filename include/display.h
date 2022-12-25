@@ -6,12 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 00:39:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:45:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:00:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WINDOW_H
-# define WINDOW_H
+#ifndef DISPLAY_H
+# define DISPLAY_H
 
 /**
  * @brief Struct containing information relevant for mlx and the window

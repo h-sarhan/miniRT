@@ -6,17 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:38:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:01:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_INPUT_H
-# define KEY_INPUT_H
+#ifndef EDIT_MODE_H
+# define EDIT_MODE_H
 
-# define ON_DESTROY 17
 # define CAM_SPEED 0.5
-
-
 # ifdef __linux__
 #  define KEY_ESC 65307
 #  define KEY_W 119
@@ -92,6 +89,7 @@
 #  define KEY_Y 16
 #  define KEY_Z 6
 # endif
+# define ON_DESTROY 17
 
 typedef struct s_keys		t_keys;
 struct s_keys
@@ -116,7 +114,8 @@ struct s_keys
 	bool	z;
 };
 
-bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape);
+bool	collide(t_scene *scene, bool resolve, int depth,
+			t_shape *transformed_shape);
 int		mouse_rotate(t_scene *scene);
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, float deg);

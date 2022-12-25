@@ -6,13 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 00:24:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:02:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INTERSECTION_H
-# define INTERSECTION_H
-
+#ifndef INTERSECTIONS_H
+# define INTERSECTIONS_H
 
 /**
  * @brief A ray being cast from the screen
@@ -25,7 +24,6 @@ struct s_ray
 	t_vector	origin;
 	t_vector	direction;
 };
-
 
 /**
  * @brief Contains the time value of an intersection of a ray with an object,
@@ -68,12 +66,12 @@ t_intersect	*hit_skip_transparent(t_intersections *xs);
 t_intersect	*hit(t_intersections *xs);
 t_intersect	*hit_sorted(t_intersections *xs);
 
-void		check_axis(float *t_min, float *t_max, float origin, float direction);
+void		check_axis(float *t_min, float *t_max, float origin,
+				float direction);
 void		ray_position(t_vector *pos, const t_ray *ray, float time);
 
 t_vector	normal_at(const t_shape *shape, const t_vector *itx_point);
 
-void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
-
+void		ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
 
 #endif

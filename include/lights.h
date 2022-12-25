@@ -6,12 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:20:15 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 23:24:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:02:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIGHT_H
-# define LIGHT_H
+#ifndef LIGHTS_H
+# define LIGHTS_H
 
 /**
  * @brief Type of light
