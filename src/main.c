@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:44:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:35:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,49 +58,49 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->render_scale = 2;
-	scene->edit_scale = 0.6;
-	scene->render_w = 1920 * scene->render_scale;
-	scene->render_h = 1080 * scene->render_scale;
-	scene->edit_w = 1920 * scene->edit_scale;
-	scene->edit_h = 1080 * scene->edit_scale;
-	scene->display_w = 1920 * 0.8;
-	scene->display_h = 1080 * 0.8;
+	scene->settings.render_scale = 2;
+	scene->settings.edit_scale = 0.6;
+	scene->settings.render_w = 1920 * scene->settings.render_scale;
+	scene->settings.render_h = 1080 * scene->settings.render_scale;
+	scene->settings.edit_w = 1920 * scene->settings.edit_scale;
+	scene->settings.edit_h = 1080 * scene->settings.edit_scale;
+	scene->settings.display_w = 1920 * 0.8;
+	scene->settings.display_h = 1080 * 0.8;
 	
-	scene->collisions = true;
-	scene->shapes[0].highlighted = true;
+	scene->settings.collisions = true;
+	scene->shapes[0].props.highlighted = true;
 	
 	
 	// scene->shapes[0].transparency = 1;
 	// scene->shapes[0].reflectiveness = 0.9;
 	// scene->shapes[0].ior = 1.5;
 	// scene->refraction_depth = 6;
-	scene->reflection_depth = 1;
+	scene->settings.reflection_depth = 1;
 	
 	
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	t_display		disp;
 	disp.mlx = mlx_init();
-	disp.mlx_win = mlx_new_window(disp.mlx, scene->display_w, scene->display_h, "MiniRT");
-	disp.render_img = mlx_new_image(disp.mlx, scene->render_w, scene->render_h);
+	disp.win = mlx_new_window(disp.mlx, scene->settings.display_w, scene->settings.display_h, "MiniRT");
+	disp.render_img = mlx_new_image(disp.mlx, scene->settings.render_w, scene->settings.render_h);
 	disp.edit_img = mlx_new_image(disp.mlx, 1920 * 3, 1080 * 3);
-	disp.display_img = mlx_new_image(disp.mlx, scene->display_w, scene->display_h);
+	disp.display_img = mlx_new_image(disp.mlx, scene->settings.display_w, scene->settings.display_h);
 	disp.render_addr = mlx_get_data_addr(disp.render_img, &disp.bytes_per_pixel,
 		&disp.line_length,&disp.endian);
 	disp.display_addr = mlx_get_data_addr(disp.display_img, &disp.bytes_per_pixel,
 		&disp.line_length,&disp.endian);
 	disp.edit_addr = mlx_get_data_addr(disp.edit_img, &disp.bytes_per_pixel,
 		&disp.line_length, &disp.endian);
-	disp.info_img = mlx_new_image(disp.mlx, scene->display_w * 0.16, scene->display_h);
+	disp.info_img = mlx_new_image(disp.mlx, scene->settings.display_w * 0.16, scene->settings.display_h);
 	disp.info_addr = mlx_get_data_addr(disp.info_img, &disp.bytes_per_pixel,
 		&disp.line_length, &disp.endian);
 	disp.bytes_per_pixel /= 8;
 	scene->disp = &disp;
-	mlx_hook(disp.mlx_win, 2, (1L << 0), key_press, scene);
-	mlx_hook(disp.mlx_win, 3, (1L << 1), key_release, scene);
-	mlx_hook(disp.mlx_win, 5, 0, mouse_up, scene);
-	mlx_mouse_hook(disp.mlx_win, mouse_down, scene);
+	mlx_hook(disp.win, 2, (1L << 0), key_press, scene);
+	mlx_hook(disp.win, 3, (1L << 1), key_release, scene);
+	mlx_hook(disp.win, 5, 0, mouse_up, scene);
+	mlx_mouse_hook(disp.win, mouse_down, scene);
 	mlx_loop_hook(disp.mlx, render_loop, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);

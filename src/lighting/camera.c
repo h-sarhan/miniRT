@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:14:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	float	h;
 	float	w;
 
-	h = scene->render_h;
-	w = scene->render_w;
-	if (scene->edit_mode == true)
+	h = scene->settings.render_h;
+	w = scene->settings.render_w;
+	if (scene->settings.edit_mode == true)
 	{
-		h = scene->edit_h;
-		w = scene->edit_w;
+		h = scene->settings.edit_h;
+		w = scene->settings.edit_w;
 	}
 	half_view = tan((camera->fov / 2.0f) * M_PI / 180.0f);
 	aspect = w / h;

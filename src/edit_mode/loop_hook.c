@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:29:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:33:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,21 +151,21 @@ void	scale_object(t_scene *scene, t_shape *shape)
 	{
 		if (shape->type == CUBE)
 		{
-			shape->scale_x += 0.04;
-			shape->scale_y += 0.04;
-			shape->scale_z += 0.04;
+			shape->props.scale.x += 0.04;
+			shape->props.scale.y += 0.04;
+			shape->props.scale.z += 0.04;
 		}
 		else
 		{
-			shape->radius += 0.04;
-			shape->scale_x = shape->radius;
+			shape->props.radius += 0.04;
+			shape->props.scale.x = shape->props.radius;
 			if (shape->type == CYLINDER || shape->type == CONE)
 			{
-				shape->scale_y = 1;
+				shape->props.scale.y = 1;
 			}
 			else
-				shape->scale_y = shape->radius;
-			shape->scale_z = shape->radius;
+				shape->props.scale.y = shape->props.radius;
+			shape->props.scale.z = shape->props.radius;
 		}
 		// collide_scale(shape, scene, 0.04, 0, 0);
 	}
@@ -173,28 +173,28 @@ void	scale_object(t_scene *scene, t_shape *shape)
 	{
 		if (shape->type == CUBE)
 		{
-			if (shape->scale_x > 0.3)
-				shape->scale_x -= 0.04;
-			if (shape->scale_y > 0.3)
-				shape->scale_y -= 0.04;
-			if (shape->scale_z > 0.3)
-				shape->scale_z -= 0.04;
+			if (shape->props.scale.x > 0.3)
+				shape->props.scale.x -= 0.04;
+			if (shape->props.scale.y > 0.3)
+				shape->props.scale.y -= 0.04;
+			if (shape->props.scale.z > 0.3)
+				shape->props.scale.z -= 0.04;
 		}
 		else
 		{
-			if (shape->radius > 0.3)
-				shape->radius -= 0.04;
-			shape->scale_x = shape->radius;
+			if (shape->props.radius > 0.3)
+				shape->props.radius -= 0.04;
+			shape->props.scale.x = shape->props.radius;
 			if (shape->type == CYLINDER || shape->type == CONE)
 			{
-				shape->scale_y = 1;
+				shape->props.scale.y = 1;
 			}
 			else
-				shape->scale_y = shape->radius;
-			shape->scale_z = shape->radius;
+				shape->props.scale.y = shape->props.radius;
+			shape->props.scale.z = shape->props.radius;
 		}
 	}
-	shape->radius_squared = shape->radius * shape->radius;
+	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 	// if (scene->collisions)
 		// collide(shape, scene);
 }
@@ -203,12 +203,12 @@ void	change_height(t_scene *scene, t_shape *shape)
 {
 	if (scene->keys_held.plus == true)
 	{
-		shape->height += 0.04;
+		shape->props.height += 0.04;
 	}
 	if (scene->keys_held.minus == true)
 	{
-		if (shape->height > 0.2)
-			shape->height -= 0.04;
+		if (shape->props.height > 0.2)
+			shape->props.height -= 0.04;
 	}
 	// if (scene->collisions)
 		// collide(shape, scene);
@@ -365,9 +365,9 @@ void	look_at_animation(t_scene *scene)
 
 int	render_loop(t_scene *scene)
 {
-	if (scene->camera_mode == true && scene->edit_mode == true)
+	if (scene->settings.camera_mode == true && scene->settings.edit_mode == true)
 		camera_controls(scene);
-	else if (scene->edit_mode == true)
+	else if (scene->settings.edit_mode == true)
 	{
 		transform_object(scene);
 		#ifndef __linux__
@@ -376,10 +376,10 @@ int	render_loop(t_scene *scene)
 
 		// light_controls(scene);
 	}
-	if (scene->look_at.trigger == true && scene->edit_mode == true)
+	if (scene->look_at.trigger == true && scene->settings.edit_mode == true)
 		look_at_animation(scene);
 	if (scene->look_at.trigger == false && scene->mouse.active == false
-		&& scene->edit_mode == true && (scene->keys_held.w || scene->keys_held.a
+		&& scene->settings.edit_mode == true && (scene->keys_held.w || scene->keys_held.a
 			|| scene->keys_held.s || scene->keys_held.d || scene->keys_held.up
 			|| scene->keys_held.right || scene->keys_held.q
 			|| scene->keys_held.e || scene->keys_held.down

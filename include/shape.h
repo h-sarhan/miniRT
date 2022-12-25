@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:49:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:38:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /**
  * @brief Type of shape
  */
-typedef enum e_shape_type	t_shape_type;
+typedef enum e_shape_type		t_shape_type;
 enum e_shape_type
 {
 	SPHERE,
@@ -26,6 +26,27 @@ enum e_shape_type
 	CUBE,
 	TRIANGLE,
 };
+
+typedef struct s_shape_props	t_props;
+
+struct s_shape_props
+{
+	bool			highlighted;
+	float			radius;
+	float			radius_squared;
+	float			height;
+	float			diffuse;
+	float			specular;
+	float			shininess;
+	float			reflectiveness;
+	float			distance_from_origin;
+	float			transparency;
+	float			ior;
+	t_color			color;
+	t_vector		rot;
+	t_vector		scale;
+};
+
 /**
  * @brief Generic shape struct
  * @param type Type of shape. Sphere, plane, cylinder, etc.
@@ -36,37 +57,19 @@ enum e_shape_type
  * @param orientation Orientation of the shape. Relevant for plane and cylinder
  * @param color Color of the shape
  */
-typedef struct s_shape		t_shape;
+typedef struct s_shape			t_shape;
 struct s_shape
 {
 	t_shape_type	type;
 	int				id;
-	float			radius;
-	float			radius_squared;
-	float			height;
+	t_props			props;
 	t_vector		origin;
 	t_vector		orientation;
-	t_color			color;
 	t_mat4			transf;
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
-	unsigned int	mlx_color;
-	float			diffuse;
-	float			specular;
-	float			shininess;
-	float			reflectiveness;
-	float			transparency;
-	float			ior;
-	float			rot_x;
-	float			rot_y;
-	float			rot_z;
-	float			scale_x;
-	float			scale_y;
-	float			scale_z;
-	bool			highlighted;
-	bool			is_colliding;
-	float			distance_from_origin;
 	t_mat4			added_rots;
+	unsigned int	mlx_color;
 };
 
 #endif

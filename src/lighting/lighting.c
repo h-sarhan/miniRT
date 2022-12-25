@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/23 18:27:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:30:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	light_dot_normal = dot_product(&light_v, &itx->normal);
 	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point))
 		return (false);
-	mult_color(diffuse, effective_color, itx->shape->diffuse * light_dot_normal
+	mult_color(diffuse, effective_color, itx->shape->props.diffuse * light_dot_normal
 		* scene->lights[light_idx].intensity);
 	negate_vec(&light_v, &light_v);
 	reflect(&reflect_v, &light_v, &itx->normal);
@@ -55,7 +55,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 		ft_bzero(specular, sizeof(t_color));
 	else
 		mult_color(specular, &scene->lights[light_idx].color,
-			itx->shape->specular * pow(reflect_dot_eye, itx->shape->shininess)
+			itx->shape->props.specular * pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
 	return (true);
 }
@@ -67,7 +67,7 @@ t_color	lighting(t_intersect *itx, t_scene *scene, int light_idx)
 	t_color		specular;
 	t_color		result;
 	
-	blend_colors(&effective_color, &itx->shape->color,
+	blend_colors(&effective_color, &itx->shape->props.color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &diffuse,
 			&effective_color, &specular) == false)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:15:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int	mouse_up(int key_code, int x, int y, t_scene *scene)
 int	mouse_rotate(t_scene *scene)
 {
 	// float sensitivity = 0.06;
-	if (scene->mouse.key == LEFT_MOUSE_DOWN && scene->edit_mode == true)
+	if (scene->mouse.key == LEFT_MOUSE_DOWN && scene->settings.edit_mode == true)
 	{
 		scene->mouse.prev_x = scene->mouse.x;
 		scene->mouse.prev_y = scene->mouse.y;
-		mlx_mouse_get_pos(scene->disp->mlx_win, &scene->mouse.x, &scene->mouse.y);
+		mlx_mouse_get_pos(scene->disp->win, &scene->mouse.x, &scene->mouse.y);
 		if (scene->mouse.x != scene->mouse.prev_x || scene->mouse.y != scene->mouse.prev_y)
 		{
 			if (scene->mouse.prev_x < scene->mouse.x)

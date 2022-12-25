@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 00:39:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:00:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:08:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_display			t_display;
 struct	s_display
 {
 	void	*mlx;
-	void	*mlx_win;
+	void	*win;
 	void	*edit_img;
 	char	*edit_addr;
 	void	*display_img;

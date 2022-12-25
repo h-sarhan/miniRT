@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:30:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	itx = hit(arr);
 	if (itx != NULL)
 	{
-		if (scene->refraction_depth != 0)
+		if (scene->settings.refraction_depth != 0)
 		{
 			sort_intersections(arr);
 			itx = hit_sorted(arr);
@@ -32,7 +32,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 		light_color = lighting(itx, scene, light_idx);
 		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
-		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		if (itx->shape->props.reflectiveness > 0 && itx->shape->props.transparency > 0)
 		{
 			float reflectance = schlick(itx);
 			mult_color(&reflected, &reflected, reflectance);
@@ -52,7 +52,7 @@ t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining
 	t_intersections	arr;
 	unsigned int	shape_idx;
 
-	if (intersection->shape->reflectiveness == 0 || remaining == 0)
+	if (intersection->shape->props.reflectiveness == 0 || remaining == 0)
 	{
 		ft_bzero(&color, sizeof(t_color));
 		return (color);
@@ -64,7 +64,7 @@ t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &ray, &arr);
 	t_color reflected = calculate_reflected_color(&arr, scene, &ray, remaining, light_idx);
-	mult_color(&reflected, &reflected, intersection->shape->reflectiveness);
+	mult_color(&reflected, &reflected, intersection->shape->props.reflectiveness);
 	return (reflected);
 }
 
@@ -98,7 +98,7 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 		light_color = lighting(itx, scene, light_idx);
 		t_color	refracted = refracted_color(scene, itx, remaining - 1, light_idx);
 		t_color	reflected = reflected_color(scene, itx, remaining - 1, light_idx);
-		if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+		if (itx->shape->props.reflectiveness > 0 && itx->shape->props.transparency > 0)
 		{
 			float reflectance = schlick(itx);
 			mult_color(&reflected, &reflected, reflectance);
@@ -121,7 +121,7 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	unsigned int	shape_idx;
 	t_ray	refract_ray;
 
-	if (intersection->shape->transparency == 0 || remaining == 0)
+	if (intersection->shape->props.transparency == 0 || remaining == 0)
 	{
 		ft_bzero(&color, sizeof(t_color));
 		return (color);
@@ -140,7 +140,7 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &refract_ray, &arr);
 	color = calculate_refracted_color(&arr, scene, &refract_ray, remaining, light_idx);
-	mult_color(&color, &color, intersection->shape->transparency);
+	mult_color(&color, &color, intersection->shape->props.transparency);
 	return(color);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:37:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,28 +271,28 @@ void	parse_setting(t_scene *scene, char **key_val)
 
 	shape = &scene->shapes[scene->count.shapes - 1];
 	if (ft_strcmp("reflectiveness", key_val[0]) == 0)
-		shape->reflectiveness = ft_atof(key_val[1], &success);
+		shape->props.reflectiveness = ft_atof(key_val[1], &success);
 	if (ft_strcmp("diffuse", key_val[0]) == 0)
-		shape->diffuse = ft_atof(key_val[1], &success);
+		shape->props.diffuse = ft_atof(key_val[1], &success);
 	if (ft_strcmp("specular", key_val[0]) == 0)
-		shape->specular = ft_atof(key_val[1], &success);
+		shape->props.specular = ft_atof(key_val[1], &success);
 	if (ft_strcmp("shininess", key_val[0]) == 0)
-		shape->shininess = ft_atof(key_val[1], &success);
+		shape->props.shininess = ft_atof(key_val[1], &success);
 	if (ft_strcmp("rotX", key_val[0]) == 0)
-		shape->rot_x = ft_atol(key_val[1], &success);
+		shape->props.rot.x = ft_atol(key_val[1], &success);
 	if (ft_strcmp("rotY", key_val[0]) == 0)
-		shape->rot_y = ft_atol(key_val[1], &success);
+		shape->props.rot.y = ft_atol(key_val[1], &success);
 	if (ft_strcmp("rotZ", key_val[0]) == 0)
-		shape->rot_z = ft_atol(key_val[1], &success);
+		shape->props.rot.z = ft_atol(key_val[1], &success);
 	if (ft_strcmp("scaleX", key_val[0]) == 0)
-		shape->scale_x = ft_atof(key_val[1], &success);
+		shape->props.scale.x = ft_atof(key_val[1], &success);
 	if (ft_strcmp("scaleY", key_val[0]) == 0)
-		shape->scale_y = ft_atof(key_val[1], &success);
+		shape->props.scale.y = ft_atof(key_val[1], &success);
 	if (ft_strcmp("scaleZ", key_val[0]) == 0)
-		shape->scale_z = ft_atof(key_val[1], &success);
+		shape->props.scale.z = ft_atof(key_val[1], &success);
 	if (ft_strcmp("color", key_val[0]) == 0)
 	{
-		shape->color = parse_color_value(key_val[1]);
+		shape->props.color = parse_color_value(key_val[1]);
 	}
 }
 

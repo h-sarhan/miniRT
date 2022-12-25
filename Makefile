@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/26 00:58:06 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/26 01:37:41 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,8 +62,7 @@ CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
 			# -fsanitize=address\
 
 all:
-	make  $(NAME)
-	# make -j20 $(NAME)
+	@make -j20 $(NAME)
 
 $(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)

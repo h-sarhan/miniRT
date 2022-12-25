@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:03:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:20:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,25 @@ struct	s_mouse
 	int		key;
 };
 
+typedef struct s_settings	t_settings;
+struct s_settings
+{
+	int			display_h;
+	int			display_w;
+	int			render_h;
+	int			render_w;
+	int			edit_h;
+	int			edit_w;
+	bool		camera_mode;
+	bool		edit_mode;
+	int			reflection_depth;
+	int			refraction_depth;
+	float		edit_scale;
+	float		render_scale;
+	bool		collisions;
+	bool		help_menu;
+};
+
 /**
  * @brief A description of a 3D scene
  * @param ambient Ambient lighting information
@@ -70,26 +89,13 @@ struct s_scene
 	t_light		*lights;
 	t_shape		*shapes;
 	t_el_count	count;
-	int			display_h;
-	int			display_w;
-	int			render_h;
-	int			render_w;
-	int			edit_h;
-	int			edit_w;
 	t_display	*disp;
 	t_keys		keys_held;
+	t_settings	settings;
 	int			shape_idx;
-	bool		camera_mode;
-	bool		edit_mode;
-	bool		menu;
-	int			reflection_depth;
-	int			refraction_depth;
 	sem_t		*sem_loading;
-	float		edit_scale;
-	float		render_scale;
 	t_look_at	look_at;
 	t_mouse		mouse;
-	bool		collisions;
 };
 
 void	free_scene(t_scene *scene);

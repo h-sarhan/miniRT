@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:05:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:07:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	is_shape(const char *identifier);
 bool	is_num(const char *str, bool decimal);
 size_t	count_commas(const char *str);
 size_t	split_count(char **split);
+bool	all_whitespace(const char *str);
 
 t_scene	*parse_scene(int fd);
 

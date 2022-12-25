@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 11:24:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/22 22:00:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:26:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void	sphere_parse_error(const t_shape *shape, size_t line_num,
 {
 	bool	color_check;
 
-	color_check = check_color(&shape->color, line_num, line, "sphere");
-	if (shape->radius <= 0)
+	color_check = check_color(&shape->props.color, line_num, line, "sphere");
+	if (shape->props.radius <= 0)
 	{
 		printf(YELLOW"Error with sphere diameter on line #%ld\n"RED"->\t%s"
 			RESET, line_num, line);
@@ -54,7 +54,7 @@ static void	plane_parse_error(const t_shape *shape, size_t line_num,
 
 	orientation_check = check_orientation(&shape->orientation, line_num, line,
 			"plane");
-	color_check = check_color(&shape->color, line_num, line, "plane");
+	color_check = check_color(&shape->props.color, line_num, line, "plane");
 	if (!color_check && !orientation_check)
 	{
 		printf(YELLOW"Error with parsing plane on line #%ld\n"RED"->\t%s"
@@ -78,14 +78,14 @@ static void	cylinder_parse_error(const t_shape *shape, size_t line_num,
 
 	orientation_check = check_orientation(&shape->orientation, line_num, line,
 			"cylinder");
-	color_check = check_color(&shape->color, line_num, line, "cylinder");
-	if (!color_check && !orientation_check && shape->radius <= 0)
+	color_check = check_color(&shape->props.color, line_num, line, "cylinder");
+	if (!color_check && !orientation_check && shape->props.radius <= 0)
 	{
 		printf(YELLOW"Error with cylinder diameter on line #%ld\n"
 			RED"->\t%s"RESET, line_num, line);
 		printf(YELLOW"Diameter has to be a positive number\n"RESET);
 	}
-	else if (!color_check && !orientation_check && shape->height <= 0)
+	else if (!color_check && !orientation_check && shape->props.height <= 0)
 	{
 		printf(YELLOW"Error with cylinder height on line #%ld\n"
 			RED"->\t%s"RESET, line_num, line);
@@ -110,8 +110,8 @@ static void	cube_parse_error(const t_shape *shape, size_t line_num,
 {
 	bool	color_check;
 
-	color_check = check_color(&shape->color, line_num, line, "cube");
-	if (!color_check && shape->scale_x <= 0)
+	color_check = check_color(&shape->props.color, line_num, line, "cube");
+	if (!color_check && shape->props.scale.x <= 0)
 	{
 		printf(YELLOW"Error with cube side length on line #%ld\n"
 			RED"->\t%s\n"RESET, line_num, line);

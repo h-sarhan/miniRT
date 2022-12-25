@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 00:02:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:29:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *spher
 	t_vector	oc;
 	sub_vec(&oc, &ray->origin, &sphere->origin);
 	float	b = dot_product(&oc, &ray->direction);
-	float	c = dot_product(&oc, &oc) - sphere->radius_squared;
+	float	c = dot_product(&oc, &oc) - sphere->props.radius_squared;
 	float	h = b * b - c;
 	if (h < 0.0)
 		return (false);
@@ -105,8 +105,8 @@ bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 {
 	bool	intersected;
 
-	float cylinder_bottom = (shape->height / 2);
-	float cylinder_top = -(shape->height / 2);
+	float cylinder_bottom = (shape->props.height / 2);
+	float cylinder_top = -(shape->props.height / 2);
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
@@ -145,7 +145,7 @@ bool	check_cone_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 	bool	intersected;
 
 	float cone_top= (0);
-	float cone_bottom = -(shape->height / 2);
+	float cone_bottom = -(shape->props.height / 2);
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
@@ -205,7 +205,7 @@ t_intersect	*hit_skip_transparent(t_intersections *xs)
 	idx = 0;
 	while (i < xs->count)
 	{
-		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time && xs->arr[i].shape->transparency <= 0.5)
+		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time && xs->arr[i].shape->props.transparency <= 0.5)
 		{
 			min_time = xs->arr[i].time;
 			idx = i;
@@ -235,8 +235,8 @@ t_vector	cylinder_normal(const t_shape *shape, t_vector *point)
 {
 	(void)shape;
 	float		distance = point->x * point->x + point->z * point->z;
-	float		cylinder_bottom = (shape->height / 2);
-	float		cylinder_top = -(shape->height / 2);
+	float		cylinder_bottom = (shape->props.height / 2);
+	float		cylinder_top = -(shape->props.height / 2);
 	t_vector	normal;
 	if (distance < 1 && (point->y >= cylinder_bottom - EPSILON))
 	{
@@ -269,7 +269,7 @@ t_vector	cone_normal(const t_shape *shape, t_vector *point)
 	float		distance = point->x * point->x + point->z * point->z;
 	float		radius = fabs(point->y) * fabs(point->y);
 	float		cone_bottom = (0);
-	float		cone_top = -(shape->height / 2);
+	float		cone_top = -(shape->props.height / 2);
 	t_vector	normal;
 	if (distance < radius && (point->y >= cone_bottom - EPSILON))
 	{
@@ -464,7 +464,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		if (fabs(denom) < 0.00001)
 			return (false);
 		xs->arr[xs->count].time = -(dot_product(&ray->origin, &shape->orientation) \
-			- shape->distance_from_origin) / denom;
+			- shape->props.distance_from_origin) / denom;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
 		return (true);
@@ -508,7 +508,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			ft_swapd(&t0, &t1);
 		}
 		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
-		if (y0 > (-shape->height / 2) && y0 < (shape->height / 2))
+		if (y0 > (-shape->props.height / 2) && y0 < (shape->props.height / 2))
 		{
 			xs->arr[xs->count].time = t0;
 			xs->arr[xs->count].shape = shape;
@@ -516,7 +516,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			intersected = true;
 		}
 		float	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
-		if (y1 > (-shape->height / 2) && y1 < (shape->height / 2))
+		if (y1 > (-shape->props.height / 2) && y1 < (shape->props.height / 2))
 		{
 			xs->arr[xs->count].time = t1;
 			xs->arr[xs->count].shape = shape;
@@ -552,7 +552,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 		}
 		
 		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
-		if (y0 > (-shape->height / 2) && y0 < (0))
+		if (y0 > (-shape->props.height / 2) && y0 < (0))
 		{
 			xs->arr[xs->count].time = t0;
 			xs->arr[xs->count].shape = shape;
@@ -560,7 +560,7 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 			intersected = true;
 		}
 		float	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
-		if (y1 > (-shape->height / 2) && y1 < (0))
+		if (y1 > (-shape->props.height / 2) && y1 < (0))
 		{
 			xs->arr[xs->count].time = t1;
 			xs->arr[xs->count].shape = shape;

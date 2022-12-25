@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:00:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:27:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,25 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
 	if (split_count(splitted) != 4)
 	{
 		*success = false;
-		shape->radius = 0.1;
+		shape->props.radius = 0.1;
 		return ;
 	}
-	shape->radius = ft_atof(splitted[2], success) / 2;
-	if (*success == false || shape->radius <= 0.0)
+	shape->props.radius = ft_atof(splitted[2], success) / 2;
+	if (*success == false || shape->props.radius <= 0.0)
 		parse_success = false;
 	parse_coordinates(&shape->origin, splitted[1], success);
 	shape->origin.w = 1;
 	if (*success == false)
 		parse_success = false;
-	parse_color(&shape->color, splitted[3], success);
+	parse_color(&shape->props.color, splitted[3], success);
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
-	shape->reflectiveness = 0.1;
-	shape->scale_x = shape->radius;
-	shape->scale_y = shape->radius;
-	shape->scale_z = shape->radius;
-	shape->radius_squared = shape->radius * shape->radius;
+	shape->props.reflectiveness = 0.1;
+	shape->props.scale.x = shape->props.radius;
+	shape->props.scale.y = shape->props.radius;
+	shape->props.scale.z = shape->props.radius;
+	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
 
 /**
@@ -89,16 +89,16 @@ static void	parse_cube(t_shape *shape, char **splitted, bool *success)
 	shape->origin.w = 1;
 	if (*success == false)
 		parse_success = false;
-	parse_color(&shape->color, splitted[3], success);
+	parse_color(&shape->props.color, splitted[3], success);
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
 	ft_bzero(&shape->orientation, sizeof(t_vector));
 	shape->orientation.y = 1;
-	shape->reflectiveness = 0.1;
-	shape->scale_x = side_len;
-	shape->scale_y = side_len;
-	shape->scale_z = side_len;
+	shape->props.reflectiveness = 0.1;
+	shape->props.scale.x = side_len;
+	shape->props.scale.y = side_len;
+	shape->props.scale.z = side_len;
 }
 
 /**
@@ -126,12 +126,12 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 	parse_orientation(&shape->orientation, splitted[2], success);
 	if (*success == false || vec_magnitude(&shape->orientation) == 0)
 		parse_success = false;
-	parse_color(&shape->color, splitted[3], success);
+	parse_color(&shape->props.color, splitted[3], success);
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
-	shape->reflectiveness = 0.05;
-	shape->distance_from_origin = dot_product(&shape->orientation, &shape->origin);
+	shape->props.reflectiveness = 0.05;
+	shape->props.distance_from_origin = dot_product(&shape->orientation, &shape->origin);
 }
 
 /**
@@ -151,11 +151,11 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 		*success = false;
 	if (*success == false)
 		return ;
-	shape->radius = ft_atof(splitted[3], success) / 2;
-	if (*success == false || shape->radius <= 0.0)
+	shape->props.radius = ft_atof(splitted[3], success) / 2;
+	if (*success == false || shape->props.radius <= 0.0)
 		parse_success = false;
-	shape->height = ft_atof(splitted[4], success);
-	if (*success == false || shape->height <= 0.0)
+	shape->props.height = ft_atof(splitted[4], success);
+	if (*success == false || shape->props.height <= 0.0)
 		parse_success = false;
 	parse_coordinates(&shape->origin, splitted[1], success);
 	shape->origin.w = 1;
@@ -164,14 +164,14 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 	parse_orientation(&shape->orientation, splitted[2], success);
 	if (*success == false || vec_magnitude(&shape->orientation) == 0)
 		parse_success = false;
-	parse_color(&shape->color, splitted[5], success);
+	parse_color(&shape->props.color, splitted[5], success);
 	if (*success == false)
 		parse_success = false;
 	*success = parse_success;
-	shape->scale_x = shape->radius;
-	shape->scale_y = 1;
-	shape->scale_z = shape->radius;
-	shape->radius_squared = shape->radius * shape->radius;
+	shape->props.scale.x = shape->props.radius;
+	shape->props.scale.y = 1;
+	shape->props.scale.z = shape->props.radius;
+	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
 
 /**
@@ -208,10 +208,10 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 		return (shape_parse_error(line, line_num, scene, splitted));
 	shape->id = scene->count.shapes;
 	scene->count.shapes++;
-	shape->diffuse = 0.9;
-	shape->specular = 0.9;
-	shape->ior = 1;
-	shape->shininess = 200;
+	shape->props.diffuse = 0.9;
+	shape->props.specular = 0.9;
+	shape->props.ior = 1;
+	shape->props.shininess = 200;
 	identity_matrix(&shape->added_rots);
 	return (true);
 }

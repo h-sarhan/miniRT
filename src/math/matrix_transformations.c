@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/25 23:57:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:29:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,11 +216,11 @@ void	calculate_transforms(t_scene *scene)
 		identity_matrix(&rot);
 		identity_matrix(&translate);
 		if (scene->shapes[i].type == CUBE || scene->shapes[i].type == SPHERE)
-			scaling_matrix(&scale, scene->shapes[i].scale_x,
-				scene->shapes[i].scale_y, scene->shapes[i].scale_z);
+			scaling_matrix(&scale, scene->shapes[i].props.scale.x,
+				scene->shapes[i].props.scale.y, scene->shapes[i].props.scale.z);
 		if (scene->shapes[i].type == CYLINDER || scene->shapes[i].type == CONE)
-			scaling_matrix(&scale, scene->shapes[i].scale_x,
-				1, scene->shapes[i].scale_z);
+			scaling_matrix(&scale, scene->shapes[i].props.scale.x,
+				1, scene->shapes[i].props.scale.z);
 		if (scene->shapes[i].type == PLANE
 			|| scene->shapes[i].type == CYLINDER || scene->shapes[i].type == CONE)
 			calculate_orientation(&rot, &scene->shapes[i]);

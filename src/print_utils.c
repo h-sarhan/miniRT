@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/20 21:02:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:34:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ void	print_scene(const t_scene *scene)
 			scene->shapes[i].type == CYLINDER)
 		{
 			printf("  Radius:\n");
-			printf("\t%.2f\n", scene->shapes[i].radius);
+			printf("\t%.2f\n", scene->shapes[i].props.radius);
 		}
 		if (scene->shapes[i].type == CYLINDER)
 		{
 			printf("  Height:\n");
-			printf("\t%.2f\n", scene->shapes[i].height);
+			printf("\t%.2f\n", scene->shapes[i].props.height);
 		}
 		if (scene->shapes[i].type == CYLINDER || scene->shapes[i].type == PLANE)
 		{
@@ -97,7 +97,7 @@ void	print_scene(const t_scene *scene)
 			print_vector(&scene->shapes[i].orientation);
 		}
 		printf("  Color:\n");
-		print_color(&scene->shapes[i].color);
+		print_color(&scene->shapes[i].props.color);
 		i++;
 	}
 }

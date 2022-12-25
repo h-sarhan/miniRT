@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:35:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
-		if (worker->scene->refraction_depth != 0)
+		if (worker->scene->settings.refraction_depth != 0)
 		{
 			sort_intersections(arr);
 			itx = hit_sorted(arr);
@@ -75,9 +75,9 @@ void	calculate_lighting(t_intersections *arr, t_worker *worker, t_ray *ray,
 		while (light_idx < worker->scene->count.lights)
 		{
 			light_color = lighting(itx, worker->scene, light_idx);
-			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->reflection_depth, light_idx);
-			t_color	refracted  = refracted_color(worker->scene, itx, worker->scene->refraction_depth, light_idx);
-			if (itx->shape->reflectiveness > 0 && itx->shape->transparency > 0)
+			t_color	reflected  = reflected_color(worker->scene, itx, worker->scene->settings.reflection_depth, light_idx);
+			t_color	refracted  = refracted_color(worker->scene, itx, worker->scene->settings.refraction_depth, light_idx);
+			if (itx->shape->props.reflectiveness > 0 && itx->shape->props.transparency > 0)
 			{
 				reflectance = schlick(itx);
 				mult_color(&reflected, &reflected, reflectance);
@@ -121,7 +121,7 @@ void	*render_scene(t_worker *worker)
 				+ x) * worker->scene->disp->bytes_per_pixel);
 		}
 		line_counter++;
-		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 5))
+		if (worker->scene->settings.edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 5))
 		{
 			sem_post(worker->scene->sem_loading);
 			line_counter = 0;
@@ -414,7 +414,7 @@ void	*render_scene_fast(t_worker *worker)
 			x += 2;
 		}
 		line_counter++;
-		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 10))
+		if (worker->scene->settings.edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 10))
 		{
 			sem_post(worker->scene->sem_loading);
 			line_counter = 0;
@@ -454,7 +454,7 @@ void	*render_scene_faster(t_worker *worker)
 			x += 3;
 		}
 		line_counter++;
-		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 15))
+		if (worker->scene->settings.edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 15))
 		{
 			sem_post(worker->scene->sem_loading);
 			line_counter = 0;
