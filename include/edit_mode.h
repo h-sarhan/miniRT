@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:29:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:38:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # define ON_DESTROY 17
 # define CAM_SPEED 0.5
 
-typedef struct s_shape	t_shape; // forward declaration
 
 # ifdef __linux__
 #  define KEY_ESC 65307

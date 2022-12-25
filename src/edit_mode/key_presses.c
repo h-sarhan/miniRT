@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:29:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,15 @@ void	deploy_flashbang(t_scene *scene)
 		x = 0;
 		while (x < scene->display_w)
 		{
-			*(unsigned int *)(scene->mlx->display_addr + (y * \
-			scene->display_w + x) * scene->mlx->bytes_per_pixel) = 0xffffff;
+			*(unsigned int *)(scene->disp->display_addr + (y * \
+			scene->display_w + x) * scene->disp->bytes_per_pixel) = 0xffffff;
 			x++;
 		}
 		y++;
 	}
 	(void)! system("afplay assets/sound.mp3");
-	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win,
-		scene->mlx->display_img, 0, 0);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->mlx_win,
+		scene->disp->display_img, 0, 0);
 }
 
 void	toggle_reflections(t_scene *scene)

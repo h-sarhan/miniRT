@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:25:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	*render_scene(t_worker *worker)
 		{
 			*(unsigned int *)(worker->addr + \
 				(y * worker->width + x) * \
-				worker->scene->mlx->bytes_per_pixel) = 0;
+				worker->scene->disp->bytes_per_pixel) = 0;
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
@@ -118,7 +118,7 @@ void	*render_scene(t_worker *worker)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 			}
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
-				+ x) * worker->scene->mlx->bytes_per_pixel);
+				+ x) * worker->scene->disp->bytes_per_pixel);
 		}
 		line_counter++;
 		if (worker->scene->edit_mode == false && (line_counter == (worker->y_end - worker->y_start) / 5))
@@ -136,7 +136,7 @@ int	get_color(t_worker *worker, int x, int y)
 {
 	int	bpp;
 
-	bpp = worker->scene->mlx->bytes_per_pixel;
+	bpp = worker->scene->disp->bytes_per_pixel;
 	return (*(int *)(worker->addr + ((y * worker->width) + x) * bpp));
 }
 
@@ -144,7 +144,7 @@ void	set_color(t_worker *worker, int x, int y, int color)
 {
 	int	bpp;
 
-	bpp = worker->scene->mlx->bytes_per_pixel;
+	bpp = worker->scene->disp->bytes_per_pixel;
 	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
 }
 
@@ -177,7 +177,7 @@ void	fill_in_horizontal(t_worker *worker)
 					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
-						+ x) * worker->scene->mlx->bytes_per_pixel);
+						+ x) * worker->scene->disp->bytes_per_pixel);
 						
 				}
 				else
@@ -223,7 +223,7 @@ void	fill_in_horizontal2(t_worker *worker, int threshold, bool show_recalculated
 					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
-						+ x) * worker->scene->mlx->bytes_per_pixel);
+						+ x) * worker->scene->disp->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
 					if (show_recalculated == true)
 						set_color(worker, x, y, 0xff0000);
@@ -235,7 +235,7 @@ void	fill_in_horizontal2(t_worker *worker, int threshold, bool show_recalculated
 						while (++shape_idx < worker->scene->count.shapes)
 							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 						calculate_lighting(&arr, worker, &ray, (y * worker->width \
-							+ x + 1) * worker->scene->mlx->bytes_per_pixel);
+							+ x + 1) * worker->scene->disp->bytes_per_pixel);
 						if (show_recalculated == true)
 							set_color(worker, x + 1, y, 0xff0000);
 					}
@@ -295,7 +295,7 @@ void	fill_in_vertical2(t_worker *worker, int threshold, bool show_recalculated)
 					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
-						+ x) * worker->scene->mlx->bytes_per_pixel);
+						+ x) * worker->scene->disp->bytes_per_pixel);
 					int c2 = get_color(worker, x, y);
 					if (show_recalculated == true)
 						set_color(worker, x, y, 0xff0000);
@@ -307,7 +307,7 @@ void	fill_in_vertical2(t_worker *worker, int threshold, bool show_recalculated)
 						while (++shape_idx < worker->scene->count.shapes)
 							intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 						calculate_lighting(&arr, worker, &ray, ((y + 1) * worker->width \
-							+ x) * worker->scene->mlx->bytes_per_pixel);
+							+ x) * worker->scene->disp->bytes_per_pixel);
 						if (show_recalculated == true)
 							set_color(worker, x, y, 0xff0000);
 					}
@@ -368,7 +368,7 @@ void	fill_in_vertical(t_worker *worker)
 					while (++shape_idx < worker->scene->count.shapes)
 						intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 					calculate_lighting(&arr, worker, &ray, (y * worker->width \
-						+ x) * worker->scene->mlx->bytes_per_pixel);
+						+ x) * worker->scene->disp->bytes_per_pixel);
 				}
 				else
 				{
@@ -403,14 +403,14 @@ void	*render_scene_fast(t_worker *worker)
 		{
 			*(unsigned int *)(worker->addr + \
 				(y * worker->width + x) * \
-				worker->scene->mlx->bytes_per_pixel) = 0;
+				worker->scene->disp->bytes_per_pixel) = 0;
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
 			while (++shape_idx < worker->scene->count.shapes)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
-				+ x) * worker->scene->mlx->bytes_per_pixel);
+				+ x) * worker->scene->disp->bytes_per_pixel);
 			x += 2;
 		}
 		line_counter++;
@@ -443,14 +443,14 @@ void	*render_scene_faster(t_worker *worker)
 		{
 			*(unsigned int *)(worker->addr + \
 				(y * worker->width + x) * \
-				worker->scene->mlx->bytes_per_pixel) = 0;
+				worker->scene->disp->bytes_per_pixel) = 0;
 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
 			shape_idx = -1;
 			arr.count = 0;
 			while (++shape_idx < worker->scene->count.shapes)
 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
 			calculate_lighting(&arr, worker, &ray, (y * worker->width \
-				+ x) * worker->scene->mlx->bytes_per_pixel);
+				+ x) * worker->scene->disp->bytes_per_pixel);
 			x += 3;
 		}
 		line_counter++;

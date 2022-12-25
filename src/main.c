@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:28:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:44:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,34 +80,34 @@ int	main(int argc, char **argv)
 	
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
-	t_mlx		mlx;
-	mlx.mlx = mlx_init();
-	mlx.mlx_win = mlx_new_window(mlx.mlx, scene->display_w, scene->display_h, "MiniRT");
-	mlx.render_img = mlx_new_image(mlx.mlx, scene->render_w, scene->render_h);
-	mlx.edit_img = mlx_new_image(mlx.mlx, 1920 * 3, 1080 * 3);
-	mlx.display_img = mlx_new_image(mlx.mlx, scene->display_w, scene->display_h);
-	mlx.render_addr = mlx_get_data_addr(mlx.render_img, &mlx.bytes_per_pixel,
-		&mlx.line_length,&mlx.endian);
-	mlx.display_addr = mlx_get_data_addr(mlx.display_img, &mlx.bytes_per_pixel,
-		&mlx.line_length,&mlx.endian);
-	mlx.edit_addr = mlx_get_data_addr(mlx.edit_img, &mlx.bytes_per_pixel,
-		&mlx.line_length, &mlx.endian);
-	mlx.info_img = mlx_new_image(mlx.mlx, scene->display_w * 0.16, scene->display_h);
-	mlx.info_addr = mlx_get_data_addr(mlx.info_img, &mlx.bytes_per_pixel,
-		&mlx.line_length, &mlx.endian);
-	mlx.bytes_per_pixel /= 8;
-	scene->mlx = &mlx;
-	mlx_hook(mlx.mlx_win, 2, (1L << 0), key_press, scene);
-	mlx_hook(mlx.mlx_win, 3, (1L << 1), key_release, scene);
-	mlx_hook(mlx.mlx_win, 5, 0, mouse_up, scene);
-	mlx_mouse_hook(mlx.mlx_win, mouse_down, scene);
-	mlx_loop_hook(mlx.mlx, render_loop, scene);
+	t_display		disp;
+	disp.mlx = mlx_init();
+	disp.mlx_win = mlx_new_window(disp.mlx, scene->display_w, scene->display_h, "MiniRT");
+	disp.render_img = mlx_new_image(disp.mlx, scene->render_w, scene->render_h);
+	disp.edit_img = mlx_new_image(disp.mlx, 1920 * 3, 1080 * 3);
+	disp.display_img = mlx_new_image(disp.mlx, scene->display_w, scene->display_h);
+	disp.render_addr = mlx_get_data_addr(disp.render_img, &disp.bytes_per_pixel,
+		&disp.line_length,&disp.endian);
+	disp.display_addr = mlx_get_data_addr(disp.display_img, &disp.bytes_per_pixel,
+		&disp.line_length,&disp.endian);
+	disp.edit_addr = mlx_get_data_addr(disp.edit_img, &disp.bytes_per_pixel,
+		&disp.line_length, &disp.endian);
+	disp.info_img = mlx_new_image(disp.mlx, scene->display_w * 0.16, scene->display_h);
+	disp.info_addr = mlx_get_data_addr(disp.info_img, &disp.bytes_per_pixel,
+		&disp.line_length, &disp.endian);
+	disp.bytes_per_pixel /= 8;
+	scene->disp = &disp;
+	mlx_hook(disp.mlx_win, 2, (1L << 0), key_press, scene);
+	mlx_hook(disp.mlx_win, 3, (1L << 1), key_release, scene);
+	mlx_hook(disp.mlx_win, 5, 0, mouse_up, scene);
+	mlx_mouse_hook(disp.mlx_win, mouse_down, scene);
+	mlx_loop_hook(disp.mlx, render_loop, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
 	scene->camera.phi = acos(scene->camera.dir.y);
 	calculate_transforms(scene);
 	draw_scene(scene);
-	mlx_loop(mlx.mlx);
+	mlx_loop(disp.mlx);
 	// // ! Put this somewhere
 	// // free_scene(scene);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:28:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	mouse_rotate(t_scene *scene)
 	{
 		scene->mouse.prev_x = scene->mouse.x;
 		scene->mouse.prev_y = scene->mouse.y;
-		mlx_mouse_get_pos(scene->mlx->mlx_win, &scene->mouse.x, &scene->mouse.y);
+		mlx_mouse_get_pos(scene->disp->mlx_win, &scene->mouse.x, &scene->mouse.y);
 		if (scene->mouse.x != scene->mouse.prev_x || scene->mouse.y != scene->mouse.prev_y)
 		{
 			if (scene->mouse.prev_x < scene->mouse.x)

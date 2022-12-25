@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:11:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:55:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ struct s_scene
 	int			render_w;
 	int			edit_h;
 	int			edit_w;
-	t_mlx		*mlx;
+	t_display	*disp;
 	t_keys		keys_held;
 	int			shape_idx;
 	bool		camera_mode;
@@ -98,7 +98,7 @@ struct s_scene
 void	free_scene(t_scene *scene);
 
 void	calculate_transforms(t_scene *scene);
-
 void	draw_scene(t_scene *scene);
+
 
 #endif

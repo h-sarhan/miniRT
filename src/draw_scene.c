@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:26:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:43:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,13 @@ void	init_workers(t_worker *workers, t_scene *scene)
 		{
 			workers[i].height = scene->edit_h;
 			workers[i].width = scene->edit_w;
-			workers[i].addr = scene->mlx->edit_addr;
+			workers[i].addr = scene->disp->edit_addr;
 		}
 		else
 		{
 			workers[i].height = scene->render_h;
 			workers[i].width = scene->render_w;
-			workers[i].addr = scene->mlx->render_addr;
+			workers[i].addr = scene->disp->render_addr;
 		}
 		workers[i].max_workers = NUM_THREADS;
 		workers[i].worker_id = i;
@@ -161,11 +161,11 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 			worker->height);
 			src_x = min(src_x, worker->width - 1);
 			src_y = min(src_y, worker->height - 1);
-			*(unsigned int *)(worker->scene->mlx->display_addr + (y * \
-			worker->scene->display_w + x) * worker->scene->mlx->bytes_per_pixel) = \
+			*(unsigned int *)(worker->scene->disp->display_addr + (y * \
+			worker->scene->display_w + x) * worker->scene->disp->bytes_per_pixel) = \
 			*(unsigned int *)(worker->addr + (src_y * \
 			worker->width + src_x) * \
-			worker->scene->mlx->bytes_per_pixel);
+			worker->scene->disp->bytes_per_pixel);
 		}
 	}
 	return (NULL);
@@ -176,13 +176,13 @@ void	draw_left_arrow(t_scene *scene, int y, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/left_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/left_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, y - h / 2);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, 0, y - h / 2);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_right_arrow(t_scene *scene, int y, int color)
@@ -190,13 +190,13 @@ void	draw_right_arrow(t_scene *scene, int y, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/right_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/right_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 25, y - h / 2);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, scene->display_w - 25, y - h / 2);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_up_arrow(t_scene *scene, int x, int color)
@@ -204,13 +204,13 @@ void	draw_up_arrow(t_scene *scene, int x, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/up_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/up_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, 0);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, x - w / 2, 0);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_down_arrow(t_scene *scene, int x, int color)
@@ -218,13 +218,13 @@ void	draw_down_arrow(t_scene *scene, int x, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/down_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/down_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, scene->display_h - 25);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, x - w / 2, scene->display_h - 25);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_bottom_left_arrow(t_scene *scene, int color)
@@ -232,13 +232,13 @@ void	draw_bottom_left_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/bottom_left.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/bottom_left.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, scene->display_h - 35);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, 0, scene->display_h - 35);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_bottom_right_arrow(t_scene *scene, int color)
@@ -246,13 +246,13 @@ void	draw_bottom_right_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/bottom_right.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/bottom_right.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, scene->display_h - 35);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, scene->display_w - 35, scene->display_h - 35);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_top_right_arrow(t_scene *scene, int color)
@@ -260,13 +260,13 @@ void	draw_top_right_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/top_right.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/top_right.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, 0);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, scene->display_w - 35, 0);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_top_left_arrow(t_scene *scene, int color)
@@ -274,13 +274,13 @@ void	draw_top_left_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/top_left.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->disp->mlx, "./assets/top_left.xpm", &w, &h);
 	if (img == NULL)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, 0);
-	mlx_destroy_image(scene->mlx, img);
+	mlx_put_image_to_window(scene->disp, scene->disp->mlx_win, img, 0, 0);
+	mlx_destroy_image(scene->disp, img);
 }
 
 void	draw_marker(t_scene *scene, int x, int y, int color)
@@ -289,23 +289,23 @@ void	draw_marker(t_scene *scene, int x, int y, int color)
 	
 	if (x > 0 && y > 0 && x < scene->display_w && y < scene->display_h)
 	{
-		dst = scene->mlx->display_addr + (y * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + (y * scene->display_w + x) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y + 1) * scene->display_w + x) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y - 1) * scene->display_w + x) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + (y * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + (y * scene->display_w + x + 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y + 1) * scene->display_w + x + 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x + 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y - 1) * scene->display_w + x + 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + (y * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + (y * scene->display_w + x - 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y - 1) * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y - 1) * scene->display_w + x - 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
-		dst = scene->mlx->display_addr + ((y + 1) * scene->display_w + x - 1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + ((y + 1) * scene->display_w + x - 1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 	}
 }
@@ -377,17 +377,17 @@ void	draw_shape_info(t_scene *scene)
 		{
 			char str[1000];
 			if (shape->type == SPHERE)
-				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Sphere");
+				mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Sphere");
 			if (shape->type == CYLINDER)
-				mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Cylinder");
+				mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.12) * scene->display_h , 0xffffff, "Cylinder");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.10) * scene->display_h , 0xffffff, str);
+			mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.10) * scene->display_h , 0xffffff, str);
 			sprintf(str, "y: % 9.2f", shape->origin.y);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.08) * scene->display_h , 0xffffff, str);
+			mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.08) * scene->display_h , 0xffffff, str);
 			sprintf(str, "z: % 9.2f", shape->origin.z);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.06) * scene->display_h , 0xffffff, str);
+			mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.06) * scene->display_h , 0xffffff, str);
 			sprintf(str, "radius: %.2f", shape->radius);
-			mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.04) * scene->display_h , 0xffffff, str);
+			mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, (origin_proj.x * scene->display_w), (origin_proj.y - 0.04) * scene->display_h , 0xffffff, str);
 			// if (shape->type == SPHERE)
 			// 	mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, (scene->display_w) * 0.02, (scene->display_h) * (0.04), 0xffffff, "Sphere");
 			// if (shape->type == CYLINDER)
@@ -427,7 +427,7 @@ void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 	{
 		if (y1 > scene->display_h || x1 > scene->display_w)
 			break ;
-		dst = scene->mlx->display_addr + (int)(y1 * scene->display_w + x1) * scene->mlx->bytes_per_pixel;
+		dst = scene->disp->display_addr + (int)(y1 * scene->display_w + x1) * scene->disp->bytes_per_pixel;
 		*(unsigned int*)dst = color;
 		y1 += dy;
 		x1 += dx;
@@ -458,7 +458,7 @@ void	draw_shape_marker(t_scene *scene)
 		{
 			if (origin_proj.z < 0)
 				draw_marker(scene, (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
-			mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
+			mlx_put_image_to_window(scene->disp->mlx, scene->disp->mlx_win, scene->disp->display_img, 0, 0);
 			#ifdef __APPLE__
 			draw_arrow(scene,  (int)(origin_proj.x * scene->display_w), (int)(origin_proj.y  * scene->display_h) , 0x00ffff);
 			#endif
@@ -480,40 +480,40 @@ void	draw_menu(t_scene *scene)
 		x = 0;
 		while (x < scene->display_w * 0.15)
 		{
-			dst = scene->mlx->info_addr + (unsigned int)(y * scene->display_w * 0.15 + x) * scene->mlx->bytes_per_pixel;
+			dst = scene->disp->info_addr + (unsigned int)(y * scene->display_w * 0.15 + x) * scene->disp->bytes_per_pixel;
 			*(unsigned int*)dst = create_trgb(30, (x * 5) / (scene->display_w * 0.15 ), (x * 5) / (scene->display_w * 0.12), (x * 5) / (scene->display_w * 0.12));
 			x++;
 		}
 		y++;
 	}
-	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->info_img, 0, 0);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->mlx_win, scene->disp->info_img, 0, 0);
 	int	starting_x = (scene->display_w) * 0.011;
 	int	starting_y = (scene->display_h) * (0.05);
 	int	gap = scene->display_h * 0.03;
 	int color = 0x99e9f2;
 	if (scene->edit_mode == true && scene->camera_mode == false)
 	{
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, scene->display_w * 0.035, starting_y, color, "[Edit mode]");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap, color, "WASDQE: Move");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 2, color, "C:      Camera mode");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 3, color, "TAB:    Switch Shape");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 4, color, "+/-:    Scale Shape");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "R:      Reflections");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "M:      Menu");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 7, color, "Space:  Render");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:    Colors");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, scene->display_w * 0.035, starting_y, color, "[Edit mode]");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap, color, "WASDQE: Move");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 2, color, "C:      Camera mode");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 3, color, "TAB:    Switch Shape");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 4, color, "+/-:    Scale Shape");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 5, color, "R:      Reflections");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 6, color, "M:      Menu");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 7, color, "Space:  Render");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:    Colors");
 	}
 	if (scene->edit_mode == true && scene->camera_mode == true)
 	{
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, scene->display_w * 0.035, starting_y, color, "[Camera mode]");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap, color, "WASDQE:     Move");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 2, color, "C:          Edit mode");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 3, color, "Arrow Keys: Look");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 4, color, "R:          Reflect");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 5, color, "M:          Menu");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 6, color, "Space:      Render");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 7, color, "+/-:        Res scale");
-		mlx_string_put(scene->mlx->mlx, scene->mlx->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:        Colors");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, scene->display_w * 0.035, starting_y, color, "[Camera mode]");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap, color, "WASDQE:     Move");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 2, color, "C:          Edit mode");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 3, color, "Arrow Keys: Look");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 4, color, "R:          Reflect");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 5, color, "M:          Menu");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 6, color, "Space:      Render");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 7, color, "+/-:        Res scale");
+		mlx_string_put(scene->disp->mlx, scene->disp->mlx_win, starting_x, starting_y + gap * 8, color, "1-9:        Colors");
 	}
 }
 
@@ -591,7 +591,7 @@ void	draw_scene(t_scene *scene)
 	// printf("scale time is %f\n", elapsed);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	if (scene->edit_mode == false)
-		mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win, scene->mlx->display_img, 0, 0);
+		mlx_put_image_to_window(scene->disp->mlx, scene->disp->mlx_win, scene->disp->display_img, 0, 0);
 	else
 	{
 		draw_shape_marker(scene);

@@ -6,14 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:21:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:11:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:55:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
-typedef struct s_scene	t_scene; // forward declaration
 
 /**
  * @brief The camera defines the viewport position

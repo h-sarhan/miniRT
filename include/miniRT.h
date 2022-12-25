@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 23:52:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 00:47:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,18 @@
 #else
 # include "../mlx/mlx.h"
 #endif
+
+typedef struct s_scene	t_scene;
 # include "mathRT.h"
-# include "camera.h"
 # include "color.h"
-# include "edit_mode.h"
+# include "display.h"
 # include "shape.h"
+# include "camera.h"
+# include "edit_mode.h"
 # include "intersections.h"
 # include "lights.h"
-# include "render.h"
 # include "scene.h"
+# include "render.h"
 # include "parsing.h"
 # include "utils.h"
 
