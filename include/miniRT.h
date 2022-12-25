@@ -35,7 +35,5 @@
 # define REFLECTION_DEPTH 1
 # define CAM_SPEED 0.5
 # define EPSILON 0.001
-# define TICK(X) clock_t X = clock()
-# define TOCK(X) printf("time %s: %g sec.\n", (#X), (float)(clock() - (X)) / CLOCKS_PER_SEC)
 
 #endif

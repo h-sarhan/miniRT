@@ -13,9 +13,11 @@
 PARSING_SRC = parse_utils.c shape_errors.c scene_errors.c \
 				parse_scene.c parse_shapes.c parse_elements.c parse_attributes.c \
 				parse_settings.c
+
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
-MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c matrix_inverse2.c matrix_transformations.c
+MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c\
+				matrix_inverse2.c matrix_transformations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
 INTERSECTION_SRC = intersections.c reflections.c
@@ -26,13 +28,16 @@ LIGHTING_SRC := $(addprefix lighting/, $(LIGHTING_SRC))
 
 EDIT_MODE_SRC = key_presses.c loop_hook.c
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
-SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) $(EDIT_MODE_SRC)  free_utils.c print_utils.c color.c draw_scene.c render_scene.c mouse_controls.c collisions.c
+
+SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) $(EDIT_MODE_SRC) \
+				free_utils.c print_utils.c color.c draw_scene.c render_scene.c \
+				mouse_controls.c collisions.c main.c
 
 SRC := $(addprefix src/, $(SRC))
 
 OBJ_DIR = .obj
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
-OBJ += .obj/src/main.o
+DEPENDS := $(OBJ:.o=.d)
 
 LIBFT = libft/libft.a
 NAME = miniRT
@@ -56,26 +61,25 @@ CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 
-all: $(NAME)
+all:
+	make  -j20 $(NAME)
 
-$(OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 $(LIBFT):
-	make -j10 -C libft
+	make -C  libft
 
 $(NAME): $(LIBFT) $(OBJ)
-	make -s  all -C $(MLX)
+	-make -s  all -C $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
-# leakcheck: $(LIBFT) $(OBJ)
-# 	rm -f $(NAME)
-# 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -Lmlx -lmlx -framework OpenGL -framework AppKit -Lleaksan -llsan -lc++ -o $(NAME)
+-include $(DEPENDS)
 
 clean:
-	make -C $(MLX) clean
-	make -C libft clean
+	-make -C $(MLX) clean
+	-make -C libft clean
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
@@ -87,4 +91,4 @@ norm:
 
 re: fclean all
 
-.PHONY: all re fclean clean leak
+.PHONY: all re fclean clean

@@ -128,7 +128,7 @@ void	deploy_flashbang(t_scene *scene)
 		}
 		y++;
 	}
-	(void)! system("afplay sound.mp3");
+	(void)! system("afplay assets/sound.mp3");
 	mlx_put_image_to_window(scene->mlx->mlx, scene->mlx->mlx_win,
 		scene->mlx->display_img, 0, 0);
 }

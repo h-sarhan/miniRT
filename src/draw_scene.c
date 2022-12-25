@@ -176,10 +176,10 @@ void	draw_left_arrow(t_scene *scene, int y, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./left_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/left_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, y - h / 2);
 	mlx_destroy_image(scene->mlx, img);
@@ -190,10 +190,10 @@ void	draw_right_arrow(t_scene *scene, int y, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./right_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/right_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 25, y - h / 2);
 	mlx_destroy_image(scene->mlx, img);
@@ -204,10 +204,10 @@ void	draw_up_arrow(t_scene *scene, int x, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./up_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/up_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, 0);
 	mlx_destroy_image(scene->mlx, img);
@@ -218,10 +218,10 @@ void	draw_down_arrow(t_scene *scene, int x, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./down_arrow.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/down_arrow.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, x - w / 2, scene->display_h - 25);
 	mlx_destroy_image(scene->mlx, img);
@@ -232,10 +232,10 @@ void	draw_bottom_left_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./bottom_left.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/bottom_left.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, scene->display_h - 35);
 	mlx_destroy_image(scene->mlx, img);
@@ -246,10 +246,10 @@ void	draw_bottom_right_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./bottom_right.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/bottom_right.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, scene->display_h - 35);
 	mlx_destroy_image(scene->mlx, img);
@@ -260,10 +260,10 @@ void	draw_top_right_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./top_right.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/top_right.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, scene->display_w - 35, 0);
 	mlx_destroy_image(scene->mlx, img);
@@ -274,10 +274,10 @@ void	draw_top_left_arrow(t_scene *scene, int color)
 	int w;
 	int h;
 	(void)color;
-	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./top_left.xpm", &w, &h);
+	void *img = mlx_xpm_file_to_image(scene->mlx->mlx, "./assets/top_left.xpm", &w, &h);
 	if (img == NULL)
 	{
-		printf("Could not open imaege file\n");
+		printf("Could not open image file\n");
 	}
 	mlx_put_image_to_window(scene->mlx, scene->mlx->mlx_win, img, 0, 0);
 	mlx_destroy_image(scene->mlx, img);
