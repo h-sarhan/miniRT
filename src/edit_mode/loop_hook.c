@@ -291,6 +291,28 @@ void	transform_object(t_scene *scene)
 		rotate_object_z(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
 		rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+	if	(scene->keys_held.w || scene->keys_held.a
+			|| scene->keys_held.s || scene->keys_held.d || scene->keys_held.up
+			|| scene->keys_held.right || scene->keys_held.q
+			|| scene->keys_held.e || scene->keys_held.down
+			|| scene->keys_held.left || scene->keys_held.plus
+			|| scene->keys_held.minus)
+		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.plus == true)
+	{
+		if (collide(scene, false, 1, NULL) == true)
+		{
+			scene->keys_held.plus = false;
+			scene->keys_held.minus = true;
+			if (scene->keys_held.shift == false)
+				scale_object(scene, &scene->shapes[scene->shape_idx]);
+			else
+				change_height(scene, &scene->shapes[scene->shape_idx]);
+			scene->keys_held.minus = false;
+			calculate_transforms(scene);
+			draw_scene(scene);
+		}
+	}
 	
 }
 
@@ -364,28 +386,7 @@ int	key_handler(t_scene *scene)
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 	{
-		// t_shape *shape = &scene->shapes[scene->shape_idx];
-		// if (shape->type == CYLINDER)
-		// {
-		// 	t_shape *cylinder = &scene->shapes[scene->shape_idx];
-	
-		// 	t_vector	top_cap_center;
-		// 	t_vector	bottom_cap_center;
-		// 	t_vector	normal;
-		// 	printf("cUP is \n");
-		// 	mat_vec_multiply(&normal, &cylinder->added_rots, &cylinder->orientation);
-		// 	normalize_vec(&normal);
-		// 	print_vector(&normal);
-		// 	scale_vec(&top_cap_center, &normal, -cylinder->height / 2);
-		// 	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
-		// 	scale_vec(&bottom_cap_center, &normal, cylinder->height / 2);
-		// 	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
-		// 	printf("Bottom cap is \n");
-		// 	print_vector(&bottom_cap_center);
-		// 	printf("Top cap is \n");
-		// 	print_vector(&top_cap_center);
-		// }
-		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+		// collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

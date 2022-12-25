@@ -317,10 +317,13 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				if (sphere_sphere_collision(shape1, shape2) == true)
 				{
 					collided = true;
-					if (shape2 == transformed_shape)
-						sphere_sphere_collision_resolution(shape2, shape1);
-					else
-						sphere_sphere_collision_resolution(shape1, shape2);
+					if (resolve == true)
+					{
+						if (shape2 == transformed_shape)
+							sphere_sphere_collision_resolution(shape2, shape1);
+						else
+							sphere_sphere_collision_resolution(shape1, shape2);
+					}
 				}
 			}
 			else if (shape1->type == SPHERE && shape2->type == PLANE)
@@ -328,7 +331,8 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				if (sphere_plane_collision(shape1, shape2) == true)
 				{
 					collided = true;
-					sphere_plane_collision_resolution(shape1, shape2);
+					if (resolve == true)
+						sphere_plane_collision_resolution(shape1, shape2);
 				}
 			}
 			else if (shape1->type == CYLINDER && shape2->type == PLANE)
@@ -336,7 +340,8 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				if (cylinder_plane_collision(shape1, shape2) == true)
 				{
 					collided = true;
-					cylinder_plane_collision_resolution(shape1, shape2);
+					if (resolve == true)
+						cylinder_plane_collision_resolution(shape1, shape2);
 				}
 			}
 			else if (shape1->type == CYLINDER && shape2->type == SPHERE && transformed_shape != shape2)
