@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:04:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 01:51:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ struct s_worker
 	t_scene	*scene;
 };
 
+void	set_color(t_worker *worker, int x, int y, int color);
+
 void	prepare_computations(t_scene *scene, t_intersect *intersection,
 			t_ray *ray, t_intersections *xs);
 
@@ -45,4 +47,5 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection,
 			int remaining, int light_idx);
 
 void	*render_scene_faster(t_worker *worker);
+
 #endif

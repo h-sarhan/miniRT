@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:35:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 02:05:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv)
 	close(fd);
 	if (scene == NULL)
 		return (EXIT_FAILURE);
-	scene->settings.render_scale = 2;
+	scene->settings.render_scale = 4;
 	scene->settings.edit_scale = 0.6;
 	scene->settings.render_w = 1920 * scene->settings.render_scale;
 	scene->settings.render_h = 1080 * scene->settings.render_scale;
