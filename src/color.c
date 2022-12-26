@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:26:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 12:57:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	get_b(int col)
 
 int	color_avg(int c1, int c2)
 {
-	return (create_trgb(0, (get_r(c1) + get_r(c2)) / 2, (get_g(c1) + get_g(c2)) / 2, (get_b(c1) + get_b(c2)) / 2));
+	return (create_trgb(0, (get_r(c1) + get_r(c2)) / 2,
+			(get_g(c1) + get_g(c2)) / 2, (get_b(c1) + get_b(c2)) / 2));
 }
 
 int	color_mix(int c1, int c2, float mix)

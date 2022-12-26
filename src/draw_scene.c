@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 12:19:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 12:54:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,8 @@ void	draw_left_arrow(t_scene *scene, int y, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, 0, y - h / 2);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, 0, y - h / 2);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_right_arrow(t_scene *scene, int y, int color)
@@ -195,8 +195,8 @@ void	draw_right_arrow(t_scene *scene, int y, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, scene->settings.display_w - 25, y - h / 2);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, scene->settings.display_w - 25, y - h / 2);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_up_arrow(t_scene *scene, int x, int color)
@@ -209,8 +209,8 @@ void	draw_up_arrow(t_scene *scene, int x, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, x - w / 2, 0);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, x - w / 2, 0);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_down_arrow(t_scene *scene, int x, int color)
@@ -223,8 +223,8 @@ void	draw_down_arrow(t_scene *scene, int x, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, x - w / 2, scene->settings.display_h - 25);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, x - w / 2, scene->settings.display_h - 25);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_bottom_left_arrow(t_scene *scene, int color)
@@ -237,8 +237,8 @@ void	draw_bottom_left_arrow(t_scene *scene, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, 0, scene->settings.display_h - 35);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, 0, scene->settings.display_h - 35);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_bottom_right_arrow(t_scene *scene, int color)
@@ -251,8 +251,8 @@ void	draw_bottom_right_arrow(t_scene *scene, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, scene->settings.display_w - 35, scene->settings.display_h - 35);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, scene->settings.display_w - 35, scene->settings.display_h - 35);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_top_right_arrow(t_scene *scene, int color)
@@ -265,8 +265,8 @@ void	draw_top_right_arrow(t_scene *scene, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, scene->settings.display_w - 35, 0);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, scene->settings.display_w - 35, 0);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_top_left_arrow(t_scene *scene, int color)
@@ -279,8 +279,8 @@ void	draw_top_left_arrow(t_scene *scene, int color)
 	{
 		printf("Could not open image file\n");
 	}
-	mlx_put_image_to_window(scene->disp, scene->disp->win, img, 0, 0);
-	mlx_destroy_image(scene->disp, img);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win, img, 0, 0);
+	mlx_destroy_image(scene->disp->mlx, img);
 }
 
 void	draw_marker(t_scene *scene, int x, int y, int color)
