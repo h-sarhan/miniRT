@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 12:19:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 13:03:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ int				get_color(t_worker *worker, int x, int y);
 void			set_color(t_worker *worker, int x, int y, int color);
 
 t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray);
+
+void	get_iors(t_intersection *intersection, t_intersections *xs);
+
 
 #endif
