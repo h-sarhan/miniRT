@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 10:43:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 19:19:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ t_color	get_ambient(t_color *effective_color,
 	t_color	ambient;
 
 	ambient.a = 0;
-	// light attenuation
-	// mult_color(&ambient, effective_color,
-	// 	scene->ambient.intensity * light->intensity / 100.0);
 	mult_color(&ambient, effective_color,
 		scene->ambient.intensity * light->intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
@@ -62,8 +59,8 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 			* scene->lights[light_idx].intensity);
 	// light attenuation
 	// float	distance_from_light = vec_distance(&scene->lights[light_idx].position, &itx->point);
-	// mult_color(diffuse, diffuse, 1.0 / (1 + distance_from_light * distance_from_light));
-	// mult_color(specular, specular, 1.0 / (1 + distance_from_light * distance_from_light));
+	// mult_color(diffuse, diffuse, (30 - distance_from_light) / (30 - 1));
+	// mult_color(specular, specular, (30 - distance_from_light) / (30 - 1));
 	return (true);
 }
 
