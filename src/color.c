@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:26:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:26:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
-
 
 static unsigned int	clamp_color(float color)
 {
@@ -142,4 +141,22 @@ void	blend_colors(t_color *res, const t_color *c1, const t_color *c2)
 	res->r = c1->r * c2->r;
 	res->g = c1->g * c2->g;
 	res->b = c1->b * c2->b;
+}
+
+int	get_color(t_worker *worker, int x, int y)
+{
+	int	bpp;
+
+	bpp = worker->scene->disp->bytes_per_pixel;
+	return (*(int *)(worker->addr + ((y * worker->width) + x) * bpp));
+}
+
+void	set_color(t_worker *worker, int x, int y, int color)
+{
+	int	bpp;
+
+	if (x >= worker->width || y > worker->height || x < 0 || y < 0)
+		return ;
+	bpp = worker->scene->disp->bytes_per_pixel;
+	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
 }

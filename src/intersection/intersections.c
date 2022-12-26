@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 01:29:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:43:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	float			distance;
 	t_ray			ray;
 	t_intersections	arr;
-	unsigned int	i;
-	t_intersect		*intersection;
+	int				i;
+	t_intersection	*intersection;
 
 	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.direction);
@@ -171,7 +171,7 @@ bool	check_cone_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 }
 
 
-t_intersect	*hit(t_intersections *xs)
+t_intersection	*hit(t_intersections *xs)
 {
 	float	min_time;
 	int		i;
@@ -194,7 +194,7 @@ t_intersect	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-t_intersect	*hit_skip_transparent(t_intersections *xs)
+t_intersection	*hit_skip_transparent(t_intersections *xs)
 {
 	float	min_time;
 	int		i;
@@ -217,7 +217,7 @@ t_intersect	*hit_skip_transparent(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-t_intersect	*hit_sorted(t_intersections *xs)
+t_intersection	*hit_sorted(t_intersections *xs)
 {
 	int		i;
 

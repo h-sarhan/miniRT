@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:51:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 12:19:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,24 @@ struct s_worker
 	t_scene	*scene;
 };
 
-void	set_color(t_worker *worker, int x, int y, int color);
 
-void	prepare_computations(t_scene *scene, t_intersect *intersection,
+void	prepare_computations(t_scene *scene, t_intersection *intersection,
 			t_ray *ray, t_intersections *xs);
 
-t_color	lighting(t_intersect *itx, t_scene *scene, int light_idx);
+t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx);
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point);
 
-float	schlick(t_intersect *intersection);
-t_color	reflected_color(t_scene *scene, t_intersect *intersection,
+float	schlick(t_intersection *intersection);
+t_color	reflected_color(t_scene *scene, t_intersection *intersection,
 			int remaining, int light_idx);
-t_color	refracted_color(t_scene *scene, t_intersect *intersection,
+t_color	refracted_color(t_scene *scene, t_intersection *intersection,
 			int remaining, int light_idx);
 
-void	*render_scene_faster(t_worker *worker);
+void	*render_scene_fast(t_worker *worker);
+int				get_color(t_worker *worker, int x, int y);
+void			set_color(t_worker *worker, int x, int y, int color);
+
+t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray);
 
 #endif

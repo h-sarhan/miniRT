@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 01:29:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:43:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,10 +202,10 @@ void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
  */
 void	calculate_transforms(t_scene *scene)
 {
-	unsigned int	i;
-	t_mat4			scale;
-	t_mat4			rot;
-	t_mat4			translate;
+	int		i;
+	t_mat4	scale;
+	t_mat4	rot;
+	t_mat4	translate;
 
 	calculate_camera_transform(scene);
 	i = 0;

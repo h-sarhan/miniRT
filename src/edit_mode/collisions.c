@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:34:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:43:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,8 +293,8 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 {
 	t_shape			*shape1;
 	t_shape			*shape2;
-	unsigned int	idx1;
-	unsigned int	idx2;
+	int				idx1;
+	int				idx2;
 	bool			collided;
 	idx1 = 0;
 	collided = false;

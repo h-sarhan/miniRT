@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 01:30:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:43:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_color	get_ambient(t_color *effective_color,
 }
 
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
-	t_intersect *itx, t_color *diffuse, t_color *effective_color,
+	t_intersection *itx, t_color *diffuse, t_color *effective_color,
 	t_color *specular)
 {
 	float		reflect_dot_eye;
@@ -60,7 +60,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	return (true);
 }
 
-t_color	lighting(t_intersect *itx, t_scene *scene, int light_idx)
+t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx)
 {
 	t_color		effective_color;
 	t_color		diffuse;
@@ -78,4 +78,59 @@ t_color	lighting(t_intersect *itx, t_scene *scene, int light_idx)
 	result.g += diffuse.g + specular.g;
 	result.b += diffuse.b + specular.b;
 	return (result);
+}
+
+static t_color	get_lighting(t_scene *scene, t_intersection *itx, int light_idx)
+{
+	t_color	surface_color;
+	t_color	reflected;
+	t_color	refracted;
+	t_color	color;
+	float	reflectance;
+
+	ft_bzero(&color, sizeof(t_color));
+	surface_color = lighting(itx, scene, light_idx);
+	reflected = reflected_color(scene, itx, scene->settings.reflection_depth,
+			light_idx);
+	refracted = refracted_color(scene, itx, scene->settings.refraction_depth,
+			light_idx);
+	if (itx->shape->props.reflectiveness > 0 && itx->shape->props.transparency > 0)
+	{
+		reflectance = schlick(itx);
+		mult_color(&reflected, &reflected, reflectance);
+		mult_color(&refracted, &refracted, (1 - reflectance));
+	}
+	add_colors(&color, &color, &surface_color);
+	add_colors(&color, &color, &reflected);
+	add_colors(&color, &color, &refracted);
+	return (color);
+}
+
+t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray)
+{
+	t_intersection	*itx;
+	int				light_idx;
+	t_color			final_color;
+	t_color			light_color;
+
+	if (scene->settings.refraction_depth != 0)
+	{
+		sort_intersections(arr);
+		itx = hit_sorted(arr);
+	}
+	else
+		itx = hit(arr);
+	ft_bzero(&final_color, sizeof(t_color));
+	if (itx != NULL)
+	{
+		prepare_computations(scene, itx, ray, arr);
+		light_idx = 0;
+		while (light_idx < scene->count.lights)
+		{
+			light_color = get_lighting(scene, itx, light_idx);
+			add_colors(&final_color, &final_color, &light_color);
+			light_idx++;
+		}
+	}
+	return (final_color);
 }

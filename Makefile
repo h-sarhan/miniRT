@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/26 01:37:41 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/26 10:09:51 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_in
 				matrix_inverse2.c matrix_transformations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-INTERSECTION_SRC = intersections.c reflections.c
+INTERSECTION_SRC = intersections.c reflections.c sort_intersections.c
 INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
 
 LIGHTING_SRC = lighting.c camera.c
@@ -62,7 +62,8 @@ CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
 			# -fsanitize=address\
 
 all:
-	@make -j20 $(NAME)
+	# @make -j20 $(NAME)
+	@make  $(NAME)
 
 $(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)
@@ -71,7 +72,7 @@ $(OBJ_DIR)/%.o: %.c
 $(LIBFT):
 	make -C  libft
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(LIBFT) $(OBJ) Makefile
 	-make -s  all -C $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 

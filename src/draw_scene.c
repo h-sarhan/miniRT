@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:35:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 12:19:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	includes_shape(t_shape **containers, t_shape *shape, int count)
 	return (false);
 }
 
-void	get_iors(t_intersect *intersection, t_intersections *xs)
+void	get_iors(t_intersection *intersection, t_intersections *xs)
 {
 	t_shape	*containers[SHAPE_MAX];
 	int		count;
@@ -78,7 +78,7 @@ void	get_iors(t_intersect *intersection, t_intersections *xs)
 	}
 }
 
-void	prepare_computations(t_scene *scene, t_intersect *intersection, t_ray *ray, t_intersections *xs)
+void	prepare_computations(t_scene *scene, t_intersection *intersection, t_ray *ray, t_intersections *xs)
 {
 	if (intersection->shape->props.transparency != 0 || scene->settings.refraction_depth == 0)
 		get_iors(intersection, xs);
@@ -343,7 +343,7 @@ void	perspective_projection(t_vector *point, const t_scene *scene)
 
 void	draw_shape_info(t_scene *scene)
 {
-	unsigned int	shape_idx = 0;
+	int			shape_idx = 0;
 	t_shape		*shape;
 	t_vector	origin_proj;
 	t_vector	origin;
@@ -438,7 +438,7 @@ void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 
 void	draw_shape_marker(t_scene *scene)
 {
-	unsigned int	shape_idx = 0;
+	int			shape_idx = 0;
 	t_shape		*shape;
 	t_vector	origin_proj;
 
@@ -537,7 +537,7 @@ void	draw_scene(t_scene *scene)
 	{
 		// pthread_create(&threads[i], NULL, (void *)render_scene, &workers[i]);
 		// pthread_create(&threads[i], NULL, (void *)render_scene_fast, &workers[i]);
-		pthread_create(&threads[i], NULL, (void *)render_scene_faster, &workers[i]);
+		pthread_create(&threads[i], NULL, (void *)render_scene_fast, &workers[i]);
 		i++;
 	}
 	if (scene->settings.edit_mode == false)

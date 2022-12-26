@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:17:02 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:00:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:27:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,8 @@ int				create_trgb(int t, int r, int g, int b);
 int				color_avg(int c1, int c2);
 int				color_mix(int c1, int c2, float mix);
 int				color_difference(int c1, int c2);
+
+
+
 
 #endif

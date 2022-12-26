@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:20:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:42:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 typedef struct s_el_count	t_el_count;
 struct	s_el_count
 {
-	unsigned int	ambient_lights;
-	unsigned int	cameras;
-	unsigned int	lights;
-	unsigned int	shapes;
+	int	ambient_lights;
+	int	cameras;
+	int	lights;
+	int	shapes;
 };
 
 typedef struct s_look_at	t_look_at;

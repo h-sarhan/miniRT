@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 01:02:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:17:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ struct s_ray
  * @param time The t value of the intersection
  * @param shape A pointer to the object that the ray intersected with
  */
-typedef struct s_intersect		t_intersect;
+typedef struct s_intersect		t_intersection;
 struct s_intersect
 {	
 	float		time;
@@ -55,16 +55,18 @@ struct s_intersect
 typedef struct s_intersections	t_intersections;
 struct s_intersections
 {
-	t_intersect	arr[100];
+	t_intersection	arr[100];
 	int			count;
 };
+
+bool		is_sorted(t_intersections *arr);
 void		sort_intersections(t_intersections *arr);
 
 bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
 
-t_intersect	*hit_skip_transparent(t_intersections *xs);
-t_intersect	*hit(t_intersections *xs);
-t_intersect	*hit_sorted(t_intersections *xs);
+t_intersection	*hit_skip_transparent(t_intersections *xs);
+t_intersection	*hit(t_intersections *xs);
+t_intersection	*hit_sorted(t_intersections *xs);
 
 void		check_axis(float *t_min, float *t_max, float origin,
 				float direction);

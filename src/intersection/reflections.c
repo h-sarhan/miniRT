@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:30:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:43:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *ray, int remaining, int light_idx)
 {
-	t_intersect		*itx;
+	t_intersection		*itx;
 	t_color			final_color;
 	t_color			light_color;
 
@@ -45,12 +45,12 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene, t_ray *r
 	return (final_color);
 }
 
-t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx)
+t_color	reflected_color(t_scene *scene, t_intersection *intersection, int remaining, int light_idx)
 {
 	t_color			color;
 	t_ray			ray;
 	t_intersections	arr;
-	unsigned int	shape_idx;
+	int				shape_idx;
 
 	if (intersection->shape->props.reflectiveness == 0 || remaining == 0)
 	{
@@ -68,7 +68,7 @@ t_color	reflected_color(t_scene *scene, t_intersect *intersection, int remaining
 	return (reflected);
 }
 
-void	refracted_ray(t_ray	*refract_ray, t_intersect *intersection, float n_ratio, float cos_i)
+void	refracted_ray(t_ray	*refract_ray, t_intersection *intersection, float n_ratio, float cos_i)
 {
 	t_vector normal_v;
 	t_vector eye_v;
@@ -85,7 +85,7 @@ void	refracted_ray(t_ray	*refract_ray, t_intersect *intersection, float n_ratio,
 
 t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *ray, int remaining, int light_idx)
 {
-	t_intersect		*itx;
+	t_intersection		*itx;
 	t_color			final_color;
 	t_color			light_color;
 
@@ -111,15 +111,15 @@ t_color	calculate_refracted_color(t_intersections *arr, t_scene *scene, t_ray *r
 	return (final_color);
 }
 
-t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining, int light_idx)
+t_color	refracted_color(t_scene *scene, t_intersection *intersection, int remaining, int light_idx)
 {
-	t_color	color;
-	float	n_ratio;
-	float	cos_i;
-	float	sin2_t;
+	t_color			color;
+	float			n_ratio;
+	float			cos_i;
+	float			sin2_t;
 	t_intersections	arr;
-	unsigned int	shape_idx;
-	t_ray	refract_ray;
+	int				shape_idx;
+	t_ray			refract_ray;
 
 	if (intersection->shape->props.transparency == 0 || remaining == 0)
 	{
@@ -144,7 +144,7 @@ t_color	refracted_color(t_scene *scene, t_intersect *intersection, int remaining
 	return(color);
 }
 
-float	schlick(t_intersect *intersection)
+float	schlick(t_intersection *intersection)
 {
 	float	cos_angle;
 	float	n;

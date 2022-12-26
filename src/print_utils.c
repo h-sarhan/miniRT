@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:34:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 10:44:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_vector(const t_vector *vector)
  */
 void	print_scene(const t_scene *scene)
 {
-	size_t	i;
+	int	i;
 
 	printf("Ambient light configuration:\n");
 	printf("  Intensity: %.2f\n", scene->ambient.intensity);
@@ -58,7 +58,7 @@ void	print_scene(const t_scene *scene)
 	i = 0;
 	while (i < scene->count.lights)
 	{
-		printf("Light #%lu configuration:\n", i + 1);
+		printf("Light #%d configuration:\n", i + 1);
 		printf("  Position:\n");
 		print_vector(&scene->lights[i].position);
 		printf("  Light intensity:\n");
@@ -70,7 +70,7 @@ void	print_scene(const t_scene *scene)
 	i = 0;
 	while (i < scene->count.shapes)
 	{
-		printf("Shape #%lu configuration:\n", i + 1);
+		printf("Shape #%d configuration:\n", i + 1);
 		printf("  Type:\n");
 		if (scene->shapes[i].type == SPHERE)
 			printf("\tSphere\n");
