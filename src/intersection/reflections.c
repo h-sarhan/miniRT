@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:43:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 20:48:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ t_color	reflected_color(t_scene *scene, t_intersection *intersection, int remain
 		ft_bzero(&color, sizeof(t_color));
 		return (color);
 	}
-	ft_memcpy(&ray.origin, &intersection->over_point, sizeof(t_vector));
-	ft_memcpy(&ray.direction, &intersection->reflect_vec, sizeof(t_vector));
+	ray.origin = intersection->over_point;
+	ray.direction = intersection->reflect_vec;
 	shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 01:14:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 20:48:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 	t_mat4		orientation;
 	t_mat4		translation;
 
-	ft_memcpy(&upn, up, sizeof(t_vector));
+	upn = *up;
 	normalize_vec(&upn);
 	cross_product(&left, forward, &upn);
 	cross_product(&true_up, &left, forward);

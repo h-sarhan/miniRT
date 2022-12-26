@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 10:43:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 20:39:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.direction);
 	scale_vec(&ray.direction, &ray.direction, 1 / distance);
-	ft_memcpy(&ray.origin, itx_point, sizeof(t_vector));
+	ray.origin = *itx_point;
 	i = -1;
 	arr.count = 0;
 	while (++i < scene->count.shapes)

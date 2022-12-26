@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 13:04:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/26 20:48:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 
 void	prepare_computations(t_scene *scene, t_intersection *intersection, t_ray *ray, t_intersections *xs)
 {
-	if (intersection->shape->props.transparency != 0 || scene->settings.refraction_depth == 0)
+	if (intersection->shape->props.transparency != 0 && scene->settings.refraction_depth != 0)
 		get_iors(intersection, xs);
-
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->direction);
@@ -294,7 +293,7 @@ void	draw_shape_info(t_scene *scene)
 			shape_idx++;
 			continue;
 		}
-		ft_memcpy(&origin, &shape->origin, sizeof(t_vector));
+		origin = shape->origin;
 		if (shape->type == SPHERE)
 		{
 			origin.x -= 0.2;
