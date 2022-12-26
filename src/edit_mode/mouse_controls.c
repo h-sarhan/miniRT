@@ -38,7 +38,11 @@ int	mouse_rotate(t_scene *scene)
 	{
 		scene->mouse.prev_x = scene->mouse.x;
 		scene->mouse.prev_y = scene->mouse.y;
-		mlx_mouse_get_pos(scene->disp->win, &scene->mouse.x, &scene->mouse.y);
+		#ifdef __linux
+			mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win, &scene->mouse.x, &scene->mouse.y);
+		#else
+			mlx_mouse_get_pos(scene->disp->win, &scene->mouse.x, &scene->mouse.y);
+		#endif
 		if (scene->mouse.x != scene->mouse.prev_x || scene->mouse.y != scene->mouse.prev_y)
 		{
 			if (scene->mouse.prev_x < scene->mouse.x)

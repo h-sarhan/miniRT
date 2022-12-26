@@ -370,9 +370,7 @@ int	render_loop(t_scene *scene)
 	else if (scene->settings.edit_mode == true)
 	{
 		transform_object(scene);
-		#ifndef __linux__
 		mouse_rotate(scene);
-		#endif
 
 		// light_controls(scene);
 	}

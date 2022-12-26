@@ -71,14 +71,14 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->render_scale = 4;
-	settings->edit_scale = 0.6;
+	settings->render_scale = 1;
+	settings->edit_scale = 0.4;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
 	settings->edit_h = 1080 * settings->edit_scale;
-	settings->display_w = 1920 * 0.8;
-	settings->display_h = 1080 * 0.8;
+	settings->display_w = 1920 * 0.5;
+	settings->display_h = 1080 * 0.5;
 	settings->collisions = true;
 	settings->reflection_depth = 1;
 }
@@ -111,8 +111,8 @@ int	main(int argc, char **argv)
 	scene->disp = &disp;
 	mlx_hook(disp.win, 2, (1L << 0), key_press, scene);
 	mlx_hook(disp.win, 3, (1L << 1), key_release, scene);
-	mlx_hook(disp.win, 5, 0, mouse_up, scene);
-	mlx_mouse_hook(disp.win, mouse_down, scene);
+	mlx_hook(disp.win, 4, (1L<<2), mouse_down, scene);
+	mlx_hook(disp.win, 5, (1L<<3), mouse_up, scene);
 	mlx_loop_hook(disp.mlx, render_loop, scene);
 	camera_init(&scene->camera, scene);
 	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);

@@ -42,6 +42,7 @@ bool	parse_light(t_scene *scene, char **splitted, char *line,
 	light->intensity = ft_atof(splitted[2], &success);
 	if (success == false || light->intensity < 0.0 || light->intensity > 1.0)
 		return (light_parse_error(line, line_num, scene));
+	// light->intensity *= 150; light attenuation
 	parse_color(&light->color, splitted[3], &success);
 	if (success == false)
 		return (light_parse_error(line, line_num, scene));

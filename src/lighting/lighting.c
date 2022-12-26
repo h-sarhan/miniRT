@@ -24,6 +24,9 @@ t_color	get_ambient(t_color *effective_color,
 	t_color	ambient;
 
 	ambient.a = 0;
+	// light attenuation
+	// mult_color(&ambient, effective_color,
+	// 	scene->ambient.intensity * light->intensity / 100.0);
 	mult_color(&ambient, effective_color,
 		scene->ambient.intensity * light->intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
@@ -57,6 +60,10 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 		mult_color(specular, &scene->lights[light_idx].color,
 			itx->shape->props.specular * pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
+	// light attenuation
+	// float	distance_from_light = vec_distance(&scene->lights[light_idx].position, &itx->point);
+	// mult_color(diffuse, diffuse, 1.0 / (1 + distance_from_light * distance_from_light));
+	// mult_color(specular, specular, 1.0 / (1 + distance_from_light * distance_from_light));
 	return (true);
 }
 
