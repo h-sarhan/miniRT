@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 22:00:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 22:12:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
 {
 	t_mat4	temp;
 
-	if (shape->type == CONE)
-	{
-		translate_matrix(&temp, 0, shape->props.height / 2, 0);
-		mat_multiply(translate, &temp, translate);
-	}
+	// if (shape->type == CONE)
+	// {
+	// 	translate_matrix(&temp, 0, shape->props.height / 2, 0);
+	// 	mat_multiply(translate, &temp, translate);
+	// }
 	mat_multiply(&shape->transf, translate, &shape->added_rots);
 	ft_memcpy(&temp, &shape->transf, sizeof(t_mat4));
 	mat_multiply(&shape->transf, &temp, rot);
-	if (shape->type == CONE)
-	{
-		translate_matrix(&temp, 0, shape->props.height / 2, 0);
-		mat_multiply(&shape->transf, &temp, &shape->transf);
-	}
+	// if (shape->type == CONE)
+	// {
+	// 	translate_matrix(&temp, 0, shape->props.height / 2, 0);
+	// 	mat_multiply(&shape->transf, &temp, &shape->transf);
+	// }
 	ft_memcpy(translate, &shape->transf, sizeof(t_mat4));
 	mat_multiply(&shape->transf, translate, scale);
 	mat_inverse(&shape->inv_transf, &shape->transf);
