@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:03:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:38:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,12 +261,12 @@ void	transform_object(t_scene *scene)
 		change_height(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.shift == false
 		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+		rotate_object_y(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
 	if (scene->keys_held.shift == true
 		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_z(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+		rotate_object_z(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
-		rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
+		rotate_object_x(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
 	if (scene->settings.collisions == true && (scene->keys_held.w
 			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
 			|| scene->keys_held.up || scene->keys_held.right

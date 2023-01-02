@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:30:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:10:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ struct s_worker
 void	prepare_computations(t_intersection *intersection,
 			t_ray *ray);
 
-t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx);
+t_color	phong(t_intersection *itx, t_scene *scene, int light_idx);
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point);
 
@@ -45,6 +45,6 @@ void	*render_scene_fast(t_worker *worker);
 int		get_color(t_worker *worker, int x, int y);
 void	set_color(t_worker *worker, int x, int y, int color);
 
-t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray);
+t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:30:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:25:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 	return (NULL);
 }
 
-void	loading_bar(t_scene *scene)
+void	display_loading_bar(t_scene *scene)
 {
 	int	sem_counter;
 	int	load;
@@ -125,7 +125,7 @@ void	run_threads(t_worker *workers, t_scene *scene, bool loading, void *func)
 	while (++i < NUM_THREADS)
 		pthread_create(&threads[i], NULL, func, &workers[i]);
 	if (loading == true)
-		loading_bar(scene);
+		display_loading_bar(scene);
 	i = -1;
 	while (++i < NUM_THREADS)
 		pthread_join(threads[i], NULL);

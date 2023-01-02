@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 14:34:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:37:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,26 +93,6 @@ void	rotation_matrix_z(t_mat4 *mat, float r)
 	(*mat)[1][1] = cos(r);
 	(*mat)[2][2] = 1;
 	(*mat)[3][3] = 1;
-}
-
-/**
- * @brief Convert Radians to Degrees
- * @param r The radian value
- * @return float The converted value in degrees
- */
-float	rad_to_deg(float r)
-{
-	return (r * (180 / M_PI));
-}
-
-/**
- * @brief Convert Degrees to Radians
- * @param r The degree value
- * @return float The converted value in radians
- */
-float	deg_to_rad(float r)
-{
-	return (r * (M_PI / 180));
 }
 
 void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, float angle)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:13:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:38:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ int	mouse_rotate(t_scene *scene)
 			y_diff = abs(scene->mouse.y - scene->mouse.prev_y) * 0.2;
 			if (scene->mouse.prev_x < scene->mouse.x)
 				rotate_object_y(scene, &scene->shapes[scene->shape_idx],
-					deg_to_rad(x_diff));
+					DEG_TO_RAD * x_diff);
 			else if (scene->mouse.prev_x > scene->mouse.x)
 				rotate_object_y(scene, &scene->shapes[scene->shape_idx],
-					-deg_to_rad(x_diff));
+					-DEG_TO_RAD * x_diff);
 			if (scene->mouse.prev_y < scene->mouse.y)
 				rotate_object_x(scene, &scene->shapes[scene->shape_idx],
-					-deg_to_rad(y_diff));
+					-DEG_TO_RAD * y_diff);
 			else if (scene->mouse.prev_y > scene->mouse.y)
 				rotate_object_x(scene, &scene->shapes[scene->shape_idx],
-					deg_to_rad(y_diff));
+					DEG_TO_RAD * y_diff);
 			if (scene->settings.collisions == true)
 				collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 			calculate_transforms(scene);

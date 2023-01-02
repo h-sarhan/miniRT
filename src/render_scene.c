@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 12:24:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:10:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	render_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 	arr->count = 0;
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &ray, arr);
-	color = calculate_lighting(arr, scene, &ray);
+	color = shade_point(arr, scene, &ray);
 	set_color(worker, x, y, create_mlx_color(&color));
 }
 
@@ -84,7 +84,7 @@ void	fill_in_skipped_pixels_h(int x, int y, t_worker *worker, int threshold)
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
 			render_pixel(x + 1, y, &arr, worker);
 		else
-			set_color(worker, x + 1, y, color_avg(get_color(worker, x, y), c4));
+			set_color(worker, x + 1, y, color_mix(get_color(worker, x, y), c4, 0.5));
 	}
 	else
 	{
@@ -107,7 +107,7 @@ void	fill_in_skipped_pixels_v(int x, int y, t_worker *worker, int threshold)
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
 			render_pixel(x, y + 1, &arr, worker);
 		else
-			set_color(worker, x, y + 1, color_avg(get_color(worker, x, y), c4));
+			set_color(worker, x, y + 1, color_mix(get_color(worker, x, y), c4, 0.5));
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:48:35 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 14:28:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:18:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ void	perspective_projection(t_vector *point, const t_scene *scene)
 }
 
 // NORM LATER
+// Planning to change this significantly so I will norm this later
 void	draw_shape_info(t_scene *scene)
 {
 	int			shape_idx;

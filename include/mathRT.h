@@ -6,12 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:38:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 00:59:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:38:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATHRT_H
 # define MATHRT_H
+
+# define RAD_TO_DEG 57.2957795131
+# define DEG_TO_RAD 0.01745329252
 
 /**
  * @brief 4 dimensional vector
@@ -50,9 +53,6 @@ void	rotation_matrix_x(t_mat4 *mat, float r);
 void	rotation_matrix_y(t_mat4 *mat, float r);
 void	rotation_matrix_z(t_mat4 *mat, float r);
 void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, float angle);
-
-float	rad_to_deg(float r);
-float	deg_to_rad(float r);
 
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec);

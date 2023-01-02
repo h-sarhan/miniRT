@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/02 15:28:07 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/02 16:48:41 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -ggdb -pthread $(INC) \
+CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 

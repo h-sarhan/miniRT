@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:31:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:06:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene,
 	if (itx != NULL)
 	{
 		prepare_computations(itx, ray);
-		light_color = lighting(itx, scene, light_idx);
+		light_color = phong(itx, scene, light_idx);
 		reflected = reflected_color(scene, itx, remaining - 1, light_idx);
 		add_colors(&final_color, &final_color, &light_color);
 		add_colors(&final_color, &final_color, &reflected);

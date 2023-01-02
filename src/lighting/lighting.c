@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 15:31:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:10:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	return (true);
 }
 
-t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx)
+t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
 	t_color		effective_color;
 	t_color		diffuse;
@@ -86,27 +86,13 @@ t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx)
 	return (result);
 }
 
-static t_color	get_lighting(t_scene *scene, t_intersection *itx, int light_idx)
-{
-	t_color	surface_color;
-	t_color	reflected;
-	t_color	color;
-
-	ft_bzero(&color, sizeof(t_color));
-	surface_color = lighting(itx, scene, light_idx);
-	reflected = reflected_color(scene, itx, scene->settings.reflection_depth,
-			light_idx);
-	add_colors(&color, &color, &surface_color);
-	add_colors(&color, &color, &reflected);
-	return (color);
-}
-
-t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray)
+t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 {
 	t_intersection	*itx;
 	int				light_idx;
 	t_color			final_color;
-	t_color			light_color;
+	t_color			surface_color;
+	t_color			reflected;
 
 	itx = hit(arr);
 	ft_bzero(&final_color, sizeof(t_color));
@@ -116,8 +102,11 @@ t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray)
 		light_idx = 0;
 		while (light_idx < scene->count.lights)
 		{
-			light_color = get_lighting(scene, itx, light_idx);
-			add_colors(&final_color, &final_color, &light_color);
+			surface_color = phong(itx, scene, light_idx);
+			reflected = reflected_color(scene, itx,
+				scene->settings.reflection_depth, light_idx);
+			add_colors(&final_color, &final_color, &surface_color);
+			add_colors(&final_color, &final_color, &reflected);
 			light_idx++;
 		}
 	}

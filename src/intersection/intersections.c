@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 15:27:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:57:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,20 +211,6 @@ t_intersection	*hit(t_intersections *xs)
 	if (min_time == INFINITY)
 		return (NULL);
 	return (&xs->arr[idx]);
-}
-
-t_intersection	*hit_sorted(t_intersections *xs)
-{
-	int		i;
-
-	i = 0;
-	while (i < xs->count)
-	{
-		if (xs->arr[i].time >= 0)
-			return (&xs->arr[i]);
-		i++;
-	}
-	return (NULL);
 }
 
 t_vector	cylinder_normal(const t_shape *shape, t_vector *point)
