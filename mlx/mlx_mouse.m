@@ -37,7 +37,7 @@ int	mlx_mouse_move(mlx_win_list_t *win, int x, int y)
 }
 
 
-int	mlx_mouse_get_pos(mlx_win_list_t *win, int *x, int *y)
+int	mlx_mouse_get_pos(void *mlx_pointer, mlx_win_list_t *win, int *x, int *y)
 {
   CGPoint	point;
   id		thewin;

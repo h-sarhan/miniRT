@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:29:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:55:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	handle_color_change(int key, t_scene *scene)
 	t_color	color;
 
 	if ((key != KEY_1 && key != KEY_2 && key != KEY_3 && key != KEY_4
-			&& key != KEY_5 && key != KEY_6) || scene->settings.edit_mode == false)
+			&& key != KEY_5 && key != KEY_6)
+		|| scene->settings.edit_mode == false)
 		return ;
 	color = scene->shapes[scene->shape_idx].props.color;
 	if (key == KEY_1 && (color.r + 10 / 255.0) < 1)
@@ -46,22 +47,28 @@ void	look_at(t_scene *scene)
 	normalize_vec(&cam_to_object);
 	if (shape->type == SPHERE)
 	{
-		final_pos.x = cam_to_object.x * -8 * shape->props.radius + shape->origin.x;
-		final_pos.z = cam_to_object.z * -8 * shape->props.radius + shape->origin.z;
+		final_pos.x = cam_to_object.x * -8 * shape->props.radius + \
+			shape->origin.x;
+		final_pos.z = cam_to_object.z * -8 * shape->props.radius + \
+			shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
 	if (shape->type == CUBE)
 	{
-		final_pos.x = cam_to_object.x * -8 * shape->props.scale.x + shape->origin.x;
-		final_pos.z = cam_to_object.z * -8 * shape->props.scale.z + shape->origin.z;
+		final_pos.x = cam_to_object.x * -8 * shape->props.scale.x + \
+			shape->origin.x;
+		final_pos.z = cam_to_object.z * -8 * shape->props.scale.z + \
+			shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
 	if (shape->type == CYLINDER)
 	{
-		final_pos.x = cam_to_object.x * -7 * shape->props.radius + shape->origin.x;
-		final_pos.z = cam_to_object.z * -7 * shape->props.radius + shape->origin.z;
+		final_pos.x = cam_to_object.x * -7 * shape->props.radius + \
+			shape->origin.x;
+		final_pos.z = cam_to_object.z * -7 * shape->props.radius + \
+			shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
@@ -89,9 +96,12 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].props.color.a = 0;
 	scene->shapes[scene->count.shapes].props.diffuse = 0.9;
 	scene->shapes[scene->count.shapes].props.highlighted = true;
-	scene->shapes[scene->count.shapes].origin.x = scene->camera.dir.x * 5 + scene->camera.position.x;
-	scene->shapes[scene->count.shapes].origin.y = scene->camera.dir.y + scene->camera.position.y;
-	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + scene->camera.position.z;
+	scene->shapes[scene->count.shapes].origin.x = scene->camera.dir.x * 5 \
+		+ scene->camera.position.x;
+	scene->shapes[scene->count.shapes].origin.y = scene->camera.dir.y + \
+		scene->camera.position.y;
+	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + \
+		scene->camera.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].props.radius = 0.7;
 	scene->shapes[scene->count.shapes].props.radius_squared = 0.7 * 0.7;
@@ -206,15 +216,12 @@ void	toggle_edit_mode(int key, t_scene *scene)
 	if (key == KEY_SPACE)
 	{
 		scene->settings.edit_mode = !scene->settings.edit_mode;
-		// scene->reflection_depth = REFLECTION_DEPTH;
-		// if (scene->edit_mode == false)
-		// 	scene->reflection_depth = REFLECTION_DEPTH + 1;
 	}
 }
 
 void	toggle_shape(t_scene *scene)
 {
-	t_shape *shape;
+	t_shape	*shape;
 
 	shape = &scene->shapes[scene->shape_idx];
 	if (shape->props.radius < 0.2)
@@ -255,7 +262,7 @@ void	toggle_shape(t_scene *scene)
 
 int	key_press(int key, t_scene *scene)
 {
-	printf("%d\n", key);
+	printf("key = %d\n", key);
 	if (key == KEY_M && scene->settings.edit_mode == true)
 	{
 	}
@@ -264,7 +271,8 @@ int	key_press(int key, t_scene *scene)
 	if (key == KEY_T && scene->settings.edit_mode == true)
 		toggle_shape(scene);
 	handle_color_change(key, scene);
-	if (key == KEY_O && scene->settings.edit_mode == true && !scene->look_at.trigger)
+	if (key == KEY_O && scene->settings.edit_mode == true \
+		&& !scene->look_at.trigger)
 		look_at(scene);
 	toggle_edit_mode(key, scene);
 	select_shape(key, scene);

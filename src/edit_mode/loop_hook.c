@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 22:31:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:03:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,9 @@ void	move_cam(t_scene *scene)
 	{
 		sphere_to_xyz(&vec, M_PI_2, scene->camera.theta - M_PI_2, -CAM_SPEED);
 		add_vec(&scene->camera.position, &scene->camera.position, &vec);
-
 	}
 	if (scene->keys_held.s == true)
 	{
-		
 		sphere_to_xyz(&vec, scene->camera.phi, scene->camera.theta, -CAM_SPEED);
 		add_vec(&scene->camera.position, &scene->camera.position, &vec);
 	}
@@ -52,13 +50,11 @@ void	move_cam(t_scene *scene)
 	{
 		vec.y = 0.35;
 		add_vec(&scene->camera.position, &scene->camera.position, &vec);
-
 	}
 	if (scene->keys_held.e == true)
 	{
 		vec.y = -0.35;
 		add_vec(&scene->camera.position, &scene->camera.position, &vec);
-		
 	}
 }
 
@@ -95,8 +91,6 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, -0.2);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	move_object_h(t_scene *scene, t_shape *shape)
@@ -119,8 +113,6 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	move_object_v(t_scene *scene, t_shape *shape)
@@ -141,8 +133,6 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	scale_object(t_scene *scene, t_shape *shape)
@@ -167,7 +157,6 @@ void	scale_object(t_scene *scene, t_shape *shape)
 				shape->props.scale.y = shape->props.radius;
 			shape->props.scale.z = shape->props.radius;
 		}
-		// collide_scale(shape, scene, 0.04, 0, 0);
 	}
 	if (scene->keys_held.minus == true)
 	{
@@ -195,8 +184,6 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		}
 	}
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	change_height(t_scene *scene, t_shape *shape)
@@ -210,8 +197,6 @@ void	change_height(t_scene *scene, t_shape *shape)
 		if (shape->props.height > 0.2)
 			shape->props.height -= 0.04;
 	}
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
@@ -219,54 +204,45 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	t_mat4		rot;
 	t_vector	ax;
 	t_vector	up;
+	t_mat4		mat_copy;
 
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-
 	cross_product(&ax, &up, &scene->camera.dir);
 	if (scene->keys_held.down == true)
-		// rotation_matrix_x(&rot, -deg);
 		axis_angle(&rot, &ax, -deg);
 	else
 		axis_angle(&rot, &ax, deg);
-		// rotation_matrix_x(&rot, deg);
-	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 {
 	t_mat4	rot;
+	t_mat4	mat_copy;
 
 	if (scene->keys_held.left == true)
 		rotation_matrix_y(&rot, deg);
 	else
 		rotation_matrix_y(&rot, -deg);
-	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 {
 	t_mat4	rot;
+	t_mat4	mat_copy;
 
 	if (scene->keys_held.left == true)
 		axis_angle(&rot, &scene->camera.dir, deg);
 	else
 		axis_angle(&rot, &scene->camera.dir, -deg);
-	t_mat4	mat_copy;
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
-	// if (scene->collisions)
-		// collide(shape, scene);
 }
 
 void	transform_object(t_scene *scene)
@@ -291,10 +267,10 @@ void	transform_object(t_scene *scene)
 		rotate_object_z(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
 		rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(5));
-	if	(scene->settings.collisions == true && (scene->keys_held.w || scene->keys_held.a
-			|| scene->keys_held.s || scene->keys_held.d || scene->keys_held.up
-			|| scene->keys_held.right || scene->keys_held.q
-			|| scene->keys_held.e || scene->keys_held.down
+	if (scene->settings.collisions == true && (scene->keys_held.w
+			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
+			|| scene->keys_held.up || scene->keys_held.right
+			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
@@ -313,7 +289,6 @@ void	transform_object(t_scene *scene)
 			draw_scene(scene);
 		}
 	}
-	
 }
 
 void	light_controls(t_scene *scene)
@@ -365,26 +340,24 @@ void	look_at_animation(t_scene *scene)
 
 int	render_loop(t_scene *scene)
 {
-	if (scene->settings.camera_mode == true && scene->settings.edit_mode == true)
+	if (scene->settings.camera_mode == true
+		&& scene->settings.edit_mode == true)
 		camera_controls(scene);
 	else if (scene->settings.edit_mode == true)
 	{
 		transform_object(scene);
 		mouse_rotate(scene);
-
-		// light_controls(scene);
 	}
 	if (scene->look_at.trigger == true && scene->settings.edit_mode == true)
 		look_at_animation(scene);
 	if (scene->look_at.trigger == false && scene->mouse.active == false
-		&& scene->settings.edit_mode == true && (scene->keys_held.w || scene->keys_held.a
-			|| scene->keys_held.s || scene->keys_held.d || scene->keys_held.up
-			|| scene->keys_held.right || scene->keys_held.q
-			|| scene->keys_held.e || scene->keys_held.down
+		&& scene->settings.edit_mode == true && (scene->keys_held.w
+			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
+			|| scene->keys_held.up || scene->keys_held.right
+			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 	{
-		// collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

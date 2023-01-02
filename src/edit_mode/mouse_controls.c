@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 12:49:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 16:13:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 int	mouse_down(int key_code, int x, int y, t_scene *scene)
 {
-	(void)x;
-	(void)y;
+	t_ray			mouse_selection;
+	t_intersections	arr;
+	t_intersection	*itx;
+	int				shape_idx;
+
 	scene->mouse.key = key_code;
-	if (scene->settings.edit_mode == false || scene->mouse.key != LEFT_MOUSE_DOWN)
+	if (scene->settings.edit_mode == false
+		|| scene->mouse.key != LEFT_MOUSE_DOWN)
 		return (0);
-	if (x < 0 || y < 0 || x >= scene->settings.disp_w || y >= scene->settings.disp_h)
+	if (x < 0 || y < 0 || x >= scene->settings.disp_w
+		|| y >= scene->settings.disp_h)
 		return (0);
 	scene->mouse.x = x;
 	scene->mouse.y = y;
-	t_ray	mouse_selection;
-	ray_for_pixel(&mouse_selection, &scene->camera, 
+	ray_for_pixel(&mouse_selection, &scene->camera,
 		scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w,
-		 scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h);
-	int	shape_idx;
-	t_intersections	arr;
+		scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h);
 	shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &mouse_selection, &arr);
-	t_intersection	*itx = hit(&arr);
+	itx = hit(&arr);
 	if (itx->shape->type != PLANE)
 	{
 		scene->shapes[scene->shape_idx].props.highlighted = false;
@@ -55,35 +57,32 @@ int	mouse_up(int key_code, int x, int y, t_scene *scene)
 
 int	mouse_rotate(t_scene *scene)
 {
-	if (scene->mouse.key == LEFT_MOUSE_DOWN && scene->settings.edit_mode == true)
+	float	x_diff;
+	float	y_diff;
+
+	if (scene->mouse.key == LEFT_MOUSE_DOWN && scene->settings.edit_mode)
 	{
 		scene->mouse.prev_x = scene->mouse.x;
 		scene->mouse.prev_y = scene->mouse.y;
-		#ifdef __linux__
-			mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win, &scene->mouse.x, &scene->mouse.y);
-		#else
-			mlx_mouse_get_pos(scene->disp->win, &scene->mouse.x, &scene->mouse.y);
-		#endif
-		if (abs(scene->mouse.x - scene->mouse.prev_x) > 1 || abs(scene->mouse.y - scene->mouse.prev_y) > 1)
+		mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win,
+			&scene->mouse.x, &scene->mouse.y);
+		if (abs(scene->mouse.x - scene->mouse.prev_x) > 1
+			|| abs(scene->mouse.y - scene->mouse.prev_y) > 1)
 		{
-			float	x_diff = abs(scene->mouse.x - scene->mouse.prev_x) * 0.2;
-			float	y_diff = abs(scene->mouse.y - scene->mouse.prev_y) * 0.2;
+			x_diff = abs(scene->mouse.x - scene->mouse.prev_x) * 0.2;
+			y_diff = abs(scene->mouse.y - scene->mouse.prev_y) * 0.2;
 			if (scene->mouse.prev_x < scene->mouse.x)
-			{
-				rotate_object_y(scene, &scene->shapes[scene->shape_idx], deg_to_rad(x_diff));
-			}
+				rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+					deg_to_rad(x_diff));
 			else if (scene->mouse.prev_x > scene->mouse.x)
-			{
-				rotate_object_y(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(x_diff));
-			}
+				rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+					-deg_to_rad(x_diff));
 			if (scene->mouse.prev_y < scene->mouse.y)
-			{
-				rotate_object_x(scene, &scene->shapes[scene->shape_idx], -deg_to_rad(y_diff));
-			}
+				rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+					-deg_to_rad(y_diff));
 			else if (scene->mouse.prev_y > scene->mouse.y)
-			{
-				rotate_object_x(scene, &scene->shapes[scene->shape_idx], deg_to_rad(y_diff));
-			}
+				rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+					deg_to_rad(y_diff));
 			if (scene->settings.collisions == true)
 				collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 			calculate_transforms(scene);
