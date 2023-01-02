@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:52:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:48:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ t_vector	cone_normal(const t_shape *shape, t_vector *point)
 
 	distance = point->x * point->x + point->z * point->z;
 	radius = fabs(point->y) * fabs(point->y);
-	cone_bottom = (0);
-	cone_top = -(shape->props.height / 2);
+	cone_bottom = (shape->props.height / 2);
+	cone_top = 0;
 	if (distance < radius && (point->y >= cone_bottom - EPSILON))
 	{
 		normal.x = 0;

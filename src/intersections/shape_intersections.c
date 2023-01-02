@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 18:08:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:51:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ bool	check_cone_caps(const t_ray *ray, t_shape *shape, t_intersections *xs)
 	float	cone_bottom;
 	float	t;
 
-	cone_top = 0;
-	cone_bottom = -(shape->props.height / 2);
+	cone_top = (shape->props.height / 2);
+	cone_bottom = 0;
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
@@ -271,7 +271,9 @@ bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
 	float	t1;
 	float	y0;
 	float	y1;
+	// t_mat4	origin_offset;
 
+	// translate_matrix(&origin_offset, 0, 1, 0);
 	intersected = check_cone_caps(ray, shape, xs);
 	a = ray->direction.x * ray->direction.x \
 		- ray->direction.y * ray->direction.y \
@@ -300,7 +302,7 @@ bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
 		ft_swapd(&t0, &t1);
 	}
 	y0 = ray->origin.y + t0 * ray->direction.y;
-	if (y0 > (-shape->props.height / 2) && y0 < (0))
+	if (y0 > 0 && y0 < ((shape->props.height / 2)))
 	{
 		xs->arr[xs->count].time = t0;
 		xs->arr[xs->count].shape = shape;
@@ -308,7 +310,7 @@ bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
 		intersected = true;
 	}
 	y1 = ray->origin.y + t1 * ray->direction.y;
-	if (y1 > (-shape->props.height / 2) && y1 < (0))
+	if (y1 > 0 && y1 < ((shape->props.height / 2)))
 	{
 		xs->arr[xs->count].time = t1;
 		xs->arr[xs->count].shape = shape;

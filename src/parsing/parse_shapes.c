@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:27:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:36:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ bool	is_shape(const char *identifier)
 	return (ft_strcmp(identifier, "sp") == 0
 		|| ft_strcmp(identifier, "pl") == 0
 		|| ft_strcmp(identifier, "cy") == 0
-		|| ft_strcmp(identifier, "cu") == 0);
+		|| ft_strcmp(identifier, "cu") == 0
+		|| ft_strcmp(identifier, "co") == 0);
 }
 
 /**
@@ -176,6 +177,19 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
 }
 
 /**
+ * @brief Parses a cone object
+ * @param shape The shape to parse
+ * @param splitted The tokens containing the cone configuration
+ * @param success A boolean pointer set to false if there are any errors while
+ *  parsing
+ */
+static void	parse_cone(t_shape *shape, char **splitted, bool *success)
+{
+	parse_cylinder(shape, splitted, success);
+	shape->type = CONE;
+}
+
+/**
  * @brief Parses a shape
  * @param scene Pointer to scene struct
  * @param splitted The line containing the shape configurations
@@ -205,6 +219,8 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 		parse_cylinder(shape, splitted, &success);
 	else if (ft_strcmp(splitted[0], "cu") == 0)
 		parse_cube(shape, splitted, &success);
+	else if (ft_strcmp(splitted[0], "co") == 0)
+		parse_cone(shape, splitted, &success);
 	if (success == false)
 		return (shape_parse_error(line, line_num, scene, splitted));
 	shape->id = scene->count.shapes;
