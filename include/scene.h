@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:04:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 19:02:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	draw_scene(t_scene *scene);
 
 // ui.h
 void	draw_marker(t_scene *scene, int x, int y, int color);
-void	draw_arrow(t_scene *scene, int x, int y);
+void	draw_arrow(t_scene *scene, int x, int y, float z);
 void	perspective_projection(t_vector *point, const t_scene *scene);
 void	draw_shape_info(t_scene *scene);
 void	draw_shape_marker(t_scene *scene);

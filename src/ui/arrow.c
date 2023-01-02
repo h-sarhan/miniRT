@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:31:39 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:32:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 19:30:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,25 @@ void	top_corner_arrows(t_scene *scene, int x, int y)
 	}
 }
 
-void	draw_arrow(t_scene *scene, int x, int y)
+void	draw_arrow(t_scene *scene, int x, int y, float z)
 {
+	if (z > 0)
+	{
+		y = scene->settings.disp_h - y;
+		x = scene->settings.disp_w - x;
+		left_right_arrows(scene, x, y);
+		up_down_arrows(scene, x, y);
+		bottom_corner_arrows(scene, x, y);
+		top_corner_arrows(scene, x, y);
+		if (x >= 0 && x < scene->settings.disp_w && y >= 0
+			&& y < scene->settings.disp_h)
+		{
+			y = scene->settings.disp_h;
+			up_down_arrows(scene, x, y);
+		}
+		return ;
+	}
 	left_right_arrows(scene, x, y);
 	up_down_arrows(scene, x, y);
 	bottom_corner_arrows(scene, x, y);
-	top_corner_arrows(scene, x, y);
 }

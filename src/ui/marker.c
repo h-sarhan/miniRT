@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shape_marker.c                                     :+:      :+:    :+:   */
+/*   marker.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:31:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 19:31:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 		mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
 			scene->disp->display_img, 0, 0);
 		draw_arrow(scene, origin_proj.x * scene->settings.disp_w,
-			origin_proj.y * scene->settings.disp_h);
+			origin_proj.y * scene->settings.disp_h, origin_proj.z);
 	}
 }
 
