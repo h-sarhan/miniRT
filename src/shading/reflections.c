@@ -5,12 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 16:59:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:06:39 by hsarhan          ###   ########.fr       */
+/*   Created: 2023/01/02 17:47:11 by hsarhan           #+#    #+#             */
+/*   Updated: 2023/01/02 18:06:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	reflect_vector(t_vector *res, t_vector *in_vector, t_vector *normal)
+{
+	scale_vec(res, normal, dot_product(in_vector, normal) * 2);
+	sub_vec(res, in_vector, res);
+}
 
 t_color	calculate_reflected_color(t_intersections *arr, t_scene *scene,
 		t_ray *ray, int remaining, int light_idx)
@@ -54,7 +60,7 @@ t_color	reflected_color(t_scene *scene, t_intersection *intersection,
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &ray, &arr);
 	reflected = calculate_reflected_color(&arr, scene, &ray, remaining,
-		light_idx);
+			light_idx);
 	mult_color(&reflected, &reflected,
 		intersection->shape->props.reflectiveness);
 	return (reflected);

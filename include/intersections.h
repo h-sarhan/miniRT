@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 15:26:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:41:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ void			ray_position(t_vector *pos, const t_ray *ray, float time);
 
 t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
 
-void			ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
+void			ray_from_cam(t_ray *ray, const t_camera *cam, int x, int y);
 
 #endif

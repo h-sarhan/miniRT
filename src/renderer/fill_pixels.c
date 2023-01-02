@@ -1,74 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_scene.c                                     :+:      :+:    :+:   */
+/*   fill_pixels.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/18 11:26:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:10:23 by hsarhan          ###   ########.fr       */
+/*   Created: 2023/01/02 17:34:51 by hsarhan           #+#    #+#             */
+/*   Updated: 2023/01/02 18:07:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-// * Does not skip pixels
-// void	*render_scene(t_worker *worker)
-// {
-// 	t_intersections	arr;
-// 	int				x;
-// 	int				y;
-// 	unsigned int	shape_idx;
-// 	t_ray			ray;
-// 	t_color			color;
-// 	int				line_counter;
-
-// 	line_counter = 0;
-// 	y = worker->y_start - 1;
-// 	while (++y < worker->y_end)
-// 	{
-// 		x = -1;
-// 		while (++x < worker->width)
-// 		{
-// 			set_color(worker, x, y, 0);
-// 			ray_for_pixel(&ray, &worker->scene->camera, x, y);
-// 			shape_idx = -1;
-// 			arr.count = 0;
-// 			while (++shape_idx < worker->scene->count.shapes)
-// 			{
-// 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-// 			}
-// 			color = calculate_lighting(&arr, worker->scene, &ray);
-// 			set_color(worker, x, y, create_mlx_color(&color));
-// 		}
-// 		line_counter++;
-// 		if (worker->scene->settings.edit_mode == false
-// 			&& (line_counter == (worker->y_end - worker->y_start) / 5))
-// 		{
-// 			sem_post(worker->scene->sem_loading);
-// 			line_counter = 0;
-// 		}
-// 	}
-// 	return (NULL);
-// }
-
-void	render_pixel(int x, int y, t_intersections *arr, t_worker *worker)
-{
-	int		shape_idx;
-	t_color	color;
-	t_scene	*scene;
-	t_ray	ray;
-
-	set_color(worker, x, y, 0);
-	scene = worker->scene;
-	ray_for_pixel(&ray, &scene->camera, x, y);
-	shape_idx = -1;
-	arr->count = 0;
-	while (++shape_idx < scene->count.shapes)
-		intersect(&scene->shapes[shape_idx], &ray, arr);
-	color = shade_point(arr, scene, &ray);
-	set_color(worker, x, y, create_mlx_color(&color));
-}
 
 void	fill_in_skipped_pixels_h(int x, int y, t_worker *worker, int threshold)
 {
@@ -84,7 +26,8 @@ void	fill_in_skipped_pixels_h(int x, int y, t_worker *worker, int threshold)
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
 			render_pixel(x + 1, y, &arr, worker);
 		else
-			set_color(worker, x + 1, y, color_mix(get_color(worker, x, y), c4, 0.5));
+			set_color(worker, x + 1, y, color_mix(get_color(worker, x, y),
+					c4, 0.5));
 	}
 	else
 	{
@@ -107,7 +50,8 @@ void	fill_in_skipped_pixels_v(int x, int y, t_worker *worker, int threshold)
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
 			render_pixel(x, y + 1, &arr, worker);
 		else
-			set_color(worker, x, y + 1, color_mix(get_color(worker, x, y), c4, 0.5));
+			set_color(worker, x, y + 1, color_mix(get_color(worker, x, y),
+					c4, 0.5));
 	}
 	else
 	{
@@ -165,40 +109,4 @@ void	fill_in_vertical(t_worker *worker, int threshold)
 		}
 		y += 3;
 	}
-}
-
-void	update_loading_bar(t_worker *worker, int *line_counter)
-{
-	if (worker->scene->settings.edit_mode == false
-		&& (*line_counter == (worker->y_end - worker->y_start) / 15))
-	{
-		sem_post(worker->scene->sem_loading);
-		*line_counter = 0;
-	}
-}
-
-void	*render_scene_fast(t_worker *worker)
-{
-	t_intersections	arr;
-	int				x;
-	int				y;
-	int				line_counter;
-
-	line_counter = 0;
-	y = worker->y_start;
-	while (y < worker->y_end)
-	{
-		x = 0;
-		while (x < worker->width)
-		{
-			render_pixel(x, y, &arr, worker);
-			x += 3;
-		}
-		line_counter++;
-		update_loading_bar(worker, &line_counter);
-		y += 3;
-	}
-	fill_in_horizontal(worker, 10);
-	fill_in_vertical(worker, 10);
-	return (NULL);
 }

@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lighting.c                                         :+:      :+:    :+:   */
+/*   phong.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 17:10:23 by hsarhan          ###   ########.fr       */
+/*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
+/*   Updated: 2023/01/02 18:06:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal)
-{
-	scale_vec(res, normal, dot_product(in_vector, normal) * 2);
-	sub_vec(res, in_vector, res);
-}
 
 t_color	get_ambient(t_color *effective_color,
 	t_light *light, t_scene *scene)
@@ -54,7 +48,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 		itx->shape->props.diffuse * light_dot_normal
 		* scene->lights[light_idx].intensity);
 	negate_vec(&light_v, &light_v);
-	reflect(&reflect_v, &light_v, &itx->normal);
+	reflect_vector(&reflect_v, &light_v, &itx->normal);
 	reflect_dot_eye = dot_product(&reflect_v, &itx->eye);
 	if (reflect_dot_eye <= 0)
 		ft_bzero(specular, sizeof(t_color));
@@ -104,11 +98,33 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 		{
 			surface_color = phong(itx, scene, light_idx);
 			reflected = reflected_color(scene, itx,
-				scene->settings.reflection_depth, light_idx);
+					scene->settings.reflection_depth, light_idx);
 			add_colors(&final_color, &final_color, &surface_color);
 			add_colors(&final_color, &final_color, &reflected);
 			light_idx++;
 		}
 	}
 	return (final_color);
+}
+
+bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
+{
+	float			distance;
+	t_ray			ray;
+	t_intersections	arr;
+	int				i;
+	t_intersection	*intersection;
+
+	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
+	distance = vec_magnitude(&ray.direction);
+	scale_vec(&ray.direction, &ray.direction, 1 / distance);
+	ray.origin = *itx_point;
+	i = -1;
+	arr.count = 0;
+	while (++i < scene->count.shapes)
+		intersect(&scene->shapes[i], &ray, &arr);
+	intersection = hit(&arr);
+	if (intersection && intersection->time < distance)
+		return (true);
+	return (false);
 }

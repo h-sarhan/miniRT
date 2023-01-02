@@ -5,12 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 14:33:36 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 20:48:53 by hsarhan          ###   ########.fr       */
+/*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
+/*   Updated: 2023/01/02 18:06:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	calculate_camera_transform(t_scene *scene)
+{
+	t_vector		from;
+	t_vector		up;
+
+	from.x = scene->camera.position.x;
+	from.y = scene->camera.position.y;
+	from.z = scene->camera.position.z;
+	from.w = 1;
+	normalize_vec(&scene->camera.dir);
+	up.x = 0;
+	up.y = 1;
+	up.z = 0;
+	up.w = 0;
+	view_transform(&scene->camera.transform, &from, &up,
+		&scene->camera.dir);
+	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
+}
 
 void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 	const t_vector *forward)
@@ -67,27 +86,4 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_height = half_view;
 	}
 	camera->pixel_size = (camera->half_width * 2) / w;
-}
-
-void	ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y)
-{
-	float		world_x;
-	float		world_y;
-	t_vector	pixel;
-	t_vector	world_point;
-	t_vector	center;
-
-	world_x = cam->half_width - (x + 0.5) * cam->pixel_size;
-	world_y = cam->half_height - (y + 0.5) * cam->pixel_size;
-	world_point.x = world_x;
-	world_point.y = world_y;
-	world_point.z = -1;
-	world_point.w = 1;
-	mat_vec_multiply(&pixel, &cam->inv_trans, &world_point);
-	ft_bzero(&center, sizeof(t_vector));
-	center.w = 1;
-	mat_vec_multiply(&ray->origin, &cam->inv_trans, &center);
-	sub_vec(&ray->direction, &pixel, &ray->origin);
-	ray->direction.w = 0;
-	normalize_vec(&ray->direction);
 }

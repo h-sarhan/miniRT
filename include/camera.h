@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:21:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:06:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 18:03:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 			const t_vector *forward);
 
 void	camera_init(t_camera *camera, t_scene *scene);
+void	calculate_camera_transform(t_scene *scene);
 
 #endif

@@ -6,33 +6,42 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/02 16:48:41 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/02 18:07:21 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-PARSING_SRC = parse_utils.c shape_errors.c scene_errors.c \
-				parse_scene.c parse_shapes.c parse_elements.c parse_attributes.c \
-				parse_settings.c
-
-PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
-
-MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c matrix_inverse.c\
-				matrix_inverse2.c matrix_transformations.c
-MATH_SRC := $(addprefix math/, $(MATH_SRC))
-
-INTERSECTION_SRC = intersections.c reflections.c
-INTERSECTION_SRC := $(addprefix intersection/, $(INTERSECTION_SRC))
-
-LIGHTING_SRC = lighting.c camera.c
-LIGHTING_SRC := $(addprefix lighting/, $(LIGHTING_SRC))
 
 EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c collisions.c 
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
-SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) $(EDIT_MODE_SRC) \
-				free_utils.c print_utils.c color.c draw_scene.c render_scene.c \
-				main.c utils.c ui.c
+INTERSECTIONS_SRC = normal.c shape_intersections.c
+INTERSECTIONS_SRC := $(addprefix intersections/, $(INTERSECTIONS_SRC))
 
+MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c \
+				matrix_inverse.c matrix_inverse2.c transformation_matrices.c
+MATH_SRC := $(addprefix math/, $(MATH_SRC))
+
+PARSING_SRC = parse_utils.c shape_errors.c scene_errors.c \
+				parse_scene.c parse_shapes.c parse_elements.c \
+				parse_attributes.c parse_settings.c
+PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
+
+RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
+				transforms.c workers.c
+RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
+
+SHADING_SRC = color_operations.c phong.c reflections.c
+SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
+
+UI_SRC = arrow.c loading_bar.c marker.c shape_info.c
+UI_SRC := $(addprefix ui/, $(UI_SRC))
+
+UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
+		print_utils.c
+UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
+
+
+SRC = $(EDIT_MODE_SRC) $(INTERSECTIONS_SRC) $(MATH_SRC) $(PARSING_SRC) \
+	$(RENDERER_SRC) $(SHADING_SRC) $(UI_SRC) $(UTILS_SRC) main.c
 SRC := $(addprefix src/, $(SRC))
 
 OBJ_DIR = .obj

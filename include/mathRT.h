@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:38:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:38:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 18:03:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
 void	negate_vec(t_vector *res, const t_vector *v);
 void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
 
-void	reflect(t_vector *res, t_vector *in_vector, t_vector *normal);
+void	reflect_vector(t_vector *res, t_vector *in_vector, t_vector *normal);
 
 typedef float			t_mat4[4][4];
 typedef float			t_mat3[3][3];
@@ -48,6 +48,7 @@ typedef float			t_mat2[2][2];
 void	identity_matrix(t_mat4 *mat);
 void	transpose_matrix(t_mat4 *mat);
 void	translate_matrix(t_mat4 *mat, float x, float y, float z);
+void	scaling_matrix(t_mat4 *mat, float x, float y, float z);
 
 void	rotation_matrix_x(t_mat4 *mat, float r);
 void	rotation_matrix_y(t_mat4 *mat, float r);
