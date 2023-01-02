@@ -56,24 +56,25 @@ typedef struct s_intersections	t_intersections;
 struct s_intersections
 {
 	t_intersection	arr[100];
-	int			count;
+	int				count;
 };
 
-bool		is_sorted(t_intersections *arr);
-void		sort_intersections(t_intersections *arr);
+bool			is_sorted(t_intersections *arr);
+void			sort_intersections(t_intersections *arr);
 
-bool		intersect(t_shape *shape, const t_ray *ray, t_intersections *xs);
+bool			intersect(t_shape *shape, const t_ray *ray,
+					t_intersections *xs);
 
 t_intersection	*hit_skip_transparent(t_intersections *xs);
 t_intersection	*hit(t_intersections *xs);
 t_intersection	*hit_sorted(t_intersections *xs);
 
-void		check_axis(float *t_min, float *t_max, float origin,
-				float direction);
-void		ray_position(t_vector *pos, const t_ray *ray, float time);
+void			check_axis(float *t_min, float *t_max, float origin,
+					float direction);
+void			ray_position(t_vector *pos, const t_ray *ray, float time);
 
-t_vector	normal_at(const t_shape *shape, const t_vector *itx_point);
+t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
 
-void		ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
+void			ray_for_pixel(t_ray *ray, const t_camera *cam, int x, int y);
 
 #endif

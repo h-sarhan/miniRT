@@ -59,8 +59,8 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 			* scene->lights[light_idx].intensity);
 	// light attenuation
 	// float	distance_from_light = vec_distance(&scene->lights[light_idx].position, &itx->point);
-	// mult_color(diffuse, diffuse, (30 - distance_from_light) / (30 - 1));
-	// mult_color(specular, specular, (30 - distance_from_light) / (30 - 1));
+	// mult_color(diffuse, diffuse, (50 - distance_from_light) / (50 - 1));
+	// mult_color(specular, specular, (50 - distance_from_light) / (50 - 1));
 	return (true);
 }
 

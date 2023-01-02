@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:06:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 12:57:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 12:14:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int	get_color(t_worker *worker, int x, int y)
 {
 	int	bpp;
 
-	bpp = worker->scene->disp->bytes_per_pixel;
+	bpp = worker->scene->disp->bpp;
 	return (*(int *)(worker->addr + ((y * worker->width) + x) * bpp));
 }
 
@@ -158,6 +158,6 @@ void	set_color(t_worker *worker, int x, int y, int color)
 
 	if (x >= worker->width || y > worker->height || x < 0 || y < 0)
 		return ;
-	bpp = worker->scene->disp->bytes_per_pixel;
+	bpp = worker->scene->disp->bpp;
 	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
 }

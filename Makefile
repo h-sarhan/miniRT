@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/26 13:03:22 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/02 13:10:24 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 SRC = $(PARSING_SRC) $(MATH_SRC) $(INTERSECTION_SRC) $(LIGHTING_SRC) $(EDIT_MODE_SRC) \
 				free_utils.c print_utils.c color.c draw_scene.c render_scene.c \
-				main.c
+				main.c utils.c ui.c
 
 SRC := $(addprefix src/, $(SRC))
 
@@ -57,7 +57,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra -Werror -march=native -ggdb -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 

@@ -64,7 +64,6 @@ int		ft_strcmp_case(const char *s1, const char *s2);
 void	ft_swap(int *a, int *b);
 void	ft_swapd(float *a, float *b);
 
-
 typedef struct s_list
 {
 	void			*content;

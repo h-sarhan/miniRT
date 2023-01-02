@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:42:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 13:22:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ struct	s_mouse
 typedef struct s_settings	t_settings;
 struct s_settings
 {
-	int			display_h;
-	int			display_w;
+	int			disp_h;
+	int			disp_w;
 	int			render_h;
 	int			render_w;
 	int			edit_h;
@@ -102,5 +102,12 @@ void	free_scene(t_scene *scene);
 
 void	calculate_transforms(t_scene *scene);
 void	draw_scene(t_scene *scene);
+
+// ui.h
+void	draw_marker(t_scene *scene, int x, int y, int color);
+void	draw_arrow(t_scene *scene, int x, int y);
+void	perspective_projection(t_vector *point, const t_scene *scene);
+void	draw_shape_info(t_scene *scene);
+void	draw_shape_marker(t_scene *scene);
 
 #endif

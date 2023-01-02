@@ -31,7 +31,6 @@ struct s_worker
 	t_scene	*scene;
 };
 
-
 void	prepare_computations(t_scene *scene, t_intersection *intersection,
 			t_ray *ray, t_intersections *xs);
 
@@ -46,12 +45,11 @@ t_color	refracted_color(t_scene *scene, t_intersection *intersection,
 			int remaining, int light_idx);
 
 void	*render_scene_fast(t_worker *worker);
-int				get_color(t_worker *worker, int x, int y);
-void			set_color(t_worker *worker, int x, int y, int color);
+int		get_color(t_worker *worker, int x, int y);
+void	set_color(t_worker *worker, int x, int y, int color);
 
 t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray);
 
 void	get_iors(t_intersection *intersection, t_intersections *xs);
-
 
 #endif

@@ -45,7 +45,4 @@ int				color_avg(int c1, int c2);
 int				color_mix(int c1, int c2, float mix);
 int				color_difference(int c1, int c2);
 
-
-
-
 #endif

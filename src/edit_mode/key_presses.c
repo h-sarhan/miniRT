@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:32:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 12:49:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ void	deploy_flashbang(t_scene *scene)
 	int	x;
 
 	y = 0;
-	while (y < scene->settings.display_h)
+	while (y < scene->settings.disp_h)
 	{
 		x = 0;
-		while (x < scene->settings.display_w)
+		while (x < scene->settings.disp_w)
 		{
-			*(unsigned int *)(scene->disp->display_addr + (y * \
-			scene->settings.display_w + x) * scene->disp->bytes_per_pixel) = 0xffffff;
+			*(unsigned int *)(scene->disp->disp_addr + (y * \
+			scene->settings.disp_w + x) * scene->disp->bpp) = 0xffffff;
 			x++;
 		}
 		y++;
