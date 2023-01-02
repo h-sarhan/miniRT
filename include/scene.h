@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 13:22:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:24:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ struct s_settings
 	bool		camera_mode;
 	bool		edit_mode;
 	int			reflection_depth;
-	int			refraction_depth;
 	float		edit_scale;
 	float		render_scale;
 	bool		collisions;

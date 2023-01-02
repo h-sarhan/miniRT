@@ -6,18 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 20:19:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 13:38:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:30:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	prepare_computations(t_scene *scene, t_intersection *intersection,
-			t_ray *ray, t_intersections *xs)
+void	prepare_computations(t_intersection *intersection,
+			t_ray *ray)
 {
-	if (intersection->shape->props.transparency != 0
-		&& scene->settings.refraction_depth != 0)
-		get_iors(intersection, xs);
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->direction);
@@ -31,9 +28,6 @@ void	prepare_computations(t_scene *scene, t_intersection *intersection,
 	scale_vec(&intersection->over_point, &intersection->normal, EPSILON);
 	add_vec(&intersection->over_point, &intersection->point,
 		&intersection->over_point);
-	scale_vec(&intersection->under_point, &intersection->normal, EPSILON);
-	sub_vec(&intersection->under_point, &intersection->point,
-		&intersection->under_point);
 	reflect(&intersection->reflect_vec, &ray->direction, &intersection->normal);
 }
 

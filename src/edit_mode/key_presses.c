@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 12:49:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:29:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].props.shininess = 50;
 	scene->shapes[scene->count.shapes].props.specular = 0.8;
 	scene->shapes[scene->count.shapes].id = scene->count.shapes;
-	scene->shapes[scene->count.shapes].props.ior = 1;
 	ft_bzero(&scene->shapes[scene->count.shapes].orientation, sizeof(t_vector));
 	scene->shapes[scene->count.shapes].orientation.y = 1;
 	identity_matrix(&scene->shapes[scene->count.shapes].added_rots);

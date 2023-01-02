@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 10:17:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:26:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ struct s_intersect
 	t_vector	normal;
 	t_vector	eye;
 	t_vector	over_point;
-	t_vector	under_point;
 	t_vector	reflect_vec;
-	float		n1;
-	float		n2;
 	bool		inside;
 };
 
@@ -59,15 +56,10 @@ struct s_intersections
 	int				count;
 };
 
-bool			is_sorted(t_intersections *arr);
-void			sort_intersections(t_intersections *arr);
-
 bool			intersect(t_shape *shape, const t_ray *ray,
 					t_intersections *xs);
 
-t_intersection	*hit_skip_transparent(t_intersections *xs);
 t_intersection	*hit(t_intersections *xs);
-t_intersection	*hit_sorted(t_intersections *xs);
 
 void			check_axis(float *t_min, float *t_max, float origin,
 					float direction);

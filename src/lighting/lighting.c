@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 14:37:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:31:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,26 +90,14 @@ static t_color	get_lighting(t_scene *scene, t_intersection *itx, int light_idx)
 {
 	t_color	surface_color;
 	t_color	reflected;
-	t_color	refracted;
 	t_color	color;
-	float	reflectance;
 
 	ft_bzero(&color, sizeof(t_color));
 	surface_color = lighting(itx, scene, light_idx);
 	reflected = reflected_color(scene, itx, scene->settings.reflection_depth,
 			light_idx);
-	refracted = refracted_color(scene, itx, scene->settings.refraction_depth,
-			light_idx);
-	if (itx->shape->props.reflectiveness > 0
-		&& itx->shape->props.transparency > 0)
-	{
-		reflectance = schlick(itx);
-		mult_color(&reflected, &reflected, reflectance);
-		mult_color(&refracted, &refracted, (1 - reflectance));
-	}
 	add_colors(&color, &color, &surface_color);
 	add_colors(&color, &color, &reflected);
-	add_colors(&color, &color, &refracted);
 	return (color);
 }
 
@@ -120,17 +108,11 @@ t_color	calculate_lighting(t_intersections *arr, t_scene *scene, t_ray *ray)
 	t_color			final_color;
 	t_color			light_color;
 
-	if (scene->settings.refraction_depth != 0)
-	{
-		sort_intersections(arr);
-		itx = hit_sorted(arr);
-	}
-	else
-		itx = hit(arr);
+	itx = hit(arr);
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
-		prepare_computations(scene, itx, ray, arr);
+		prepare_computations(itx, ray);
 		light_idx = 0;
 		while (light_idx < scene->count.lights)
 		{

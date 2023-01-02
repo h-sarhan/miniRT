@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:08:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:23:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ struct s_shape_props
 	float			shininess;
 	float			reflectiveness;
 	float			distance_from_origin;
-	float			transparency;
-	float			ior;
 	t_color			color;
 	t_vector		rot;
 	t_vector		scale;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:12:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:27:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,6 @@ bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
 	scene->count.shapes++;
 	shape->props.diffuse = 0.9;
 	shape->props.specular = 0.9;
-	shape->props.ior = 1;
 	shape->props.shininess = 200;
 	identity_matrix(&shape->added_rots);
 	return (true);
