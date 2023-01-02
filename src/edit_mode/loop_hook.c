@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:38:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:02:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,9 @@ int	render_loop(t_scene *scene)
 {
 	if (scene->settings.camera_mode == true
 		&& scene->settings.edit_mode == true)
+	{
 		camera_controls(scene);
+	}
 	else if (scene->settings.edit_mode == true)
 	{
 		transform_object(scene);
@@ -350,11 +352,11 @@ int	render_loop(t_scene *scene)
 	}
 	if (scene->look_at.trigger == true && scene->settings.edit_mode == true)
 		look_at_animation(scene);
-	if (scene->look_at.trigger == false && scene->mouse.active == false
-		&& scene->settings.edit_mode == true && (scene->keys_held.w
-			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
-			|| scene->keys_held.up || scene->keys_held.right
-			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
+	if (scene->look_at.trigger == false && scene->settings.edit_mode == true
+			&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
+			|| scene->keys_held.d|| scene->keys_held.up
+			|| scene->keys_held.right || scene->keys_held.q
+			|| scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus))
 	{

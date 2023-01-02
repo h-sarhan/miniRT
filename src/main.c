@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 13:38:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 20:53:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,21 @@ void	init_settings(t_settings *settings)
 
 void	setup_hooks(t_scene *scene)
 {
+	int	i;
+
+	i = 0;
+	while (i < scene->count.shapes && scene->shapes[i].type == PLANE)
+		i++;
+	if (scene->shapes[i].type != PLANE)
+	{
+		scene->shapes[i].props.highlighted = true;
+		scene->shape_idx = i;
+	}
+	if (i == scene->count.shapes)
+	{
+		scene->shapes[0].props.highlighted = false;
+		scene->shape_idx = -1;
+	}
 	mlx_hook(scene->disp->win, 2, (1L << 0), key_press, scene);
 	mlx_hook(scene->disp->win, 3, (1L << 1), key_release, scene);
 	mlx_hook(scene->disp->win, 4, (1L << 2), mouse_down, scene);
@@ -92,11 +107,6 @@ void	setup_hooks(t_scene *scene)
 	mlx_loop_hook(scene->disp->mlx, render_loop, scene);
 }
 
-// To enable transparency
-// scene->shapes[0].props.transparency = 1;
-// scene->shapes[0].props.reflectiveness = 0.9;
-// scene->shapes[0].props.ior = 1.5;
-// scene->shapes[0].props.diffuse = 0;
 // ! Put this somewhere
 // ! free_scene(scene);
 int	main(int argc, char **argv)
@@ -113,7 +123,6 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	init_settings(&scene->settings);
-	scene->shapes[0].props.highlighted = true;
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	init_display(&disp, &scene->settings);
