@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:38:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 17:18:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ int	mouse_down(int key_code, int x, int y, t_scene *scene)
 	t_intersection	*itx;
 	int				shape_idx;
 
-	scene->mouse.key = key_code;
-	if (scene->settings.edit_mode == false
-		|| scene->mouse.key != LEFT_MOUSE_DOWN)
+	if (scene->settings.edit_mode == false)
 		return (0);
 	if (x < 0 || y < 0 || x >= scene->settings.disp_w
 		|| y >= scene->settings.disp_h)
 		return (0);
+	scene->mouse.key = key_code;
 	scene->mouse.x = x;
 	scene->mouse.y = y;
 	ray_for_pixel(&mouse_selection, &scene->camera,
