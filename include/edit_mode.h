@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:06:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:10:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,6 @@ int		mouse_up(int key_code, int x, int y, t_scene *scene);
 int		key_press(int key, t_scene *scene);
 int		key_release(int key, t_scene *scene);
 int		render_loop(t_scene *scene);
+int		close_window(t_scene *scene);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/11/22 16:05:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:08:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	free_split_array(char **arr)
  */
 void	free_scene(t_scene *scene)
 {
+	printf("FREE FUNCTION DOES NOT FREE EVERYTHING\n");
 	if (scene->lights)
 		free(scene->lights);
 	if (scene->shapes)

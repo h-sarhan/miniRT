@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 15:55:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:13:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,18 @@ void	toggle_shape(t_scene *scene)
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
 
+int	close_window(t_scene *scene)
+{
+	printf("QUITTING PROGRAM!\n");
+	free_scene(scene);
+	mlx_destroy_image(scene->disp->mlx, scene->disp->display_img);
+	mlx_destroy_image(scene->disp->mlx, scene->disp->render_img);
+	mlx_destroy_image(scene->disp->mlx, scene->disp->edit_img);
+	mlx_destroy_window(scene->disp->mlx, scene->disp->win);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
+
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
@@ -279,7 +291,10 @@ int	key_press(int key, t_scene *scene)
 	if (key == KEY_R)
 		toggle_reflections(scene);
 	if (key == KEY_ESC)
-		deploy_flashbang(scene);
+	{
+		close_window(scene);
+		return (0);
+	}
 	if (key == KEY_C && scene->settings.edit_mode == true)
 		scene->settings.camera_mode = !scene->settings.camera_mode;
 	toggle_keys_held(key, scene, true);

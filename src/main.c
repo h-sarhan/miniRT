@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 20:53:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:10:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,6 @@ void	init_display(t_display *disp, t_settings *settings)
 			&disp->bpp, &disp->line_length, &disp->endian);
 	disp->edit_addr = mlx_get_data_addr(disp->edit_img, &disp->bpp,
 			&disp->line_length, &disp->endian);
-	disp->info_img = mlx_new_image(disp->mlx, settings->disp_w * 0.16,
-			settings->disp_h);
-	disp->info_addr = mlx_get_data_addr(disp->info_img, &disp->bpp,
-			&disp->line_length, &disp->endian);
 	disp->bpp /= 8;
 }
 
@@ -104,6 +100,7 @@ void	setup_hooks(t_scene *scene)
 	mlx_hook(scene->disp->win, 3, (1L << 1), key_release, scene);
 	mlx_hook(scene->disp->win, 4, (1L << 2), mouse_down, scene);
 	mlx_hook(scene->disp->win, 5, (1L << 3), mouse_up, scene);
+	mlx_hook(scene->disp->win, 17, 0, close_window, scene);
 	mlx_loop_hook(scene->disp->mlx, render_loop, scene);
 }
 

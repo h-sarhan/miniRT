@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 00:39:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 12:40:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 21:08:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ struct	s_display
 	char	*disp_addr;
 	void	*render_img;
 	char	*render_addr;
-	void	*info_img;
-	char	*info_addr;
 	int		bpp;
 	int		line_length;
 	int		endian;
