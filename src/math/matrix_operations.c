@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:33:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,14 @@ void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2)
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec)
 {
-	res->x = vec->x * (*mat)[0][0] + vec->y * (*mat)[0][1] + vec->z * (*mat)[0][2] + vec->w * (*mat)[0][3];
-	res->y = vec->x * (*mat)[1][0] + vec->y * (*mat)[1][1] + vec->z * (*mat)[1][2] + vec->w * (*mat)[1][3];
-	res->z = vec->x * (*mat)[2][0] + vec->y * (*mat)[2][1] + vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
-	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] + vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
+	res->x = vec->x * (*mat)[0][0] + vec->y * (*mat)[0][1] \
+	+ vec->z * (*mat)[0][2] + vec->w * (*mat)[0][3];
+	res->y = vec->x * (*mat)[1][0] + vec->y * (*mat)[1][1] \
+	+ vec->z * (*mat)[1][2] + vec->w * (*mat)[1][3];
+	res->z = vec->x * (*mat)[2][0] + vec->y * (*mat)[2][1] \
+	+ vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
+	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] \
+	+ vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
 }
 
 /**

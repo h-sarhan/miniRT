@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 20:39:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:14:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,23 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	return (false);
 }
 
-bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *sphere)
+// Sphere intersection that does not need ray to be transformed
+bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
+	t_shape *sphere)
 {
 	t_vector	oc;
+	float		b;
+	float		c;
+	float		h;
+
 	sub_vec(&oc, &ray->origin, &sphere->origin);
-	float	b = dot_product(&oc, &ray->direction);
-	float	c = dot_product(&oc, &oc) - sphere->props.radius_squared;
-	float	h = b * b - c;
+	b = dot_product(&oc, &ray->direction);
+	c = dot_product(&oc, &oc) - sphere->props.radius_squared;
+	h = b * b - c;
 	if (h < 0.0)
 		return (false);
 	h = sqrt(h);
-	xs->arr[xs->count].time = - b - h;
+	xs->arr[xs->count].time = -b - h;
 	xs->arr[xs->count].shape = sphere;
 	xs->arr[xs->count + 1].time = -b + h;
 	xs->arr[xs->count + 1].shape = sphere;
@@ -69,12 +75,14 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs, t_shape *spher
 	return (true);
 }
 
-bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *sphere)
+bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs,
+		t_shape *sphere)
 {
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
+
 	transf_ray->origin.w = 0;
 	a = dot_product(&transf_ray->direction, &transf_ray->direction);
 	b = 2 * dot_product(&transf_ray->direction, &transf_ray->origin);
@@ -92,25 +100,32 @@ bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs, t_shape *sphere)
 	xs->count += 2;
 	return (true);
 }
-bool	within_cylinder_radius(t_ray *ray, float t)
+
+bool	within_cylinder_radius(const t_ray *ray, float t)
 {
-	float x = ray->origin.x + ray->direction.x * t;
-	float z = ray->origin.z + ray->direction.z * t;
+	float	x;
+	float	z;
+
+	x = ray->origin.x + ray->direction.x * t;
+	z = ray->origin.z + ray->direction.z * t;
 	if ((x * x + z * z) <= 1)
 		return (true);
 	return (false);
 }
 
-bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
+bool	check_cylinder_caps(const t_ray *ray, t_shape *shape,
+		t_intersections *xs)
 {
 	bool	intersected;
+	float	cylinder_bottom;
+	float	cylinder_top;
+	float	t;
 
-	float cylinder_bottom = (shape->props.height / 2);
-	float cylinder_top = -(shape->props.height / 2);
+	cylinder_bottom = (shape->props.height / 2);
+	cylinder_top = -(shape->props.height / 2);
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
-		float t;
 		t = (cylinder_top - ray->origin.y) / ray->direction.y;
 		if (within_cylinder_radius(ray, t))
 		{
@@ -131,25 +146,30 @@ bool	check_cylinder_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 	return (intersected);
 }
 
-bool	within_cone_radius(t_ray *ray, float t, float cone_val)
+bool	within_cone_radius(const t_ray *ray, float t, float cone_val)
 {
-	float x = ray->origin.x + ray->direction.x * t;
-	float z = ray->origin.z + ray->direction.z * t;
+	float	x;
+	float	z;
+
+	x = ray->origin.x + ray->direction.x * t;
+	z = ray->origin.z + ray->direction.z * t;
 	if (x * x + z * z <= fabs(cone_val) * fabs(cone_val))
 		return (true);
 	return (false);
 }
 
-bool	check_cone_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
+bool	check_cone_caps(const t_ray *ray, t_shape *shape, t_intersections *xs)
 {
 	bool	intersected;
+	float	cone_top;
+	float	cone_bottom;
+	float	t;
 
-	float cone_top= (0);
-	float cone_bottom = -(shape->props.height / 2);
+	cone_top = 0;
+	cone_bottom = -(shape->props.height / 2);
 	intersected = false;
 	if (fabs(ray->direction.y) > EPSILON)
 	{
-		float t;
 		t = (cone_top - ray->origin.y) / ray->direction.y;
 		if (within_cone_radius(ray, t, cone_top))
 		{
@@ -169,7 +189,6 @@ bool	check_cone_caps(t_ray *ray, t_shape *shape, t_intersections *xs)
 	}
 	return (intersected);
 }
-
 
 t_intersection	*hit(t_intersections *xs)
 {
@@ -205,7 +224,8 @@ t_intersection	*hit_skip_transparent(t_intersections *xs)
 	idx = 0;
 	while (i < xs->count)
 	{
-		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time && xs->arr[i].shape->props.transparency <= 0.5)
+		if (xs->arr[i].time >= 0 && xs->arr[i].time < min_time
+			&& xs->arr[i].shape->props.transparency <= 0.5)
 		{
 			min_time = xs->arr[i].time;
 			idx = i;
@@ -233,11 +253,14 @@ t_intersection	*hit_sorted(t_intersections *xs)
 
 t_vector	cylinder_normal(const t_shape *shape, t_vector *point)
 {
-	(void)shape;
-	float		distance = point->x * point->x + point->z * point->z;
-	float		cylinder_bottom = (shape->props.height / 2);
-	float		cylinder_top = -(shape->props.height / 2);
+	float		distance;
+	float		cylinder_bottom;
+	float		cylinder_top;
 	t_vector	normal;
+
+	distance = point->x * point->x + point->z * point->z;
+	cylinder_bottom = (shape->props.height / 2);
+	cylinder_top = -(shape->props.height / 2);
 	if (distance < 1 && (point->y >= cylinder_bottom - EPSILON))
 	{
 		normal.x = 0;
@@ -260,17 +283,23 @@ t_vector	cylinder_normal(const t_shape *shape, t_vector *point)
 		normal.y = 0;
 		normal.z = point->z;
 		normal.w = 0;
+		normalize_vec(&normal);
 		return (normal);
 	}
 }
 
 t_vector	cone_normal(const t_shape *shape, t_vector *point)
 {
-	float		distance = point->x * point->x + point->z * point->z;
-	float		radius = fabs(point->y) * fabs(point->y);
-	float		cone_bottom = (0);
-	float		cone_top = -(shape->props.height / 2);
+	float		distance;
+	float		radius;
+	float		cone_bottom;
+	float		cone_top;
 	t_vector	normal;
+
+	distance = point->x * point->x + point->z * point->z;
+	radius = fabs(point->y) * fabs(point->y);
+	cone_bottom = (0);
+	cone_top = -(shape->props.height / 2);
 	if (distance < radius && (point->y >= cone_bottom - EPSILON))
 	{
 		normal.x = 0;
@@ -296,6 +325,7 @@ t_vector	cone_normal(const t_shape *shape, t_vector *point)
 		normal.y = distance;
 		normal.z = point->z;
 		normal.w = 0;
+		normalize_vec(&normal);
 		return (normal);
 	}
 }
@@ -304,6 +334,8 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	object_normal;
 	t_vector	world_normal;
+	t_vector	local_point;
+	t_vector	local_normal;
 	float		maxc;
 
 	if (shape->type == SPHERE)
@@ -312,7 +344,6 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 		object_normal.w = 0;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
-		normalize_vec(&world_normal);
 	}
 	if (shape->type == PLANE)
 	{
@@ -322,42 +353,29 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 		object_normal.w = 0;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
-		normalize_vec(&world_normal);
 	}
 	if (shape->type == CYLINDER)
 	{
-		t_vector	local_point;
 		mat_vec_multiply(&local_point, &shape->inv_transf, itx_point);
 		local_point.w = 0;
-		t_vector	local_normal;
 		local_normal = cylinder_normal(shape, &local_point);
-		normalize_vec(&local_normal);
-		// Calculate this
-		t_vector	world_normal;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &local_normal);
 		world_normal.w = 0;
-		normalize_vec(&world_normal);
-		return (world_normal);
 	}
 	if (shape->type == CONE)
 	{
-		t_vector	local_point;
 		mat_vec_multiply(&local_point, &shape->inv_transf, itx_point);
 		local_point.w = 0;
-		t_vector	local_normal;
 		local_normal = cone_normal(shape, &local_point);
-		normalize_vec(&local_normal);
-		t_vector	world_normal;
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &local_normal);
 		world_normal.w = 0;
-		normalize_vec(&world_normal);
-		return (world_normal);
 	}
 	if (shape->type == CUBE)
 	{
 		mat_vec_multiply(&object_normal, &shape->inv_transf, itx_point);
 		object_normal.w = 0;
-		maxc = max3(fabs(object_normal.x), fabs(object_normal.y), fabs(object_normal.z));
+		maxc = max3(fabs(object_normal.x),
+				fabs(object_normal.y), fabs(object_normal.z));
 		if (maxc == fabs(object_normal.x))
 		{
 			object_normal.y = 0;
@@ -373,10 +391,11 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 			object_normal.x = 0;
 			object_normal.y = 0;
 		}
+		normalize_vec(&object_normal);
 		mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 		world_normal.w = 0;
-		normalize_vec(&world_normal);
 	}
+	normalize_vec(&world_normal);
 	return (world_normal);
 }
 
@@ -400,36 +419,31 @@ float	min3(float n1, float n2, float n3)
 
 bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
-	float	xtmin;
-	float	xtmax;
-	float	ytmin;
-	float	ytmax;
-	float	ztmin;
-	float	ztmax;
-	float	tmin;
-	float	tmax;
-	
-	check_axis(&xtmin, &xtmax, ray->origin.x, ray->direction.x);
-	check_axis(&ytmin, &ytmax, ray->origin.y, ray->direction.y);
-	check_axis(&ztmin, &ztmax, ray->origin.z, ray->direction.z);
-	tmin = max3(xtmin, ytmin, ztmin);
-	tmax = min3(xtmax, ytmax, ztmax);
+	t_vector	tmin_vec;
+	t_vector	tmax_vec;
+	float		tmin;
+	float		tmax;
+
+	check_axis(&tmin_vec.x, &tmax_vec.x, ray->origin.x, ray->direction.x);
+	check_axis(&tmin_vec.y, &tmax_vec.y, ray->origin.y, ray->direction.y);
+	check_axis(&tmin_vec.z, &tmax_vec.z, ray->origin.z, ray->direction.z);
+	tmin = max3(tmin_vec.x, tmin_vec.y, tmin_vec.z);
+	tmax = min3(tmax_vec.x, tmax_vec.y, tmax_vec.z);
 	if (tmin > tmax)
 		return (false);
-	xs->arr[xs->count].time = tmin;	
-	xs->arr[xs->count].shape = shape;	
-	xs->arr[xs->count + 1].time = tmax;	
+	xs->arr[xs->count].time = tmin;
+	xs->arr[xs->count].shape = shape;
+	xs->arr[xs->count + 1].time = tmax;
 	xs->arr[xs->count + 1].shape = shape;
-	xs->count += 2;	
+	xs->count += 2;
 	return (true);
 }
 
 void	check_axis(float *t_min, float *t_max, float origin, float direction)
 {
-	float		tmin_numerator;
-	float		tmax_numerator;
-	// float		dir_mag;
-	
+	float	tmin_numerator;
+	float	tmax_numerator;
+
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
 	if (fabs(direction) >= EPSILON)
@@ -446,132 +460,144 @@ void	check_axis(float *t_min, float *t_max, float origin, float direction)
 		ft_swapd(t_min, t_max);
 }
 
-bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
+// Ray intersection that does not require the ray to be transformed
+bool	intersect_plane_fast(const t_ray *ray, t_shape *shape,
+		t_intersections *xs)
 {
-	t_ray	transf_ray;
+	double	denom;
+
+	denom = dot_product(&ray->direction, &shape->orientation);
+	if (fabs(denom) < 0.00001)
+		return (false);
+	xs->arr[xs->count].time = -(dot_product(&ray->origin, &shape->orientation) \
+		- shape->props.distance_from_origin) / denom;
+	xs->arr[xs->count].shape = shape;
+	xs->count++;
+	return (true);
+}
+
+bool	intersect_cylinder(const t_ray *ray, t_shape *shape,
+	t_intersections *xs)
+{
+	bool	intersected;
 	float	a;
 	float	b;
 	float	c;
 	float	discriminant;
+	float	t0;
+	float	t1;
+	float	y0;
+	float	y1;
 
-	if (shape->type == SPHERE)
+	intersected = check_cylinder_caps(ray, shape, xs);
+	a = ray->direction.x * ray->direction.x + \
+		ray->direction.z * ray->direction.z;
+	if (fabs(a) < 0.0001)
+		return (intersected);
+	b = 2 * ray->direction.x * ray->origin.x + \
+		2 * ray->direction.z * ray->origin.z;
+	c = ray->origin.x * ray->origin.x + ray->origin.z * ray->origin.z - 1;
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return (intersected);
+	a *= 2;
+	b *= -1;
+	discriminant = sqrt(discriminant);
+	t0 = (b - discriminant) / (a);
+	t1 = (b + discriminant) / (a);
+	if (t0 > t1)
+		ft_swapd(&t0, &t1);
+	y0 = ray->origin.y + t0 * ray->direction.y;
+	if (y0 > (-shape->props.height / 2) && y0 < (shape->props.height / 2))
 	{
-		return (intersect_sphere_fast(ray, xs, shape));
-	}
-	if (shape->type == PLANE)
-	{
-		double	denom = dot_product(&ray->direction, &shape->orientation);
-		if (fabs(denom) < 0.00001)
-			return (false);
-		xs->arr[xs->count].time = -(dot_product(&ray->origin, &shape->orientation) \
-			- shape->props.distance_from_origin) / denom;
+		xs->arr[xs->count].time = t0;
 		xs->arr[xs->count].shape = shape;
 		xs->count++;
-		return (true);
+		intersected = true;
 	}
+	y1 = ray->origin.y + t1 * ray->direction.y;
+	if (y1 > (-shape->props.height / 2) && y1 < (shape->props.height / 2))
+	{
+		xs->arr[xs->count].time = t1;
+		xs->arr[xs->count].shape = shape;
+		xs->count++;
+		intersected = true;
+	}
+	return (intersected);
+}
+
+bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
+{
+	bool	intersected;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+	float	t0;
+	float	t1;
+	float	y0;
+	float	y1;
+
+	intersected = check_cone_caps(ray, shape, xs);
+	a = ray->direction.x * ray->direction.x \
+		- ray->direction.y * ray->direction.y \
+		+ ray->direction.z * ray->direction.z;
+	b = 2 * ray->direction.x * ray->origin.x - \
+		2 * ray->direction.y * ray->origin.y + \
+		2 * ray->direction.z * ray->origin.z;
+	c = ray->origin.x * ray->origin.x - \
+		ray->origin.y * ray->origin.y + \
+		ray->origin.z * ray->origin.z;
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return (intersected);
+	if (fabs(a) < 0.000001 && fabs(b) > 0.1)
+	{
+		xs->arr[xs->count].time = -c / (2 * b);
+		xs->arr[xs->count].shape = shape;
+		xs->count++;
+		return (intersected);
+	}
+	discriminant = sqrt(discriminant);
+	t0 = (-b - discriminant) / (a * 2);
+	t1 = (-b + discriminant) / (a * 2);
+	if (t0 > t1)
+	{
+		ft_swapd(&t0, &t1);
+	}
+	y0 = ray->origin.y + t0 * ray->direction.y;
+	if (y0 > (-shape->props.height / 2) && y0 < (0))
+	{
+		xs->arr[xs->count].time = t0;
+		xs->arr[xs->count].shape = shape;
+		xs->count++;
+		intersected = true;
+	}
+	y1 = ray->origin.y + t1 * ray->direction.y;
+	if (y1 > (-shape->props.height / 2) && y1 < (0))
+	{
+		xs->arr[xs->count].time = t1;
+		xs->arr[xs->count].shape = shape;
+		xs->count++;
+		intersected = true;
+	}
+	return (intersected);
+}
+
+bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
+{
+	t_ray	transf_ray;
+
+	if (shape->type == SPHERE)
+		return (intersect_sphere_fast(ray, xs, shape));
+	if (shape->type == PLANE)
+		return (intersect_plane_fast(ray, shape, xs));
 	transform_ray(&transf_ray, ray, shape);
-	// if (shape->type == SPHERE)
-	// {
-	// 	return (intersect_sphere(&transf_ray, xs, shape));
-	// }
-	// if (shape->type == PLANE)
-	// {
-	// 	if (fabs(transf_ray.direction.y) < 0.00001)
-	// 		return (false);
-	// 	xs->arr[xs->count].time = -transf_ray.origin.y / transf_ray.direction.y;
-	// 	xs->arr[xs->count].shape = shape;
-	// 	xs->count++;
-	// 	return (true);
-	// }
 	if (shape->type == CYLINDER)
-	{
-		bool	intersected = check_cylinder_caps(&transf_ray, shape, xs);
-		a = transf_ray.direction.x * transf_ray.direction.x + transf_ray.direction.z * transf_ray.direction.z;
-		if (fabs(a) < 0.0001)
-		{
-			return (intersected);
-		}
-		b = 2 * transf_ray.direction.x * transf_ray.origin.x + 2 * transf_ray.direction.z * transf_ray.origin.z;
-		c = transf_ray.origin.x * transf_ray.origin.x + transf_ray.origin.z * transf_ray.origin.z - 1;
-		discriminant = b * b - 4 * a * c;
-		if (discriminant < 0)
-		{
-			return (intersected);
-		}
-		a *= 2;
-		b *= -1;
-		discriminant = sqrt(discriminant);
-		float t0 = (b - discriminant) / (a);
-		float t1 = (b + discriminant) / (a);
-		if (t0 > t1)
-		{
-			ft_swapd(&t0, &t1);
-		}
-		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
-		if (y0 > (-shape->props.height / 2) && y0 < (shape->props.height / 2))
-		{
-			xs->arr[xs->count].time = t0;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		float	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
-		if (y1 > (-shape->props.height / 2) && y1 < (shape->props.height / 2))
-		{
-			xs->arr[xs->count].time = t1;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		return (intersected);
-	}
+		return (intersect_cylinder(&transf_ray, shape, xs));
 	if (shape->type == CONE)
-	{
-		bool	intersected = check_cone_caps(&transf_ray, shape, xs);
-		a = transf_ray.direction.x * transf_ray.direction.x - transf_ray.direction.y * transf_ray.direction.y + transf_ray.direction.z * transf_ray.direction.z;
-		b = 2 * transf_ray.direction.x * transf_ray.origin.x - 2 * transf_ray.direction.y * transf_ray.origin.y + 2 * transf_ray.direction.z * transf_ray.origin.z;
-		c = transf_ray.origin.x * transf_ray.origin.x - transf_ray.origin.y * transf_ray.origin.y + transf_ray.origin.z * transf_ray.origin.z;
-		discriminant = b * b - 4 * a * c;
-		if (discriminant < 0)
-			return (intersected);
-		if (fabs(a) < 0.000001 && fabs(b) > 0.1)
-		{
-			xs->arr[xs->count].time = - c / (2 * b);
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			return (intersected);
-		}
-		// if (fabs(a) < EPSILON)
-		// 	return (intersected);
-		discriminant = sqrt(discriminant);
-		float t0 = (-b - discriminant) / (a * 2);
-		float t1 = (-b + discriminant) / (a * 2);
-		if (t0 > t1)
-		{
-			ft_swapd(&t0, &t1);
-		}
-		
-		float	y0 = transf_ray.origin.y + t0 * transf_ray.direction.y;
-		if (y0 > (-shape->props.height / 2) && y0 < (0))
-		{
-			xs->arr[xs->count].time = t0;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		float	y1 = transf_ray.origin.y + t1 * transf_ray.direction.y;
-		if (y1 > (-shape->props.height / 2) && y1 < (0))
-		{
-			xs->arr[xs->count].time = t1;
-			xs->arr[xs->count].shape = shape;
-			xs->count++;
-			intersected = true;
-		}
-		return (intersected);
-	}
+		return (intersect_cone(&transf_ray, shape, xs));
 	else if (shape->type == CUBE)
-	{
 		return (intersect_cube(shape, &transf_ray, xs));
-	}
 	return (true);
 }

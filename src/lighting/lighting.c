@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 12:39:00 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 19:19:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:37:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ t_color	get_ambient(t_color *effective_color,
 	return (ambient);
 }
 
+// light attenuation example code
+// float	distance_from_light = distance from itx_point to light pos
+// mult_color(diffuse, diffuse, (50 - distance_from_light) / (50 - 1));
+// mult_color(specular, specular, (50 - distance_from_light) / (50 - 1));
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_color *diffuse, t_color *effective_color,
 	t_color *specular)
@@ -46,7 +50,8 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	light_dot_normal = dot_product(&light_v, &itx->normal);
 	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point))
 		return (false);
-	mult_color(diffuse, effective_color, itx->shape->props.diffuse * light_dot_normal
+	mult_color(diffuse, effective_color,
+		itx->shape->props.diffuse * light_dot_normal
 		* scene->lights[light_idx].intensity);
 	negate_vec(&light_v, &light_v);
 	reflect(&reflect_v, &light_v, &itx->normal);
@@ -55,12 +60,9 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 		ft_bzero(specular, sizeof(t_color));
 	else
 		mult_color(specular, &scene->lights[light_idx].color,
-			itx->shape->props.specular * pow(reflect_dot_eye, itx->shape->props.shininess)
+			itx->shape->props.specular * \
+			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
-	// light attenuation
-	// float	distance_from_light = vec_distance(&scene->lights[light_idx].position, &itx->point);
-	// mult_color(diffuse, diffuse, (50 - distance_from_light) / (50 - 1));
-	// mult_color(specular, specular, (50 - distance_from_light) / (50 - 1));
 	return (true);
 }
 
@@ -70,7 +72,7 @@ t_color	lighting(t_intersection *itx, t_scene *scene, int light_idx)
 	t_color		diffuse;
 	t_color		specular;
 	t_color		result;
-	
+
 	blend_colors(&effective_color, &itx->shape->props.color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &diffuse,
@@ -98,7 +100,8 @@ static t_color	get_lighting(t_scene *scene, t_intersection *itx, int light_idx)
 			light_idx);
 	refracted = refracted_color(scene, itx, scene->settings.refraction_depth,
 			light_idx);
-	if (itx->shape->props.reflectiveness > 0 && itx->shape->props.transparency > 0)
+	if (itx->shape->props.reflectiveness > 0
+		&& itx->shape->props.transparency > 0)
 	{
 		reflectance = schlick(itx);
 		mult_color(&reflected, &reflected, reflectance);

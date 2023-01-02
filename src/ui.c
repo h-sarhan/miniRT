@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 12:48:35 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 14:15:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:28:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	left_right_arrows(t_scene *scene, int x, int y)
 	int		w;
 	int		h;
 
+	img = NULL;
 	if (x <= 0 && y > 0 && y < scene->settings.disp_h)
 	{
 		img = mlx_xpm_file_to_image(scene->disp->mlx,
@@ -73,6 +74,7 @@ void	up_down_arrows(t_scene *scene, int x, int y)
 	int		w;
 	int		h;
 
+	img = NULL;
 	if (y <= 0 && x >= 0 && x < scene->settings.disp_w)
 	{
 		img = mlx_xpm_file_to_image(scene->disp->mlx,
@@ -100,6 +102,7 @@ void	bottom_corner_arrows(t_scene *scene, int x, int y)
 	int		w;
 	int		h;
 
+	img = NULL;
 	if (x <= 0 && y >= scene->settings.disp_h)
 	{
 		img = mlx_xpm_file_to_image(scene->disp->mlx,
@@ -127,6 +130,7 @@ void	top_corner_arrows(t_scene *scene, int x, int y)
 	int		w;
 	int		h;
 
+	img = NULL;
 	if (x >= scene->settings.disp_w && y <= 0)
 	{
 		img = mlx_xpm_file_to_image(scene->disp->mlx,

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 13:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 13:04:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:16:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	remove_element_at(t_shape **containers, int idx, int *count)
 {
-	int i;
+	int	i;
 
 	for(i = idx; i < *count - 1; i++)
 	{
@@ -59,7 +59,6 @@ void	get_iors(t_intersection *intersection, t_intersections *xs)
 		if (includes_shape(containers, xs->arr[i].shape, count) == true)
 		{
 			remove_element_at(containers, i, &count);
-			// i++;
 		}
 		else
 		{

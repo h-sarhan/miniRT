@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 10:43:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:34:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,9 +160,11 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 	t_vector	ax;
 	float		angle;
 
-	if (shape->orientation.x == 0 && fabs(shape->orientation.y - 1) < 0.001 && shape->orientation.z == 0)
+	if (shape->orientation.x == 0 && fabs(shape->orientation.y - 1) < 0.001
+		&& shape->orientation.z == 0)
 		return ;
-	if (shape->orientation.x == 0 && fabs(shape->orientation.y + 1) < 0.001 && shape->orientation.z == 0)
+	if (shape->orientation.x == 0 && fabs(shape->orientation.y + 1) < 0.001
+		&& shape->orientation.z == 0)
 	{
 		rotation_matrix_x(rot_transform, -M_PI);
 		return ;
@@ -186,7 +188,7 @@ void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
 	t_mat4	temp;
 
 	mat_multiply(&shape->transf, translate, &shape->added_rots);
-	ft_memcpy(&temp, &shape->transf, sizeof(t_mat4));	
+	ft_memcpy(&temp, &shape->transf, sizeof(t_mat4));
 	mat_multiply(&shape->transf, &temp, rot);
 	ft_memcpy(translate, &shape->transf, sizeof(t_mat4));
 	mat_multiply(&shape->transf, translate, scale);
@@ -222,7 +224,8 @@ void	calculate_transforms(t_scene *scene)
 			scaling_matrix(&scale, scene->shapes[i].props.scale.x,
 				1, scene->shapes[i].props.scale.z);
 		if (scene->shapes[i].type == PLANE
-			|| scene->shapes[i].type == CYLINDER || scene->shapes[i].type == CONE)
+			|| scene->shapes[i].type == CYLINDER
+			|| scene->shapes[i].type == CONE)
 			calculate_orientation(&rot, &scene->shapes[i]);
 		translate_matrix(&translate, scene->shapes[i].origin.x,
 			scene->shapes[i].origin.y, scene->shapes[i].origin.z);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:27:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 15:12:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,8 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
 		parse_success = false;
 	*success = parse_success;
 	shape->props.reflectiveness = 0.05;
-	shape->props.distance_from_origin = dot_product(&shape->orientation, &shape->origin);
+	shape->props.distance_from_origin = \
+		dot_product(&shape->orientation, &shape->origin);
 }
 
 /**

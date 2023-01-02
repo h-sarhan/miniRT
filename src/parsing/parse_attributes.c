@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:32:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 			printf(YELLOW"The z value is out of range\n"RESET);
 		if (vec_magnitude(orientation) <= EPSILON)
 			printf(YELLOW"The orientation vector cannot be the zero vector"
-			"\n"RESET);
+				"\n"RESET);
 		return (true);
 	}
 	return (false);

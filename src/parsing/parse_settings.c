@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:37:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/02 14:27:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_strjoin_free(char *s1, char *s2, int fre)
 char	*ft_strtrim_free(char *s, char *set)
 {
 	char	*str;
-	
+
 	if (s == NULL)
 		return (NULL);
 	str = ft_strtrim(s, set);
@@ -40,7 +40,7 @@ char	*ft_strtrim_free(char *s, char *set)
 bool	is_settings(const char *line)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (line[i] != '\0')
 	{
@@ -55,40 +55,39 @@ bool	is_settings(const char *line)
 
 bool	is_valid_key(const char *key)
 {
-	if (key != NULL && (ft_strcmp(key, "reflectiveness") == 0 ||
-		ft_strcmp(key, "diffuse") == 0 ||
-		ft_strcmp(key, "specular") == 0 ||
-		ft_strcmp(key, "shininess") == 0 ||
-		ft_strcmp(key, "rotX") == 0 ||
-		ft_strcmp(key, "rotY") == 0 ||
-		ft_strcmp(key, "rotZ") == 0 ||
-		ft_strcmp(key, "scaleX") == 0 ||
-		ft_strcmp(key, "scaleY") == 0 ||
-		ft_strcmp(key, "scaleZ") == 0 ||
-		ft_strcmp(key, "color") == 0))
+	if (key != NULL && (ft_strcmp(key, "reflectiveness") == 0
+			|| ft_strcmp(key, "diffuse") == 0
+			|| ft_strcmp(key, "specular") == 0
+			|| ft_strcmp(key, "shininess") == 0
+			|| ft_strcmp(key, "rotX") == 0
+			|| ft_strcmp(key, "rotY") == 0
+			|| ft_strcmp(key, "rotZ") == 0
+			|| ft_strcmp(key, "scaleX") == 0
+			|| ft_strcmp(key, "scaleY") == 0
+			|| ft_strcmp(key, "scaleZ") == 0
+			|| ft_strcmp(key, "color") == 0))
 		return (true);
 	return (false);
 }
 
 bool	is_valid_color(const char *color)
 {
-	if (
-		ft_strcmp_case(color, "blue") == 0 ||
-		ft_strcmp_case(color, "red") == 0 ||
-		ft_strcmp_case(color, "purple") == 0 ||
-		ft_strcmp_case(color, "green") == 0 ||
-		ft_strcmp_case(color, "yellow") == 0 ||
-		ft_strcmp_case(color, "pink") == 0 ||
-		ft_strcmp_case(color, "black") == 0 ||
-		ft_strcmp_case(color, "gray") == 0 ||
-		ft_strcmp_case(color, "white") == 0 ||
-		ft_strcmp_case(color, "cyan") == 0 ||
-		ft_strcmp_case(color, "orange") == 0 
-	)
+	if (ft_strcmp_case(color, "blue") == 0
+		|| ft_strcmp_case(color, "red") == 0
+		|| ft_strcmp_case(color, "purple") == 0
+		|| ft_strcmp_case(color, "green") == 0
+		|| ft_strcmp_case(color, "yellow") == 0
+		|| ft_strcmp_case(color, "pink") == 0
+		|| ft_strcmp_case(color, "black") == 0
+		|| ft_strcmp_case(color, "gray") == 0
+		|| ft_strcmp_case(color, "white") == 0
+		|| ft_strcmp_case(color, "cyan") == 0
+		|| ft_strcmp_case(color, "orange") == 0)
 		return (true);
 	printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-				YELLOW"`%s` is not a valid value\n"MAGENTA
-				"Available colors are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n"RESET, "color", color, color);
+		YELLOW"`%s` is not a valid value\n"MAGENTA
+		"Available colors are BLUE, RED, PURPLE, GREEN,"
+		" YELLOW, PINK, BLACK, GRAY\n"RESET, "color", color, color);
 	return (false);
 }
 
@@ -100,9 +99,9 @@ bool	is_valid_val(const char *key, const char *val)
 	success = true;
 	if (val == NULL || ft_strlen(val) == 0)
 		return (false);
-	if (ft_strcmp(key, "reflectiveness") == 0 ||
-		ft_strcmp(key, "diffuse") == 0 ||
-		ft_strcmp(key, "specular") == 0)
+	if (ft_strcmp(key, "reflectiveness") == 0
+		|| ft_strcmp(key, "diffuse") == 0
+		|| ft_strcmp(key, "specular") == 0)
 	{
 		if (is_num(val, true) == false)
 		{
@@ -115,8 +114,9 @@ bool	is_valid_val(const char *key, const char *val)
 			parsed_value = ft_atof(val, &success);
 			if (success == false || parsed_value < 0.0 || parsed_value > 1.0)
 			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-					YELLOW"%s has to be between 0.0 and 1.0\n"RESET, key, val, key);
+				printf(YELLOW"Error with parsing this property\n"
+					RED"->\t%s : %s\n"YELLOW"%s has to be between 0.0 and 1.0\n"
+					RESET, key, val, key);
 				return (false);
 			}
 		}
@@ -134,15 +134,15 @@ bool	is_valid_val(const char *key, const char *val)
 			parsed_value = ft_atof(val, &success);
 			if (success == false || parsed_value < 10 || parsed_value > 400)
 			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-					YELLOW"%s has to be between 10.0 and 200.0\n"RESET, key, val, key);
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
+					" : %s\n"YELLOW"%s has to be between 10.0 and 200.0\n"
+					RESET, key, val, key);
 				return (false);
 			}
 		}
 	}
-	if (ft_strcmp(key, "rotX") == 0 ||
-		ft_strcmp(key, "rotY") == 0 ||
-		ft_strcmp(key, "rotZ") == 0)
+	if (ft_strcmp(key, "rotX") == 0 || ft_strcmp(key, "rotY") == 0
+		|| ft_strcmp(key, "rotZ") == 0)
 	{
 		if (is_num(val, false) == false)
 		{
@@ -155,15 +155,16 @@ bool	is_valid_val(const char *key, const char *val)
 			parsed_value = ft_atol(val, &success);
 			if (success == false || parsed_value < 0 || parsed_value > 360)
 			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-					YELLOW"%s has to be between 0 and 360 degrees\n"RESET, key, val, key);
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
+					" : %s\n"YELLOW"%s has to be between 0 and 360 degrees\n"
+					RESET, key, val, key);
 				return (false);
 			}
 		}
 	}
-	if (ft_strcmp(key, "scaleX") == 0 ||
-		ft_strcmp(key, "scaleY") == 0 ||
-		ft_strcmp(key, "scaleZ") == 0)
+	if (ft_strcmp(key, "scaleX") == 0
+		|| ft_strcmp(key, "scaleY") == 0
+		|| ft_strcmp(key, "scaleZ") == 0)
 	{
 		if (is_num(val, true) == false)
 		{
@@ -176,17 +177,15 @@ bool	is_valid_val(const char *key, const char *val)
 			parsed_value = ft_atof(val, &success);
 			if (success == false || parsed_value < 0.1 || parsed_value > 50)
 			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-					YELLOW"%s has to be between 0.1 and 50\n"RESET, key, val, key);
+				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
+					" : %s\n"YELLOW"%s has to be between 0.1 and 50\n"RESET,
+					key, val, key);
 				return (false);
 			}
 		}
 	}
 	if (ft_strcmp(key, "color") == 0)
-	{
 		return (is_valid_color(val));
-	}
-
 	return (true);
 }
 
@@ -296,14 +295,23 @@ void	parse_setting(t_scene *scene, char **key_val)
 	}
 }
 
-bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num, int fd)
+bool	parse_settings(t_scene *scene, const char *settings_start,
+	size_t line_num, int fd)
 {
 	char	*parsed_str;
 	char	*line;
+	int		opening;
+	int		closing;
+	int		i;
+	char	**settings;
+	int		colon_count;
+	int		idx;
+	char	**key_val;
 
 	if (scene->count.shapes == 0)
 	{
-		printf(RED"Settings at line %ld do not belong to any shape\n"RESET, line_num);
+		printf(RED"Settings at line %ld do not belong to any shape\n"RESET,
+			line_num);
 		return (false);
 	}
 	parsed_str = ft_strtrim(settings_start, " \n\t");
@@ -320,7 +328,7 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 		if (line == NULL)
 			break ;
 		parsed_str = ft_strjoin_free(ft_strtrim_free(parsed_str, " \n\t"),
-			line, 1);
+				line, 1);
 	}
 	if (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
@@ -335,10 +343,9 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 		free(parsed_str);
 		return (false);
 	}
-	// Count number of opening and closing braces
-	int	opening = 0;
-	int	closing = 0;
-	int	i = 0;
+	opening = 0;
+	closing = 0;
+	i = 0;
 	while (parsed_str[i] != '\0')
 	{
 		if (parsed_str[i] == '{')
@@ -361,7 +368,6 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 		free(parsed_str);
 		return (false);
 	}
-	// Check that the parsed_string ends with a closing brace
 	if (parsed_str[ft_strlen(parsed_str) - 1] != '}')
 	{
 		printf(RED"Shape settings starting at line %ld is not terminated"
@@ -369,17 +375,13 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 		free(parsed_str);
 		return (false);
 	}
-	// Removing braces
 	parsed_str = ft_strtrim_free(parsed_str, "{}");
-
-	// Splitting on commas
-	char	**settings;
 	settings = ft_split(parsed_str, ',');
 	i = 0;
 	while (settings[i] != NULL)
 	{
-		int	colon_count = 0;
-		int	idx = 0;
+		colon_count = 0;
+		idx = 0;
 		while (settings[i][idx] != '\0')
 		{
 			if (settings[i][idx] == ':')
@@ -394,14 +396,14 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 			free(parsed_str);
 			return (false);
 		}
-		char	**key_val = ft_split(settings[i], ':');
-		
+		key_val = ft_split(settings[i], ':');
 		key_val[0] = ft_strtrim_free(key_val[0], " \n\t");
 		key_val[1] = ft_strtrim_free(key_val[1], " \n\t");
 		if (is_valid_key(key_val[0]) == false)
 		{
 			printf(YELLOW"Error with parsing this property\n"RED"->\t%s\n"
-				YELLOW"`%s` is not a valid key\n"RESET, settings[i], key_val[0]);
+				YELLOW"`%s` is not a valid key\n"RESET,
+				settings[i], key_val[0]);
 			free_split_array(key_val);
 			free_split_array(settings);
 			free(parsed_str);
@@ -414,8 +416,6 @@ bool	parse_settings(t_scene *scene, const char *settings_start, size_t line_num,
 			free(parsed_str);
 			return (false);
 		}
-		// printf("Key == |%s|\n", key_val[0]);
-		// printf("Val == |%s|\n", key_val[1]);
 		parse_setting(scene, key_val);
 		free_split_array(key_val);
 		i++;
