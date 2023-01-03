@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:30:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 22:45:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,25 @@ bool	print_color_error(t_color_error *err, const char *line, int line_num,
 {
 	if (err->r)
 	{
-		printf(COLOR_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(RED_OOR);
 		return (false);
 	}
 	if (err->g)
 	{
-		printf(COLOR_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(GREEN_OOR);
 		return (false);
 	}
 	if (err->b)
 	{
-		printf(COLOR_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(BLUE_OOR);
 		return (false);
 	}
 	if (err->other)
 	{
-		printf(COLOR_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(AMBIENT_LIGHT_SYNTAX);
 		return (false);
 	}
@@ -101,7 +101,7 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(LIGHT_INTENSITY_OOR, "Ambient light", line_num, line);
 		return ;
 	}
-	if (print_color_error(&flags->ambient.color, line, line_num, "ambient light") == false)
+	if (print_color_error(&flags->ambient.color, line, line_num, "ambient light color") == false)
 		return ;
 	if (flags->ambient.other)
 	{
@@ -123,7 +123,6 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(CAMERA_UP_VECTOR);
 		return ;
 	}
-
 	if (flags->cam.fov_other)
 	{
 		printf(GENERIC_ERROR, "camera field of view", line_num, line);
@@ -143,19 +142,38 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		return ;
 	}
 
-	print_color_error(&flags->light.color, line, line_num, "light");
+	if (flags->light.coords)
+	{
+		printf(GENERIC_ERROR, "light position", line_num, line);
+		printf(LIGHT_SYNTAX);
+		return ;
+	}
+	if (flags->light.intensity_range)
+	{
+		printf(LIGHT_INTENSITY_OOR, "light", line_num, line);
+		return ;
+	}
+	if (flags->light.intensity_other)
+	{
+		printf(GENERIC_ERROR, "light intensity", line_num, line);
+		printf(LIGHT_SYNTAX);
+		return ;
+	}
+	if (flags->light.max_lights)
+	{
+		printf(MAX_ELEMENT_ERROR, LIGHT_MAX, "lights");
+		return ;
+	}
+	if (flags->light.other)
+	{
+		printf(GENERIC_ERROR, "light", line_num, line);
+		printf(LIGHT_SYNTAX);
+		return ;
+	}
+	print_color_error(&flags->light.color, line, line_num, "light color");
+
 	print_color_error(&flags->shape.color, line, line_num, "shape");
 	print_orient_error(&flags->shape.orient, line, line_num, "shape");
-	if (flags->light.coords)
-		printf("fsddgv\n");
-	if (flags->light.intensity_range)
-		printf("fsddgv\n");
-	if (flags->light.intensity_other)
-		printf("fsddgv\n");
-	if (flags->light.max_lights)
-		printf("fsddgv\n");
-	if (flags->light.other)
-		printf("fsddgv\n");
 	if (flags->shape.coordinates)
 		printf("fsddgv\n");
 	if (flags->shape.diameter_other)

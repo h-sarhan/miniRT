@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:29:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 22:42:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	find_error(t_error_flags *errors);
 // Error with parsing these elements
 // ambient/camera/camera fov/light intensity/sphere diameter/sphere/plane/cylinder/
 // cylinder height/cylinder diameter/cube/cube side length/shape
-# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n"
+# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n\n"
 
 // orientation errors
 # define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\n\x1b[31m->\t%s\n\x1b[0m"
@@ -120,7 +120,6 @@ bool	find_error(t_error_flags *errors);
 # define ORIENT_ZERO "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
 
 // color errors
-# define COLOR_ERROR YELLOW"Error with parsing %s color on line #%d\n"RED"->\t%s\n"RESET
 # define RED_OOR YELLOW"The red value is out of range [0 -> 255]\n"RESET
 # define GREEN_OOR YELLOW"The green value is out of range [0 -> 255]\n"RESET
 # define BLUE_OOR YELLOW"The blue value is out of range [0 -> 255]\n"RESET
@@ -137,7 +136,7 @@ bool	find_error(t_error_flags *errors);
 # define UNKNOWN_IDENTIFIER YELLOW"Unknown identifier \"%s\" on line #%d\n"RED"->\t%s\n"RESET
 
 // Ambient intensity out of range/ light intensity out of range
-# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range on line #%d\n"RED"->\t%s\n"RESET
+# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range on line #%d\n\n"RED"->\t%s\n\n"RESET
 
 # define CAMERA_UP_VECTOR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
 # define CAMERA_FOV_OOR YELLOW"The fov value is out of range [1 -> 180]\n"RESET
