@@ -6,19 +6,18 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 12:43:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 13:19:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_color	get_ambient(t_color *effective_color,
-	t_light *light, t_scene *scene)
+t_color	get_ambient(t_phong *phong, t_light *light, t_scene *scene)
 {
 	t_color	ambient;
 
 	ambient.a = 0;
-	mult_color(&ambient, effective_color,
+	mult_color(&ambient, &phong->effective_color,
 		scene->ambient.intensity * light->intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
 	return (ambient);
@@ -29,8 +28,7 @@ t_color	get_ambient(t_color *effective_color,
 // mult_color(diffuse, diffuse, (50 - distance_from_light) / (50 - 1));
 // mult_color(specular, specular, (50 - distance_from_light) / (50 - 1));
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
-	t_intersection *itx, t_color *diffuse, t_color *effective_color,
-	t_color *specular)
+	t_intersection *itx, t_phong *phong)
 {
 	float		reflect_dot_eye;
 	float		light_dot_normal;
@@ -38,22 +36,21 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_vector	reflect_v;
 
 	sub_vec(&light_v, &scene->lights[light_idx].position, &itx->over_point);
-	light_v.w = 0;
 	normalize_vec(&light_v);
 	itx->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &itx->normal);
 	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point))
 		return (false);
-	mult_color(diffuse, effective_color,
+	mult_color(&phong->diffuse, &phong->effective_color,
 		itx->shape->props.diffuse * light_dot_normal
 		* scene->lights[light_idx].intensity);
 	negate_vec(&light_v, &light_v);
 	reflect_vector(&reflect_v, &light_v, &itx->normal);
 	reflect_dot_eye = dot_product(&reflect_v, &itx->eye);
 	if (reflect_dot_eye <= 0)
-		ft_bzero(specular, sizeof(t_color));
+		ft_bzero(&phong->specular, sizeof(t_color));
 	else
-		mult_color(specular, &scene->lights[light_idx].color,
+		mult_color(&phong->specular, &scene->lights[light_idx].color,
 			itx->shape->props.specular * \
 			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
@@ -62,21 +59,18 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
-	t_color		effective_color;
-	t_color		diffuse;
-	t_color		specular;
+	t_phong		phong;
 	t_color		result;
 
-	blend_colors(&effective_color, &itx->shape->props.color,
+	blend_colors(&phong.effective_color, &itx->shape->props.color,
 		&scene->lights[light_idx].color);
-	if (get_specular_and_diffuse(scene, light_idx, itx, &diffuse,
-			&effective_color, &specular) == false)
-		return (get_ambient(&effective_color,
+	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
+		return (get_ambient(&phong,
 				&scene->lights[light_idx], scene));
-	result = get_ambient(&effective_color, &scene->lights[light_idx], scene);
-	result.r += diffuse.r + specular.r;
-	result.g += diffuse.g + specular.g;
-	result.b += diffuse.b + specular.b;
+	result = get_ambient(&phong, &scene->lights[light_idx], scene);
+	result.r += phong.diffuse.r + phong.specular.r;
+	result.g += phong.diffuse.g + phong.specular.g;
+	result.b += phong.diffuse.b + phong.specular.b;
 	return (result);
 }
 

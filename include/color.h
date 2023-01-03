@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:17:02 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 12:32:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 13:05:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,14 @@ void			blend_colors(t_color *res, const t_color *c1,
 
 int				color_mix(int c1, int c2, float mix);
 int				color_difference(int c1, int c2);
+
+typedef struct s_phong	t_phong;
+struct	s_phong
+{
+	t_color	effective_color;
+	t_color	diffuse;
+	t_color	specular;
+	t_color	ambient;
+};
 
 #endif
