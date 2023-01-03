@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 23:36:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 01:29:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ bool	find_error(t_error_flags *errors);
 # define SPHERE_SYNTAX YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"RESET
 # define PLANE_SYNTAX YELLOW"Correct syntax is \"pl [origin] [orientation] [color]\"\n"RESET
 # define CYLINDER_SYNTAX YELLOW"Correct syntax is \"cy [origin] [orientation] [diameter] [height] [color]\"\n"RESET
+# define CONE_SYNTAX YELLOW"Correct syntax is \"co [origin] [orientation] [diameter] [height] [color]\"\n"RESET
 # define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
 
 bool	check_color(const t_color *color, size_t line_num, const char *line,

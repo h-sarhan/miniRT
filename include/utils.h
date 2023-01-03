@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 15:50:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 01:32:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
 
 void	print_vector(const t_vector *vector);
 
+char	*ft_strjoin_free(char *s1, char *s2, int fre);
+char	*ft_strtrim_free(char *s, char *set);
 
 #endif
