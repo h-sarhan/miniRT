@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 20:08:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 21:05:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ bool	parse_light(t_scene *scene, char **splitted)
 	light->intensity = ft_atof(splitted[2], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.light.other = true;
+		scene->parse_errors.errors.light.intensity_other = true;
 		return (false);
 	}
 	if (light->intensity < 0.0 || light->intensity > 1.0)
 	{
-		scene->parse_errors.errors.light.intensity = true;
+		scene->parse_errors.errors.light.intensity_range = true;
 		return (false);
 	}
 	parse_color(&light->color, splitted[3], &scene->parse_errors.errors.light.color);
@@ -97,9 +97,9 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 		|| scene->ambient.intensity > 1.0)
 	{
 		if (success == true)
-			scene->parse_errors.errors.ambient.intensity = true;
+			scene->parse_errors.errors.ambient.intensity_range = true;
 		else
-			scene->parse_errors.errors.ambient.other = true;
+			scene->parse_errors.errors.ambient.intensity_other = true;
 		return (false);
 	}
 	parse_color(&scene->ambient.color, splitted[2],

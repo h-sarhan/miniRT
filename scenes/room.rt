@@ -1,12 +1,5 @@
-//{
-//	edit_scale: 0 - 1.0,
-//	render_scale: 0 - 1.0,
-//	display_scale: 0 - 1.0,
-//	reflection_depth: 0 - 4,
-//}
-
 A 0.1 255,255,255
-C 0,1,-8 1,1,0 60
+C 0,1,-8 0,0,1 60
 
 // orange light
 L 5,10,-5 0.6 200,102,0

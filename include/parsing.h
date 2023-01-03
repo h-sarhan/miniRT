@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 21:30:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ struct s_orient_error
 typedef struct s_ambient_errors	t_ambient_errors;
 struct s_ambient_errors
 {
-	bool			intensity;
+	bool			intensity_other;
+	bool			intensity_range;
 	bool			other;
 	t_color_error	color;
 };
@@ -61,7 +62,8 @@ struct s_cam_errors
 typedef struct s_light_errors	t_light_errors;
 struct s_light_errors
 {
-	bool			intensity;
+	bool			intensity_other;
+	bool			intensity_range;
 	bool			max_lights;
 	bool			other;
 	bool			coords;
@@ -107,7 +109,7 @@ bool	find_error(t_error_flags *errors);
 // Error with parsing these elements
 // ambient/camera/camera fov/light intensity/sphere diameter/sphere/plane/cylinder/
 // cylinder height/cylinder diameter/cube/cube side length/shape
-# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n"RED"->\t%s"
+# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n"
 
 // orientation errors
 # define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\x1b[31m->\t%s\n\x1b[0m"
@@ -131,10 +133,10 @@ bool	find_error(t_error_flags *errors);
 // max element error (> MAX_LIGHTS or > MAX_SHAPES)
 # define MAX_ELEMENT_ERROR RED"Error: Scene contains more than %d %s\n"RESET
 
-# define UNKNOWN_IDENTIFIER YELLOW"Unknown identifier \"%s\" on line #%d\n"RED"->\t%s"RESET
+# define UNKNOWN_IDENTIFIER YELLOW"Unknown identifier \"%s\" on line #%d\n"RED"->\t%s\n"RESET
 
 // Ambient intensity out of range/ light intensity out of range
-# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range\n"RESET
+# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range on line #%d\n"RED"->\t%s\n"RESET
 
 # define CAMERA_UP_VECTOR_ERROR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
 # define CAMERA_FOV_OOR YELLOW"The fov value is out of range\n"RESET
@@ -143,7 +145,7 @@ bool	find_error(t_error_flags *errors);
 # define POSITIVE_VALUE YELLOW"%s has to be a positive number\n"RESET
 
 # define LIGHT_SYNTAX YELLOW"Correct syntax is \"L [origin] [intensity] [color]\"\n"RESET
-# define AMBIENT_LIGHT_SYNTAX RED"->\t%s"YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET
+# define AMBIENT_LIGHT_SYNTAX YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET
 # define CAMERA_SYNTAX YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET
 # define SPHERE_SYNTAX YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"RESET
 # define PLANE_SYNTAX YELLOW"Correct syntax is \"pl [origin] [orientation] [color]\"\n"RESET
@@ -156,18 +158,10 @@ bool	check_orientation(const t_vector *orientation, size_t line_num,
 			const char *line, const char *element);
 
 bool	parse_ambient(t_scene *scene, char **splitted);
-// bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
-// 			char *line);
-// bool	parse_camera(t_scene *scene, char **splitted, char *line,
-// 			size_t line_num);
 bool	parse_camera(t_scene *scene, char **splitted);
 bool	parse_light(t_scene *scene, char **splitted);
-// bool	parse_light(t_scene *scene, char **splitted, char *line,
-// 			size_t line_num);
 
 bool	parse_shape(t_scene *scene, char **splitted);
-// bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
-// 			char *line);
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
 			size_t line_num, int fd);
@@ -191,8 +185,8 @@ bool	is_num(const char *str, bool decimal);
 size_t	count_commas(const char *str);
 size_t	split_count(char **split);
 bool	all_whitespace(const char *str);
-void	print_errors(t_scene *scene);
-
+void	print_errors(t_scene *scene, const char *line, int line_num,
+			const char *identifer);
 t_scene	*parse_scene(int fd);
 
 #endif

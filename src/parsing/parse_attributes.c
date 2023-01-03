@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 20:08:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 20:53:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	parse_color(t_color *color, const char *str, t_color_error *errs)
 	size_t	i;
 	bool	success;
 
+	success = true;
 	rgb = ft_split(str, ',');
 	if (!rgb || count_commas(str) != 2 || split_count(rgb) != 3)
 	{
@@ -95,28 +96,29 @@ void	parse_coordinates(t_vector *position, const char *str, bool *success)
 void	parse_orientation(t_vector *orientation, const char *str, t_orient_error *err)
 {
 	float	res[3];
-	char	**coords;
+	char	**xyz;
 	size_t	i;
 	bool	success;
 
-	coords = ft_split(str, ',');
-	if (coords == NULL || count_commas(str) != 2 || split_count(coords) != 3)
+	success = true;
+	xyz = ft_split(str, ',');
+	if (xyz == NULL || count_commas(str) != 2 || split_count(xyz) != 3)
 	{
-		free_split_array(coords);
+		free_split_array(xyz);
 		err->other = true;
 		return ;
 	}
 	i = -1;
-	while (coords[++i] != NULL)
+	while (xyz[++i] != NULL)
 	{
-		res[i] = ft_atof(coords[i], &success);
-		if (success == false || !is_num(coords[i], true))
+		res[i] = ft_atof(xyz[i], &success);
+		if (success == false || !is_num(xyz[i], true))
 		{
 			err->other = true;
 			return ;
 		}
 	}
-	free_split_array(coords);
+	free_split_array(xyz);
 	orientation->x = res[0];
 	if (orientation->x < -1 || orientation->x > 1)
 		err->x = true;
