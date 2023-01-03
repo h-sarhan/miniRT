@@ -18,16 +18,16 @@ L -10,10,-10 0.8 128,128,153
 
 cy 0,1.6,-2 0,-1,0.0 1 1 10,0,25
 {
-	reflectiveness: 0,
+	reflectiveness: 0.1,
 	specular: 1,
 	diffuse: 1,
 	shininess: 200,
 	color: pink
 }
 
-co 0,2.6,-2 0,-1,0.0 1 1 10,0,25
+co 0,.6,-2 0,-1,0.0 1 1 10,0,25
 {
-	reflectiveness: 0,
+	reflectiveness: 0.1,
 	specular: 1,
 	diffuse: 1,
 	shininess: 200,
