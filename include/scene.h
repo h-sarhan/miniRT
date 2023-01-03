@@ -6,13 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 13:02:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:18:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCENE_H
 # define SCENE_H
 
+#include "parsing.h"
 /**
  * @brief Holds the number of elements in a scene
  * @param ambient_lights Number of ambient lights. Should be 1
@@ -83,18 +84,19 @@ struct s_settings
 typedef struct s_scene		t_scene;
 struct s_scene
 {
-	t_ambient	ambient;
-	t_camera	camera;
-	t_light		*lights;
-	t_shape		*shapes;
-	t_el_count	count;
-	t_display	*disp;
-	t_keys		keys_held;
-	t_settings	settings;
-	int			shape_idx;
-	sem_t		*sem_loading;
-	t_look_at	look_at;
-	t_mouse		mouse;
+	t_ambient		ambient;
+	t_camera		camera;
+	t_light			*lights;
+	t_shape			*shapes;
+	t_el_count		count;
+	t_display		*disp;
+	t_keys			keys_held;
+	t_settings		settings;
+	int				shape_idx;
+	sem_t			*sem_loading;
+	t_look_at		look_at;
+	t_mouse			mouse;
+	// t_parse_errors	parse_errors;
 };
 
 void	free_scene(t_scene *scene);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 15:43:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 14:17:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:26:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*light_parse_error(char *line, size_t line_num, t_scene *scene)
 	}
 	else if (!light || !check_color(&light->color, line_num, line, "light"))
 		printf(YELLOW"Error with parsing light on line #%ld\n"RED"->\t%s"RESET
-			YELLOW"Correct syntax is \"L [origin] [intensity] [color\"\n"RESET,
+			YELLOW"Correct syntax is \"L [origin] [intensity] [color]\"\n"RESET,
 			line_num, line);
 	free_scene(scene);
 	get_next_line(-1);

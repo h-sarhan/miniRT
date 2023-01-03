@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 01:07:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 16:58:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,65 @@
 # define GREEN  "\x1B[32m"
 # define LIGHT_MAX 20
 # define SHAPE_MAX 100
+
+// typedef struct s_parse_errors	t_parse_errors;
+// struct	s_parse_errors
+// {
+// 	bool		found_error;
+// 	t_cam_errors cam;
+// 	t_light_errors light;
+// 	t_ambient_errors ambient;
+// 	t_shape_errors shape;
+// 	char	*element;
+// 	int		line_num;
+// 	char	*line;
+// };
+
+// Error with parsing these elements
+// ambient/camera/camera fov/light intensity/sphere diameter/sphere/plane/cylinder/
+// cylinder height/cylinder diameter/cube/cube side length/shape
+# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n"RED"->\t%s"
+
+// orientation errors
+# define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\x1b[31m->\t%s\n\x1b[0m"
+# define X_OOR "\x1b[33mThe x value is out of range\n\x1b[0m"
+# define Y_OOR "\x1b[33mThe y value is out of range\n\x1b[0m"
+# define Z_OOR "\x1b[33mThe z value is out of range\n\x1b[0m"
+# define ZERO_ORIENT "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
+
+// color errors
+# define COLOR_ERROR YELLOW"Error with parsing %s color on line #%d\n"RED"->\t%s\n"RESET
+# define RED_OOR YELLOW"The red value is out of range\n"RESET
+# define GREEN_OOR YELLOW"The green value is out of range\n"RESET
+# define BLUE_OOR YELLOW"The blue value is out of range\n"RESET
+
+// multi errors (multiple cameras/ multiple ambient lights)
+# define MULTI_ELEMENT_ERROR RED"Error: Scene contains multiple %s\n"RESET
+
+// no errors (no cameras/ no ambient lights)
+# define NO_ELEMENT_ERROR RED"Error: Scene contains no %s\n"RESET
+
+// max element error (> MAX_LIGHTS or > MAX_SHAPES)
+# define MAX_ELEMENT_ERROR RED"Error: Scene contains more than %d %s\n"RESET
+
+# define UNKNOWN_IDENTIFIER YELLOW"Unknown identifier \"%s\" on line #%d\n"RED"->\t%s"RESET
+
+// Ambient intensity out of range/ light intensity out of range
+# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range\n"RESET
+
+# define CAMERA_UP_VECTOR_ERROR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
+# define CAMERA_FOV_OOR YELLOW"The fov value is out of range\n"RESET
+
+// diameter/side length/height
+# define POSITIVE_VALUE YELLOW"%s has to be a positive number\n"RESET
+
+# define LIGHT_SYNTAX YELLOW"Correct syntax is \"L [origin] [intensity] [color]\"\n"RESET
+# define AMBIENT_LIGHT_SYNTAX RED"->\t%s"YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET
+# define CAMERA_SYNTAX YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET
+# define SPHERE_SYNTAX YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"RESET
+# define PLANE_SYNTAX YELLOW"Correct syntax is \"pl [origin] [orientation] [color]\"\n"RESET
+# define CYLINDER_SYNTAX YELLOW"Correct syntax is \"cy [origin] [orientation] [diameter] [height] [color]\"\n"RESET
+# define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
 
 bool	check_color(const t_color *color, size_t line_num, const char *line,
 			const char *element);
