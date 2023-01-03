@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 21:05:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 22:28:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,15 +149,15 @@ bool	parse_camera(t_scene *scene, char **splitted)
 		scene->parse_errors.errors.cam.up_vector = true;
 		return (false);
 	}
-	scene->camera.fov = ft_atol(splitted[3], &success);
-	if (success == false || is_num(splitted[3], false) == false)
+	scene->camera.fov = ft_atof(splitted[3], &success);
+	if (success == false || is_num(splitted[3], true) == false)
 	{
-		scene->parse_errors.errors.cam.other = true;
+		scene->parse_errors.errors.cam.fov_other = true;
 		return (false);
 	}
-	if (scene->camera.fov < 0 || scene->camera.fov > 180)
+	if (scene->camera.fov < 1 || scene->camera.fov > 180)
 	{
-		scene->parse_errors.errors.cam.fov = true;
+		scene->parse_errors.errors.cam.fov_range = true;
 		return (false);
 	}
 	scene->count.cameras++;

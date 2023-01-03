@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 21:35:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 22:30:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,40 @@ bool	print_color_error(t_color_error *err, const char *line, int line_num,
 	return (true);
 }
 
-void	print_orient_error(t_orient_error *err, const char *line, int line_num,
+bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 			char* element)
 {
-	(void)line;
-	(void)line_num;
-	(void)element;
 	if (err->x)
-		printf("X\n");
+	{
+		printf(ORIENT_ERROR, element, line_num, line);
+		printf(ORIENT_X_OOR);
+		return (false);
+	}
 	if (err->y)
-		printf("y\n");
+	{
+		printf(ORIENT_ERROR, element, line_num, line);
+		printf(ORIENT_Y_OOR);
+		return (false);
+	}
 	if (err->z)
-		printf("Z\n");
+	{
+		printf(ORIENT_ERROR, element, line_num, line);
+		printf(ORIENT_Z_OOR);
+		return (false);
+	}
 	if (err->other)
-		printf("other\n");
+	{
+		printf(ORIENT_ERROR, element, line_num, line);
+		printf(CAMERA_SYNTAX);
+		return (false);
+	}
 	if (err->zero)
-		printf("zero\n");
-
+	{
+		printf(ORIENT_ERROR, element, line_num, line);
+		printf(ORIENT_ZERO);
+		return (false);
+	}
+	return (true);
 }
 
 void	print_errors(t_scene *scene, const char *line, int line_num,
@@ -84,28 +101,51 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(LIGHT_INTENSITY_OOR, "Ambient light", line_num, line);
 		return ;
 	}
+	if (print_color_error(&flags->ambient.color, line, line_num, "ambient light") == false)
+		return ;
 	if (flags->ambient.other)
 	{
 		printf(GENERIC_ERROR, "ambient light", line_num, line);
 		printf(AMBIENT_LIGHT_SYNTAX);
 		return ;
 	}
-		
-	if (print_color_error(&flags->ambient.color, line, line_num, "ambient light") == false)
+
+	if (flags->cam.coords)
+	{
+		printf(GENERIC_ERROR, "camera coordinates", line_num, line);
+		printf(CAMERA_SYNTAX);
 		return ;
+	}
+	print_orient_error(&flags->cam.orient, line, line_num, "camera");
+	if (flags->cam.up_vector)
+	{
+		printf(ORIENT_ERROR, "camera", line_num, line);
+		printf(CAMERA_UP_VECTOR);
+		return ;
+	}
+
+	if (flags->cam.fov_other)
+	{
+		printf(GENERIC_ERROR, "camera field of view", line_num, line);
+		printf(CAMERA_SYNTAX);
+		return ;
+	}
+	if (flags->cam.fov_range)
+	{
+		printf(GENERIC_ERROR, "camera field of view", line_num, line);
+		printf(CAMERA_FOV_OOR);
+		return ;
+	}
+	if (flags->cam.other)
+	{
+		printf(GENERIC_ERROR, "camera", line_num, line);
+		printf(CAMERA_SYNTAX);
+		return ;
+	}
 
 	print_color_error(&flags->light.color, line, line_num, "light");
 	print_color_error(&flags->shape.color, line, line_num, "shape");
-	print_orient_error(&flags->cam.orient, line, line_num, "camera");
 	print_orient_error(&flags->shape.orient, line, line_num, "shape");
-	if (flags->cam.coords)
-		printf("fsddgv\n");
-	if (flags->cam.fov)
-		printf("fsddgv\n");
-	if (flags->cam.up_vector)
-		printf("fsddgv\n");
-	if (flags->cam.other)
-		printf("fsddgv\n");
 	if (flags->light.coords)
 		printf("fsddgv\n");
 	if (flags->light.intensity_range)

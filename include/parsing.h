@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 21:30:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 22:29:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ struct s_cam_errors
 {
 	bool			other;
 	bool			coords;
-	bool			fov;
+	bool			fov_other;
+	bool			fov_range;
 	bool			up_vector;
 	t_orient_error	orient;
 };
@@ -112,17 +113,17 @@ bool	find_error(t_error_flags *errors);
 # define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n"
 
 // orientation errors
-# define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\x1b[31m->\t%s\n\x1b[0m"
-# define ORIENT_X_OOR "\x1b[33mThe x value is out of range\n\x1b[0m"
-# define ORIENT_Y_OOR "\x1b[33mThe y value is out of range\n\x1b[0m"
-# define ORIENT_Z_OOR "\x1b[33mThe z value is out of range\n\x1b[0m"
+# define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\n\x1b[31m->\t%s\n\x1b[0m"
+# define ORIENT_X_OOR "\x1b[33mThe x value is out of range [-1.0 -> 1.0]\n\x1b[0m"
+# define ORIENT_Y_OOR "\x1b[33mThe y value is out of range [-1.0 -> 1.0]\n\x1b[0m"
+# define ORIENT_Z_OOR "\x1b[33mThe z value is out of range [-1.0 -> 1.0]\n\x1b[0m"
 # define ORIENT_ZERO "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
 
 // color errors
 # define COLOR_ERROR YELLOW"Error with parsing %s color on line #%d\n"RED"->\t%s\n"RESET
-# define RED_OOR YELLOW"The red value is out of range\n"RESET
-# define GREEN_OOR YELLOW"The green value is out of range\n"RESET
-# define BLUE_OOR YELLOW"The blue value is out of range\n"RESET
+# define RED_OOR YELLOW"The red value is out of range [0 -> 255]\n"RESET
+# define GREEN_OOR YELLOW"The green value is out of range [0 -> 255]\n"RESET
+# define BLUE_OOR YELLOW"The blue value is out of range [0 -> 255]\n"RESET
 
 // multi errors (multiple cameras/ multiple ambient lights)
 # define MULTI_ELEMENT_ERROR RED"Error: Scene contains multiple %s\n"RESET
@@ -138,8 +139,8 @@ bool	find_error(t_error_flags *errors);
 // Ambient intensity out of range/ light intensity out of range
 # define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range on line #%d\n"RED"->\t%s\n"RESET
 
-# define CAMERA_UP_VECTOR_ERROR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
-# define CAMERA_FOV_OOR YELLOW"The fov value is out of range\n"RESET
+# define CAMERA_UP_VECTOR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
+# define CAMERA_FOV_OOR YELLOW"The fov value is out of range [1 -> 180]\n"RESET
 
 // diameter/side length/height
 # define POSITIVE_VALUE YELLOW"%s has to be a positive number\n"RESET
