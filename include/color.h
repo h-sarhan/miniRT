@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:17:02 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 16:50:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:32:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ void			add_colors(t_color *res, const t_color *c1, const t_color *c2);
 void			mult_color(t_color *res, const t_color *color, float val);
 void			blend_colors(t_color *res, const t_color *c1,
 					const t_color *c2);
-
-int				get_r(int color);
-int				get_g(int color);
-int				get_b(int color);
 
 int				color_mix(int c1, int c2, float mix);
 int				color_difference(int c1, int c2);

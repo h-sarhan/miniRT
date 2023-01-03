@@ -6,50 +6,41 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:29:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:05:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:32:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	get_r(int col)
-{
-	return ((col >> 16) & 0xFF);
-}
-
-int	get_g(int col)
-{
-	return ((col >> 8) & 0xFF);
-}
-
-int	get_b(int col)
-{
-	return (col & 0xFF);
-}
-
 int	color_mix(int c1, int c2, float mix)
 {
-	int	result;
-	int	r;
-	int	g;
-	int	b;
+	int				r;
+	int				g;
+	int				b;
+	unsigned char	*col1;
+	unsigned char	*col2;
 
-	r = get_r(c1) * mix + get_r(c2) * (1 - mix);
-	g = get_g(c1) * mix + get_g(c2) * (1 - mix);
-	b = get_b(c1) * mix + get_b(c2) * (1 - mix);
-	result = r << 16 | g << 8 | b;
-	return (result);
+	col1 = (unsigned char *)&c1;
+	col2 = (unsigned char *)&c2;
+	r = col1[2] * mix + col2[2] * (1 - mix);
+	g = col1[1] * mix + col2[1] * (1 - mix);
+	b = col1[0] * mix + col2[0] * (1 - mix);
+	return (r << 16 | g << 8 | b);
 }
 
 int	color_difference(int c1, int c2)
 {
-	int	r_diff;
-	int	g_diff;
-	int	b_diff;
+	int				r_diff;
+	int				g_diff;
+	int				b_diff;
+	unsigned char	*col1;
+	unsigned char	*col2;
 
-	r_diff = abs(get_r(c1) - get_r(c2));
-	g_diff = abs(get_g(c1) - get_g(c2));
-	b_diff = abs(get_b(c1) - get_b(c2));
+	col1 = (unsigned char *)&c1;
+	col2 = (unsigned char *)&c2;
+	r_diff = abs(col1[2] - col2[2]);
+	g_diff = abs(col1[1] - col2[1]);
+	b_diff = abs(col1[0] - col2[0]);
 	return (r_diff + g_diff + b_diff);
 }
 
