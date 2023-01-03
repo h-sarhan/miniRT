@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 20:05:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 23:36:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	parse_sphere(t_scene *scene, t_shape *shape, char **splitted)
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.coordinates = true;
+		scene->parse_errors.errors.shape.origin = true;
 		return (false);
 	}
 	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
@@ -93,6 +93,12 @@ static bool	parse_cube(t_scene *scene, t_shape *shape, char **splitted)
 		scene->parse_errors.errors.shape.other = true;
 		return (false);
 	}
+	parse_coordinates(&shape->origin, splitted[1], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.origin = true;
+		return (false);
+	}
 	side_len = ft_atof(splitted[2], &success);
 	if (success == false)
 	{
@@ -102,12 +108,6 @@ static bool	parse_cube(t_scene *scene, t_shape *shape, char **splitted)
 	if (side_len <= 0.0)
 	{
 		scene->parse_errors.errors.shape.side_len_range = true;
-		return (false);
-	}
-	parse_coordinates(&shape->origin, splitted[1], &success);
-	if (success == false)
-	{
-		scene->parse_errors.errors.shape.coordinates = true;
 		return (false);
 	}
 	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
@@ -143,7 +143,7 @@ static bool	parse_plane(t_scene *scene, t_shape *shape, char **splitted)
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.coordinates = true;
+		scene->parse_errors.errors.shape.origin = true;
 		return (false);
 	}
 	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);
@@ -178,7 +178,7 @@ static bool	parse_cylinder(t_scene *scene, t_shape *shape, char **splitted)
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.coordinates = true;
+		scene->parse_errors.errors.shape.origin = true;
 		return (false);
 	}
 	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);

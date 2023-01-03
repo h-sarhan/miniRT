@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:45:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 23:37:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,31 @@ bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 {
 	if (err->x)
 	{
-		printf(ORIENT_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_X_OOR);
 		return (false);
 	}
 	if (err->y)
 	{
-		printf(ORIENT_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_Y_OOR);
 		return (false);
 	}
 	if (err->z)
 	{
-		printf(ORIENT_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_Z_OOR);
 		return (false);
 	}
 	if (err->other)
 	{
-		printf(ORIENT_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(CAMERA_SYNTAX);
 		return (false);
 	}
 	if (err->zero)
 	{
-		printf(ORIENT_ERROR, element, line_num, line);
+		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_ZERO);
 		return (false);
 	}
@@ -116,10 +116,10 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(CAMERA_SYNTAX);
 		return ;
 	}
-	print_orient_error(&flags->cam.orient, line, line_num, "camera");
+	print_orient_error(&flags->cam.orient, line, line_num, "camera orientation");
 	if (flags->cam.up_vector)
 	{
-		printf(ORIENT_ERROR, "camera", line_num, line);
+		printf(GENERIC_ERROR, "camera orientation", line_num, line);
 		printf(CAMERA_UP_VECTOR);
 		return ;
 	}
@@ -171,10 +171,67 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		return ;
 	}
 	print_color_error(&flags->light.color, line, line_num, "light color");
-
-	print_color_error(&flags->shape.color, line, line_num, "shape");
-	print_orient_error(&flags->shape.orient, line, line_num, "shape");
-	if (flags->shape.coordinates)
+	if (flags->shape.max_shapes)
+	{
+		printf(MAX_ELEMENT_ERROR, SHAPE_MAX, "shapes");
+	}
+	t_shape *shape = &scene->shapes[scene->count.shapes];
+	if (shape->type == SPHERE)
+	{
+		print_color_error(&flags->shape.color, line, line_num, "sphere color");
+		if (flags->shape.origin)
+		{
+			printf(GENERIC_ERROR, "sphere origin", line_num, line);
+			printf(SPHERE_SYNTAX);
+			return ;
+		}
+		if (flags->shape.diameter_range)
+		{
+			printf(POSITIVE_VALUE, "Sphere diameter", line_num, line);
+			return ;
+		}
+		if (flags->shape.diameter_other)
+		{
+			printf(GENERIC_ERROR, "sphere diameter", line_num, line);
+			printf(SPHERE_SYNTAX);
+			return ;
+		}
+		if (flags->shape.other)
+		{
+			printf(GENERIC_ERROR, "sphere", line_num, line);
+			printf(SPHERE_SYNTAX);
+			return ;
+		}
+	}
+	if (shape->type == CUBE)
+	{
+		print_color_error(&flags->shape.color, line, line_num, "cube color");
+		if (flags->shape.origin)
+		{
+			printf(GENERIC_ERROR, "cube origin", line_num, line);
+			printf(CUBE_SYNTAX);
+			return ;
+		}
+		if (flags->shape.side_len_range)
+		{
+			printf(POSITIVE_VALUE, "Cube side length", line_num, line);
+			return ;
+		}
+		if (flags->shape.side_len_other)
+		{
+			printf(GENERIC_ERROR, "cube side length", line_num, line);
+			printf(CUBE_SYNTAX);
+			return ;
+		}
+		if (flags->shape.other)
+		{
+			printf(GENERIC_ERROR, "cube", line_num, line);
+			printf(CUBE_SYNTAX);
+			return ;
+		}
+	}
+	print_orient_error(&flags->shape.orient, line, line_num, "shape orientation");
+	if (flags->shape.origin)
 		printf("fsddgv\n");
 	if (flags->shape.diameter_other)
 		printf("fsddgv\n");
@@ -183,8 +240,6 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	if (flags->shape.height_other)
 		printf("fsddgv\n");
 	if (flags->shape.height_range)
-		printf("fsddgv\n");
-	if (flags->shape.max_shapes)
 		printf("fsddgv\n");
 	if (flags->shape.other)
 		printf("fsddgv\n");

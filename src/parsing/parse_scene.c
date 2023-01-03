@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 20:57:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 23:28:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	skip_line(char **line, int fd, size_t *line_count)
  * @param line_num The current line number
  * @return True if the line was parsed successfully
  */
-static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
+static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 {
 	bool	success;
 	char	**splitted;
@@ -93,7 +93,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 		success = false;
 	}
 	if (success == false)
-		print_errors(scene, line, line_num, splitted[0]);
+		print_errors(scene, line, *line_num, splitted[0]);
 	free(line);
 	free_split_array(splitted);
 	return (success);
@@ -121,7 +121,7 @@ t_scene	*parse_scene(int fd)
 	{
 		if (skip_line(&line, fd, &line_count) == true)
 			continue ;
-		success = parse_line(scene, line, line_count, fd);
+		success = parse_line(scene, line, &line_count, fd);
 		if (success == false)
 			return (NULL);
 		line = get_next_line(fd);

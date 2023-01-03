@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 14:27:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 23:26:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ void	parse_setting(t_scene *scene, char **key_val)
 }
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
-	size_t line_num, int fd)
+	size_t *line_num, int fd)
 {
 	char	*parsed_str;
 	char	*line;
@@ -311,19 +311,21 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 	if (scene->count.shapes == 0)
 	{
 		printf(RED"Settings at line %ld do not belong to any shape\n"RESET,
-			line_num);
+			*line_num);
 		return (false);
 	}
 	parsed_str = ft_strtrim(settings_start, " \n\t");
 	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
 		line = ft_strtrim_free(get_next_line(fd), " \t\n");
+		*line_num += 1;
 		if (line == NULL)
 			break ;
 		while (ft_strncmp(line, "//", 2) == 0 && line != NULL)
 		{
 			free(line);
 			line = ft_strtrim_free(get_next_line(fd), " \t\n");
+			*line_num += 1;
 		}
 		if (line == NULL)
 			break ;
@@ -333,13 +335,13 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 	if (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
 	{
 		printf(RED"Unterminated shape settings starting at line %ld\n"RESET,
-			line_num);
+			*line_num);
 		free(parsed_str);
 		return (false);
 	}
 	if (ft_strlen(parsed_str) == 2)
 	{
-		printf(RED"Empty shape settings starting at line %ld\n"RESET, line_num);
+		printf(RED"Empty shape settings starting at line %ld\n"RESET, *line_num);
 		free(parsed_str);
 		return (false);
 	}
@@ -357,21 +359,21 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 	if (opening > 1)
 	{
 		printf(RED"Shape settings starting at line %ld"
-			" contains an extra opening brace\n"RESET, line_num);
+			" contains an extra opening brace\n"RESET, *line_num);
 		free(parsed_str);
 		return (false);
 	}
 	if (closing > 1)
 	{
 		printf(RED"Shape settings starting at line %ld"
-			" contains an extra closing brace\n"RESET, line_num);
+			" contains an extra closing brace\n"RESET, *line_num);
 		free(parsed_str);
 		return (false);
 	}
 	if (parsed_str[ft_strlen(parsed_str) - 1] != '}')
 	{
 		printf(RED"Shape settings starting at line %ld is not terminated"
-			" correctly\n"RESET, line_num);
+			" correctly\n"RESET, *line_num);
 		free(parsed_str);
 		return (false);
 	}

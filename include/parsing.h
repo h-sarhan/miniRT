@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:42:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 23:36:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ struct s_shape_errors
 	bool			diameter_other;
 	bool			height_range;
 	bool			height_other;
-	bool			coordinates;
+	bool			origin;
 	bool			side_len_other;
 	bool			side_len_range;
 	bool			other;
@@ -113,7 +113,6 @@ bool	find_error(t_error_flags *errors);
 # define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n\n"
 
 // orientation errors
-# define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\n\x1b[31m->\t%s\n\x1b[0m"
 # define ORIENT_X_OOR "\x1b[33mThe x value is out of range [-1.0 -> 1.0]\n\x1b[0m"
 # define ORIENT_Y_OOR "\x1b[33mThe y value is out of range [-1.0 -> 1.0]\n\x1b[0m"
 # define ORIENT_Z_OOR "\x1b[33mThe z value is out of range [-1.0 -> 1.0]\n\x1b[0m"
@@ -142,7 +141,7 @@ bool	find_error(t_error_flags *errors);
 # define CAMERA_FOV_OOR YELLOW"The fov value is out of range [1 -> 180]\n"RESET
 
 // diameter/side length/height
-# define POSITIVE_VALUE YELLOW"%s has to be a positive number\n"RESET
+# define POSITIVE_VALUE YELLOW"%s has to be a positive number on line #%d\n\n"RED"->\t%s\n\n"RESET
 
 # define LIGHT_SYNTAX YELLOW"Correct syntax is \"L [origin] [intensity] [color]\"\n"RESET
 # define AMBIENT_LIGHT_SYNTAX YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET
@@ -164,7 +163,7 @@ bool	parse_light(t_scene *scene, char **splitted);
 bool	parse_shape(t_scene *scene, char **splitted);
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
-			size_t line_num, int fd);
+			size_t *line_num, int fd);
 
 void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
 			char **splitted);
