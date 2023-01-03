@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:09:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:43:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx);
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point);
 
-t_color	reflected_color(t_scene *scene, t_intersection *intersection,
+t_color	cast_reflection_ray(t_scene *scene, t_intersection *intersection,
 			int remaining, int light_idx);
 
 void	*render_scene_fast(t_worker *worker);

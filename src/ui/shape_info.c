@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:05:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:34:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 // NORM LATER
 // Planning to change this significantly so I will norm this later
+// Will need to write ftoa to avoid using sprintf
 void	draw_shape_info(t_scene *scene)
 {
 	int			shape_idx;

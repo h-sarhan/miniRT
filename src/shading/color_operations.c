@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:46:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:46:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:35:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,6 @@ void	add_colors(t_color *res, const t_color *c1, const t_color *c2)
 	res->r = c1->r + c2->r;
 	res->g = c1->g + c2->g;
 	res->b = c1->b + c2->b;
-}
-
-/**
- * @brief Subtracts two colors from each other
- * @param res The result of the operation will be stored in res
- * @param c1 First color
- * @param c2 Second color
- */
-void	sub_colors(t_color *res, const t_color *c1, const t_color *c2)
-{
-	res->r = c1->r - c2->r;
-	res->g = c1->g - c2->g;
-	res->b = c1->b - c2->b;
 }
 
 /**
@@ -81,3 +68,17 @@ void	set_color(t_worker *worker, int x, int y, int color)
 	bpp = worker->scene->disp->bpp;
 	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
 }
+
+// We never use this function so might as well delete it
+// /**
+//  * @brief Subtracts two colors from each other
+//  * @param res The result of the operation will be stored in res
+//  * @param c1 First color
+//  * @param c2 Second color
+//  */
+// void	sub_colors(t_color *res, const t_color *c1, const t_color *c2)
+// {
+// 	res->r = c1->r - c2->r;
+// 	res->g = c1->g - c2->g;
+// 	res->b = c1->b - c2->b;
+// }

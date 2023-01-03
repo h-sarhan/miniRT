@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:06:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 12:43:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 		while (light_idx < scene->count.lights)
 		{
 			surface_color = phong(itx, scene, light_idx);
-			reflected = reflected_color(scene, itx,
+			reflected = cast_reflection_ray(scene, itx,
 					scene->settings.reflection_depth, light_idx);
 			add_colors(&final_color, &final_color, &surface_color);
 			add_colors(&final_color, &final_color, &reflected);
