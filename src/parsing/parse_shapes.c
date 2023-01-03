@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:36:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 20:05:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,45 @@ bool	is_shape(const char *identifier)
  * @param success A boolean pointer set to false if there are any errors while
  *  parsing
  */
-static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
+static bool	parse_sphere(t_scene *scene, t_shape *shape, char **splitted)
 {
-	bool	parse_success;
+	bool	success;
 
-	parse_success = true;
+	success = true;
 	shape->type = SPHERE;
 	if (split_count(splitted) != 4)
 	{
-		*success = false;
-		shape->props.radius = 0.1;
-		return ;
+		scene->parse_errors.errors.shape.other = true;
+		return (false);
 	}
-	shape->props.radius = ft_atof(splitted[2], success) / 2;
-	if (*success == false || shape->props.radius <= 0.0)
-		parse_success = false;
-	parse_coordinates(&shape->origin, splitted[1], success);
-	shape->origin.w = 1;
-	if (*success == false)
-		parse_success = false;
-	parse_color(&shape->props.color, splitted[3], success);
-	if (*success == false)
-		parse_success = false;
-	*success = parse_success;
+	shape->props.radius = ft_atof(splitted[2], &success) / 2;
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.diameter_other = true;
+		return (false);
+	}
+	if (shape->props.radius <= 0.0)
+	{
+		scene->parse_errors.errors.shape.diameter_range = true;
+		return (false);
+	}
+	parse_coordinates(&shape->origin, splitted[1], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.coordinates = true;
+		return (false);
+	}
+	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
+	if (find_error(&scene->parse_errors.errors))
+	{
+		return (false);
+	}
 	shape->props.reflectiveness = 0.1;
 	shape->props.scale.x = shape->props.radius;
 	shape->props.scale.y = shape->props.radius;
 	shape->props.scale.z = shape->props.radius;
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
+	return (true);
 }
 
 /**
@@ -70,36 +81,45 @@ static void	parse_sphere(t_shape *shape, char **splitted, bool *success)
  * @param success A boolean pointer set to false if there are any errors while
  *  parsing
  */
-static void	parse_cube(t_shape *shape, char **splitted, bool *success)
+static bool	parse_cube(t_scene *scene, t_shape *shape, char **splitted)
 {
-	bool	parse_success;
 	float	side_len;
+	bool	success;
 
-	parse_success = true;
+	success = true;
 	shape->type = CUBE;
 	if (split_count(splitted) != 4)
 	{
-		*success = false;
-		side_len = 0.1;
-		return ;
+		scene->parse_errors.errors.shape.other = true;
+		return (false);
 	}
-	side_len = ft_atof(splitted[2], success);
-	if (*success == false || side_len <= 0.0)
-		parse_success = false;
-	parse_coordinates(&shape->origin, splitted[1], success);
-	shape->origin.w = 1;
-	if (*success == false)
-		parse_success = false;
-	parse_color(&shape->props.color, splitted[3], success);
-	if (*success == false)
-		parse_success = false;
-	*success = parse_success;
+	side_len = ft_atof(splitted[2], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.side_len_other = true;
+		return (false);
+	}
+	if (side_len <= 0.0)
+	{
+		scene->parse_errors.errors.shape.side_len_range = true;
+		return (false);
+	}
+	parse_coordinates(&shape->origin, splitted[1], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.coordinates = true;
+		return (false);
+	}
+	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
+	if (find_error(&scene->parse_errors.errors) == true)
+		return (false);
 	ft_bzero(&shape->orientation, sizeof(t_vector));
 	shape->orientation.y = 1;
 	shape->props.reflectiveness = 0.1;
 	shape->props.scale.x = side_len;
 	shape->props.scale.y = side_len;
 	shape->props.scale.z = side_len;
+	return (true);
 }
 
 /**
@@ -109,31 +129,32 @@ static void	parse_cube(t_shape *shape, char **splitted, bool *success)
  * @param success A boolean pointer set to false if there are any errors while
  *  parsing
  */
-static void	parse_plane(t_shape *shape, char **splitted, bool *success)
+static bool	parse_plane(t_scene *scene, t_shape *shape, char **splitted)
 {
-	bool	parse_success;
+	bool	success;
 
-	parse_success = true;
+	success = true;
 	shape->type = PLANE;
 	if (split_count(splitted) != 4)
 	{
-		*success = false;
-		return ;
+		scene->parse_errors.errors.shape.other = true;
+		return (false);
 	}
-	parse_coordinates(&shape->origin, splitted[1], success);
-	shape->origin.w = 1;
-	if (*success == false)
-		parse_success = false;
-	parse_orientation(&shape->orientation, splitted[2], success);
-	if (*success == false || vec_magnitude(&shape->orientation) == 0)
-		parse_success = false;
-	parse_color(&shape->props.color, splitted[3], success);
-	if (*success == false)
-		parse_success = false;
-	*success = parse_success;
+	parse_coordinates(&shape->origin, splitted[1], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.coordinates = true;
+		return (false);
+	}
+	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);
+	if (find_error(&scene->parse_errors.errors) == true)
+		return (false);
+	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
+	if (find_error(&scene->parse_errors.errors) == true)
+		return (false);
 	shape->props.reflectiveness = 0.05;
-	shape->props.distance_from_origin = \
-		dot_product(&shape->orientation, &shape->origin);
+	shape->props.distance_from_origin = dot_product(&shape->orientation, &shape->origin);
+	return (true);
 }
 
 /**
@@ -143,37 +164,60 @@ static void	parse_plane(t_shape *shape, char **splitted, bool *success)
  * @param success A boolean pointer set to false if there are any errors while
  *  parsing
  */
-static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
+static bool	parse_cylinder(t_scene *scene, t_shape *shape, char **splitted)
 {
-	bool	parse_success;
+	bool	success;
 
-	parse_success = true;
+	success = true;
 	shape->type = CYLINDER;
 	if (split_count(splitted) != 6)
-		*success = false;
-	if (*success == false)
-		return ;
-	shape->props.radius = ft_atof(splitted[3], success) / 2;
-	if (*success == false || shape->props.radius <= 0.0)
-		parse_success = false;
-	shape->props.height = ft_atof(splitted[4], success);
-	if (*success == false || shape->props.height <= 0.0)
-		parse_success = false;
-	parse_coordinates(&shape->origin, splitted[1], success);
-	shape->origin.w = 1;
-	if (*success == false)
-		parse_success = false;
-	parse_orientation(&shape->orientation, splitted[2], success);
-	if (*success == false || vec_magnitude(&shape->orientation) == 0)
-		parse_success = false;
-	parse_color(&shape->props.color, splitted[5], success);
-	if (*success == false)
-		parse_success = false;
-	*success = parse_success;
+	{
+		scene->parse_errors.errors.shape.other = true;
+		return (false);
+	}
+	parse_coordinates(&shape->origin, splitted[1], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.coordinates = true;
+		return (false);
+	}
+	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);
+	if (find_error(&scene->parse_errors.errors))
+	{
+		return (false);
+	}
+	shape->props.radius = ft_atof(splitted[3], &success) / 2;
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.diameter_other = true;
+		return (false);
+	}
+	if (shape->props.radius <= 0.0)
+	{
+		scene->parse_errors.errors.shape.diameter_range = true;
+		return (false);
+	}
+	shape->props.height = ft_atof(splitted[4], &success);
+	if (success == false)
+	{
+		scene->parse_errors.errors.shape.height_other = true;
+		return (false);
+	}
+	if (shape->props.height <= 0.0)
+	{
+		scene->parse_errors.errors.shape.height_range = true;
+		return (false);
+	}
+	parse_color(&shape->props.color, splitted[5], &scene->parse_errors.errors.shape.color);
+	if (find_error(&scene->parse_errors.errors))
+	{
+		return (false);
+	}
 	shape->props.scale.x = shape->props.radius;
 	shape->props.scale.y = 1;
 	shape->props.scale.z = shape->props.radius;
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
+	return (true);
 }
 
 /**
@@ -183,10 +227,13 @@ static void	parse_cylinder(t_shape *shape, char **splitted, bool *success)
  * @param success A boolean pointer set to false if there are any errors while
  *  parsing
  */
-static void	parse_cone(t_shape *shape, char **splitted, bool *success)
+static bool	parse_cone(t_scene *scene, t_shape *shape, char **splitted)
 {
-	parse_cylinder(shape, splitted, success);
+	bool	success;
+	
+	success = parse_cylinder(scene, shape, splitted);
 	shape->type = CONE;
+	return (success);
 }
 
 /**
@@ -197,32 +244,36 @@ static void	parse_cone(t_shape *shape, char **splitted, bool *success)
  * @param line The line containing the shape
  * @return Whether the parsing succeeded or not
  */
-bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
-		char *line)
+// bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
+// 		char *line)
+bool	parse_shape(t_scene *scene, char **splitted)
 {
 	t_shape	*shape;
 	bool	success;
 
 	success = true;
 	if (scene->count.shapes == SHAPE_MAX)
-		return (shape_parse_error(line, line_num, scene, splitted));
+	{
+		scene->parse_errors.errors.shape.max_shapes = true;
+		return (false);
+	}
 	if (scene->shapes == NULL)
 		scene->shapes = ft_calloc(SHAPE_MAX, sizeof(t_shape));
 	if (scene->shapes == NULL)
-		return (shape_parse_error(line, line_num, scene, splitted));
+		return (false);
 	shape = &scene->shapes[scene->count.shapes];
 	if (ft_strcmp(splitted[0], "sp") == 0)
-		parse_sphere(shape, splitted, &success);
+		success = parse_sphere(scene, shape, splitted);
 	else if (ft_strcmp(splitted[0], "pl") == 0)
-		parse_plane(shape, splitted, &success);
+		success = parse_plane(scene, shape, splitted);
 	else if (ft_strcmp(splitted[0], "cy") == 0)
-		parse_cylinder(shape, splitted, &success);
+		success = parse_cylinder(scene, shape, splitted);
 	else if (ft_strcmp(splitted[0], "cu") == 0)
-		parse_cube(shape, splitted, &success);
+		success = parse_cube(scene, shape, splitted);
 	else if (ft_strcmp(splitted[0], "co") == 0)
-		parse_cone(shape, splitted, &success);
+		success = parse_cone(scene, shape, splitted);
 	if (success == false)
-		return (shape_parse_error(line, line_num, scene, splitted));
+		return (false);
 	shape->id = scene->count.shapes;
 	scene->count.shapes++;
 	shape->props.diffuse = 0.9;

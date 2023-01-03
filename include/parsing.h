@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 16:58:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,92 @@
 # define RESET "\x1b[0m"
 # define YELLOW "\x1b[33m"
 # define MAGENTA "\e[0;35m"
-# define GREEN  "\x1B[32m"
+# define GREEN "\x1B[32m"
 # define LIGHT_MAX 20
 # define SHAPE_MAX 100
 
-// typedef struct s_parse_errors	t_parse_errors;
-// struct	s_parse_errors
-// {
-// 	bool		found_error;
-// 	t_cam_errors cam;
-// 	t_light_errors light;
-// 	t_ambient_errors ambient;
-// 	t_shape_errors shape;
-// 	char	*element;
-// 	int		line_num;
-// 	char	*line;
-// };
+typedef struct s_color_error	t_color_error;
+struct s_color_error
+{
+	bool	r;
+	bool	g;
+	bool	b;
+	bool	other;
+};
+
+typedef struct s_orient_error	t_orient_error;
+struct s_orient_error
+{
+	bool	x;
+	bool	y;
+	bool	z;
+	bool	zero;
+	bool	other;
+};
+
+typedef struct s_ambient_errors	t_ambient_errors;
+struct s_ambient_errors
+{
+	bool			intensity;
+	bool			other;
+	t_color_error	color;
+};
+
+typedef struct s_cam_errors	t_cam_errors;
+struct s_cam_errors
+{
+	bool			other;
+	bool			coords;
+	bool			fov;
+	bool			up_vector;
+	t_orient_error	orient;
+};
+
+typedef struct s_light_errors	t_light_errors;
+struct s_light_errors
+{
+	bool			intensity;
+	bool			max_lights;
+	bool			other;
+	bool			coords;
+	t_color_error	color;
+};
+
+typedef struct s_shape_errors	t_shape_errors;
+struct s_shape_errors
+{
+	bool			max_shapes;
+	bool			diameter_range;
+	bool			diameter_other;
+	bool			height_range;
+	bool			height_other;
+	bool			coordinates;
+	bool			side_len_other;
+	bool			side_len_range;
+	bool			other;
+	t_color_error	color;
+	t_orient_error	orient;
+};
+
+typedef struct s_parse_error_flags	t_error_flags;
+struct	s_parse_error_flags
+{
+	t_ambient_errors	ambient;
+	t_cam_errors		cam;
+	t_light_errors		light;
+	t_shape_errors		shape;
+	bool				unknown_identifier;
+};
+typedef struct s_parse_error_info	t_error_info;
+struct s_parse_error_info
+{
+	t_error_flags	errors;
+	char			*element;
+	int				line_num;
+	char			*line;
+};
+
+bool	find_error(t_error_flags *errors);
 
 // Error with parsing these elements
 // ambient/camera/camera fov/light intensity/sphere diameter/sphere/plane/cylinder/
@@ -41,10 +111,10 @@
 
 // orientation errors
 # define ORIENT_ERROR "\x1b[33mError with parsing %s orientation on line #%d\n\x1b[31m->\t%s\n\x1b[0m"
-# define X_OOR "\x1b[33mThe x value is out of range\n\x1b[0m"
-# define Y_OOR "\x1b[33mThe y value is out of range\n\x1b[0m"
-# define Z_OOR "\x1b[33mThe z value is out of range\n\x1b[0m"
-# define ZERO_ORIENT "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
+# define ORIENT_X_OOR "\x1b[33mThe x value is out of range\n\x1b[0m"
+# define ORIENT_Y_OOR "\x1b[33mThe y value is out of range\n\x1b[0m"
+# define ORIENT_Z_OOR "\x1b[33mThe z value is out of range\n\x1b[0m"
+# define ORIENT_ZERO "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
 
 // color errors
 # define COLOR_ERROR YELLOW"Error with parsing %s color on line #%d\n"RED"->\t%s\n"RESET
@@ -85,21 +155,23 @@ bool	check_color(const t_color *color, size_t line_num, const char *line,
 bool	check_orientation(const t_vector *orientation, size_t line_num,
 			const char *line, const char *element);
 
-bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
-			char *line);
-bool	parse_camera(t_scene *scene, char **splitted, char *line,
-			size_t line_num);
-bool	parse_light(t_scene *scene, char **splitted, char *line,
-			size_t line_num);
+bool	parse_ambient(t_scene *scene, char **splitted);
+// bool	parse_ambient(t_scene *scene, char **splitted, size_t line_num,
+// 			char *line);
+// bool	parse_camera(t_scene *scene, char **splitted, char *line,
+// 			size_t line_num);
+bool	parse_camera(t_scene *scene, char **splitted);
+bool	parse_light(t_scene *scene, char **splitted);
+// bool	parse_light(t_scene *scene, char **splitted, char *line,
+// 			size_t line_num);
 
-bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
-			char *line);
+bool	parse_shape(t_scene *scene, char **splitted);
+// bool	parse_shape(t_scene *scene, char **splitted, size_t line_num,
+// 			char *line);
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
 			size_t line_num, int fd);
 
-void	*unknown_identifier(char *line, size_t line_num, t_scene *scene,
-			char **splitted);
 void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
 			char **splitted);
 void	*light_parse_error(char *line, size_t line_num, t_scene *scene);
@@ -108,9 +180,9 @@ void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
 			bool invalid_coords);
 
 void	parse_coordinates(t_vector *position, const char *str, bool *success);
-void	parse_orientation(t_vector *orientation, const char *str,
-			bool *success);
-void	parse_color(t_color *color, const char *str, bool *success);
+void	parse_orientation(t_vector *orientation, const char *str, t_orient_error *err);
+
+void	parse_color(t_color *color, const char *str, t_color_error *errs);
 
 bool	is_settings(const char *line);
 bool	is_shape(const char *identifier);
@@ -119,6 +191,7 @@ bool	is_num(const char *str, bool decimal);
 size_t	count_commas(const char *str);
 size_t	split_count(char **split);
 bool	all_whitespace(const char *str);
+void	print_errors(t_scene *scene);
 
 t_scene	*parse_scene(int fd);
 

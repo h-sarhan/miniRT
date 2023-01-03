@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:34:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 20:09:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,26 @@ static bool	parse_line(t_scene *scene, char *line, size_t line_num, int fd)
 	success = true;
 	splitted = ft_split_whitespace(line);
 	if (ft_strcmp(splitted[0], "A") == 0)
-		success = parse_ambient(scene, splitted, line_num, line);
+		success = parse_ambient(scene, splitted);
+		// success = parse_ambient(scene, splitted, line_num, line);
 	else if (ft_strcmp(splitted[0], "C") == 0)
-		success = parse_camera(scene, splitted, line, line_num);
+		success = parse_camera(scene, splitted);
+		// success = parse_camera(scene, splitted, line, line_num);
 	else if (ft_strcmp(splitted[0], "L") == 0)
-		success = parse_light(scene, splitted, line, line_num);
+		// success = parse_light(scene, splitted, line, line_num);
+		success = parse_light(scene, splitted);
 	else if (is_shape(splitted[0]))
-		success = parse_shape(scene, splitted, line_num, line);
+		// success = parse_shape(scene, splitted, line_num, line);
+		success = parse_shape(scene, splitted);
 	else if (is_settings(line) == true)
 		success = parse_settings(scene, line, line_num, fd);
 	else
-		success = unknown_identifier(line, line_num, scene, splitted);
+	{
+		scene->parse_errors.errors.unknown_identifier = true;
+		success = false;
+	}
+	if (success == false)
+		print_errors(scene);
 	free(line);
 	free_split_array(splitted);
 	return (success);

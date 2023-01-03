@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/02 19:35:40 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/03 17:42:58 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c \
 				matrix_inverse.c matrix_inverse2.c transformation_matrices.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-PARSING_SRC = parse_utils.c shape_errors.c scene_errors.c \
+PARSING_SRC = parse_utils.c  parse_errors.c  \
 				parse_scene.c parse_shapes.c parse_elements.c \
 				parse_attributes.c parse_settings.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))

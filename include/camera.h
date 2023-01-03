@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:21:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:03:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 17:08:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ struct s_camera
 	t_mat4		inv_trans;
 	float		phi;
 	float		theta;
+	
 };
 
 void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,

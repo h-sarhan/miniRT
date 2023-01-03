@@ -6,14 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 16:18:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/03 20:01:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCENE_H
 # define SCENE_H
 
-#include "parsing.h"
+# include "parsing.h"
+
 /**
  * @brief Holds the number of elements in a scene
  * @param ambient_lights Number of ambient lights. Should be 1
@@ -96,7 +97,7 @@ struct s_scene
 	sem_t			*sem_loading;
 	t_look_at		look_at;
 	t_mouse			mouse;
-	// t_parse_errors	parse_errors;
+	t_error_info	parse_errors;
 };
 
 void	free_scene(t_scene *scene);
