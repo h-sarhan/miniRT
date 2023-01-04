@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 21:35:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 22:23:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,6 @@ struct	s_parse_error_flags
 	t_light_errors		light;
 	t_shape_errors		shape;
 	bool				unknown_identifier;
-};
-typedef struct s_parse_error_info	t_error_info;
-struct s_parse_error_info
-{
-	t_error_flags	errors;
-	char			*element;
-	int				line_num;
-	char			*line;
 };
 
 bool	find_error(t_error_flags *errors);

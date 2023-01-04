@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:29:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 23:36:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 22:25:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,28 @@ static bool	parse_sphere(t_scene *scene, t_shape *shape, char **splitted)
 	shape->type = SPHERE;
 	if (split_count(splitted) != 4)
 	{
-		scene->parse_errors.errors.shape.other = true;
+		scene->error_flags.shape.other = true;
 		return (false);
 	}
 	shape->props.radius = ft_atof(splitted[2], &success) / 2;
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.diameter_other = true;
+		scene->error_flags.shape.diameter_other = true;
 		return (false);
 	}
 	if (shape->props.radius <= 0.0)
 	{
-		scene->parse_errors.errors.shape.diameter_range = true;
+		scene->error_flags.shape.diameter_range = true;
 		return (false);
 	}
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.origin = true;
+		scene->error_flags.shape.origin = true;
 		return (false);
 	}
-	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
-	if (find_error(&scene->parse_errors.errors))
+	parse_color(&shape->props.color, splitted[3], &scene->error_flags.shape.color);
+	if (find_error(&scene->error_flags))
 	{
 		return (false);
 	}
@@ -90,28 +90,28 @@ static bool	parse_cube(t_scene *scene, t_shape *shape, char **splitted)
 	shape->type = CUBE;
 	if (split_count(splitted) != 4)
 	{
-		scene->parse_errors.errors.shape.other = true;
+		scene->error_flags.shape.other = true;
 		return (false);
 	}
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.origin = true;
+		scene->error_flags.shape.origin = true;
 		return (false);
 	}
 	side_len = ft_atof(splitted[2], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.side_len_other = true;
+		scene->error_flags.shape.side_len_other = true;
 		return (false);
 	}
 	if (side_len <= 0.0)
 	{
-		scene->parse_errors.errors.shape.side_len_range = true;
+		scene->error_flags.shape.side_len_range = true;
 		return (false);
 	}
-	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
-	if (find_error(&scene->parse_errors.errors) == true)
+	parse_color(&shape->props.color, splitted[3], &scene->error_flags.shape.color);
+	if (find_error(&scene->error_flags) == true)
 		return (false);
 	ft_bzero(&shape->orientation, sizeof(t_vector));
 	shape->orientation.y = 1;
@@ -137,20 +137,20 @@ static bool	parse_plane(t_scene *scene, t_shape *shape, char **splitted)
 	shape->type = PLANE;
 	if (split_count(splitted) != 4)
 	{
-		scene->parse_errors.errors.shape.other = true;
+		scene->error_flags.shape.other = true;
 		return (false);
 	}
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.origin = true;
+		scene->error_flags.shape.origin = true;
 		return (false);
 	}
-	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);
-	if (find_error(&scene->parse_errors.errors) == true)
+	parse_orientation(&shape->orientation, splitted[2], &scene->error_flags.shape.orient);
+	if (find_error(&scene->error_flags) == true)
 		return (false);
-	parse_color(&shape->props.color, splitted[3], &scene->parse_errors.errors.shape.color);
-	if (find_error(&scene->parse_errors.errors) == true)
+	parse_color(&shape->props.color, splitted[3], &scene->error_flags.shape.color);
+	if (find_error(&scene->error_flags) == true)
 		return (false);
 	shape->props.reflectiveness = 0.05;
 	shape->props.distance_from_origin = dot_product(&shape->orientation, &shape->origin);
@@ -172,44 +172,44 @@ static bool	parse_cylinder(t_scene *scene, t_shape *shape, char **splitted)
 	shape->type = CYLINDER;
 	if (split_count(splitted) != 6)
 	{
-		scene->parse_errors.errors.shape.other = true;
+		scene->error_flags.shape.other = true;
 		return (false);
 	}
 	parse_coordinates(&shape->origin, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.origin = true;
+		scene->error_flags.shape.origin = true;
 		return (false);
 	}
-	parse_orientation(&shape->orientation, splitted[2], &scene->parse_errors.errors.shape.orient);
-	if (find_error(&scene->parse_errors.errors))
+	parse_orientation(&shape->orientation, splitted[2], &scene->error_flags.shape.orient);
+	if (find_error(&scene->error_flags))
 	{
 		return (false);
 	}
 	shape->props.radius = ft_atof(splitted[3], &success) / 2;
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.diameter_other = true;
+		scene->error_flags.shape.diameter_other = true;
 		return (false);
 	}
 	if (shape->props.radius <= 0.0)
 	{
-		scene->parse_errors.errors.shape.diameter_range = true;
+		scene->error_flags.shape.diameter_range = true;
 		return (false);
 	}
 	shape->props.height = ft_atof(splitted[4], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.shape.height_other = true;
+		scene->error_flags.shape.height_other = true;
 		return (false);
 	}
 	if (shape->props.height <= 0.0)
 	{
-		scene->parse_errors.errors.shape.height_range = true;
+		scene->error_flags.shape.height_range = true;
 		return (false);
 	}
-	parse_color(&shape->props.color, splitted[5], &scene->parse_errors.errors.shape.color);
-	if (find_error(&scene->parse_errors.errors))
+	parse_color(&shape->props.color, splitted[5], &scene->error_flags.shape.color);
+	if (find_error(&scene->error_flags))
 	{
 		return (false);
 	}
@@ -254,7 +254,7 @@ bool	parse_shape(t_scene *scene, char **splitted)
 	success = true;
 	if (scene->count.shapes == SHAPE_MAX)
 	{
-		scene->parse_errors.errors.shape.max_shapes = true;
+		scene->error_flags.shape.max_shapes = true;
 		return (false);
 	}
 	if (scene->shapes == NULL)

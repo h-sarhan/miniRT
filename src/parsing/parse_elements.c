@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:28:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 22:24:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ bool	parse_light(t_scene *scene, char **splitted)
 	success = true;
 	if (scene->count.lights == LIGHT_MAX)
 	{
-		scene->parse_errors.errors.light.max_lights = true;
+		scene->error_flags.light.max_lights = true;
 		return (false);
 	}
 	if (split_count(splitted) != 4)
 	{
-		scene->parse_errors.errors.light.other = true;
+		scene->error_flags.light.other = true;
 		return (false);
 	}
 	if (scene->lights == NULL)
@@ -47,22 +47,22 @@ bool	parse_light(t_scene *scene, char **splitted)
 	parse_coordinates(&light->position, splitted[1], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.light.coords = true;
+		scene->error_flags.light.coords = true;
 		return (false);
 	}
 	light->intensity = ft_atof(splitted[2], &success);
 	if (success == false)
 	{
-		scene->parse_errors.errors.light.intensity_other = true;
+		scene->error_flags.light.intensity_other = true;
 		return (false);
 	}
 	if (light->intensity < 0.0 || light->intensity > 1.0)
 	{
-		scene->parse_errors.errors.light.intensity_range = true;
+		scene->error_flags.light.intensity_range = true;
 		return (false);
 	}
-	parse_color(&light->color, splitted[3], &scene->parse_errors.errors.light.color);
-	if (find_error(&scene->parse_errors.errors))
+	parse_color(&light->color, splitted[3], &scene->error_flags.light.color);
+	if (find_error(&scene->error_flags))
 	{
 		return (false);
 	}
@@ -89,7 +89,7 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 	success = true;
 	if (split_count(splitted) != 3)
 	{
-		scene->parse_errors.errors.ambient.other = true;
+		scene->error_flags.ambient.other = true;
 		return (false);
 	}
 	scene->ambient.intensity = ft_atof(splitted[1], &success);
@@ -97,14 +97,14 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 		|| scene->ambient.intensity > 1.0)
 	{
 		if (success == true)
-			scene->parse_errors.errors.ambient.intensity_range = true;
+			scene->error_flags.ambient.intensity_range = true;
 		else
-			scene->parse_errors.errors.ambient.intensity_other = true;
+			scene->error_flags.ambient.intensity_other = true;
 		return (false);
 	}
 	parse_color(&scene->ambient.color, splitted[2],
-		&scene->parse_errors.errors.ambient.color);
-	if (find_error(&scene->parse_errors.errors))
+		&scene->error_flags.ambient.color);
+	if (find_error(&scene->error_flags))
 		return (false);
 	scene->count.ambient_lights++;
 	return (true);
@@ -129,35 +129,35 @@ bool	parse_camera(t_scene *scene, char **splitted)
 	if (split_count(splitted) != 4)
 	{
 		// other error
-		scene->parse_errors.errors.cam.other = true;
+		scene->error_flags.cam.other = true;
 		return (false);
 	}
 	parse_coordinates(&scene->camera.position, splitted[1], &success);
 	scene->camera.position.w = 1;
 	if (success == false)
 	{
-		scene->parse_errors.errors.cam.coords = true;
+		scene->error_flags.cam.coords = true;
 		return (false);
 	}
-	parse_orientation(&scene->camera.dir, splitted[2], &scene->parse_errors.errors.cam.orient);
-	if (find_error(&scene->parse_errors.errors))
+	parse_orientation(&scene->camera.dir, splitted[2], &scene->error_flags.cam.orient);
+	if (find_error(&scene->error_flags))
 	{
 		return (false);
 	}
 	if (fabs(scene->camera.dir.x) < 0.001 && fabs(scene->camera.dir.y) > 0.001 && fabs(scene->camera.dir.z) < 0.001)
 	{
-		scene->parse_errors.errors.cam.up_vector = true;
+		scene->error_flags.cam.up_vector = true;
 		return (false);
 	}
 	scene->camera.fov = ft_atof(splitted[3], &success);
 	if (success == false || is_num(splitted[3], true) == false)
 	{
-		scene->parse_errors.errors.cam.fov_other = true;
+		scene->error_flags.cam.fov_other = true;
 		return (false);
 	}
 	if (scene->camera.fov < 1 || scene->camera.fov > 180)
 	{
-		scene->parse_errors.errors.cam.fov_range = true;
+		scene->error_flags.cam.fov_range = true;
 		return (false);
 	}
 	scene->count.cameras++;

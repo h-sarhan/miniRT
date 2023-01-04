@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 01:30:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 22:24:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 {
 	t_error_flags	*flags;
 
-	flags = &scene->parse_errors.errors;
+	flags = &scene->error_flags;
 	if (flags->unknown_identifier == true)
 	{
 		printf(UNKNOWN_IDENTIFIER, identifer, line_num, line);

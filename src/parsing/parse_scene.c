@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 23:28:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 22:24:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 		success = parse_settings(scene, line, line_num, fd);
 	else
 	{
-		scene->parse_errors.errors.unknown_identifier = true;
+		scene->error_flags.unknown_identifier = true;
 		success = false;
 	}
 	if (success == false)
