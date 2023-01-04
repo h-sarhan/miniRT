@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 01:29:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/04 21:35:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,6 @@ bool	find_error(t_error_flags *errors);
 # define CONE_SYNTAX YELLOW"Correct syntax is \"co [origin] [orientation] [diameter] [height] [color]\"\n"RESET
 # define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
 
-bool	check_color(const t_color *color, size_t line_num, const char *line,
-			const char *element);
-bool	check_orientation(const t_vector *orientation, size_t line_num,
-			const char *line, const char *element);
 
 bool	parse_ambient(t_scene *scene, char **splitted);
 bool	parse_camera(t_scene *scene, char **splitted);
@@ -165,13 +161,6 @@ bool	parse_shape(t_scene *scene, char **splitted);
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
 			size_t *line_num, int fd);
-
-void	*shape_parse_error(char *line, size_t line_num, t_scene *scene,
-			char **splitted);
-void	*light_parse_error(char *line, size_t line_num, t_scene *scene);
-void	*ambient_parse_error(char *line, size_t line_num, t_scene *scene);
-void	*camera_parse_error(char *line, size_t line_num, t_scene *scene,
-			bool invalid_coords);
 
 void	parse_coordinates(t_vector *position, const char *str, bool *success);
 void	parse_orientation(t_vector *orientation, const char *str, t_orient_error *err);
