@@ -6,10 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/26 10:43:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 04:41:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+#include "mathRT.h"
 #include "miniRT.h"
 
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
@@ -64,7 +66,10 @@ void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
 bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 {
 	t_vector	cylinder_normal;
-	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
+	t_vector	up_vector;
+	ft_bzero(&up_vector, sizeof(t_vector));
+	up_vector.y = 1;
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up_vector);
 	normalize_vec(&cylinder_normal);
 	t_vector	cylinder_to_plane;
 	sub_vec(&cylinder_to_plane, &cylinder->origin, &plane->origin);
@@ -88,7 +93,10 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	t_vector	resolution;
 	t_vector	cylinder_to_sphere;
 	t_vector	cylinder_normal;
-	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &cylinder->orientation);
+	t_vector	up_vector;
+	ft_bzero(&up_vector, sizeof(t_vector));
+	up_vector.y = 1;
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up_vector);
 	if (fabs(vec_magnitude(&cylinder_normal)) < 0.001)
 	{
 		printf("THIS SHHOULDNT HAPPEN1\n");
@@ -220,8 +228,10 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	t_vector	cylinder_normal;
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
-
-	mat_vec_multiply(&cylinder_normal, &cylinder->added_rots, &cylinder->orientation);
+	t_vector	up_vector;
+	ft_bzero(&up_vector, sizeof(t_vector));
+	up_vector.y = 1;
+	mat_vec_multiply(&cylinder_normal, &cylinder->added_rots, &up_vector);
 	normalize_vec(&cylinder_normal);
 	scale_vec(&top_cap_center, &cylinder_normal, cylinder->props.height / 2);
 	add_vec(&top_cap_center, &top_cap_center, &cylinder->origin);
