@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:06:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 04:28:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 	upn = *up;
 	normalize_vec(&upn);
 	cross_product(&left, forward, &upn);
+	normalize_vec(&left);
 	cross_product(&true_up, &left, forward);
+	normalize_vec(&true_up);
 	ft_bzero(&orientation, sizeof(t_mat4));
 	orientation[0][0] = left.x;
 	orientation[0][1] = left.y;

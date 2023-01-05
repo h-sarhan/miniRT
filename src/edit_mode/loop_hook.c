@@ -6,10 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:02:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 04:37:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mathRT.h"
 #include "miniRT.h"
 
 t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
@@ -63,9 +64,9 @@ void	camera_controls(t_scene *scene)
 	if (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
 		|| scene->keys_held.d || scene->keys_held.q || scene->keys_held.e)
 		move_cam(scene);
-	if (scene->keys_held.up == true && scene->camera.phi > 0.5)
+	if (scene->keys_held.up == true && scene->camera.phi > 0.2)
 		scene->camera.phi -= 0.05;
-	if (scene->keys_held.down == true && scene->camera.phi < M_PI - 0.5)
+	if (scene->keys_held.down == true && scene->camera.phi < M_PI - 0.2)
 		scene->camera.phi += 0.05;
 	if (scene->keys_held.left == true)
 		scene->camera.theta += 0.10;
@@ -211,6 +212,7 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	up.z = 0;
 	up.w = 0;
 	cross_product(&ax, &up, &scene->camera.dir);
+	normalize_vec(&ax);
 	if (scene->keys_held.down == true)
 		axis_angle(&rot, &ax, -deg);
 	else
