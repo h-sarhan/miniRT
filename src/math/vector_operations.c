@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/25 23:52:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 07:42:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	cross_product(t_vector *res, const t_vector *v1, const t_vector *v2)
 	res->x = v1->y * v2->z - v1->z * v2->y;
 	res->y = v1->z * v2->x - v1->x * v2->z;
 	res->z = v1->x * v2->y - v1->y * v2->x;
+	res->w = 0;
 }
 
 double	vec_distance(const t_vector *v1, const t_vector *v2)
