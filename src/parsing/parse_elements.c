@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 22:24:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:16:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
  * @param line_num The line number where the light is located
  * @return True if the light was parsed correctly
  */
-// bool	parse_light(t_scene *scene, char **splitted, char *line,
-// 	size_t line_num)
 bool	parse_light(t_scene *scene, char **splitted)
 {
 	t_light	*light;

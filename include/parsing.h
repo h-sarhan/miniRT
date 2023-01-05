@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 22:23:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:14:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,5 +169,9 @@ bool	all_whitespace(const char *str);
 void	print_errors(t_scene *scene, const char *line, int line_num,
 			const char *identifer);
 t_scene	*parse_scene(int fd);
+void	init_shape(t_shape *shape, t_scene *scene);
+void	parse_sphere(t_scene *scene, t_shape *shape, char **splitted);
+void	parse_cube(t_scene *scene, t_shape *shape, char **splitted);
+void	parse_plane(t_scene *scene, t_shape *shape, char **splitted);
 
 #endif

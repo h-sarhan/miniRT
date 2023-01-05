@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/05 07:32:16 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/05 17:14:34 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,10 @@ MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c \
 				matrix_inverse.c matrix_inverse2.c transformation_matrices.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-PARSING_SRC = parse_utils.c  parse_errors.c  \
-				parse_scene.c parse_shapes.c parse_elements.c \
+PARSING_SRC =   parse_errors.c  \
+				parse_scene.c parse_shapes1.c parse_shapes2.c parse_elements.c \
 				parse_attributes.c parse_settings.c
+
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
 RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
@@ -36,7 +37,7 @@ UI_SRC = arrow.c loading_bar.c marker.c shape_info.c
 UI_SRC := $(addprefix ui/, $(UI_SRC))
 
 UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
-		print_utils.c
+		print_utils.c parse_utils.c 
 UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
 
 
