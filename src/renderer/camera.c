@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 07:41:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void	calculate_camera_transform(t_scene *scene)
 	t_vector		from;
 	t_vector		up;
 
-	from.x = scene->camera.position.x;
-	from.y = scene->camera.position.y;
-	from.z = scene->camera.position.z;
+	from.x = scene->cam.position.x;
+	from.y = scene->cam.position.y;
+	from.z = scene->cam.position.z;
 	from.w = 1;
-	normalize_vec(&scene->camera.dir);
+	normalize_vec(&scene->cam.dir);
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-	view_transform(&scene->camera.transform, &from, &up,
-		&scene->camera.dir);
-	mat_inverse(&scene->camera.inv_trans, &scene->camera.transform);
+	view_transform(&scene->cam.transform, &from, &up,
+		&scene->cam.dir);
+	mat_inverse(&scene->cam.inv_trans, &scene->cam.transform);
 }
 
 void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,

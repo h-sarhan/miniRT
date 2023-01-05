@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:15:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ int	main(int argc, char **argv)
 	init_display(&disp, &scene->settings);
 	scene->disp = &disp;
 	setup_hooks(scene);
-	camera_init(&scene->camera, scene);
-	scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
-	scene->camera.phi = acos(scene->camera.dir.y);
+	camera_init(&scene->cam, scene);
+	scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x);
+	scene->cam.phi = acos(scene->cam.dir.y);
 	calculate_transforms(scene);
 	draw_scene(scene);
 	mlx_loop(disp.mlx);

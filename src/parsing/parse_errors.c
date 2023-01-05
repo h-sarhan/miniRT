@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 22:24:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(CAMERA_SYNTAX);
 		return ;
 	}
-	if (!print_orient_error(&flags->cam.orient, line, line_num, "camera orientation"))
+	if (!print_orient_error(&flags->cam.dir, line, line_num, "camera orientation"))
 	{
-		if (flags->cam.orient.other)
+		if (flags->cam.dir.other)
 			printf(CAMERA_SYNTAX);
 		return ;
 	}

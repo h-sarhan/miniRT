@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:13:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	look_at(t_scene *scene)
 	t_vector	final_pos;
 
 	shape = &scene->shapes[scene->shape_idx];
-	sub_vec(&cam_to_object, &shape->origin, &scene->camera.position);
+	sub_vec(&cam_to_object, &shape->origin, &scene->cam.position);
 	normalize_vec(&cam_to_object);
 	if (shape->type == SPHERE)
 	{
@@ -75,13 +75,13 @@ void	look_at(t_scene *scene)
 	scene->look_at.final_pos = final_pos;
 	sub_vec(&scene->look_at.final_dir, &shape->origin, &final_pos);
 	normalize_vec(&scene->look_at.final_dir);
-	scene->look_at.current_dir = scene->camera.dir;
-	scene->look_at.initial_orientation = scene->camera.dir;
+	scene->look_at.current_dir = scene->cam.dir;
+	scene->look_at.initial_orientation = scene->cam.dir;
 	scene->look_at.step_num = 0;
 	sub_vec(&scene->look_at.pos_diff, &scene->look_at.final_pos,
-		&scene->camera.position);
+		&scene->cam.position);
 	sub_vec(&scene->look_at.dir_diff, &scene->look_at.final_dir,
-		&scene->camera.dir);
+		&scene->cam.dir);
 	scene->look_at.step_amount = (vec_magnitude(&scene->look_at.pos_diff) + \
 		vec_magnitude(&scene->look_at.dir_diff)) + 2;
 	scene->look_at.trigger = true;
@@ -96,12 +96,12 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].props.color.a = 0;
 	scene->shapes[scene->count.shapes].props.diffuse = 0.9;
 	scene->shapes[scene->count.shapes].props.highlighted = true;
-	scene->shapes[scene->count.shapes].origin.x = scene->camera.dir.x * 5 \
-		+ scene->camera.position.x;
-	scene->shapes[scene->count.shapes].origin.y = scene->camera.dir.y + \
-		scene->camera.position.y;
-	scene->shapes[scene->count.shapes].origin.z = scene->camera.dir.z * 5 + \
-		scene->camera.position.z;
+	scene->shapes[scene->count.shapes].origin.x = scene->cam.dir.x * 5 \
+		+ scene->cam.position.x;
+	scene->shapes[scene->count.shapes].origin.y = scene->cam.dir.y + \
+		scene->cam.position.y;
+	scene->shapes[scene->count.shapes].origin.z = scene->cam.dir.z * 5 + \
+		scene->cam.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
 	scene->shapes[scene->count.shapes].props.radius = 0.7;
 	scene->shapes[scene->count.shapes].props.radius_squared = 0.7 * 0.7;
@@ -299,7 +299,7 @@ int	key_press(int key, t_scene *scene)
 		scene->settings.camera_mode = !scene->settings.camera_mode;
 	toggle_keys_held(key, scene, true);
 	if (key == KEY_SPACE || key == KEY_R)
-		camera_init(&scene->camera, scene);
+		camera_init(&scene->cam, scene);
 	if (!is_toggle_key(key, scene))
 		return (0);
 	calculate_transforms(scene);

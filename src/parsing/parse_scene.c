@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 22:24:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:44:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 	if (ft_strcmp(splitted[0], "A") == 0)
 		success = parse_ambient(scene, splitted);
 	else if (ft_strcmp(splitted[0], "C") == 0)
-		success = parse_camera(scene, splitted);
+		parse_camera(scene, splitted);
 	else if (ft_strcmp(splitted[0], "L") == 0)
-		success = parse_light(scene, splitted);
+		parse_light(scene, splitted);
 	else if (is_shape(splitted[0]))
 		success = parse_shape(scene, splitted);
 	else if (is_settings(line) == true)
@@ -92,11 +92,11 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 		scene->error_flags.unknown_identifier = true;
 		success = false;
 	}
-	if (success == false)
+	if (find_error(&scene->error_flags))
 		print_errors(scene, line, *line_num, splitted[0]);
 	free(line);
 	free_split_array(splitted);
-	return (success);
+	return (!find_error(&scene->error_flags));
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 04:37:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,33 @@ void	move_cam(t_scene *scene)
 	ft_bzero(&vec, sizeof(t_vector));
 	if (scene->keys_held.w == true)
 	{
-		sphere_to_xyz(&vec, scene->camera.phi, scene->camera.theta, CAM_SPEED);
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, CAM_SPEED);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 	if (scene->keys_held.a == true)
 	{
-		sphere_to_xyz(&vec, M_PI_2, scene->camera.theta - M_PI_2, -CAM_SPEED);
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, -CAM_SPEED);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 	if (scene->keys_held.s == true)
 	{
-		sphere_to_xyz(&vec, scene->camera.phi, scene->camera.theta, -CAM_SPEED);
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, -CAM_SPEED);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 	if (scene->keys_held.d == true)
 	{
-		sphere_to_xyz(&vec, M_PI_2, scene->camera.theta - M_PI_2, CAM_SPEED);
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, CAM_SPEED);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 	if (scene->keys_held.q == true)
 	{
 		vec.y = 0.35;
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 	if (scene->keys_held.e == true)
 	{
 		vec.y = -0.35;
-		add_vec(&scene->camera.position, &scene->camera.position, &vec);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec);
 	}
 }
 
@@ -64,18 +64,18 @@ void	camera_controls(t_scene *scene)
 	if (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
 		|| scene->keys_held.d || scene->keys_held.q || scene->keys_held.e)
 		move_cam(scene);
-	if (scene->keys_held.up == true && scene->camera.phi > 0.2)
-		scene->camera.phi -= 0.05;
-	if (scene->keys_held.down == true && scene->camera.phi < M_PI - 0.2)
-		scene->camera.phi += 0.05;
+	if (scene->keys_held.up == true && scene->cam.phi > 0.2)
+		scene->cam.phi -= 0.05;
+	if (scene->keys_held.down == true && scene->cam.phi < M_PI - 0.2)
+		scene->cam.phi += 0.05;
 	if (scene->keys_held.left == true)
-		scene->camera.theta += 0.10;
+		scene->cam.theta += 0.10;
 	if (scene->keys_held.right == true)
-		scene->camera.theta -= 0.10;
+		scene->cam.theta -= 0.10;
 	if (scene->keys_held.up || scene->keys_held.left || scene->keys_held.right
 		|| scene->keys_held.down)
-		sphere_to_xyz(&scene->camera.dir, scene->camera.phi,
-			scene->camera.theta, 1);
+		sphere_to_xyz(&scene->cam.dir, scene->cam.phi,
+			scene->cam.theta, 1);
 }
 
 void	move_object_fwd(t_scene *scene, t_shape *shape)
@@ -85,11 +85,11 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 	ft_bzero(&offset, sizeof(t_vector));
 	if (scene->keys_held.w)
 	{
-		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, 0.2);
+		sphere_to_xyz(&offset, M_PI / 2, scene->cam.theta, 0.2);
 	}
 	if (scene->keys_held.s)
 	{
-		sphere_to_xyz(&offset, M_PI / 2, scene->camera.theta, -0.2);
+		sphere_to_xyz(&offset, M_PI / 2, scene->cam.theta, -0.2);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 }
@@ -103,14 +103,14 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 	ft_bzero(&increment, sizeof(t_vector));
 	if (scene->keys_held.a)
 	{
-		sphere_to_xyz(&offset, M_PI_2, scene->camera.theta + M_PI_2, 0.2);
-		sphere_to_xyz(&increment, M_PI_2, scene->camera.theta + M_PI_2,
+		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta + M_PI_2, 0.2);
+		sphere_to_xyz(&increment, M_PI_2, scene->cam.theta + M_PI_2,
 			-0.0001);
 	}
 	if (scene->keys_held.d)
 	{
-		sphere_to_xyz(&offset, M_PI_2, scene->camera.theta - M_PI_2, 0.2);
-		sphere_to_xyz(&increment, M_PI_2, scene->camera.theta - M_PI_2,
+		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta - M_PI_2, 0.2);
+		sphere_to_xyz(&increment, M_PI_2, scene->cam.theta - M_PI_2,
 			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
@@ -211,7 +211,7 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
-	cross_product(&ax, &up, &scene->camera.dir);
+	cross_product(&ax, &up, &scene->cam.dir);
 	normalize_vec(&ax);
 	if (scene->keys_held.down == true)
 		axis_angle(&rot, &ax, -deg);
@@ -240,9 +240,9 @@ void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 	t_mat4	mat_copy;
 
 	if (scene->keys_held.left == true)
-		axis_angle(&rot, &scene->camera.dir, deg);
+		axis_angle(&rot, &scene->cam.dir, deg);
 	else
-		axis_angle(&rot, &scene->camera.dir, -deg);
+		axis_angle(&rot, &scene->cam.dir, -deg);
 	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
@@ -307,15 +307,15 @@ void	light_controls(t_scene *scene)
 
 void	reset_look_at(t_scene *scene)
 {
-	if (scene->camera.dir.x > 0)
-		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x);
-	else if (scene->camera.dir.x < 0 && scene->camera.dir.z >= 0)
-		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x) \
+	if (scene->cam.dir.x > 0)
+		scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x);
+	else if (scene->cam.dir.x < 0 && scene->cam.dir.z >= 0)
+		scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x) \
 		+ M_PI;
-	else if (scene->camera.dir.x < 0 && scene->camera.dir.z < 0)
-		scene->camera.theta = atan(scene->camera.dir.z / scene->camera.dir.x) \
+	else if (scene->cam.dir.x < 0 && scene->cam.dir.z < 0)
+		scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x) \
 		- M_PI;
-	scene->camera.phi = acos(scene->camera.dir.y);
+	scene->cam.phi = acos(scene->cam.dir.y);
 	scene->look_at.trigger = false;
 	scene->look_at.step_num = 0;
 }
@@ -329,10 +329,10 @@ void	look_at_animation(t_scene *scene)
 		1.0 / scene->look_at.step_amount);
 	scale_vec(&dir_step, &scene->look_at.dir_diff, \
 		1.0 / scene->look_at.step_amount);
-	add_vec(&scene->camera.position, &scene->camera.position, &pos_step);
+	add_vec(&scene->cam.position, &scene->cam.position, &pos_step);
 	add_vec(&scene->look_at.current_dir, &scene->look_at.current_dir,
 		&dir_step);
-	scene->camera.dir = scene->look_at.current_dir;
+	scene->cam.dir = scene->look_at.current_dir;
 	calculate_transforms(scene);
 	draw_scene(scene);
 	scene->look_at.step_num++;

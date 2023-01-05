@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:14:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ struct s_cam_errors
 	bool			fov_other;
 	bool			fov_range;
 	bool			up_vector;
-	t_orient_error	orient;
+	t_orient_error	dir;
 };
 
 typedef struct s_light_errors	t_light_errors;
@@ -146,8 +146,8 @@ bool	find_error(t_error_flags *errors);
 
 
 bool	parse_ambient(t_scene *scene, char **splitted);
-bool	parse_camera(t_scene *scene, char **splitted);
-bool	parse_light(t_scene *scene, char **splitted);
+void	parse_camera(t_scene *scene, char **splitted);
+void	parse_light(t_scene *scene, char **splitted);
 
 bool	parse_shape(t_scene *scene, char **splitted);
 

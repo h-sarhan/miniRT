@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 12:34:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	draw_shape_info(t_scene *scene)
 			origin.x -= 0.2;
 			origin.y += shape->props.height / 2;
 		}
-		mat_vec_multiply(&origin_proj, &scene->camera.transform, &origin);
+		mat_vec_multiply(&origin_proj, &scene->cam.transform, &origin);
 		if (origin_proj.z > 0)
 			return ;
 		perspective_projection(&origin_proj, scene);

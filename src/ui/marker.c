@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:01:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	perspective_projection(t_vector *point, const t_scene *scene)
 {
 	point->x /= -point->z;
 	point->y /= -point->z;
-	point->x = (point->x + scene->camera.half_width) \
-		/ (scene->camera.half_width * 2);
-	point->y = (point->y + scene->camera.half_height) \
-		/ (scene->camera.half_height * 2);
+	point->x = (point->x + scene->cam.half_width) \
+		/ (scene->cam.half_width * 2);
+	point->y = (point->y + scene->cam.half_height) \
+		/ (scene->cam.half_height * 2);
 	point->x = 1 - point->x;
 	point->y = 1 - point->y;
 }
@@ -56,7 +56,7 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 {
 	t_vector	origin_proj;
 
-	mat_vec_multiply(&origin_proj, &scene->camera.transform, &shape->origin);
+	mat_vec_multiply(&origin_proj, &scene->cam.transform, &shape->origin);
 	perspective_projection(&origin_proj, scene);
 	if (shape->type == SPHERE || shape->type == CYLINDER || shape->type == CUBE
 		|| shape->type == CONE)

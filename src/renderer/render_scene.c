@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:02:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	render_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 
 	set_color(worker, x, y, 0);
 	scene = worker->scene;
-	ray_from_cam(&ray, &scene->camera, x, y);
+	ray_from_cam(&ray, &scene->cam, x, y);
 	shape_idx = -1;
 	arr->count = 0;
 	while (++shape_idx < scene->count.shapes)

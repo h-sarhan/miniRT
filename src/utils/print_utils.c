@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:17:37 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 22:27:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	print_scene(const t_scene *scene)
 	print_color(&scene->ambient.color);
 	printf("Camera configuration:\n");
 	printf("  Position:\n");
-	print_vector(&scene->camera.position);
+	print_vector(&scene->cam.position);
 	printf("  Orientation:\n");
-	print_vector(&scene->camera.dir);
+	print_vector(&scene->cam.dir);
 	printf("  Fov:\n");
-	printf("\t%f degrees\n", scene->camera.fov);
+	printf("\t%f degrees\n", scene->cam.fov);
 	i = 0;
 	while (i < scene->count.lights)
 	{
