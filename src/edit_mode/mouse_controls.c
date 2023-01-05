@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_controls.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:41:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 14:40:58 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	mouse_down(int key_code, int x, int y, t_scene *scene)
 	scene->mouse.x = x;
 	scene->mouse.y = y;
 	ray_from_cam(&mouse_selection, &scene->camera,
-		scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w,
-		scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h);
+		(scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + 0.5,
+		(scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + 0.5);
 	shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)

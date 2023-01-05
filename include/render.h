@@ -47,6 +47,7 @@ void	set_color(t_worker *worker, int x, int y, int color);
 
 t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray);
 void	render_pixel(int x, int y, t_intersections *arr, t_worker *worker);
+void	super_sampling_pixel(int x, int y, t_intersections *arr, t_worker *worker);
 void	fill_in_horizontal(t_worker *worker, int threshold);
 void	fill_in_vertical(t_worker *worker, int threshold);
 void	update_loading_bar(t_worker *worker, int *line_counter);

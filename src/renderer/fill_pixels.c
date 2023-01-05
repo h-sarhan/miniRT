@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_pixels.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:34:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 18:07:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 14:58:21 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	fill_in_skipped_pixels_h(int x, int y, t_worker *worker, int threshold)
 	c4 = get_color(worker, x + 2, y);
 	if (color_difference(c1, c4) > threshold)
 	{
-		render_pixel(x, y, &arr, worker);
+		super_sampling_pixel(x, y, &arr, worker);
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
-			render_pixel(x + 1, y, &arr, worker);
+			super_sampling_pixel(x + 1, y, &arr, worker);
 		else
 			set_color(worker, x + 1, y, color_mix(get_color(worker, x, y),
 					c4, 0.5));
@@ -46,9 +46,9 @@ void	fill_in_skipped_pixels_v(int x, int y, t_worker *worker, int threshold)
 	c4 = get_color(worker, x, y + 2);
 	if (color_difference(c1, c4) > threshold)
 	{
-		render_pixel(x, y, &arr, worker);
+		super_sampling_pixel(x, y, &arr, worker);
 		if (color_difference(get_color(worker, x, y), c4) > threshold)
-			render_pixel(x, y + 1, &arr, worker);
+			super_sampling_pixel(x, y + 1, &arr, worker);
 		else
 			set_color(worker, x, y + 1, color_mix(get_color(worker, x, y),
 					c4, 0.5));
