@@ -6,12 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 18:16:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
 
 bool	print_color_error(t_color_error *err, const char *line, int line_num,
 			char* element)
@@ -37,7 +36,6 @@ bool	print_color_error(t_color_error *err, const char *line, int line_num,
 	if (err->other)
 	{
 		printf(GENERIC_ERROR, element, line_num, line);
-		// printf(AMBIENT_LIGHT_SYNTAX);
 		return (false);
 	}
 	return (true);
@@ -67,7 +65,6 @@ bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 	if (err->other)
 	{
 		printf(GENERIC_ERROR, element, line_num, line);
-		// printf(CAMERA_SYNTAX);
 		return (false);
 	}
 	if (err->zero)
