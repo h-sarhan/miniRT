@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:13:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 18:25:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,8 +275,11 @@ int	close_window(t_scene *scene)
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
-	if (key == KEY_M && scene->settings.edit_mode == true)
+	if (key == KEY_X)
 	{
+		scene->supersampling = !scene->supersampling;
+		calculate_transforms(scene);
+		draw_scene(scene);
 	}
 	if (key == KEY_RETURN && scene->settings.edit_mode == true)
 		spawn_shape(scene);

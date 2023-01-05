@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 22:24:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 18:22:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ struct s_scene
 	t_look_at		look_at;
 	t_mouse			mouse;
 	t_error_flags	error_flags;
+	bool			supersampling;
 };
 
 void	free_scene(t_scene *scene);

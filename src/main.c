@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 07:32:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 18:22:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	init_settings(t_settings *settings)
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
 	settings->edit_h = 1080 * settings->edit_scale;
-	settings->disp_w = 1920 * 0.6;
-	settings->disp_h = 1080 * 0.6;
+	settings->disp_w = 1920 * 0.8;
+	settings->disp_h = 1080 * 0.8;
 	settings->collisions = true;
 	settings->reflection_depth = 1;
 }

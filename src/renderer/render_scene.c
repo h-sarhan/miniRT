@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 16:12:24 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/05 18:36:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,28 @@ void	render_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 	set_color(worker, x, y, create_mlx_color(&color));
 }
 
-void	super_sampling_pixel(int x, int y, t_intersections *arr, t_worker *worker)
+void	super_sample_pixel(float x, float y, t_intersections *arr, t_worker *worker)
 {
 	int		shape_idx;
-	int 	i;
-	int		j;
+	float 	i;
+	float	j;
 	t_color	color;
 	t_color	avg_color;
 	t_scene	*scene;
 	t_ray	ray;
 
+	if (worker->scene->supersampling == false)
+	{
+		render_pixel(x, y, arr, worker);
+		return ;
+	}
+	
 	i = 0;
 	ft_bzero(&avg_color, sizeof(t_color));
-	while (i <= 1)
+	while (i <= 0.75)
 	{
 		j = 0;
-		while (j <= 1)
+		while (j <= 0.75)
 		{
 			scene = worker->scene;
 			ray_from_cam(&ray, &scene->camera, x + i, y + j);
@@ -94,11 +100,11 @@ void	super_sampling_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 			while (++shape_idx < scene->count.shapes)
 				intersect(&scene->shapes[shape_idx], &ray, arr);
 			color = shade_point(arr, scene, &ray);
-			mult_color(&color, &color, 1/4.0);
+			mult_color(&color, &color, 1/16.0);
 			add_colors(&avg_color, &avg_color, &color);
-			j++;
+			j += 0.25;
 		}
-		i++;
+		i += 0.25;
 	}
 	set_color(worker, x, y, create_mlx_color(&avg_color));
 }
@@ -117,7 +123,10 @@ void	*render_scene_fast(t_worker *worker)
 		x = 0;
 		while (x < worker->width)
 		{
-			render_pixel(x, y, &arr, worker);
+			// if (worker->scene->supersampling == true)
+			// 	super_sample_pixel(x, y, &arr, worker);
+			// else
+				render_pixel(x, y, &arr, worker);
 			x += 3;
 		}
 		line_counter++;
