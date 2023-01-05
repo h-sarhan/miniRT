@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 15:46:14 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/05 16:12:24 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	super_sampling_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 
 	i = 0;
 	ft_bzero(&avg_color, sizeof(t_color));
-	set_color(worker, x, y, 0);
 	while (i <= 1)
 	{
 		j = 0;
@@ -95,16 +94,12 @@ void	super_sampling_pixel(int x, int y, t_intersections *arr, t_worker *worker)
 			while (++shape_idx < scene->count.shapes)
 				intersect(&scene->shapes[shape_idx], &ray, arr);
 			color = shade_point(arr, scene, &ray);
-			avg_color.r += color.r; 
-			avg_color.g += color.g;
-			avg_color.b += color.b;
+			mult_color(&color, &color, 1/4.0);
+			add_colors(&avg_color, &avg_color, &color);
 			j++;
 		}
 		i++;
 	}
-	avg_color.r /= 4.0;
-	avg_color.g /= 4.0;
-	avg_color.b /= 4.0;
 	set_color(worker, x, y, create_mlx_color(&avg_color));
 }
 
@@ -129,8 +124,8 @@ void	*render_scene_fast(t_worker *worker)
 		update_loading_bar(worker, &line_counter);
 		y += 3;
 	}
-	fill_in_horizontal(worker, 20);
-	fill_in_vertical(worker, 20);
+	fill_in_horizontal(worker, 10);
+	fill_in_vertical(worker, 10);
 	return (NULL);
 }
 
