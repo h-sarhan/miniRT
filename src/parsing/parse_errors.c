@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 11:11:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 11:32:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,52 @@
 bool	print_color_error(t_color_error *err, const char *line, int line_num,
 			char *element)
 {
+	if (err->r || err->g || err->b || err->other)
+		printf(GENERIC_ERROR, element, line_num, line);
 	if (err->r)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(RED_OOR);
 		return (false);
 	}
 	if (err->g)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(GREEN_OOR);
 		return (false);
 	}
 	if (err->b)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(BLUE_OOR);
 		return (false);
 	}
 	if (err->other)
-	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		return (false);
-	}
 	return (true);
 }
 
 bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 			char *element)
 {
+	if (err->x || err->y || err->z || err->other || err->zero)
+		printf(GENERIC_ERROR, element, line_num, line);
 	if (err->x)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_X_OOR);
 		return (false);
 	}
 	if (err->y)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_Y_OOR);
 		return (false);
 	}
 	if (err->z)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_Z_OOR);
 		return (false);
 	}
 	if (err->other)
-	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		return (false);
-	}
 	if (err->zero)
 	{
-		printf(GENERIC_ERROR, element, line_num, line);
 		printf(ORIENT_ZERO);
 		return (false);
 	}
