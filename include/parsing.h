@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 12:01:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 13:05:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,5 +173,22 @@ void	init_shape(t_shape *shape, t_scene *scene);
 void	parse_sphere(t_scene *scene, t_shape *shape, char **splitted);
 void	parse_cube(t_scene *scene, t_shape *shape, char **splitted);
 void	parse_plane(t_scene *scene, t_shape *shape, char **splitted);
+bool	print_shape_error(t_shape *shape, t_shape_errors *err, const char *line,
+			int line_num);
+bool	print_color_error(t_color_error *err, const char *line, int line_num,
+			char *element);
+bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
+			char *element);
+bool	print_ambient_light_error(t_ambient_errors *err, const char *line,
+			int line_num);
+			
+bool	print_cam_error(t_cam_errors *err, const char *line, int line_num);
+bool	print_light_error(t_light_errors *err, const char *line, int line_num);
+bool	print_sphere_error(t_shape_errors *err, const char *line, int line_num);
+bool	print_cube_error(t_shape_errors *err, const char *line, int line_num);
+bool	print_plane_error(t_shape_errors *err, const char *line, int line_num);
+bool	print_cylinder_error(t_shape_errors *err, const char *line,
+		int line_num);
+bool	print_cone_error(t_shape_errors *err, const char *line, int line_num);
 
 #endif

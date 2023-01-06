@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 01:31:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 13:15:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ t_color	parse_color_value(const char *str)
 {
 	t_color	color;
 
+	// convert from int to color struct here
 	color.a = 0;
 	if (ft_strcmp_case(str, "blue") == 0)
 	{
@@ -265,9 +266,7 @@ void	parse_setting(t_scene *scene, char **key_val)
 	if (ft_strcmp("scaleZ", key_val[0]) == 0)
 		shape->props.scale.z = ft_atof(key_val[1], &success);
 	if (ft_strcmp("color", key_val[0]) == 0)
-	{
 		shape->props.color = parse_color_value(key_val[1]);
-	}
 }
 
 bool	parse_settings(t_scene *scene, const char *settings_start,
