@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 12:01:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ bool	is_num(const char *str, bool decimal);
 size_t	count_commas(const char *str);
 size_t	split_count(char **split);
 bool	all_whitespace(const char *str);
-void	print_errors(t_scene *scene, const char *line, int line_num,
+void	print_error(t_scene *scene, const char *line, int line_num,
 			const char *identifer);
 t_scene	*parse_scene(int fd);
 void	init_shape(t_shape *shape, t_scene *scene);

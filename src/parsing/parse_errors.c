@@ -6,68 +6,114 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 17:41:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 11:32:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 12:14:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+// returns true if printed
 bool	print_color_error(t_color_error *err, const char *line, int line_num,
 			char *element)
 {
 	if (err->r || err->g || err->b || err->other)
 		printf(GENERIC_ERROR, element, line_num, line);
 	if (err->r)
-	{
 		printf(RED_OOR);
-		return (false);
-	}
-	if (err->g)
-	{
+	else if (err->g)
 		printf(GREEN_OOR);
-		return (false);
-	}
-	if (err->b)
-	{
+	else if (err->b)
 		printf(BLUE_OOR);
-		return (false);
-	}
-	if (err->other)
-		return (false);
-	return (true);
+	return (ft_memchr(err, 1, sizeof(t_color_error)));
 }
 
+// returns true if printed
 bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 			char *element)
 {
 	if (err->x || err->y || err->z || err->other || err->zero)
 		printf(GENERIC_ERROR, element, line_num, line);
 	if (err->x)
-	{
 		printf(ORIENT_X_OOR);
-		return (false);
-	}
-	if (err->y)
-	{
+	else if (err->y)
 		printf(ORIENT_Y_OOR);
-		return (false);
-	}
-	if (err->z)
-	{
+	else if (err->z)
 		printf(ORIENT_Z_OOR);
-		return (false);
-	}
-	if (err->other)
-		return (false);
-	if (err->zero)
-	{
+	else if (err->zero)
 		printf(ORIENT_ZERO);
-		return (false);
-	}
-	return (true);
+	return (ft_memchr(err, 1, sizeof(t_orient_error)));
 }
 
-void	print_errors(t_scene *scene, const char *line, int line_num,
+// returns true if printed
+bool	print_ambient_light_error(t_error_flags *flags, const char *line,
+			int line_num)
+{
+	if (flags->ambient.intensity_other)
+	{
+		printf(GENERIC_ERROR, "ambient light intensity", line_num, line);
+		printf(AMBIENT_LIGHT_SYNTAX);
+	}
+	else if (flags->ambient.intensity_range)
+		printf(LIGHT_INTENSITY_OOR, "Ambient light", line_num, line);
+	else if (print_color_error(&flags->ambient.color, line, line_num,
+			"ambient light color"))
+		return (true);
+	else if (flags->ambient.other)
+	{
+		printf(GENERIC_ERROR, "ambient light", line_num, line);
+		printf(AMBIENT_LIGHT_SYNTAX);
+	}
+	return (ft_memchr(&flags->ambient, 1, sizeof(t_ambient_errors)));
+}
+
+// returns true if printed
+bool	print_cam_error(t_error_flags *flags, const char *line, int line_num)
+{
+	if (flags->cam.coords)
+		printf(GENERIC_ERROR, "camera coordinates", line_num, line);
+	else if (print_orient_error(&flags->cam.dir, line, line_num,
+			"camera orientation") && flags->cam.dir.other)
+			printf(CAMERA_SYNTAX);
+	else if (flags->cam.up_vector)
+	{
+		printf(GENERIC_ERROR, "camera orientation", line_num, line);
+		printf(CAMERA_UP_VECTOR);
+	}
+	else if (flags->cam.fov_range || flags->cam.fov_other)
+	{
+		printf(GENERIC_ERROR, "camera field of view", line_num, line);
+		if (flags->cam.fov_range)
+			printf(CAMERA_FOV_OOR);
+	}
+	else if (flags->cam.other)
+		printf(GENERIC_ERROR, "camera", line_num, line);
+	if (flags->cam.coords || flags->cam.fov_other || flags->cam.other)
+		printf(CAMERA_SYNTAX);
+	return (ft_memchr(&flags->cam, 1, sizeof(t_cam_errors)));
+}
+
+bool	print_light_error(t_error_flags *flags, const char *line, int line_num)
+{
+	if (flags->light.coords)
+		printf(GENERIC_ERROR, "light position", line_num, line);
+	else if (flags->light.intensity_range)
+		printf(LIGHT_INTENSITY_OOR, "light", line_num, line);
+	else if (flags->light.intensity_other)
+		printf(GENERIC_ERROR, "light intensity", line_num, line);
+	else if (flags->light.max_lights)
+		printf(MAX_ELEMENT_ERROR, LIGHT_MAX, "lights");
+	else if (flags->light.other)
+		printf(GENERIC_ERROR, "light", line_num, line);
+	else if (print_color_error(&flags->light.color, line, line_num,
+			"light color") && flags->light.other)
+			printf(LIGHT_SYNTAX);
+	if (flags->light.coords || flags->light.intensity_other
+		|| flags->light.other)
+		printf(LIGHT_SYNTAX);
+	return (ft_memchr(&flags->light, 1, sizeof(t_light_errors)));
+}
+
+void	print_error(t_scene *scene, const char *line, int line_num,
 			const char *identifer)
 {
 	t_error_flags	*flags;
@@ -79,97 +125,12 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 		printf(UNKNOWN_IDENTIFIER, identifer, line_num, line);
 		return ;
 	}
-	if (flags->ambient.intensity_other)
-	{
-		printf(GENERIC_ERROR, "ambient light intensity", line_num, line);
-		printf(AMBIENT_LIGHT_SYNTAX);
+	if (print_ambient_light_error(flags, line, line_num))
 		return ;
-	}
-	if (flags->ambient.intensity_range)
-	{
-		printf(LIGHT_INTENSITY_OOR, "Ambient light", line_num, line);
+	if (print_cam_error(flags, line, line_num))
 		return ;
-	}
-	if (print_color_error(&flags->ambient.color, line, line_num,
-			"ambient light color") == false)
+	if (print_light_error(flags, line, line_num))
 		return ;
-	if (flags->ambient.other)
-	{
-		printf(GENERIC_ERROR, "ambient light", line_num, line);
-		printf(AMBIENT_LIGHT_SYNTAX);
-		return ;
-	}
-	if (flags->cam.coords)
-	{
-		printf(GENERIC_ERROR, "camera coordinates", line_num, line);
-		printf(CAMERA_SYNTAX);
-		return ;
-	}
-	if (!print_orient_error(&flags->cam.dir, line, line_num,
-			"camera orientation"))
-	{
-		if (flags->cam.dir.other)
-			printf(CAMERA_SYNTAX);
-		return ;
-	}
-	if (flags->cam.up_vector)
-	{
-		printf(GENERIC_ERROR, "camera orientation", line_num, line);
-		printf(CAMERA_UP_VECTOR);
-		return ;
-	}
-	if (flags->cam.fov_other)
-	{
-		printf(GENERIC_ERROR, "camera field of view", line_num, line);
-		printf(CAMERA_SYNTAX);
-		return ;
-	}
-	if (flags->cam.fov_range)
-	{
-		printf(GENERIC_ERROR, "camera field of view", line_num, line);
-		printf(CAMERA_FOV_OOR);
-		return ;
-	}
-	if (flags->cam.other)
-	{
-		printf(GENERIC_ERROR, "camera", line_num, line);
-		printf(CAMERA_SYNTAX);
-		return ;
-	}
-	if (flags->light.coords)
-	{
-		printf(GENERIC_ERROR, "light position", line_num, line);
-		printf(LIGHT_SYNTAX);
-		return ;
-	}
-	if (flags->light.intensity_range)
-	{
-		printf(LIGHT_INTENSITY_OOR, "light", line_num, line);
-		return ;
-	}
-	if (flags->light.intensity_other)
-	{
-		printf(GENERIC_ERROR, "light intensity", line_num, line);
-		printf(LIGHT_SYNTAX);
-		return ;
-	}
-	if (flags->light.max_lights)
-	{
-		printf(MAX_ELEMENT_ERROR, LIGHT_MAX, "lights");
-		return ;
-	}
-	if (flags->light.other)
-	{
-		printf(GENERIC_ERROR, "light", line_num, line);
-		printf(LIGHT_SYNTAX);
-		return ;
-	}
-	if (!print_color_error(&flags->light.color, line, line_num, "light color"))
-	{
-		if (flags->light.other)
-			printf(LIGHT_SYNTAX);
-		return ;
-	}
 	if (flags->shape.max_shapes)
 	{
 		printf(MAX_ELEMENT_ERROR, SHAPE_MAX, "shapes");
@@ -178,7 +139,7 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	shape = &scene->shapes[scene->count.shapes];
 	if (shape->type == SPHERE)
 	{
-		if (!print_color_error(&flags->shape.color, line, line_num,
+		if (print_color_error(&flags->shape.color, line, line_num,
 				"sphere color"))
 		{
 			if (flags->shape.color.other)
@@ -211,7 +172,7 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	}
 	if (shape->type == CUBE)
 	{
-		if (!print_color_error(&flags->shape.color, line, line_num,
+		if (print_color_error(&flags->shape.color, line, line_num,
 				"cube color"))
 		{
 			if (flags->shape.color.other)
@@ -244,14 +205,14 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	}
 	if (shape->type == PLANE)
 	{
-		if (!print_color_error(&flags->shape.color, line, line_num,
+		if (print_color_error(&flags->shape.color, line, line_num,
 				"plane color"))
 		{
 			if (flags->shape.color.other)
 				printf(PLANE_SYNTAX);
 			return ;
 		}
-		if (!print_orient_error(&flags->shape.orient, line, line_num,
+		if (print_orient_error(&flags->shape.orient, line, line_num,
 				"plane orientation"))
 		{
 			if (flags->shape.orient.other)
@@ -273,14 +234,14 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	}
 	if (shape->type == CYLINDER)
 	{
-		if (!print_color_error(&flags->shape.color, line, line_num,
+		if (print_color_error(&flags->shape.color, line, line_num,
 				"cylinder color"))
 		{
 			if (flags->shape.color.other)
 				printf(CYLINDER_SYNTAX);
 			return ;
 		}
-		if (!print_orient_error(&flags->shape.orient, line, line_num,
+		if (print_orient_error(&flags->shape.orient, line, line_num,
 				"cylinder orientation"))
 		{
 			if (flags->shape.orient.other)
@@ -324,14 +285,14 @@ void	print_errors(t_scene *scene, const char *line, int line_num,
 	}
 	if (shape->type == CONE)
 	{
-		if (!print_color_error(&flags->shape.color, line, line_num,
+		if (print_color_error(&flags->shape.color, line, line_num,
 				"cone color"))
 		{
 			if (flags->shape.color.other)
 				printf(CONE_SYNTAX);
 			return ;
 		}
-		if (!print_orient_error(&flags->shape.orient, line, line_num,
+		if (print_orient_error(&flags->shape.orient, line, line_num,
 				"cone orientation"))
 		{
 			if (flags->shape.orient.other)
