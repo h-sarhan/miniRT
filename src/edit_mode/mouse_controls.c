@@ -6,41 +6,44 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 11:05:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 19:24:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	mouse_down(int key_code, int x, int y, t_scene *scene)
+
+void	mouse_select(t_scene *scene, float x, float y)
 {
-	t_ray			mouse_selection;
 	t_intersections	arr;
 	t_intersection	*itx;
+	t_ray			mouse_selection;
 	int				shape_idx;
 
-	if (scene->settings.edit_mode == false)
-		return (0);
-	if (x < 0 || y < 0 || x >= scene->settings.disp_w
-		|| y >= scene->settings.disp_h)
-		return (0);
-	scene->mouse.key = key_code;
-	scene->mouse.x = x;
-	scene->mouse.y = y;
 	ray_from_cam(&mouse_selection, &scene->cam,
-		(scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + 0.5,
-		(scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + 0.5);
+		(x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		(y * scene->settings.edit_h / scene->settings.disp_h) + .5);
 	shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &mouse_selection, &arr);
 	itx = hit(&arr);
-	if (itx->shape->type != PLANE)
-	{
-		scene->shapes[scene->shape_idx].props.highlighted = false;
-		scene->shape_idx = itx->shape->id;
-		itx->shape->props.highlighted = true;
-	}
+	if (itx == NULL || itx->shape->type == PLANE)
+		return ;
+	scene->shapes[scene->shape_idx].props.highlighted = false;
+	scene->shape_idx = itx->shape->id;
+	itx->shape->props.highlighted = true;
+}
+
+int	mouse_down(int key_code, int x, int y, t_scene *scene)
+{
+	if (x < 0 || y < 0 || x >= scene->settings.disp_w
+		|| y >= scene->settings.disp_h || scene->settings.edit_mode == false)
+		return (0);
+	scene->mouse.key = key_code;
+	scene->mouse.x = x;
+	scene->mouse.y = y;
+	mouse_select(scene, x, y);
 	draw_scene(scene);
 	return (0);
 }

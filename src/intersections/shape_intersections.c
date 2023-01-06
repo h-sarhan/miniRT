@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 21:51:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 19:08:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,6 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	xs->arr[xs->count].time = -b - h;
 	xs->arr[xs->count].shape = sphere;
 	xs->arr[xs->count + 1].time = -b + h;
-	xs->arr[xs->count + 1].shape = sphere;
-	xs->count += 2;
-	return (true);
-}
-
-bool	intersect_sphere(t_ray *transf_ray, t_intersections *xs,
-		t_shape *sphere)
-{
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-
-	transf_ray->origin.w = 0;
-	a = dot_product(&transf_ray->direction, &transf_ray->direction);
-	b = 2 * dot_product(&transf_ray->direction, &transf_ray->origin);
-	c = dot_product(&transf_ray->origin, &transf_ray->origin) - 1;
-	discriminant = (b * b) - (4 * a * c);
-	if (discriminant < 0)
-		return (false);
-	b *= -1;
-	a *= 2;
-	discriminant = sqrt(discriminant);
-	xs->arr[xs->count].time = (b - discriminant) / a;
-	xs->arr[xs->count].shape = sphere;
-	xs->arr[xs->count + 1].time = (b + discriminant) / a;
 	xs->arr[xs->count + 1].shape = sphere;
 	xs->count += 2;
 	return (true);
@@ -194,7 +168,7 @@ void	check_axis(float *t_min, float *t_max, float origin, float direction)
 		ft_swapd(t_min, t_max);
 }
 
-// Ray intersection that does not require the ray to be transformed
+// Sphere intersection that does not need ray to be transformed
 bool	intersect_plane_fast(const t_ray *ray, t_shape *shape,
 		t_intersections *xs)
 {
@@ -271,9 +245,7 @@ bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
 	float	t1;
 	float	y0;
 	float	y1;
-	// t_mat4	origin_offset;
 
-	// translate_matrix(&origin_offset, 0, 1, 0);
 	intersected = check_cone_caps(ray, shape, xs);
 	a = ray->direction.x * ray->direction.x \
 		- ray->direction.y * ray->direction.y \
