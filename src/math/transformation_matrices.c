@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix_transformations.c                           :+:      :+:    :+:   */
+/*   transformation_matrices.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 17:46:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 17:59:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,17 @@ void	rotation_matrix_y(t_mat4 *mat, float r)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_z(t_mat4 *mat, float r)
-{
-	ft_bzero(mat, sizeof(t_mat4));
-	(*mat)[0][0] = cos(r);
-	(*mat)[0][1] = sin(r) * -1;
-	(*mat)[1][0] = sin(r);
-	(*mat)[1][1] = cos(r);
-	(*mat)[2][2] = 1;
-	(*mat)[3][3] = 1;
-}
+// we are not using this
+// void	rotation_matrix_z(t_mat4 *mat, float r)
+// {
+// 	ft_bzero(mat, sizeof(t_mat4));
+// 	(*mat)[0][0] = cos(r);
+// 	(*mat)[0][1] = sin(r) * -1;
+// 	(*mat)[1][0] = sin(r);
+// 	(*mat)[1][1] = cos(r);
+// 	(*mat)[2][2] = 1;
+// 	(*mat)[3][3] = 1;
+// }
 
 void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, float angle)
 {
