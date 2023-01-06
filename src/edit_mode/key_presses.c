@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 11:06:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,11 +263,11 @@ void	toggle_shape(t_scene *scene)
 int	close_window(t_scene *scene)
 {
 	printf("QUITTING PROGRAM!\n");
-	free_scene(scene);
 	mlx_destroy_image(scene->disp->mlx, scene->disp->display_img);
 	mlx_destroy_image(scene->disp->mlx, scene->disp->render_img);
 	mlx_destroy_image(scene->disp->mlx, scene->disp->edit_img);
 	mlx_destroy_window(scene->disp->mlx, scene->disp->win);
+	free_scene(scene);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -275,8 +275,11 @@ int	close_window(t_scene *scene)
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
-	if (key == KEY_M && scene->settings.edit_mode == true)
+	if (key == KEY_X)
 	{
+		scene->supersampling = !scene->supersampling;
+		calculate_transforms(scene);
+		draw_scene(scene);
 	}
 	if (key == KEY_RETURN && scene->settings.edit_mode == true)
 		spawn_shape(scene);

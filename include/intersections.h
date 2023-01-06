@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/02 17:41:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 14:39:57 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ void			ray_position(t_vector *pos, const t_ray *ray, float time);
 
 t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
 
-void			ray_from_cam(t_ray *ray, const t_camera *cam, int x, int y);
+void			ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y);
 
 #endif

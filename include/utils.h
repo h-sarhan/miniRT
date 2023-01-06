@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 07:38:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:06:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
 			const t_shape *shape);
 
 void	print_vector(const t_vector *vector);
+void	print_color(const t_color *color);
 void	print_mat4(const t_mat4 *mat);
 
 char	*ft_strjoin_free(char *s1, char *s2, int fre);
