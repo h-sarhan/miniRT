@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 13:05:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 16:16:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ struct	s_parse_error_flags
 	t_light_errors		light;
 	t_shape_errors		shape;
 	bool				unknown_identifier;
+	bool				settings_err;
 };
 
 bool	find_error(t_error_flags *errors);
@@ -144,6 +145,27 @@ bool	find_error(t_error_flags *errors);
 # define CONE_SYNTAX YELLOW"Correct syntax is \"co [origin] [orientation] [diameter] [height] [color]\"\n"RESET
 # define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
 
+# define SETTINGS_NO_SHAPE RED"Settings at line %ld do not belong to any shape\n"RESET
+
+# define UNTERMINATED_SETTINGS RED"Unterminated shape settings starting at line %ld\n"RESET
+
+# define EMPTY_SETTINGS RED"Empty shape settings starting at line %ld\n"RESET
+
+# define EXTRA_OPENING_BRACE RED"Shape settings starting at line %ld contains an extra opening brace\n"RESET
+
+# define EXTRA_CLOSING_BRACE RED"Shape settings starting at line %ld contains an extra closing brace\n"RESET
+
+# define INVALID_TERMINATION RED"Shape settings starting at line %ld is not terminated correctly\n"RESET
+
+# define INVALID_PROPERTY YELLOW"Error with parsing this property\n"RED"->\t%s\n"YELLOW"Correct syntax is KEY : VALUE\n"RESET
+
+# define INVALID_KEY YELLOW"Error with parsing this property\n"RED"->\t%s\n"YELLOW"`%s` is not a valid key\n"RESET
+
+# define COLOR_SETTING_ERROR YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"`%s` is not a valid value\n"MAGENTA"Available colors are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n"RESET
+
+# define INVALID_PROPERTY_VALUE YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"`%s` is not a valid value\n"RESET
+
+# define INVALID_PROPERTY_RANGE YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"%s has to be between %.2f and %.2f\n"RESET
 
 bool	parse_ambient(t_scene *scene, char **splitted);
 void	parse_camera(t_scene *scene, char **splitted);
@@ -190,5 +212,19 @@ bool	print_plane_error(t_shape_errors *err, const char *line, int line_num);
 bool	print_cylinder_error(t_shape_errors *err, const char *line,
 		int line_num);
 bool	print_cone_error(t_shape_errors *err, const char *line, int line_num);
+
+bool	is_settings(const char *line);
+bool	is_valid_key(const char *key);
+bool	is_valid_color(const char *color);
+bool	check_value(const char *key, const char *val, float min, float max);
+bool	is_valid_val(const char *key, const char *val);
+t_color	parse_color_value(const char *str);
+void	parse_setting(t_shape *shape, char **key_val);
+bool	check_braces(char *settings_str, size_t *line_num);
+char	*check_settings_str(char *settings_str, size_t *line_num);
+char	*get_settings_str(size_t *line_num, int fd, const char *settings_start);
+bool	check_colons(char *line);
+bool	parse_split_settings(t_scene *scene, char **settings);
+bool	parse_settings(t_scene *scene, const char *settings_start, size_t *line_num, int fd);
 
 #endif

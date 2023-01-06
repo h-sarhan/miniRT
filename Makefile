@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/06 13:02:26 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/06 16:21:17 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
 PARSING_SRC =   errors.c shape_errors.c  attribute_errors.c element_errors.c\
 				parse_scene.c parse_shapes1.c parse_shapes2.c parse_elements.c \
-				parse_attributes.c parse_settings.c
+				parse_attributes.c parse_settings.c settings_errors.c \
+				settings_validation.c
 
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
@@ -68,8 +69,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address\
+			-fsanitize=address\
+			# $(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)

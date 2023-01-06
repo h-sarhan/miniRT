@@ -6,245 +6,45 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 13:15:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/06 16:20:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-bool	is_settings(const char *line)
-{
-	size_t	i;
-
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '{')
-			return (true);
-		if (is_space(line[i]) == false)
-			return (false);
-		i++;
-	}
-	return (false);
-}
-
-bool	is_valid_key(const char *key)
-{
-	if (key != NULL && (ft_strcmp(key, "reflectiveness") == 0
-			|| ft_strcmp(key, "diffuse") == 0
-			|| ft_strcmp(key, "specular") == 0
-			|| ft_strcmp(key, "shininess") == 0
-			|| ft_strcmp(key, "rotX") == 0
-			|| ft_strcmp(key, "rotY") == 0
-			|| ft_strcmp(key, "rotZ") == 0
-			|| ft_strcmp(key, "scaleX") == 0
-			|| ft_strcmp(key, "scaleY") == 0
-			|| ft_strcmp(key, "scaleZ") == 0
-			|| ft_strcmp(key, "color") == 0))
-		return (true);
-	return (false);
-}
-
-bool	is_valid_color(const char *color)
-{
-	if (ft_strcmp_case(color, "blue") == 0
-		|| ft_strcmp_case(color, "red") == 0
-		|| ft_strcmp_case(color, "purple") == 0
-		|| ft_strcmp_case(color, "green") == 0
-		|| ft_strcmp_case(color, "yellow") == 0
-		|| ft_strcmp_case(color, "pink") == 0
-		|| ft_strcmp_case(color, "black") == 0
-		|| ft_strcmp_case(color, "gray") == 0
-		|| ft_strcmp_case(color, "white") == 0
-		|| ft_strcmp_case(color, "cyan") == 0
-		|| ft_strcmp_case(color, "orange") == 0)
-		return (true);
-	printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-		YELLOW"`%s` is not a valid value\n"MAGENTA
-		"Available colors are BLUE, RED, PURPLE, GREEN,"
-		" YELLOW, PINK, BLACK, GRAY\n"RESET, "color", color, color);
-	return (false);
-}
-
-bool	is_valid_val(const char *key, const char *val)
-{
-	bool	success;
-	float	parsed_value;
-
-	success = true;
-	if (val == NULL || ft_strlen(val) == 0)
-		return (false);
-	if (ft_strcmp(key, "reflectiveness") == 0
-		|| ft_strcmp(key, "diffuse") == 0
-		|| ft_strcmp(key, "specular") == 0)
-	{
-		if (is_num(val, true) == false)
-		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
-			return (false);
-		}
-		else
-		{
-			parsed_value = ft_atof(val, &success);
-			if (success == false || parsed_value < 0.0 || parsed_value > 1.0)
-			{
-				printf(YELLOW"Error with parsing this property\n"
-					RED"->\t%s : %s\n"YELLOW"%s has to be between 0.0 and 1.0\n"
-					RESET, key, val, key);
-				return (false);
-			}
-		}
-	}
-	if (ft_strcmp(key, "shininess") == 0)
-	{
-		if (is_num(val, true) == false)
-		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
-			return (false);
-		}
-		else
-		{
-			parsed_value = ft_atof(val, &success);
-			if (success == false || parsed_value < 10 || parsed_value > 400)
-			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
-					" : %s\n"YELLOW"%s has to be between 10.0 and 200.0\n"
-					RESET, key, val, key);
-				return (false);
-			}
-		}
-	}
-	if (ft_strcmp(key, "rotX") == 0 || ft_strcmp(key, "rotY") == 0
-		|| ft_strcmp(key, "rotZ") == 0)
-	{
-		if (is_num(val, false) == false)
-		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
-			return (false);
-		}
-		else
-		{
-			parsed_value = ft_atol(val, &success);
-			if (success == false || parsed_value < 0 || parsed_value > 360)
-			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
-					" : %s\n"YELLOW"%s has to be between 0 and 360 degrees\n"
-					RESET, key, val, key);
-				return (false);
-			}
-		}
-	}
-	if (ft_strcmp(key, "scaleX") == 0
-		|| ft_strcmp(key, "scaleY") == 0
-		|| ft_strcmp(key, "scaleZ") == 0)
-	{
-		if (is_num(val, true) == false)
-		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"
-				YELLOW"`%s` is not a valid value\n"RESET, key, val, val);
-			return (false);
-		}
-		else
-		{
-			parsed_value = ft_atof(val, &success);
-			if (success == false || parsed_value < 0.1 || parsed_value > 50)
-			{
-				printf(YELLOW"Error with parsing this property\n"RED"->\t%s"
-					" : %s\n"YELLOW"%s has to be between 0.1 and 50\n"RESET,
-					key, val, key);
-				return (false);
-			}
-		}
-	}
-	if (ft_strcmp(key, "color") == 0)
-		return (is_valid_color(val));
-	return (true);
-}
-
 t_color	parse_color_value(const char *str)
 {
-	t_color	color;
+	int		hex_color;
 
-	// convert from int to color struct here
-	color.a = 0;
 	if (ft_strcmp_case(str, "blue") == 0)
-	{
-		color.r = 0x22 / 255.0;
-		color.g = 0x8b / 255.0;
-		color.b = 0xe6 / 255.0;
-	}
+		hex_color = 0x228be6;
 	if (ft_strcmp_case(str, "red") == 0)
-	{
-		color.r = 0xf0 / 255.0;
-		color.g = 0x3e / 255.0;
-		color.b = 0x3e / 255.0;
-	}
+		hex_color = 0xf03e3e;
 	if (ft_strcmp_case(str, "purple") == 0)
-	{
-		color.r = 0x70 / 255.0;
-		color.g = 0x48 / 255.0;
-		color.b = 0xe8 / 255.0;
-	}
+		hex_color = 0x7048e8;
 	if (ft_strcmp_case(str, "green") == 0)
-	{
-		color.r = 0x37 / 255.0;
-		color.g = 0xb2 / 255.0;
-		color.b = 0x4d / 255.0;
-	}
+		hex_color = 0x37b24d;
 	if (ft_strcmp_case(str, "yellow") == 0)
-	{
-		color.r = 0xf5 / 255.0;
-		color.g = 0x9f / 255.0;
-		color.b = 0x00 / 255.0;
-	}
+		hex_color = 0xf59f00;
 	if (ft_strcmp_case(str, "pink") == 0)
-	{
-		color.r = 0xe6 / 255.0;
-		color.g = 0x49 / 255.0;
-		color.b = 0x80 / 255.0;
-	}
+		hex_color = 0xe64980;
 	if (ft_strcmp_case(str, "black") == 0)
-	{
-		color.r = 0x21 / 255.0;
-		color.g = 0x25 / 255.0;
-		color.b = 0x29 / 255.0;
-	}
+		hex_color = 0x212529;
 	if (ft_strcmp_case(str, "gray") == 0)
-	{
-		color.r = 0x6d / 255.0;
-		color.g = 0x65 / 255.0;
-		color.b = 0x6d / 255.0;
-	}
+		hex_color = 0x6d656d;
 	if (ft_strcmp_case(str, "white") == 0)
-	{
-		color.r = 0xf8 / 255.0;
-		color.g = 0xf9 / 255.0;
-		color.b = 0xfa / 255.0;
-	}
+		hex_color = 0xf8f9fa;
 	if (ft_strcmp_case(str, "cyan") == 0)
-	{
-		color.r = 0x15 / 255.0;
-		color.g = 0xaa / 255.0;
-		color.b = 0xbf / 255.0;
-	}
+		hex_color = 0x15aabf;
 	if (ft_strcmp_case(str, "orange") == 0)
-	{
-		color.r = 0xf7 / 255.0;
-		color.g = 0x67 / 255.0;
-		color.b = 0x07 / 255.0;
-	}
-	return (color);
+		hex_color = 0xf76707;
+	return (int_to_color(hex_color));
 }
 
-void	parse_setting(t_scene *scene, char **key_val)
+void	parse_setting(t_shape *shape, char **key_val)
 {
 	bool	success;
-	t_shape	*shape;
 
-	shape = &scene->shapes[scene->count.shapes - 1];
 	if (ft_strcmp("reflectiveness", key_val[0]) == 0)
 		shape->props.reflectiveness = ft_atof(key_val[1], &success);
 	if (ft_strcmp("diffuse", key_val[0]) == 0)
@@ -269,27 +69,13 @@ void	parse_setting(t_scene *scene, char **key_val)
 		shape->props.color = parse_color_value(key_val[1]);
 }
 
-bool	parse_settings(t_scene *scene, const char *settings_start,
-	size_t *line_num, int fd)
+char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)
 {
-	char	*parsed_str;
+	char	*settings_str;
 	char	*line;
-	int		opening;
-	int		closing;
-	int		i;
-	char	**settings;
-	int		colon_count;
-	int		idx;
-	char	**key_val;
 
-	if (scene->count.shapes == 0)
-	{
-		printf(RED"Settings at line %ld do not belong to any shape\n"RESET,
-			*line_num);
-		return (false);
-	}
-	parsed_str = ft_strtrim(settings_start, " \n\t");
-	while (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
+	settings_str = ft_strtrim(settings_start, " \n\t");
+	while (ft_strnstr(settings_str, "}", ft_strlen(settings_str)) == NULL)
 	{
 		line = ft_strtrim_free(get_next_line(fd), " \t\n");
 		*line_num += 1;
@@ -303,100 +89,66 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 		}
 		if (line == NULL)
 			break ;
-		parsed_str = ft_strjoin_free(ft_strtrim_free(parsed_str, " \n\t"),
+		settings_str = ft_strjoin_free(ft_strtrim_free(settings_str, " \n\t"),
 				line, 1);
 	}
-	if (ft_strnstr(parsed_str, "}", ft_strlen(parsed_str)) == NULL)
+	settings_str = check_settings_str(settings_str, line_num);
+	settings_str = ft_strtrim_free(settings_str, "{}");
+	return (settings_str);
+}
+
+bool	parse_split_settings(t_scene *scene, char **settings)
+{
+	int		line_idx;
+	char	**key_val;
+
+	line_idx = 0;
+	while (settings[line_idx] != NULL)
 	{
-		printf(RED"Unterminated shape settings starting at line %ld\n"RESET,
-			*line_num);
-		free(parsed_str);
-		return (false);
-	}
-	if (ft_strlen(parsed_str) == 2)
-	{
-		printf(RED"Empty shape settings starting at line %ld\n"RESET, *line_num);
-		free(parsed_str);
-		return (false);
-	}
-	opening = 0;
-	closing = 0;
-	i = 0;
-	while (parsed_str[i] != '\0')
-	{
-		if (parsed_str[i] == '{')
-			opening++;
-		if (parsed_str[i] == '}')
-			closing++;
-		i++;
-	}
-	if (opening > 1)
-	{
-		printf(RED"Shape settings starting at line %ld"
-			" contains an extra opening brace\n"RESET, *line_num);
-		free(parsed_str);
-		return (false);
-	}
-	if (closing > 1)
-	{
-		printf(RED"Shape settings starting at line %ld"
-			" contains an extra closing brace\n"RESET, *line_num);
-		free(parsed_str);
-		return (false);
-	}
-	if (parsed_str[ft_strlen(parsed_str) - 1] != '}')
-	{
-		printf(RED"Shape settings starting at line %ld is not terminated"
-			" correctly\n"RESET, *line_num);
-		free(parsed_str);
-		return (false);
-	}
-	parsed_str = ft_strtrim_free(parsed_str, "{}");
-	settings = ft_split(parsed_str, ',');
-	i = 0;
-	while (settings[i] != NULL)
-	{
-		colon_count = 0;
-		idx = 0;
-		while (settings[i][idx] != '\0')
-		{
-			if (settings[i][idx] == ':')
-				colon_count++;
-			idx++;
-		}
-		if (colon_count != 1)
-		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s\n"
-				YELLOW"Correct syntax is KEY : VALUE\n"RESET, settings[i]);
-			free_split_array(settings);
-			free(parsed_str);
+		if (check_colons(settings[line_idx]) == false)
 			return (false);
-		}
-		key_val = ft_split(settings[i], ':');
+		key_val = ft_split(settings[line_idx], ':');
 		key_val[0] = ft_strtrim_free(key_val[0], " \n\t");
 		key_val[1] = ft_strtrim_free(key_val[1], " \n\t");
-		if (is_valid_key(key_val[0]) == false)
+		if (!is_valid_key(key_val[0]) || !is_valid_val(key_val[0], key_val[1]))
 		{
-			printf(YELLOW"Error with parsing this property\n"RED"->\t%s\n"
-				YELLOW"`%s` is not a valid key\n"RESET,
-				settings[i], key_val[0]);
+			if (!is_valid_key(key_val[0]))
+				printf(INVALID_KEY, settings[line_idx], key_val[0]);
 			free_split_array(key_val);
-			free_split_array(settings);
-			free(parsed_str);
 			return (false);
 		}
-		if (is_valid_val(key_val[0], key_val[1]) == false)
-		{
-			free_split_array(key_val);
-			free_split_array(settings);
-			free(parsed_str);
-			return (false);
-		}
-		parse_setting(scene, key_val);
+		parse_setting(&scene->shapes[scene->count.shapes - 1], key_val);
 		free_split_array(key_val);
-		i++;
+		line_idx++;
+	}
+	return (true);
+}
+
+bool	parse_settings(t_scene *scene, const char *settings_start,
+	size_t *line_num, int fd)
+{
+	char	*settings_str;
+	char	**settings;
+
+	if (scene->count.shapes == 0)
+	{
+		printf(SETTINGS_NO_SHAPE, *line_num);
+		scene->error_flags.settings_err = true;
+		return (false);
+	}
+	settings_str = get_settings_str(line_num, fd, settings_start);
+	if (settings_str == NULL)
+	{
+		scene->error_flags.settings_err = true;
+		return (false);
+	}
+	settings = ft_split(settings_str, ',');
+	free(settings_str);
+	if (parse_split_settings(scene, settings) == false)
+	{
+		scene->error_flags.settings_err = true;
+		return (false);
 	}
 	free_split_array(settings);
-	free(parsed_str);
 	return (true);
 }

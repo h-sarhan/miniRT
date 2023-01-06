@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 15:06:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/06 16:13:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	print_mat4(const t_mat4 *mat);
 
 char	*ft_strjoin_free(char *s1, char *s2, int fre);
 char	*ft_strtrim_free(char *s, char *set);
+t_color	int_to_color(int hex_color);
 
 #endif
