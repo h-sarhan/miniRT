@@ -6,11 +6,10 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 16:52:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 17:52:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mathRT.h"
 #include "miniRT.h"
 
 t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
@@ -28,35 +27,21 @@ void	move_cam(t_scene *scene)
 
 	ft_bzero(&vec, sizeof(t_vector));
 	if (scene->keys_held.w == true)
-	{
 		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, CAM_SPEED);
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 	if (scene->keys_held.a == true)
-	{
 		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, -CAM_SPEED);
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 	if (scene->keys_held.s == true)
-	{
 		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, -CAM_SPEED);
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 	if (scene->keys_held.d == true)
-	{
 		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, CAM_SPEED);
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 	if (scene->keys_held.q == true)
-	{
 		vec.y = 0.35;
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 	if (scene->keys_held.e == true)
-	{
 		vec.y = -0.35;
+	if (scene->keys_held.w == true || scene->keys_held.a == true
+		|| scene->keys_held.s == true || scene->keys_held.d == true
+		|| scene->keys_held.q == true || scene->keys_held.e == true)
 		add_vec(&scene->cam.position, &scene->cam.position, &vec);
-	}
 }
 
 void	camera_controls(t_scene *scene)
@@ -138,51 +123,29 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 
 void	scale_object(t_scene *scene, t_shape *shape)
 {
-	if (scene->keys_held.plus == true)
-	{
-		if (shape->type == CUBE)
-		{
-			shape->props.scale.x += 0.04;
-			shape->props.scale.y += 0.04;
-			shape->props.scale.z += 0.04;
-		}
-		else
-		{
-			shape->props.radius += 0.04;
-			shape->props.scale.x = shape->props.radius;
-			if (shape->type == CYLINDER || shape->type == CONE)
-			{
-				shape->props.scale.y = 1;
-			}
-			else
-				shape->props.scale.y = shape->props.radius;
-			shape->props.scale.z = shape->props.radius;
-		}
-	}
+	float	amount;
+
+	amount = 0.04;
 	if (scene->keys_held.minus == true)
+		amount *= -1;
+	if (shape->type == CUBE)
 	{
-		if (shape->type == CUBE)
-		{
-			if (shape->props.scale.x > 0.3)
-				shape->props.scale.x -= 0.04;
-			if (shape->props.scale.y > 0.3)
-				shape->props.scale.y -= 0.04;
-			if (shape->props.scale.z > 0.3)
-				shape->props.scale.z -= 0.04;
-		}
-		else
-		{
-			if (shape->props.radius > 0.3)
-				shape->props.radius -= 0.04;
-			shape->props.scale.x = shape->props.radius;
-			if (shape->type == CYLINDER || shape->type == CONE)
-			{
-				shape->props.scale.y = 1;
-			}
-			else
-				shape->props.scale.y = shape->props.radius;
-			shape->props.scale.z = shape->props.radius;
-		}
+		if (shape->props.scale.x > 0.3)
+			shape->props.scale.x += amount;
+		if (shape->props.scale.y > 0.3)
+			shape->props.scale.y += amount;
+		if (shape->props.scale.z > 0.3)
+			shape->props.scale.z += amount;
+	}
+	else
+	{
+		if (shape->props.radius > 0.3 || !scene->keys_held.minus)
+			shape->props.radius += amount;
+		shape->props.scale.x = shape->props.radius;
+		shape->props.scale.y = shape->props.radius;
+		if (shape->type == CYLINDER || shape->type == CONE)
+			shape->props.scale.y = 1;
+		shape->props.scale.z = shape->props.radius;
 	}
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
@@ -192,7 +155,6 @@ void	change_height(t_scene *scene, t_shape *shape)
 	if (scene->keys_held.plus == true)
 	{
 		shape->props.height += 0.04;
-
 	}
 	if (scene->keys_held.minus == true)
 	{
@@ -248,29 +210,9 @@ void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
 
-void	transform_object(t_scene *scene)
+void	collide_after_transform(t_scene *scene)
 {
-	if (scene->keys_held.w == true || scene->keys_held.s == true)
-		move_object_fwd(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.a == true || scene->keys_held.d == true)
-		move_object_h(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.q == true || scene->keys_held.e == true)
-		move_object_v(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.shift == false
-		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
-		scale_object(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.shift == true
-		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
-		change_height(scene, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.shift == false
-		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_y(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
-	if (scene->keys_held.shift == true
-		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_z(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
-	if (scene->keys_held.up == true || scene->keys_held.down == true)
-		rotate_object_x(scene, &scene->shapes[scene->shape_idx], DEG_TO_RAD * 5);
-	if (scene->settings.collisions == true && (scene->keys_held.w
+	if (scene->settings.collisions && (scene->keys_held.w
 			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
 			|| scene->keys_held.up || scene->keys_held.right
 			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
@@ -292,6 +234,34 @@ void	transform_object(t_scene *scene)
 			draw_scene(scene);
 		}
 	}
+}
+
+void	transform_object(t_scene *scene)
+{
+	if (scene->keys_held.w == true || scene->keys_held.s == true)
+		move_object_fwd(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.a == true || scene->keys_held.d == true)
+		move_object_h(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.q == true || scene->keys_held.e == true)
+		move_object_v(scene, &scene->shapes[scene->shape_idx]);
+	if (!scene->keys_held.shift
+		&& (scene->keys_held.plus || scene->keys_held.minus))
+		scale_object(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.shift == true
+		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
+		change_height(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.shift == false
+		&& (scene->keys_held.left == true || scene->keys_held.right == true))
+		rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+			DEG_TO_RAD * 5);
+	if (scene->keys_held.shift == true
+		&& (scene->keys_held.left == true || scene->keys_held.right == true))
+		rotate_object_z(scene, &scene->shapes[scene->shape_idx],
+			DEG_TO_RAD * 5);
+	if (scene->keys_held.up == true || scene->keys_held.down == true)
+		rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+			DEG_TO_RAD * 5);
+	collide_after_transform(scene);
 }
 
 void	light_controls(t_scene *scene)
@@ -345,23 +315,20 @@ int	render_loop(t_scene *scene)
 {
 	if (scene->settings.camera_mode == true
 		&& scene->settings.edit_mode == true)
-	{
 		camera_controls(scene);
-	}
 	else if (scene->settings.edit_mode == true)
 	{
 		transform_object(scene);
 		mouse_rotate(scene);
 	}
-	if (scene->keys_held.o ==true && scene->settings.edit_mode == true \
+	if (scene->keys_held.o == true && scene->settings.edit_mode == true \
 		&& !scene->look_at.trigger)
 		look_at(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->look_at.trigger == true && scene->settings.edit_mode == true)
 		look_at_animation(scene);
-	// if (scene->look_at.trigger == false && scene->settings.edit_mode == true
 	if (scene->settings.edit_mode == true
-			&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
-			|| scene->keys_held.d|| scene->keys_held.up
+		&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
+			|| scene->keys_held.d || scene->keys_held.up
 			|| scene->keys_held.right || scene->keys_held.q
 			|| scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
