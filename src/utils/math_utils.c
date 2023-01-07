@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:21:50 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 14:03:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:08:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 float	min(float a, float b)
 {
 	if (a < b)
+		return (a);
+	return (b);
+}
+
+float	max(float a, float b)
+{
+	if (a > b)
 		return (a);
 	return (b);
 }

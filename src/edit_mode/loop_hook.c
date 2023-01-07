@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:52:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	if (scene->keys_held.plus == true)
 	{
 		shape->props.height += 0.04;
+
 	}
 	if (scene->keys_held.minus == true)
 	{
@@ -352,9 +353,13 @@ int	render_loop(t_scene *scene)
 		transform_object(scene);
 		mouse_rotate(scene);
 	}
+	if (scene->keys_held.o ==true && scene->settings.edit_mode == true \
+		&& !scene->look_at.trigger)
+		look_at(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->look_at.trigger == true && scene->settings.edit_mode == true)
 		look_at_animation(scene);
-	if (scene->look_at.trigger == false && scene->settings.edit_mode == true
+	// if (scene->look_at.trigger == false && scene->settings.edit_mode == true
+	if (scene->settings.edit_mode == true
 			&& (scene->keys_held.w || scene->keys_held.a || scene->keys_held.s
 			|| scene->keys_held.d|| scene->keys_held.up
 			|| scene->keys_held.right || scene->keys_held.q

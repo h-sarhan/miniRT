@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 14:19:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 17:02:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,60 +36,80 @@ void	handle_color_change(int key, t_scene *scene)
 	scene->shapes[scene->shape_idx].props.color = color;
 }
 
-void	look_at(t_scene *scene)
+void	sphere_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
+		t_shape *shape)
 {
-	t_shape		*shape;
-	t_vector	cam_to_object;
-	t_vector	final_pos;
+	t_vector	*final_pos;
 
-	shape = &scene->shapes[scene->shape_idx];
+	final_pos = &look_at->final_pos;
+	if (cam_to_object->x < 0)
+		final_pos->x = -5 * shape->props.radius + shape->origin.x;
+	else
+		final_pos->x = 5 * shape->props.radius + shape->origin.x;
+	if (cam_to_object->z < 0)
+		final_pos->z = -5 * shape->props.radius + shape->origin.z;
+	else
+		final_pos->z = 5 * shape->props.radius + shape->origin.z;
+	final_pos->y = shape->origin.y;
+	final_pos->w = 1;
+}
+
+void	cube_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
+		t_shape *shape)
+{
+	t_vector	*final_pos;
+
+	final_pos = &look_at->final_pos;
+	if (cam_to_object->x < 0)
+		final_pos->x = -5 * shape->props.scale.x + shape->origin.x;
+	else
+		final_pos->x = 5 * shape->props.scale.x + shape->origin.x;
+	if (cam_to_object->z < 0)
+		final_pos->z = -5 * shape->props.scale.z + shape->origin.z;
+	else
+		final_pos->z = 5 * shape->props.scale.z + shape->origin.z;
+	final_pos->y = shape->origin.y;
+	final_pos->w = 1;
+}
+
+void	cylinder_cone_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
+		t_shape *shape)
+{
+	t_vector	*final_pos;
+
+	final_pos = &look_at->final_pos;
+	if (cam_to_object->x < 0)
+		final_pos->x = -2 * max(shape->props.height, shape->props.radius) \
+		+ shape->origin.x;
+	else
+		final_pos->x = 2 * max(shape->props.height, shape->props.radius) \
+		+ shape->origin.x;
+	if (cam_to_object->z < 0)
+		final_pos->z = -2 * max(shape->props.height, shape->props.radius) \
+		+ shape->origin.z;
+	else
+		final_pos->z = 2 * max(shape->props.height, shape->props.radius) \
+			+ shape->origin.z;
+	final_pos->y = shape->origin.y;
+	final_pos->w = 1;
+}
+
+void	look_at(t_scene *scene, t_shape *shape)
+{
+	t_vector	cam_to_object;
+
 	sub_vec(&cam_to_object, &shape->origin, &scene->cam.position);
 	negate_vec(&cam_to_object, &cam_to_object);
 	if (vec_magnitude(&cam_to_object) < 2)
-	{
-		return;
-	}
+		return ;
 	if (shape->type == SPHERE)
-	{
-		if (cam_to_object.x < 0)
-			final_pos.x = -5 * shape->props.radius + shape->origin.x;
-		else
-			final_pos.x = 5 * shape->props.radius + shape->origin.x;
-		if (cam_to_object.z < 0)
-			final_pos.z = -5 * shape->props.radius + shape->origin.z;
-		else
-			final_pos.z = 5 * shape->props.radius + shape->origin.z;
-		final_pos.y = shape->origin.y;
-		final_pos.w = 1;
-	}
+		sphere_lookat_pos(&cam_to_object, &scene->look_at, shape);
 	if (shape->type == CUBE)
-	{
-		if (cam_to_object.x < 0)
-			final_pos.x = -5 * shape->props.scale.x + shape->origin.x;
-		else
-			final_pos.x = 5 * shape->props.scale.x + shape->origin.x;
-		if (cam_to_object.z < 0)
-			final_pos.z = -5 * shape->props.scale.z + shape->origin.z;
-		else
-			final_pos.z = 5 * shape->props.scale.z + shape->origin.z;
-		final_pos.y = shape->origin.y;
-		final_pos.w = 1;
-	}
+		cube_lookat_pos(&cam_to_object, &scene->look_at, shape);
 	if (shape->type == CYLINDER || shape->type == CONE)
-	{
-		if (cam_to_object.x < 0)
-			final_pos.x = -2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.x;
-		else
-			final_pos.x = 2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.x;
-		if (cam_to_object.z < 0)
-			final_pos.z = -2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.z;
-		else
-			final_pos.z = 2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.z;
-		final_pos.y = shape->origin.y;
-		final_pos.w = 1;
-	}
-	scene->look_at.final_pos = final_pos;
-	sub_vec(&scene->look_at.final_dir, &shape->origin, &final_pos);
+		cylinder_cone_lookat_pos(&cam_to_object, &scene->look_at, shape);
+	sub_vec(&scene->look_at.final_dir, &shape->origin,
+		&scene->look_at.final_pos);
 	normalize_vec(&scene->look_at.final_dir);
 	scene->look_at.current_dir = scene->cam.dir;
 	scene->look_at.initial_orientation = scene->cam.dir;
@@ -103,15 +123,24 @@ void	look_at(t_scene *scene)
 	scene->look_at.trigger = true;
 }
 
+void	default_shape_props(t_props *props)
+{
+	ft_bzero(&props->color, sizeof(t_color));
+	props->diffuse = 0.9;
+	props->highlighted = true;
+	props->radius = 0.7;
+	props->radius_squared = 0.7 * 0.7;
+	props->scale.x = 0.7;
+	props->scale.y = 0.7;
+	props->scale.z = 0.7;
+	props->reflectiveness = 0.2;
+	props->shininess = 50;
+	props->specular = 0.8;
+}
+
 void	spawn_shape(t_scene *scene)
 {
 	scene->shapes[scene->shape_idx].props.highlighted = false;
-	scene->shapes[scene->count.shapes].props.color.r = 0x00 / 255.0;
-	scene->shapes[scene->count.shapes].props.color.g = 0x00 / 255.0;
-	scene->shapes[scene->count.shapes].props.color.b = 0x00 / 255.0;
-	scene->shapes[scene->count.shapes].props.color.a = 0;
-	scene->shapes[scene->count.shapes].props.diffuse = 0.9;
-	scene->shapes[scene->count.shapes].props.highlighted = true;
 	scene->shapes[scene->count.shapes].origin.x = scene->cam.dir.x * 5 \
 		+ scene->cam.position.x;
 	scene->shapes[scene->count.shapes].origin.y = scene->cam.dir.y + \
@@ -119,43 +148,14 @@ void	spawn_shape(t_scene *scene)
 	scene->shapes[scene->count.shapes].origin.z = scene->cam.dir.z * 5 + \
 		scene->cam.position.z;
 	scene->shapes[scene->count.shapes].origin.w = 1;
-	scene->shapes[scene->count.shapes].props.radius = 0.7;
-	scene->shapes[scene->count.shapes].props.radius_squared = 0.7 * 0.7;
-	scene->shapes[scene->count.shapes].props.scale.x = 0.7;
-	scene->shapes[scene->count.shapes].props.scale.y = 0.7;
-	scene->shapes[scene->count.shapes].props.scale.z = 0.7;
-	scene->shapes[scene->count.shapes].props.reflectiveness = 0.2;
+	default_shape_props(&scene->shapes[scene->count.shapes].props);
 	scene->shapes[scene->count.shapes].type = SPHERE;
-	scene->shapes[scene->count.shapes].props.shininess = 50;
-	scene->shapes[scene->count.shapes].props.specular = 0.8;
 	scene->shapes[scene->count.shapes].id = scene->count.shapes;
 	ft_bzero(&scene->shapes[scene->count.shapes].orientation, sizeof(t_vector));
 	scene->shapes[scene->count.shapes].orientation.y = 1;
 	identity_matrix(&scene->shapes[scene->count.shapes].added_rots);
 	scene->count.shapes++;
 	scene->shape_idx = scene->count.shapes - 1;
-}
-
-void	deploy_flashbang(t_scene *scene)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y < scene->settings.disp_h)
-	{
-		x = 0;
-		while (x < scene->settings.disp_w)
-		{
-			*(unsigned int *)(scene->disp->disp_addr + (y * \
-			scene->settings.disp_w + x) * scene->disp->bpp) = 0xffffff;
-			x++;
-		}
-		y++;
-	}
-	(void)! system("afplay assets/sound.mp3");
-	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
-		scene->disp->display_img, 0, 0);
 }
 
 void	toggle_reflections(t_scene *scene)
@@ -169,8 +169,32 @@ void	toggle_reflections(t_scene *scene)
 		scene->settings.reflection_depth = 0;
 	}
 }
+void	toggle_keys_held2(int key, t_scene *scene, bool on_off);
 
 void	toggle_keys_held(int key, t_scene *scene, bool on_off)
+{
+	if (key == KEY_Q)
+		scene->keys_held.q = on_off;
+	if (key == KEY_E)
+		scene->keys_held.e = on_off;
+	if (key == KEY_PLUS)
+		scene->keys_held.plus = on_off;
+	if (key == KEY_MINUS)
+		scene->keys_held.minus = on_off;
+	if (key == KEY_SHIFT)
+		scene->keys_held.shift = on_off;
+	if (key == KEY_X)
+		scene->keys_held.x = on_off;
+	if (key == KEY_Y)
+		scene->keys_held.y = on_off;
+	if (key == KEY_Z)
+		scene->keys_held.z = on_off;
+	if (key == KEY_O)
+		scene->keys_held.o = on_off;
+	toggle_keys_held2(key, scene, on_off);
+}
+
+void	toggle_keys_held2(int key, t_scene *scene, bool on_off)
 {
 	if (key == KEY_W)
 		scene->keys_held.w = on_off;
@@ -188,22 +212,6 @@ void	toggle_keys_held(int key, t_scene *scene, bool on_off)
 		scene->keys_held.left = on_off;
 	if (key == KEY_RIGHT)
 		scene->keys_held.right = on_off;
-	if (key == KEY_Q)
-		scene->keys_held.q = on_off;
-	if (key == KEY_E)
-		scene->keys_held.e = on_off;
-	if (key == KEY_PLUS)
-		scene->keys_held.plus = on_off;
-	if (key == KEY_MINUS)
-		scene->keys_held.minus = on_off;
-	if (key == KEY_SHIFT)
-		scene->keys_held.shift = on_off;
-	if (key == KEY_X)
-		scene->keys_held.x = on_off;
-	if (key == KEY_Y)
-		scene->keys_held.y = on_off;
-	if (key == KEY_Z)
-		scene->keys_held.z = on_off;
 }
 
 void	select_shape(int key, t_scene *scene)
@@ -240,39 +248,25 @@ void	toggle_shape(t_scene *scene)
 	t_shape	*shape;
 
 	shape = &scene->shapes[scene->shape_idx];
-	if (shape->props.radius < 0.2)
-		shape->props.radius = 1;
-	if (shape->props.height < 0.2)
-		shape->props.height = 1;
-	if (shape->props.scale.x < 0.2)
-		shape->props.scale.x = 1;
-	if (shape->props.scale.y < 0.2)
-		shape->props.scale.y = 1;
-	if (shape->props.scale.z < 0.2)
-		shape->props.scale.z = 1;
+	shape->props.radius = max(shape->props.radius, 0.5);
+	shape->props.height = max(shape->props.height, 0.5);
+	shape->props.scale.x = shape->props.radius;
+	shape->props.scale.y = shape->props.radius;
+	shape->props.scale.z = shape->props.radius;
 	if (shape->type == SPHERE)
-	{
-		shape->props.scale.x = shape->props.radius;
-		shape->props.scale.y = shape->props.radius;
-		shape->props.scale.z = shape->props.radius;
 		shape->type = CUBE;
-	}
-	else if (shape->type == CUBE)
+	else if (shape->type == CUBE || shape->type == CYLINDER)
 	{
 		shape->props.height = shape->props.scale.y * 2;
 		shape->props.scale.y = 1;
 		shape->props.radius = shape->props.scale.x;
-		shape->props.scale.x = shape->props.radius;
-		shape->props.scale.z = shape->props.radius;
-		shape->type = CYLINDER;
+		if (shape->type == CUBE)
+			shape->type = CYLINDER;
+		else
+			shape->type = CONE;
 	}
-	else if (shape->type == CYLINDER)
-	{
-		shape->props.scale.x = shape->props.radius;
-		shape->props.scale.y = shape->props.radius;
-		shape->props.scale.z = shape->props.radius;
+	else if (shape->type == CONE)
 		shape->type = SPHERE;
-	}
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
 
@@ -288,23 +282,20 @@ int	close_window(t_scene *scene)
 	return (0);
 }
 
+// printf("key = %d\n", key);
+// if (key == KEY_X)
+// {
+// 	scene->supersampling = !scene->supersampling;
+// 	calculate_transforms(scene);
+// 	draw_scene(scene);
+// }
 int	key_press(int key, t_scene *scene)
 {
-	printf("key = %d\n", key);
-	if (key == KEY_X)
-	{
-		scene->supersampling = !scene->supersampling;
-		calculate_transforms(scene);
-		draw_scene(scene);
-	}
 	if (key == KEY_RETURN && scene->settings.edit_mode == true)
 		spawn_shape(scene);
 	if (key == KEY_T && scene->settings.edit_mode == true)
 		toggle_shape(scene);
 	handle_color_change(key, scene);
-	if (key == KEY_O && scene->settings.edit_mode == true \
-		&& !scene->look_at.trigger)
-		look_at(scene);
 	toggle_edit_mode(key, scene);
 	select_shape(key, scene);
 	if (key == KEY_R)

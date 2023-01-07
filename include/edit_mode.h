@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 04:32:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:52:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ struct s_keys
 	bool	x;
 	bool	y;
 	bool	z;
+	bool	o;
 };
 
 bool	collide(t_scene *scene, bool resolve, int depth,
@@ -127,5 +128,6 @@ int		key_press(int key, t_scene *scene);
 int		key_release(int key, t_scene *scene);
 int		render_loop(t_scene *scene);
 int		close_window(t_scene *scene);
+void	look_at(t_scene *scene, t_shape *shape);
 
 #endif

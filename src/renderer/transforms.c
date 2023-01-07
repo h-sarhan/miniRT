@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 13:32:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 16:42:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
 	mat_inverse(&shape->inv_transf, &shape->transf);
 	if (shape->type == CONE)
 	{
-		translate_matrix(&temp, 0, 0.5, 0);
+		translate_matrix(&temp, 0, shape->props.height / 2, 0);
 		mat_multiply(&shape->inv_transf, &temp, &shape->inv_transf);
 	}
 	ft_memcpy(&shape->norm_transf, &shape->inv_transf, sizeof(t_mat4));
