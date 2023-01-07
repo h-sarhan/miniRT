@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:47:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 12:59:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_color	cast_reflection_ray(t_scene *scene, t_intersection *intersection,
 	if (intersection->shape->props.reflectiveness == 0 || remaining == 0)
 		return (reflected);
 	ray.origin = intersection->over_point;
-	ray.direction = intersection->reflect_vec;
+	ray.dir = intersection->reflect_vec;
 	arr.count = 0;
 	shape_idx = -1;
 	while (++shape_idx < scene->count.shapes)
@@ -94,7 +94,7 @@ t_color	cast_reflection_ray(t_scene *scene, t_intersection *intersection,
 // 	if (intersection->shape->props.reflectiveness == 0 || remaining == 0)
 // 		return (reflected);
 // 	ray.origin = intersection->over_point;
-// 	ray.direction = intersection->reflect_vec;
+// 	ray.dir = intersection->reflect_vec;
 // 	arr.count = 0;
 // 	shape_idx = -1;
 // 	while (++shape_idx < scene->count.shapes)

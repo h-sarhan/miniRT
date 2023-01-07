@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 19:13:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	int				i;
 	t_intersection	*intersection;
 
-	sub_vec(&ray.direction, &scene->lights[light_idx].position, itx_point);
-	distance = vec_magnitude(&ray.direction);
-	scale_vec(&ray.direction, &ray.direction, 1 / distance);
+	sub_vec(&ray.dir, &scene->lights[light_idx].position, itx_point);
+	distance = vec_magnitude(&ray.dir);
+	scale_vec(&ray.dir, &ray.dir, 1 / distance);
 	ray.origin = *itx_point;
 	i = -1;
 	arr.count = 0;

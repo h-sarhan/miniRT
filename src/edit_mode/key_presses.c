@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 11:06:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:19:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,47 @@ void	look_at(t_scene *scene)
 
 	shape = &scene->shapes[scene->shape_idx];
 	sub_vec(&cam_to_object, &shape->origin, &scene->cam.position);
-	normalize_vec(&cam_to_object);
+	negate_vec(&cam_to_object, &cam_to_object);
+	if (vec_magnitude(&cam_to_object) < 2)
+	{
+		return;
+	}
 	if (shape->type == SPHERE)
 	{
-		final_pos.x = cam_to_object.x * -8 * shape->props.radius + \
-			shape->origin.x;
-		final_pos.z = cam_to_object.z * -8 * shape->props.radius + \
-			shape->origin.z;
+		if (cam_to_object.x < 0)
+			final_pos.x = -5 * shape->props.radius + shape->origin.x;
+		else
+			final_pos.x = 5 * shape->props.radius + shape->origin.x;
+		if (cam_to_object.z < 0)
+			final_pos.z = -5 * shape->props.radius + shape->origin.z;
+		else
+			final_pos.z = 5 * shape->props.radius + shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
 	if (shape->type == CUBE)
 	{
-		final_pos.x = cam_to_object.x * -8 * shape->props.scale.x + \
-			shape->origin.x;
-		final_pos.z = cam_to_object.z * -8 * shape->props.scale.z + \
-			shape->origin.z;
+		if (cam_to_object.x < 0)
+			final_pos.x = -5 * shape->props.scale.x + shape->origin.x;
+		else
+			final_pos.x = 5 * shape->props.scale.x + shape->origin.x;
+		if (cam_to_object.z < 0)
+			final_pos.z = -5 * shape->props.scale.z + shape->origin.z;
+		else
+			final_pos.z = 5 * shape->props.scale.z + shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}
-	if (shape->type == CYLINDER)
+	if (shape->type == CYLINDER || shape->type == CONE)
 	{
-		final_pos.x = cam_to_object.x * -7 * shape->props.radius + \
-			shape->origin.x;
-		final_pos.z = cam_to_object.z * -7 * shape->props.radius + \
-			shape->origin.z;
+		if (cam_to_object.x < 0)
+			final_pos.x = -2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.x;
+		else
+			final_pos.x = 2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.x;
+		if (cam_to_object.z < 0)
+			final_pos.z = -2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.z;
+		else
+			final_pos.z = 2 * max3(shape->props.height, shape->props.radius, 0) + shape->origin.z;
 		final_pos.y = shape->origin.y;
 		final_pos.w = 1;
 	}

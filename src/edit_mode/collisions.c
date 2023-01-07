@@ -6,12 +6,10 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 04:41:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "mathRT.h"
 #include "miniRT.h"
 
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
@@ -258,11 +256,11 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	t_ray ray;
 	ray.origin = cylinder->origin;
 	// This should be the vector from the cylinder center to the plane
-	negate_vec(&ray.direction, &plane->orientation);
-	normalize_vec(&ray.direction);
-	if (fabs(dot_product(&cylinder_normal, &ray.direction)) > 0.001)
+	negate_vec(&ray.dir, &plane->orientation);
+	normalize_vec(&ray.dir);
+	if (fabs(dot_product(&cylinder_normal, &ray.dir)) > 0.001)
 	{
-		double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.direction);
+		double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.dir);
 		t_vector	point_on_secondary_plane;
 		ray_position(&point_on_secondary_plane, &ray, t);
 		t_vector	dir;

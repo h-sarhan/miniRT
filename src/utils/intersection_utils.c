@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 14:39:32 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	prepare_computations(t_intersection *intersection,
 {
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(intersection->shape, &intersection->point);
-	negate_vec(&intersection->eye, &ray->direction);
+	negate_vec(&intersection->eye, &ray->dir);
 	intersection->eye.w = 0;
 	intersection->inside = false;
 	if (dot_product(&intersection->normal, &intersection->eye) < 0)
@@ -28,7 +28,7 @@ void	prepare_computations(t_intersection *intersection,
 	scale_vec(&intersection->over_point, &intersection->normal, EPSILON);
 	add_vec(&intersection->over_point, &intersection->point,
 		&intersection->over_point);
-	reflect_vector(&intersection->reflect_vec, &ray->direction,
+	reflect_vector(&intersection->reflect_vec, &ray->dir,
 		&intersection->normal);
 }
 
@@ -73,9 +73,9 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
 	ft_bzero(&center, sizeof(t_vector));
 	center.w = 1;
 	mat_vec_multiply(&ray->origin, &cam->inv_trans, &center);
-	sub_vec(&ray->direction, &pixel, &ray->origin);
-	ray->direction.w = 0;
-	normalize_vec(&ray->direction);
+	sub_vec(&ray->dir, &pixel, &ray->origin);
+	ray->dir.w = 0;
+	normalize_vec(&ray->dir);
 }
 
 // void	ray_from_cam(t_ray *ray, const t_camera *cam, int x, int y)
@@ -103,9 +103,9 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
 
 void	ray_position(t_vector *pos, const t_ray *ray, float time)
 {
-	pos->x = ray->direction.x * time + ray->origin.x;
-	pos->y = ray->direction.y * time + ray->origin.y;
-	pos->z = ray->direction.z * time + ray->origin.z;
+	pos->x = ray->dir.x * time + ray->origin.x;
+	pos->y = ray->dir.y * time + ray->origin.y;
+	pos->z = ray->dir.z * time + ray->origin.z;
 	pos->w = 1;
 }
 
@@ -114,6 +114,6 @@ void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
 {
 	mat_vec_multiply(&transformed_ray->origin, &shape->inv_transf,
 		&ray->origin);
-	mat_vec_multiply(&transformed_ray->direction, &shape->inv_transf,
-		&ray->direction);
+	mat_vec_multiply(&transformed_ray->dir, &shape->inv_transf,
+		&ray->dir);
 }

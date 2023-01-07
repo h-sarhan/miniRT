@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/05 14:39:57 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/07 16:01:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_ray			t_ray;
 struct s_ray
 {
 	t_vector	origin;
-	t_vector	direction;
+	t_vector	dir;
 };
 
 /**
@@ -61,12 +61,13 @@ bool			intersect(t_shape *shape, const t_ray *ray,
 
 t_intersection	*hit(t_intersections *xs);
 
-void			check_axis(float *t_min, float *t_max, float origin,
-					float direction);
 void			ray_position(t_vector *pos, const t_ray *ray, float time);
 
 t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
 
 void			ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y);
+bool	intersect_cylinder(const t_ray *ray, t_shape *shape,
+	t_intersections *xs);
+bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:54:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 07:42:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/07 14:30:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 float	vec_magnitude(const t_vector *vec)
 {
 	return (sqrt(vec->x * vec->x + vec->y * vec->y \
-			+ vec->z * vec->z + vec->w * vec->w));
+			+ vec->z * vec->z));
 }
 
 /**
@@ -30,6 +30,7 @@ float	vec_magnitude(const t_vector *vec)
 void	normalize_vec(t_vector *vec)
 {
 	scale_vec(vec, vec, 1 / vec_magnitude(vec));
+	vec->w = 0;
 }
 
 /**
