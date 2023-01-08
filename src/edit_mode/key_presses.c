@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 17:02:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 01:52:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,15 +282,15 @@ int	close_window(t_scene *scene)
 	return (0);
 }
 
-// printf("key = %d\n", key);
-// if (key == KEY_X)
-// {
-// 	scene->supersampling = !scene->supersampling;
-// 	calculate_transforms(scene);
-// 	draw_scene(scene);
-// }
 int	key_press(int key, t_scene *scene)
 {
+	printf("key = %d\n", key);
+	if (key == KEY_X)
+	{
+		scene->supersampling = !scene->supersampling;
+		calculate_transforms(scene);
+		draw_scene(scene);
+	}
 	if (key == KEY_RETURN && scene->settings.edit_mode == true)
 		spawn_shape(scene);
 	if (key == KEY_T && scene->settings.edit_mode == true)
