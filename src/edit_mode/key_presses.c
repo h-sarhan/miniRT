@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 01:52:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:35:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ void	toggle_keys_held2(int key, t_scene *scene, bool on_off)
 
 void	select_shape(int key, t_scene *scene)
 {
-	if (key == KEY_TAB && scene->settings.edit_mode == true)
+	if (key == KEY_TAB && scene->settings.edit_mode == true && scene->settings.light_mode == false)
 	{
 		scene->shapes[scene->shape_idx].props.highlighted = false;
 		scene->shape_idx = (scene->shape_idx + 1) % scene->count.shapes;
@@ -287,7 +287,7 @@ int	key_press(int key, t_scene *scene)
 	printf("key = %d\n", key);
 	if (key == KEY_X)
 	{
-		scene->supersampling = !scene->supersampling;
+		scene->settings.supersampling = !scene->settings.supersampling;
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}
@@ -300,6 +300,14 @@ int	key_press(int key, t_scene *scene)
 	select_shape(key, scene);
 	if (key == KEY_R)
 		toggle_reflections(scene);
+	if (key == KEY_L)
+	{
+		scene->settings.light_mode = !scene->settings.light_mode;
+	}
+	if (key == KEY_TAB && scene->settings.edit_mode == true && scene->settings.light_mode == true)
+	{
+		scene->light_idx = (scene->light_idx + 1) % scene->count.lights;
+	}
 	if (key == KEY_ESC)
 	{
 		close_window(scene);

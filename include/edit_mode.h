@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 01:52:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:23:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 #  define KEY_X 120
 #  define KEY_Y 16
 #  define KEY_Z 6
+#  define KEY_L 37
 # else
 #  define KEY_ESC 53
 #  define KEY_W 13
@@ -88,6 +89,7 @@
 #  define KEY_X 7
 #  define KEY_Y 16
 #  define KEY_Z 6
+#  define KEY_L 37
 # endif
 # define ON_DESTROY 17
 

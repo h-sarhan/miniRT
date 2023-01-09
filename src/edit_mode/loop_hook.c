@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 17:52:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:53:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,15 @@ void	move_object_fwd(t_scene *scene, t_shape *shape)
 void	move_object_h(t_scene *scene, t_shape *shape)
 {
 	t_vector	offset;
-	t_vector	increment;
 
 	ft_bzero(&offset, sizeof(t_vector));
-	ft_bzero(&increment, sizeof(t_vector));
 	if (scene->keys_held.a)
 	{
 		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta + M_PI_2, 0.2);
-		sphere_to_xyz(&increment, M_PI_2, scene->cam.theta + M_PI_2,
-			-0.0001);
 	}
 	if (scene->keys_held.d)
 	{
 		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta - M_PI_2, 0.2);
-		sphere_to_xyz(&increment, M_PI_2, scene->cam.theta - M_PI_2,
-			-0.0001);
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 }
@@ -104,19 +98,15 @@ void	move_object_h(t_scene *scene, t_shape *shape)
 void	move_object_v(t_scene *scene, t_shape *shape)
 {
 	t_vector	offset;
-	t_vector	increment;
 
 	ft_bzero(&offset, sizeof(t_vector));
-	ft_bzero(&increment, sizeof(t_vector));
 	if (scene->keys_held.q)
 	{
 		offset.y = 0.2;
-		increment.y = -0.0001;
 	}
 	if (scene->keys_held.e)
 	{
 		offset.y = -0.2;
-		increment.y = 0.0001;
 	}
 	add_vec(&shape->origin, &shape->origin, &offset);
 }
@@ -266,14 +256,31 @@ void	transform_object(t_scene *scene)
 
 void	light_controls(t_scene *scene)
 {
-	if (scene->keys_held.up == true)
-		scene->lights[0].position.y += 0.3;
-	if (scene->keys_held.down == true)
-		scene->lights[0].position.y -= 0.3;
-	if (scene->keys_held.left == true)
-		scene->lights[0].position.x -= 0.3;
-	if (scene->keys_held.right == true)
-		scene->lights[0].position.x += 0.3;
+	t_vector	offset;
+	t_light		*light;
+
+	light = &scene->lights[scene->light_idx];
+	ft_bzero(&offset, sizeof(t_vector));
+	if (scene->keys_held.w)
+		sphere_to_xyz(&offset, M_PI / 2, scene->cam.theta, 0.2);
+	if (scene->keys_held.s)
+		sphere_to_xyz(&offset, M_PI / 2, scene->cam.theta, -0.2);
+	if (scene->keys_held.w || scene->keys_held.s)
+		add_vec(&light->position, &light->position, &offset);
+	if (scene->keys_held.q == true)
+		light->position.y += 0.3;
+	if (scene->keys_held.e == true)
+		light->position.y -= 0.3;
+	if (scene->keys_held.a)
+		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta + M_PI_2, 0.2);
+	if (scene->keys_held.d)
+		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta - M_PI_2, 0.2);
+	if (scene->keys_held.a || scene->keys_held.d)
+		add_vec(&light->position, &light->position, &offset);
+	if (scene->keys_held.plus == true)
+		light->intensity = min(light->intensity + 0.05, 1);
+	if (scene->keys_held.minus == true)
+		light->intensity = max(light->intensity - 0.05, 0.05);
 }
 
 void	reset_look_at(t_scene *scene)
@@ -316,10 +323,14 @@ int	render_loop(t_scene *scene)
 	if (scene->settings.camera_mode == true
 		&& scene->settings.edit_mode == true)
 		camera_controls(scene);
-	else if (scene->settings.edit_mode == true)
+	else if (scene->settings.edit_mode == true && scene->settings.light_mode == false)
 	{
 		transform_object(scene);
 		mouse_rotate(scene);
+	}
+	else if (scene->settings.edit_mode == true && scene->settings.light_mode == true)
+	{
+		light_controls(scene);
 	}
 	if (scene->keys_held.o == true && scene->settings.edit_mode == true \
 		&& !scene->look_at.trigger)

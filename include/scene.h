@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 11:04:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:29:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,13 @@ struct s_settings
 	int			edit_w;
 	bool		camera_mode;
 	bool		edit_mode;
+	bool		light_mode;
 	int			reflection_depth;
 	float		edit_scale;
 	float		render_scale;
 	bool		collisions;
 	bool		help_menu;
+	bool		supersampling;
 };
 
 /**
@@ -94,11 +96,11 @@ struct s_scene
 	t_keys			keys_held;
 	t_settings		settings;
 	int				shape_idx;
+	int				light_idx;
 	sem_t			*sem_loading;
 	t_look_at		look_at;
 	t_mouse			mouse;
 	t_error_flags	error_flags;
-	bool			supersampling;
 };
 
 void	free_scene(t_scene *scene);

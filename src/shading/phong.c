@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:55:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ t_color	get_ambient(t_phong *phong, t_light *light, t_scene *scene)
 }
 
 // light attenuation example code
-// float	distance_from_light = vec_distance(&itx->point, &scene->lights[light_idx].position);
-// mult_color(&phong->diffuse, &phong->diffuse, (30 - distance_from_light) / (30 - 1));
-// mult_color(&phong->specular, &phong->specular, (30 - distance_from_light) / (30 - 1));
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
@@ -54,6 +51,9 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 			itx->shape->props.specular * \
 			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
+	// float	distance_from_light = vec_distance(&itx->point, &scene->lights[light_idx].position);
+	// mult_color(&phong->diffuse, &phong->diffuse, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
+	// mult_color(&phong->specular, &phong->specular, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
 	return (true);
 }
 

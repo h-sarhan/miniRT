@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:15:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:25:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_color	super_sample_pixel(float x, float y, t_intersections *arr,
 	t_color		avg_color;
 	const float	samples = 2;
 
-	if (worker->scene->supersampling == false)
+	if (worker->scene->settings.supersampling == false)
 		return (render_pixel(x, y, arr, worker));
 	ft_bzero(&avg_color, sizeof(t_color));
 	i = 0;
