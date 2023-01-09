@@ -6,20 +6,23 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:55:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:43:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_color	get_ambient(t_phong *phong, t_light *light, t_scene *scene)
+t_color	get_ambient(t_phong *phong, t_light *light, t_scene *scene, float distance)
 {
 	t_color	ambient;
 
 	ambient.a = 0;
+	(void)light;
 	mult_color(&ambient, &phong->effective_color,
-		scene->ambient.intensity * light->intensity);
+		scene->ambient.intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
+	// mult_color(&ambient, &ambient, (60 * light->intensity - distance) / (60 * light->intensity - 1));
+	(void)distance;
 	return (ambient);
 }
 
@@ -51,9 +54,6 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 			itx->shape->props.specular * \
 			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
-	// float	distance_from_light = vec_distance(&itx->point, &scene->lights[light_idx].position);
-	// mult_color(&phong->diffuse, &phong->diffuse, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
-	// mult_color(&phong->specular, &phong->specular, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
 	return (true);
 }
 
@@ -62,15 +62,24 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_phong		phong;
 	t_color		result;
 
+	float	distance_from_light = vec_distance(&itx->point, &scene->lights[light_idx].position);
 	blend_colors(&phong.effective_color, &itx->shape->props.color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
-		return (get_ambient(&phong,
-				&scene->lights[light_idx], scene));
-	result = get_ambient(&phong, &scene->lights[light_idx], scene);
+	{
+		
+		result = get_ambient(&phong,
+				&scene->lights[light_idx], scene, distance_from_light);
+		// mult_color(&result, &result, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
+		return (result);
+	}
+	result = get_ambient(&phong, &scene->lights[light_idx], scene, distance_from_light);
+	// mult_color(&phong.diffuse, &phong.diffuse, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
+	// mult_color(&phong.specular, &phong.specular, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
 	result.r += phong.diffuse.r + phong.specular.r;
 	result.g += phong.diffuse.g + phong.specular.g;
 	result.b += phong.diffuse.b + phong.specular.b;
+	// mult_color(&result, &result, (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1));
 	return (result);
 }
 

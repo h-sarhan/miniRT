@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 09:37:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:44:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ void	light_controls(t_scene *scene)
 	if (scene->keys_held.plus == true)
 		light->intensity = min(light->intensity + 0.05, 1);
 	if (scene->keys_held.minus == true)
-		light->intensity = max(light->intensity - 0.05, 0.05);
+		light->intensity = max(light->intensity - 0.05, 0);
 }
 
 void	reset_look_at(t_scene *scene)

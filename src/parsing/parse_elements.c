@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:48:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:42:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void	parse_light_props(t_scene *scene, t_light *light, char **splitted)
 	parse_color(&light->color, splitted[3], &scene->error_flags.light.color);
 	if (find_error(&scene->error_flags))
 		return ;
-	light->color.r = light->color.r / (light->color.r + light->color.g + light->color.b);
-	light->color.g = light->color.g / (light->color.r + light->color.g + light->color.b);
-	light->color.b = light->color.b / (light->color.r + light->color.g + light->color.b);
+	if (light->color.r != 0 && light->color.g != 0 && light->color.b != 0)
+	{
+		light->color.r = light->color.r / (light->color.r + light->color.g + light->color.b);
+		light->color.g = light->color.g / (light->color.r + light->color.g + light->color.b);
+		light->color.b = light->color.b / (light->color.r + light->color.g + light->color.b);
+	}
 	parse_coordinates(&light->position, splitted[1], &success);
 	if (find_error(&scene->error_flags) == false && success == false)
 		scene->error_flags.light.coords = true;
@@ -97,6 +100,12 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 		&scene->error_flags.ambient.color);
 	if (find_error(&scene->error_flags))
 		return (false);
+	if (scene->ambient.color.r != 0 && scene->ambient.color.g != 0 && scene->ambient.color.b != 0)
+	{
+		scene->ambient.color.r /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
+		scene->ambient.color.g /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
+		scene->ambient.color.b /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
+	}
 	scene->count.ambient_lights++;
 	return (true);
 }

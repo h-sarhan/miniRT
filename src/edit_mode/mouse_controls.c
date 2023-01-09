@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 13:38:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 18:12:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	mouse_select(t_scene *scene, float x, float y)
 int	mouse_down(int key_code, int x, int y, t_scene *scene)
 {
 	if (x < 0 || y < 0 || x >= scene->settings.disp_w
-		|| y >= scene->settings.disp_h || scene->settings.edit_mode == false)
+		|| y >= scene->settings.disp_h || scene->settings.edit_mode == false
+		|| key_code != LEFT_MOUSE_DOWN)
 		return (0);
 	scene->mouse.key = key_code;
 	scene->mouse.x = x;
