@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 12:01:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 01:50:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,26 +72,21 @@ bool	skip_line(char **line, int fd, size_t *line_count)
  */
 static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 {
-	bool	success;
 	char	**splitted;
 
-	success = true;
 	splitted = ft_split_whitespace(line);
 	if (ft_strcmp(splitted[0], "A") == 0)
-		success = parse_ambient(scene, splitted);
+		parse_ambient(scene, splitted);
 	else if (ft_strcmp(splitted[0], "C") == 0)
 		parse_camera(scene, splitted);
 	else if (ft_strcmp(splitted[0], "L") == 0)
 		parse_light(scene, splitted);
 	else if (is_shape(splitted[0]))
-		success = parse_shape(scene, splitted);
+		parse_shape(scene, splitted);
 	else if (is_settings(line) == true)
-		success = parse_settings(scene, line, line_num, fd);
+		parse_settings(scene, line, line_num, fd);
 	else
-	{
 		scene->error_flags.unknown_identifier = true;
-		success = false;
-	}
 	if (find_error(&scene->error_flags))
 		print_error(scene, line, *line_num, splitted[0]);
 	free(line);

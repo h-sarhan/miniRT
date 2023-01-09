@@ -6,11 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 17:56:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 02:34:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include <stdlib.h>
 
 // * Does not skip pixels
 // void	*render_scene(t_worker *worker)
@@ -74,26 +75,30 @@ t_color	render_pixel(float x, float y, t_intersections *arr, t_worker *worker)
 t_color	super_sample_pixel(float x, float y, t_intersections *arr,
 			t_worker *worker)
 {
-	float	i;
-	float	j;
-	t_color	color;
-	t_color	avg_color;
+	int			i;
+	int			j;
+	t_color		color;
+	t_color		avg_color;
+	const float	samples = 8;
 
 	if (worker->scene->supersampling == false)
 		return (render_pixel(x, y, arr, worker));
 	ft_bzero(&avg_color, sizeof(t_color));
 	i = 0;
-	while (i <= 0.75)
+	color = render_pixel(x, y, arr, worker);
+	mult_color(&color, &color, 1.0 / (samples * samples + 1));
+	add_colors(&avg_color, &avg_color, &color);
+	while (i < samples)
 	{
 		j = 0;
-		while (j <= 0.75)
+		while (j < samples)
 		{
-			color = render_pixel(x + i, y + j, arr, worker);
-			mult_color(&color, &color, 1 / 16.0);
+			color = render_pixel(x + i / samples, y + j / samples, arr, worker);
+			mult_color(&color, &color, 1.0 / (samples * samples + 1));
 			add_colors(&avg_color, &avg_color, &color);
-			j += 0.25;
+			j++;
 		}
-		i += 0.25;
+		i++;
 	}
 	set_color(worker, x, y, create_mlx_color(&avg_color));
 	return (avg_color);
@@ -114,7 +119,8 @@ void	*render_scene_fast(t_worker *worker)
 		while (x < worker->width)
 		{
 			set_color(worker, x, y, 0);
-			render_pixel(x, y, &arr, worker);
+			// render_pixel(x, y, &arr, worker);
+			super_sample_pixel(x, y, &arr, worker);
 			x += 3;
 		}
 		line_counter++;
