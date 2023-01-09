@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:00:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,19 @@ void	draw_shape_info(t_scene *scene)
 			continue ;
 		}
 		origin = shape->origin;
-		if (shape->type == SPHERE)
-		{
-			origin.x -= 0.2;
+		origin.x -= 0.2;
+		if (shape->type == SPHERE || shape->type == CYLINDER)
 			origin.y += shape->props.radius;
-		}
-		if (shape->type == CYLINDER)
-		{
-			origin.x -= 0.2;
-			origin.y += shape->props.height / 2;
-		}
+		if (shape->type == CUBE)
+			origin.y += shape->props.scale.y;
+		if (shape->type == CONE)
+			origin.y += shape->props.height /2;
 		mat_vec_multiply(&origin_proj, &scene->cam.transform, &origin);
 		if (origin_proj.z > 0)
 			return ;
 		perspective_projection(&origin_proj, scene);
 		if (shape->type == SPHERE || shape->type == CYLINDER
-			|| shape->type == CUBE)
+			|| shape->type == CUBE || shape->type == CONE)
 		{
 			if (shape->type == SPHERE)
 				mlx_string_put(scene->disp->mlx, scene->disp->win,
@@ -62,6 +59,16 @@ void	draw_shape_info(t_scene *scene)
 					(origin_proj.x * scene->settings.disp_w),
 					(origin_proj.y - 0.12) * scene->settings.disp_h,
 					0xffffff, "Cylinder");
+			if (shape->type == CUBE)
+				mlx_string_put(scene->disp->mlx, scene->disp->win,
+					(origin_proj.x * scene->settings.disp_w),
+					(origin_proj.y - 0.12) * scene->settings.disp_h,
+					0xffffff, "Cube");
+			if (shape->type == CONE)
+				mlx_string_put(scene->disp->mlx, scene->disp->win,
+					(origin_proj.x * scene->settings.disp_w),
+					(origin_proj.y - 0.12) * scene->settings.disp_h,
+					0xffffff, "Cone");
 			sprintf(str, "x: % 9.2f", shape->origin.x);
 			mlx_string_put(scene->disp->mlx, scene->disp->win,
 				(origin_proj.x * scene->settings.disp_w),
