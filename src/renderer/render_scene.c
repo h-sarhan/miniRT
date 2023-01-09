@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 02:34:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 07:15:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,26 @@ t_color	super_sample_pixel(float x, float y, t_intersections *arr,
 	int			j;
 	t_color		color;
 	t_color		avg_color;
-	const float	samples = 8;
+	const float	samples = 2;
 
 	if (worker->scene->supersampling == false)
 		return (render_pixel(x, y, arr, worker));
 	ft_bzero(&avg_color, sizeof(t_color));
 	i = 0;
 	color = render_pixel(x, y, arr, worker);
-	mult_color(&color, &color, 1.0 / (samples * samples + 1));
 	add_colors(&avg_color, &avg_color, &color);
 	while (i < samples)
 	{
 		j = 0;
 		while (j < samples)
 		{
-			color = render_pixel(x + i / samples, y + j / samples, arr, worker);
-			mult_color(&color, &color, 1.0 / (samples * samples + 1));
+			color = render_pixel(x + (i + 0.5) / samples, y + (j + 0.5) / samples, arr, worker);
 			add_colors(&avg_color, &avg_color, &color);
 			j++;
 		}
 		i++;
 	}
+	mult_color(&avg_color, &avg_color, 1.0 / (samples * samples + 1));
 	set_color(worker, x, y, create_mlx_color(&avg_color));
 	return (avg_color);
 }
@@ -119,16 +118,15 @@ void	*render_scene_fast(t_worker *worker)
 		while (x < worker->width)
 		{
 			set_color(worker, x, y, 0);
-			// render_pixel(x, y, &arr, worker);
-			super_sample_pixel(x, y, &arr, worker);
+			render_pixel(x, y, &arr, worker);
 			x += 3;
 		}
 		line_counter++;
 		update_loading_bar(worker, &line_counter);
 		y += 3;
 	}
-	fill_in_horizontal(worker, 10);
-	fill_in_vertical(worker, 10);
+	fill_in_horizontal(worker, 20);
+	fill_in_vertical(worker, 20);
 	return (NULL);
 }
 
