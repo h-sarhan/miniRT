@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 08:30:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 09:37:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ void	collide_after_transform(t_scene *scene)
 
 void	scale_cube_sides(t_scene *scene, t_shape *shape)
 {
+	if (shape->type != CUBE)
+		return ;
 	if (scene->keys_held.shift == false)
 	{
 		if (scene->keys_held.x)
