@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:00:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 08:32:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	draw_shape_info(t_scene *scene)
 		origin.x -= 0.2;
 		if (shape->type == SPHERE || shape->type == CYLINDER)
 			origin.y += shape->props.radius;
-		if (shape->type == CUBE)
-			origin.y += shape->props.scale.y;
 		if (shape->type == CONE)
 			origin.y += shape->props.height /2;
 		mat_vec_multiply(&origin_proj, &scene->cam.transform, &origin);

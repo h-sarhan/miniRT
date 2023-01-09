@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:53:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 08:30:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,41 @@ void	collide_after_transform(t_scene *scene)
 	}
 }
 
+
+void	scale_cube_sides(t_scene *scene, t_shape *shape)
+{
+	if (scene->keys_held.shift == false)
+	{
+		if (scene->keys_held.x)
+		{
+			shape->props.scale.x += 0.05;
+		}
+		if (scene->keys_held.y)
+		{
+			shape->props.scale.y += 0.05;
+		}
+		if (scene->keys_held.z)
+		{
+			shape->props.scale.z += 0.05;
+		}
+	}
+	if (scene->keys_held.shift == true)
+	{
+		if (scene->keys_held.x && shape->props.scale.x > 0.3)
+		{
+			shape->props.scale.x -= 0.05;
+		}
+		if (scene->keys_held.y && shape->props.scale.y > 0.3)
+		{
+			shape->props.scale.y -= 0.05;
+		}
+		if (scene->keys_held.z && shape->props.scale.z > 0.3)
+		{
+			shape->props.scale.z -= 0.05;
+		}
+	}
+}
+
 void	transform_object(t_scene *scene)
 {
 	if (scene->keys_held.w == true || scene->keys_held.s == true)
@@ -234,12 +269,18 @@ void	transform_object(t_scene *scene)
 		move_object_h(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.q == true || scene->keys_held.e == true)
 		move_object_v(scene, &scene->shapes[scene->shape_idx]);
-	if (!scene->keys_held.shift
+	if (scene->keys_held.shift == false
 		&& (scene->keys_held.plus || scene->keys_held.minus))
 		scale_object(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.shift == true
 		&& (scene->keys_held.plus == true || scene->keys_held.minus == true))
 		change_height(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.shift == false
+		&& (scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
+		scale_cube_sides(scene, &scene->shapes[scene->shape_idx]);
+	if (scene->keys_held.shift == true
+		&& (scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
+		scale_cube_sides(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.shift == false
 		&& (scene->keys_held.left == true || scene->keys_held.right == true))
 		rotate_object_y(scene, &scene->shapes[scene->shape_idx],
@@ -343,7 +384,8 @@ int	render_loop(t_scene *scene)
 			|| scene->keys_held.right || scene->keys_held.q
 			|| scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
-			|| scene->keys_held.minus))
+			|| scene->keys_held.minus || scene->keys_held.x
+			|| scene->keys_held.y || scene->keys_held.z))
 	{
 		calculate_transforms(scene);
 		draw_scene(scene);

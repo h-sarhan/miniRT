@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:35:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 08:24:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ int	close_window(t_scene *scene)
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
-	if (key == KEY_X)
+	if (key == KEY_J)
 	{
 		scene->settings.supersampling = !scene->settings.supersampling;
 		calculate_transforms(scene);

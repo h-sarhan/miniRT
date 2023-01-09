@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:23:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/09 08:24:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@
 #  define KEY_SHIFT 257
 #  define LEFT_MOUSE_DOWN 1
 #  define KEY_T 17
+#  define KEY_J 38
 #  define KEY_X 7
 #  define KEY_Y 16
 #  define KEY_Z 6
