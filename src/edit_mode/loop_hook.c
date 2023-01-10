@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 17:59:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ void	scale_object(t_scene *scene, t_shape *shape)
 		amount *= -1;
 	if (shape->type == CUBE)
 	{
-		if (shape->props.scale.x > 0.3)
+		if (shape->props.scale.x > 0.3 || !scene->keys_held.minus)
 			shape->props.scale.x += amount;
-		if (shape->props.scale.y > 0.3)
+		if (shape->props.scale.y > 0.3 || !scene->keys_held.minus)
 			shape->props.scale.y += amount;
-		if (shape->props.scale.z > 0.3)
+		if (shape->props.scale.z > 0.3 || !scene->keys_held.minus)
 			shape->props.scale.z += amount;
 	}
 	else
