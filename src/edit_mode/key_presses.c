@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 16:42:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 16:43:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void	toggle_shape(t_scene *scene)
 		shape->type = CUBE;
 	else if (shape->type == CUBE)
 	{
-		shape->props.height = shape->props.scale.y * 2;
+		shape->props.height = 1;
 		shape->props.scale.y = 1;
 		shape->props.radius = shape->props.scale.x;
 		shape->type = CYLINDER;
@@ -328,7 +328,7 @@ int	key_press(int key, t_scene *scene)
 	if (key == KEY_P)
 	{
 		scene->shapes[scene->shape_idx].props.pattern_type += 1;
-		scene->shapes[scene->shape_idx].props.pattern_type %= 3;
+		scene->shapes[scene->shape_idx].props.pattern_type %= 5;
 	}
 	if (key == KEY_C && scene->settings.edit_mode == true)
 		scene->settings.camera_mode = !scene->settings.camera_mode;
