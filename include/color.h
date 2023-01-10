@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:17:02 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 16:13:45 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void			blend_colors(t_color *res, const t_color *c1,
 
 int				color_mix(int c1, int c2, float mix);
 int				color_difference(int c1, int c2);
+void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
 
 typedef struct s_phong	t_phong;
 struct	s_phong
