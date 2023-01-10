@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 16:08:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 void	free_split_array(char **arr);
 char	*ft_strtrim_free(char *s, char *set);
-float	max3(float n1, float n2, float n3);
-float	min3(float n1, float n2, float n3);
-float		min(float a, float b);
-float	max(float a, float b);
+double	max3(double n1, double n2, double n3);
+double	min3(double n1, double n2, double n3);
+double		min(double a, double b);
+double	max(double a, double b);
 
 void	transform_ray(t_ray *transformed_ray, const t_ray *ray,
 			const t_shape *shape);

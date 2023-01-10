@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:25:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 // 	return (NULL);
 // }
 
-t_color	render_pixel(float x, float y, t_intersections *arr, t_worker *worker)
+t_color	render_pixel(double x, double y, t_intersections *arr, t_worker *worker)
 {
 	int		shape_idx;
 	t_scene	*scene;
@@ -72,14 +72,14 @@ t_color	render_pixel(float x, float y, t_intersections *arr, t_worker *worker)
 	return (color);
 }
 
-t_color	super_sample_pixel(float x, float y, t_intersections *arr,
+t_color	super_sample_pixel(double x, double y, t_intersections *arr,
 			t_worker *worker)
 {
 	int			i;
 	int			j;
 	t_color		color;
 	t_color		avg_color;
-	const float	samples = 2;
+	const double	samples = 2;
 
 	if (worker->scene->settings.supersampling == false)
 		return (render_pixel(x, y, arr, worker));
@@ -125,8 +125,8 @@ void	*render_scene_fast(t_worker *worker)
 		update_loading_bar(worker, &line_counter);
 		y += 3;
 	}
-	fill_in_horizontal(worker, 20);
-	fill_in_vertical(worker, 20);
+	fill_in_horizontal(worker, 10);
+	fill_in_vertical(worker, 10);
 	return (NULL);
 }
 
@@ -143,9 +143,9 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 		x = -1;
 		while (++x < worker->scene->settings.disp_w)
 		{
-			src_x = round((x / (float)worker->scene->settings.disp_w) * \
+			src_x = round((x / (double)worker->scene->settings.disp_w) * \
 			worker->width);
-			src_y = round((y / (float)worker->scene->settings.disp_h) * \
+			src_y = round((y / (double)worker->scene->settings.disp_h) * \
 			worker->height);
 			src_x = min(src_x, worker->width - 1);
 			src_y = min(src_y, worker->height - 1);
@@ -167,7 +167,7 @@ void	draw_scene(t_scene *scene)
 	t_worker		workers[NUM_THREADS];
 	struct timespec	start;
 	struct timespec	finish;
-	float			elapsed;
+	double			elapsed;
 
 	init_workers(workers, scene);
 	clock_gettime(CLOCK_MONOTONIC, &start);

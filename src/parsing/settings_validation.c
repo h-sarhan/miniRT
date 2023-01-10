@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   settings_validation.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 16:20:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ bool	is_valid_color(const char *color)
 	return (false);
 }
 
-bool	check_value(const char *key, const char *val, float min, float max)
+bool	check_value(const char *key, const char *val, double min, double max)
 {
 	bool	success;
-	float	parsed_value;
+	double	parsed_value;
 
 	success = true;
 	if (is_num(val, true) == false)
@@ -85,8 +85,8 @@ bool	check_value(const char *key, const char *val, float min, float max)
 
 bool	is_valid_val(const char *key, const char *val)
 {
-	float	min;
-	float	max;
+	double	min;
+	double	max;
 
 	if (val == NULL || ft_strlen(val) == 0)
 		return (false);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_operations.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:54:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	identity_matrix(t_mat4 *mat)
  */
 void	transpose_matrix(t_mat4 *mat)
 {
-	float			temp;
+	double			temp;
 	unsigned char	row;
 	unsigned char	col;
 

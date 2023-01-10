@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,
 
 void	camera_init(t_camera *camera, t_scene *scene)
 {
-	float	half_view;
-	float	aspect;
-	float	h;
-	float	w;
+	double	half_view;
+	double	aspect;
+	double	h;
+	double	w;
 
 	h = scene->settings.render_h;
 	w = scene->settings.render_w;

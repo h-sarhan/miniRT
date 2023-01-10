@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shape_intersections.c                              :+:      :+:    :+:   */
+/*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/07 16:01:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	t_shape *sphere)
 {
 	t_vector	oc;
-	float		b;
-	float		c;
-	float		h;
+	double		b;
+	double		c;
+	double		h;
 
 	sub_vec(&oc, &ray->origin, &sphere->origin);
 	b = dot_product(&oc, &ray->dir);
@@ -36,11 +36,11 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	return (true);
 }
 
-static void	check_cube_axis(float *t_min, float *t_max, float origin,
-		float direction)
+static void	check_cube_axis(double *t_min, double *t_max, double origin,
+		double direction)
 {
-	float	tmin_numerator;
-	float	tmax_numerator;
+	double	tmin_numerator;
+	double	tmax_numerator;
 
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
@@ -62,8 +62,8 @@ bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	t_vector	tmin_vec;
 	t_vector	tmax_vec;
-	float		tmin;
-	float		tmax;
+	double		tmin;
+	double		tmax;
 
 	check_cube_axis(&tmin_vec.x, &tmax_vec.x, ray->origin.x, ray->dir.x);
 	check_cube_axis(&tmin_vec.y, &tmax_vec.y, ray->origin.y, ray->dir.y);

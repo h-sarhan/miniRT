@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:46:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/03 12:35:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	add_colors(t_color *res, const t_color *c1, const t_color *c2)
  * @param color The color to be multiplied
  * @param val The value to multiply the color with
  */
-void	mult_color(t_color *res, const t_color *color, float val)
+void	mult_color(t_color *res, const t_color *color, double val)
 {
 	res->r = color->r * val;
 	res->g = color->g * val;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_inverse2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 17:01:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:03:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param col Column of the cofactor
  * @return The cofactor at mat[row][col]
  */
-static float	cofactor4(const t_mat4 *mat4, int row, int col)
+static double	cofactor4(const t_mat4 *mat4, int row, int col)
 {
 	t_mat3	mat3;
 
@@ -34,7 +34,7 @@ static float	cofactor4(const t_mat4 *mat4, int row, int col)
  * @param mat4 Matrix to find the determinant of
  * @return The determinant of a 4 by 4 matrix
  */
-static float	det4(const t_mat4 *mat4)
+static double	det4(const t_mat4 *mat4)
 {
 	return (cofactor4(mat4, 0, 0) * (*mat4)[0][0]
 			+ cofactor4(mat4, 0, 1) * (*mat4)[0][1]
@@ -49,7 +49,7 @@ static float	det4(const t_mat4 *mat4)
  */
 void	mat_inverse(t_mat4 *res, const t_mat4 *mat)
 {
-	float	det;
+	double	det;
 	int		row;
 
 	det = det4(mat);

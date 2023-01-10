@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_intersection.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 15:57:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 15:59:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static bool	within_cylinder_radius(const t_ray *ray, float t)
+static bool	within_cylinder_radius(const t_ray *ray, double t)
 {
-	float	x;
-	float	z;
+	double	x;
+	double	z;
 
 	x = ray->origin.x + ray->dir.x * t;
 	z = ray->origin.z + ray->dir.z * t;
@@ -28,7 +28,7 @@ static bool	check_cylinder_caps(const t_ray *ray, t_shape *shape,
 		t_intersections *xs)
 {
 	bool	intersected;
-	float	t;
+	double	t;
 
 	intersected = false;
 	if (fabs(ray->dir.y) > EPSILON)
@@ -54,10 +54,10 @@ static bool	check_cylinder_caps(const t_ray *ray, t_shape *shape,
 }
 
 static bool	add_cylinder_intersections(t_shape *shape, const t_ray *ray,
-		t_intersections *xs, float *ts)
+		t_intersections *xs, double *ts)
 {
-	float	y0;
-	float	y1;
+	double	y0;
+	double	y1;
 	bool	intersected;
 
 	intersected = false;
@@ -86,10 +86,10 @@ bool	intersect_cylinder(const t_ray *ray, t_shape *shape,
 	t_intersections *xs)
 {
 	bool	intersected;
-	float	a;
-	float	b;
-	float	ts[2];
-	float	discriminant;
+	double	a;
+	double	b;
+	double	ts[2];
+	double	discriminant;
 
 	intersected = check_cylinder_caps(ray, shape, xs);
 	a = ray->dir.x * ray->dir.x + ray->dir.z * ray->dir.z;

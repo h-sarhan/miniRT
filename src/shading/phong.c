@@ -6,18 +6,18 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 13:48:52 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_color	get_ambient(t_scene *scene, t_intersection *itx, float attenuation)
+t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
 {
 	t_color	ambient;
 
 	ambient.a = 0;
-	mult_color(&ambient, &itx->shape->props.color,
+	mult_color(&ambient, &patter_color,
 		scene->ambient.intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
 	if (attenuation < 0)
@@ -31,8 +31,8 @@ t_color	get_ambient(t_scene *scene, t_intersection *itx, float attenuation)
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
-	float		reflect_dot_eye;
-	float		light_dot_normal;
+	double		reflect_dot_eye;
+	double		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
 
@@ -63,17 +63,17 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_phong	phong;
 	t_color	result;
 	t_color	pattern_color;	
-	const float	light_dist = vec_distance(&itx->point, \
+	const double	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const float	attentuation_factor = (60 * scene->lights[light_idx].intensity \
+	const double	attentuation_factor = (60 * scene->lights[light_idx].intensity \
 			- light_dist) / (60 * scene->lights[light_idx].intensity - 1);
 
 	pattern_color = check_pattern_type(itx);
 	blend_colors(&phong.effective_color, &pattern_color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
-		return (get_ambient(scene, itx, attentuation_factor));
-	result = get_ambient(scene, itx, attentuation_factor);
+		return (get_ambient(scene, attentuation_factor, pattern_color));
+	result = get_ambient(scene, attentuation_factor, pattern_color);
 	if (attentuation_factor < 0)
 		return (result);
 	else if (attentuation_factor > 0 && attentuation_factor <= 1)
@@ -116,7 +116,7 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
-	float			distance;
+	double			distance;
 	t_ray			ray;
 	t_intersections	arr;
 	int				i;

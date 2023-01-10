@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_attributes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:31:38 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:25:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_color_range(t_color *color, t_color_error *err)
 void	parse_color(t_color *color, const char *str, t_color_error *errs)
 {
 	char	**rgb;
-	float	res[3];
+	double	res[3];
 	size_t	i;
 	bool	success;
 
@@ -67,7 +67,7 @@ void	parse_color(t_color *color, const char *str, t_color_error *errs)
  */
 void	parse_coordinates(t_vector *position, const char *str, bool *success)
 {
-	float	res[3];
+	double	res[3];
 	char	**coords;
 	size_t	i;
 
@@ -115,7 +115,7 @@ void	check_orientation_vector(t_vector *orientation, t_orient_error *err)
 void	parse_orientation(t_vector *orientation, const char *str,
 			t_orient_error *err)
 {
-	float	res[3];
+	double	res[3];
 	char	**xyz;
 	size_t	i;
 	bool	success;

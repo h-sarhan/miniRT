@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/06 16:16:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ bool	print_cone_error(t_shape_errors *err, const char *line, int line_num);
 bool	is_settings(const char *line);
 bool	is_valid_key(const char *key);
 bool	is_valid_color(const char *color);
-bool	check_value(const char *key, const char *val, float min, float max);
+bool	check_value(const char *key, const char *val, double min, double max);
 bool	is_valid_val(const char *key, const char *val);
 t_color	parse_color_value(const char *str);
 void	parse_setting(t_shape *shape, char **key_val);

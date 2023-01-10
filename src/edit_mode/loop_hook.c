@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 12:51:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
+t_vector	*sphere_to_xyz(t_vector *vec, double phi, double theta, double r)
 {
 	vec->x = r * sin(phi) * cos(theta);
 	vec->z = r * sin(phi) * sin(theta);
@@ -113,7 +113,7 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 
 void	scale_object(t_scene *scene, t_shape *shape)
 {
-	float	amount;
+	double	amount;
 
 	amount = 0.04;
 	if (scene->keys_held.minus == true)
@@ -153,7 +153,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	}
 }
 
-void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
+void	rotate_object_x(t_scene *scene, t_shape *shape, double deg)
 {
 	t_mat4		rot;
 	t_vector	ax;
@@ -174,7 +174,7 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
 
-void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
+void	rotate_object_y(t_scene *scene, t_shape *shape, double deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;
@@ -187,7 +187,7 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 	mat_multiply(&shape->added_rots, &rot, &mat_copy);
 }
 
-void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
+void	rotate_object_z(t_scene *scene, t_shape *shape, double deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;
