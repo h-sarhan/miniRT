@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/07 15:58:47 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/10 13:00:07 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,8 +70,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address\
+			-fsanitize=address\
+			# $(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)

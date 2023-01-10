@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 08:24:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 12:58:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,10 @@ int	key_press(int key, t_scene *scene)
 	{
 		close_window(scene);
 		return (0);
+	}
+	if (key == KEY_H)
+	{
+		// toggle_help_menu(scene);
 	}
 	if (key == KEY_C && scene->settings.edit_mode == true)
 		scene->settings.camera_mode = !scene->settings.camera_mode;
