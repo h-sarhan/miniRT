@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 12:33:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 12:49:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,19 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
 	t_phong		phong;
 	t_color		result;
+	const float	light_dist = vec_distance(&itx->point, \
+			&scene->lights[light_idx].position);
+	const float	attentuation_factor = (60 * scene->lights[light_idx].intensity \
+			- light_dist) / (60 * scene->lights[light_idx].intensity - 1);
 
-	float	distance_from_light = vec_distance(&itx->point, &scene->lights[light_idx].position);
-	float	attentuation_factor = (60 * scene->lights[light_idx].intensity - distance_from_light) / (60 * scene->lights[light_idx].intensity - 1);
 	blend_colors(&phong.effective_color, &itx->shape->props.color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
 		return (get_ambient(scene, itx, attentuation_factor));
 	result = get_ambient(scene, itx, attentuation_factor);
 	if (attentuation_factor < 0)
-	{
-		mult_color(&phong.diffuse, &phong.diffuse, 0);
-		mult_color(&phong.specular, &phong.specular, 0);
-	}
-	else if (attentuation_factor < 1 && attentuation_factor > 0)
+		return (result);
+	else if (attentuation_factor > 0 && attentuation_factor <= 1)
 	{
 		mult_color(&phong.diffuse, &phong.diffuse, attentuation_factor);
 		mult_color(&phong.specular, &phong.specular, attentuation_factor);
