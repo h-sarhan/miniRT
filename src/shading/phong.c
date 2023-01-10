@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phong.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 18:28:05 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,10 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
 	float			distance;
+	int				i;
+	float			angle;
 	t_ray			ray;
 	t_intersections	arr;
-	int				i;
 	t_intersection	*intersection;
 
 	sub_vec(&ray.dir, &scene->lights[light_idx].position, itx_point);
@@ -128,6 +129,13 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	ray.origin = *itx_point;
 	i = -1;
 	arr.count = 0;
+	if (scene->lights[light_idx].type == SPOT)
+	{
+		angle = dot_product(&ray.dir, &scene->lights[light_idx].direction);
+		angle = acos(angle);
+		if (angle > (scene->lights[light_idx].theta / 2))
+			return (true);
+	}
 	while (++i < scene->count.shapes)
 		intersect(&scene->shapes[i], &ray, &arr);
 	intersection = hit(&arr);

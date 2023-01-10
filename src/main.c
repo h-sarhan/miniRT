@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 07:18:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 18:32:14 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	close(fd);
+	scene->lights[0].type = SPOT;
+	scene->lights[0].direction.z = -1;
+	scene->lights[0].theta = DEG_TO_RAD * 30;
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	init_settings(&scene->settings);
