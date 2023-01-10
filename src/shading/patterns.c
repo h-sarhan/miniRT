@@ -6,7 +6,7 @@
 /*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/10 16:59:34 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 17:02:37 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,6 @@ t_color	ring_pattern(t_intersection *itx, t_vector point, t_color a, t_color b)
 	scaling_matrix(&pattern_transf, 4, 4, 4);
 	mat_vec_multiply(&transf_point, &itx->shape->inv_transf, &point);
 	mat_vec_multiply(&transf_point, &pattern_transf, &transf_point);
-	transf_point.x += 0.5;
-	transf_point.y += 0.5;
-	transf_point.z += 0.5;
 	if ((int) floorf(sqrtf(((transf_point.x * transf_point.x) + (transf_point.z * transf_point.z)))) % 2 == 0)
 		return (b);
 	return (a);
@@ -77,6 +74,9 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 	scaling_matrix(&pattern_transf, 0.5, 0.5, 0.5);
 	mat_vec_multiply(&transf_point, &itx->shape->inv_transf, &point);
 	mat_vec_multiply(&transf_point, &pattern_transf, &transf_point);
+	transf_point.x += 0.5;
+	transf_point.y += 0.5;
+	transf_point.z += 0.5;
 	sub_colors(&color, &b, &a);
 	fraction = transf_point.x - floorf(transf_point.x);
 	mult_color(&color, &color, fraction);	
