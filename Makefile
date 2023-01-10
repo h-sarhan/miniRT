@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/10 13:00:07 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/10 13:49:23 by mkhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
 				transforms.c workers.c
 RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
 
-SHADING_SRC = color_operations.c phong.c reflections.c
+SHADING_SRC = color_operations.c phong.c reflections.c patterns.c
 SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
 
 UI_SRC = arrow.c loading_bar.c marker.c shape_info.c

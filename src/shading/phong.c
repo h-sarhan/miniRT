@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phong.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 13:20:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:48:52 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,16 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
-	t_phong		phong;
-	t_color		result;
+	t_phong	phong;
+	t_color	result;
+	t_color	pattern_color;	
 	const float	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
 	const float	attentuation_factor = (60 * scene->lights[light_idx].intensity \
 			- light_dist) / (60 * scene->lights[light_idx].intensity - 1);
 
-	blend_colors(&phong.effective_color, &itx->shape->props.color,
+	pattern_color = check_pattern_type(itx);
+	blend_colors(&phong.effective_color, &pattern_color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
 		return (get_ambient(scene, itx, attentuation_factor));

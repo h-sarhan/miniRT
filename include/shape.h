@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shape.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:02:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:30:17 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ enum e_shape_type
 	TRIANGLE,
 };
 
+/**
+ * @brief Type of pattern
+ */
+typedef enum e_pattern_type		t_pattern_type;
+enum e_pattern_type
+{
+	NONE,
+	STRIPE,
+	CHECKER_BOARD,
+};
+
 typedef struct s_shape_props	t_props;
 
 struct s_shape_props
@@ -43,6 +54,7 @@ struct s_shape_props
 	t_color			color;
 	t_vector		rot;
 	t_vector		scale;
+	t_pattern_type	pattern_type;
 };
 
 /**

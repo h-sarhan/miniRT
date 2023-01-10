@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 12:52:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 13:43:10 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,9 @@ void	perspective_projection(t_vector *point, const t_scene *scene);
 void	draw_shape_info(t_scene *scene);
 void	draw_shape_marker(t_scene *scene);
 void	display_loading_bar(t_scene *scene);
+
+// Pattern
+t_color	check_pattern_type(t_intersection *itx);
+t_color	stripe_pattern(t_vector point, t_color a, t_color b);
 
 #endif
