@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_inverse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:53:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param mat 2x2 matrix
  * @return The determinat of the 2x2 matrix
  */
-static double	det2(const t_mat2 *mat)
+static float	det2(const t_mat2 *mat)
 {
 	return ((*mat)[0][0] * (*mat)[1][1] - (*mat)[0][1] * (*mat)[1][0]);
 }
@@ -95,7 +95,7 @@ void	submat4(t_mat3 *res, const t_mat4 *mat, int row, int col)
  * @param col Column of the cofactor
  * @return The cofactor at mat[row][col]
  */
-static double	cofactor3(const t_mat3 *mat3, int row, int col)
+static float	cofactor3(const t_mat3 *mat3, int row, int col)
 {
 	t_mat2	mat2;
 
@@ -110,7 +110,7 @@ static double	cofactor3(const t_mat3 *mat3, int row, int col)
  * @param mat3 Matrix to find the determinant of
  * @return The determinant of a 3 by 3 matrix
  */
-double	det3(const t_mat3 *mat3)
+float	det3(const t_mat3 *mat3)
 {
 	return (cofactor3(mat3, 0, 0) * (*mat3)[0][0]
 			+ cofactor3(mat3, 0, 1) * (*mat3)[0][1]

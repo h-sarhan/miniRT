@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ static void	handle_error(const char *str, bool *success)
 		*success = false;
 }
 
-double	ft_atof(const char *str, bool *success)
+float	ft_atof(const char *str, bool *success)
 {
-	double	i;
+	float	i;
 	int		sign;
-	double	j;
+	float	j;
 	int		k;
 
 	i = 0;

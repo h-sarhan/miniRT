@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transforms.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 {
 	t_vector	up;
 	t_vector	ax;
-	double		angle;
+	float		angle;
 
 	if (shape->orientation.x == 0 && fabs(shape->orientation.y - 1) < 0.001
 		&& shape->orientation.z == 0)

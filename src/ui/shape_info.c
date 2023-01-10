@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shape_info.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ void	draw_shape_info(t_scene *scene)
 }
 
 // ! Not currently using but could be helpful later
-// void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
+// void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 // {
-// 	double	dy;
-// 	double	dx;
-// 	double	steps;
+// 	float	dy;
+// 	float	dx;
+// 	float	steps;
 // 	int		i;
 // 	char	*dst;
 

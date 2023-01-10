@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	prepare_computations(t_intersection *intersection,
 
 t_intersection	*hit(t_intersections *xs)
 {
-	double	min_time;
+	float	min_time;
 	int		i;
 	int		idx;
 
@@ -55,10 +55,10 @@ t_intersection	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-void	ray_from_cam(t_ray *ray, const t_camera *cam, double x, double y)
+void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
 {
-	double		world_x;
-	double		world_y;
+	float		world_x;
+	float		world_y;
 	t_vector	pixel;
 	t_vector	world_point;
 	t_vector	center;
@@ -80,8 +80,8 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, double x, double y)
 
 // void	ray_from_cam(t_ray *ray, const t_camera *cam, int x, int y)
 // {
-// 	double		world_x;
-// 	double		world_y;
+// 	float		world_x;
+// 	float		world_y;
 // 	t_vector	pixel;
 // 	t_vector	world_point;
 // 	t_vector	center;
@@ -101,7 +101,7 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, double x, double y)
 // 	normalize_vec(&ray->direction);
 // }
 
-void	ray_position(t_vector *pos, const t_ray *ray, double time)
+void	ray_position(t_vector *pos, const t_ray *ray, float time)
 {
 	pos->x = ray->dir.x * time + ray->origin.x;
 	pos->y = ray->dir.y * time + ray->origin.y;

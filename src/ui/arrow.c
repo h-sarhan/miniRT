@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arrow.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:31:39 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	top_corner_arrows(t_scene *scene, int x, int y)
 	}
 }
 
-void	draw_arrow(t_scene *scene, int x, int y, double z)
+void	draw_arrow(t_scene *scene, int x, int y, float z)
 {
 	if (z > 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ struct s_settings
 	bool		edit_mode;
 	bool		light_mode;
 	int			reflection_depth;
-	double		edit_scale;
-	double		render_scale;
+	float		edit_scale;
+	float		render_scale;
 	bool		collisions;
 	bool		help_menu;
 	bool		supersampling;
@@ -111,7 +111,7 @@ void	draw_scene(t_scene *scene);
 
 // ui.h
 void	draw_marker(t_scene *scene, int x, int y, int color);
-void	draw_arrow(t_scene *scene, int x, int y, double z);
+void	draw_arrow(t_scene *scene, int x, int y, float z);
 void	perspective_projection(t_vector *point, const t_scene *scene);
 void	draw_shape_info(t_scene *scene);
 void	draw_shape_marker(t_scene *scene);

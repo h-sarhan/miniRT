@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   color_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:29:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	color_mix(int c1, int c2, double mix)
+int	color_mix(int c1, int c2, float mix)
 {
 	int				r;
 	int				g;
@@ -44,7 +44,7 @@ int	color_difference(int c1, int c2)
 	return (r_diff + g_diff + b_diff);
 }
 
-static unsigned int	clamp_color(double color)
+static unsigned int	clamp_color(float color)
 {
 	color *= 256;
 	if (color > 255)

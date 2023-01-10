@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   workers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:36:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	init_workers(t_worker *workers, t_scene *scene)
 		workers[i].max_workers = NUM_THREADS;
 		workers[i].worker_id = i;
 		workers[i].scene = scene;
-		workers[i].y_start = (workers[i].height / (double)NUM_THREADS) * i;
-		workers[i].y_end = (workers[i].height / (double)NUM_THREADS) * (i + 1);
+		workers[i].y_start = (workers[i].height / (float)NUM_THREADS) * i;
+		workers[i].y_end = (workers[i].height / (float)NUM_THREADS) * (i + 1);
 		workers[i].y_scale_start = (scene->settings.disp_h \
-			/ (double)NUM_THREADS) * i;
+			/ (float)NUM_THREADS) * i;
 		workers[i].y_scale_end = (scene->settings.disp_h \
-			/ (double)NUM_THREADS) * (i + 1);
+			/ (float)NUM_THREADS) * (i + 1);
 		i++;
 	}
 }

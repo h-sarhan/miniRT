@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:21:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ struct s_camera
 {
 	t_vector	position;
 	t_vector	dir;
-	double		fov;
-	double		pixel_size;
-	double		half_width;
-	double		half_height;
+	float		fov;
+	float		pixel_size;
+	float		half_width;
+	float		half_height;
 	t_mat4		transform;
 	t_mat4		inv_trans;
-	double		phi;
-	double		theta;
+	float		phi;
+	float		theta;
 	
 };
 

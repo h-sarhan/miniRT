@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edit_mode.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 14:45:16 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ bool	collide(t_scene *scene, bool resolve, int depth,
 			t_shape *transformed_shape);
 int		mouse_rotate(t_scene *scene);
 
-void	rotate_object_x(t_scene *scene, t_shape *shape, double deg);
-void	rotate_object_y(t_scene *scene, t_shape *shape, double deg);
-void	rotate_object_z(t_scene *scene, t_shape *shape, double deg);
+void	rotate_object_x(t_scene *scene, t_shape *shape, float deg);
+void	rotate_object_y(t_scene *scene, t_shape *shape, float deg);
+void	rotate_object_z(t_scene *scene, t_shape *shape, float deg);
 int		mouse_down(int key_code, int x, int y, t_scene *scene);
 int		mouse_up(int key_code, int x, int y, t_scene *scene);
 int		key_press(int key, t_scene *scene);
