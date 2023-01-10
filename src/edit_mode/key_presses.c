@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:51:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/10 16:42:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,25 +250,32 @@ void	toggle_shape(t_scene *scene)
 
 	shape = &scene->shapes[scene->shape_idx];
 	shape->props.radius = max(shape->props.radius, 0.5);
+	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 	shape->props.height = max(shape->props.height, 0.5);
 	shape->props.scale.x = shape->props.radius;
 	shape->props.scale.y = shape->props.radius;
 	shape->props.scale.z = shape->props.radius;
+	ft_bzero(&shape->orientation, sizeof(t_vector));
+	shape->orientation.y = 1;
+	identity_matrix(&shape->added_rots);
 	if (shape->type == SPHERE)
 		shape->type = CUBE;
-	else if (shape->type == CUBE || shape->type == CYLINDER)
+	else if (shape->type == CUBE)
 	{
 		shape->props.height = shape->props.scale.y * 2;
 		shape->props.scale.y = 1;
 		shape->props.radius = shape->props.scale.x;
-		if (shape->type == CUBE)
-			shape->type = CYLINDER;
-		else
-			shape->type = CONE;
+		shape->type = CYLINDER;
+	}
+	else if (shape->type == CYLINDER)
+	{
+		shape->props.height = shape->props.scale.y * 2;
+		shape->props.scale.y = 1;
+		shape->props.radius = shape->props.scale.x;
+		shape->type = CONE;
 	}
 	else if (shape->type == CONE)
 		shape->type = SPHERE;
-	shape->props.radius_squared = shape->props.radius * shape->props.radius;
 }
 
 int	close_window(t_scene *scene)
