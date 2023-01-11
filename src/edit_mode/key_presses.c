@@ -6,34 +6,34 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 16:43:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/11 20:20:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	handle_color_change(int key, t_scene *scene)
+void	handle_color_change(int key, t_scene *scene, t_color *color)
 {
-	t_color	color;
+	// t_color	color;
 
 	if ((key != KEY_1 && key != KEY_2 && key != KEY_3 && key != KEY_4
 			&& key != KEY_5 && key != KEY_6)
 		|| scene->settings.edit_mode == false)
 		return ;
-	color = scene->shapes[scene->shape_idx].props.color;
-	if (key == KEY_1 && (color.r + 10 / 255.0) < 1)
-		color.r += 10 / 255.0;
-	if (key == KEY_2 && (color.r - 10 / 255.0) > 0)
-		color.r -= 10 / 255.0;
-	if (key == KEY_3 && (color.g + 10 / 255.0) < 1)
-		color.g += 10 / 255.0;
-	if (key == KEY_4 && (color.g - 10 / 255.0) > 0)
-		color.g -= 10 / 255.0;
-	if (key == KEY_5 && (color.b + 10 / 255.0) < 1)
-		color.b += 10 / 255.0;
-	if (key == KEY_6 && (color.b - 10 / 255.0) > 0)
-		color.b -= 10 / 255.0;
-	scene->shapes[scene->shape_idx].props.color = color;
+	// color = scene->shapes[scene->shape_idx].props.color;
+	if (key == KEY_1 && (color->r + 10 / 255.0) < 1)
+		color->r += 10 / 255.0;
+	if (key == KEY_2 && (color->r - 10 / 255.0) > 0)
+		color->r -= 10 / 255.0;
+	if (key == KEY_3 && (color->g + 10 / 255.0) < 1)
+		color->g += 10 / 255.0;
+	if (key == KEY_4 && (color->g - 10 / 255.0) > 0)
+		color->g -= 10 / 255.0;
+	if (key == KEY_5 && (color->b + 10 / 255.0) < 1)
+		color->b += 10 / 255.0;
+	if (key == KEY_6 && (color->b - 10 / 255.0) > 0)
+		color->b -= 10 / 255.0;
+	// scene->shapes[scene->shape_idx].props.color = color;
 }
 
 void	sphere_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
@@ -303,7 +303,10 @@ int	key_press(int key, t_scene *scene)
 		spawn_shape(scene);
 	if (key == KEY_T && scene->settings.edit_mode == true)
 		toggle_shape(scene);
-	handle_color_change(key, scene);
+	if (scene->settings.light_mode == true)
+		handle_color_change(key, scene, &scene->lights[scene->light_idx].color);
+	else
+		handle_color_change(key, scene, &scene->shapes[scene->shape_idx].props.color);
 	toggle_edit_mode(key, scene);
 	select_shape(key, scene);
 	if (key == KEY_R)

@@ -6,11 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/11 20:01:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/11 20:19:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	handle_color_change(int key, t_scene *scene, t_color *color);
 
 t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
 {
