@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/11 16:41:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,22 @@ void	rotate_along_mouse_axis(t_scene *scene)
 {
 	if (scene->mouse.prev_x < scene->mouse.x)
 	{
-		rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+		rotate_y(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * abs(scene->mouse.x - scene->mouse.prev_x) * 0.2);
 	}
 	else if (scene->mouse.prev_x > scene->mouse.x)
 	{
-		rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+		rotate_y(scene, &scene->shapes[scene->shape_idx].added_rots,
 			-DEG_TO_RAD * abs(scene->mouse.x - scene->mouse.prev_x) * 0.2);
 	}
 	if (scene->mouse.prev_y < scene->mouse.y)
 	{
-		rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+		rotate_x(scene, &scene->shapes[scene->shape_idx].added_rots,
 			-DEG_TO_RAD * abs(scene->mouse.y - scene->mouse.prev_y) * 0.2);
 	}
 	else if (scene->mouse.prev_y > scene->mouse.y)
 	{
-		rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+		rotate_x(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * abs(scene->mouse.y - scene->mouse.prev_y) * 0.2);
 	}
 }

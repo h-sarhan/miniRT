@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 18:32:14 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/11 19:50:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-#include <stdlib.h>
 
 /**
  * @brief Opens a file and checks for errors with the arguments provided to
@@ -120,8 +119,8 @@ int	main(int argc, char **argv)
 	scene = parse_scene(fd);
 	close(fd);
 	scene->lights[0].type = SPOT;
-	scene->lights[0].direction.z = -1;
-	scene->lights[0].theta = DEG_TO_RAD * 30;
+	scene->lights[0].init_direction.z = -1;
+	scene->lights[0].theta = DEG_TO_RAD * 10;
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	init_settings(&scene->settings);

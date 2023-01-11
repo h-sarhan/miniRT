@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 17:59:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/11 20:01:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	}
 }
 
-void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
+void	rotate_x(t_scene *scene, t_mat4 *rot_mat, float deg)
 {
 	t_mat4		rot;
 	t_vector	ax;
@@ -170,11 +170,11 @@ void	rotate_object_x(t_scene *scene, t_shape *shape, float deg)
 		axis_angle(&rot, &ax, -deg);
 	else
 		axis_angle(&rot, &ax, deg);
-	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
-	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	ft_memcpy(&mat_copy, rot_mat, sizeof(t_mat4));
+	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
-void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
+void	rotate_y(t_scene *scene, t_mat4 *rot_mat, float deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;
@@ -183,11 +183,11 @@ void	rotate_object_y(t_scene *scene, t_shape *shape, float deg)
 		rotation_matrix_y(&rot, deg);
 	else
 		rotation_matrix_y(&rot, -deg);
-	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
-	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	ft_memcpy(&mat_copy, rot_mat, sizeof(t_mat4));
+	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
-void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
+void	rotate_z(t_scene *scene, t_mat4 *rot_mat, float deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;
@@ -196,8 +196,8 @@ void	rotate_object_z(t_scene *scene, t_shape *shape, float deg)
 		axis_angle(&rot, &scene->cam.dir, deg);
 	else
 		axis_angle(&rot, &scene->cam.dir, -deg);
-	ft_memcpy(&mat_copy, &shape->added_rots, sizeof(t_mat4));
-	mat_multiply(&shape->added_rots, &rot, &mat_copy);
+	ft_memcpy(&mat_copy, rot_mat, sizeof(t_mat4));
+	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
 void	collide_after_transform(t_scene *scene)
@@ -226,7 +226,6 @@ void	collide_after_transform(t_scene *scene)
 	}
 }
 
-
 void	scale_cube_sides(t_scene *scene, t_shape *shape)
 {
 	if (shape->type != CUBE)
@@ -234,32 +233,20 @@ void	scale_cube_sides(t_scene *scene, t_shape *shape)
 	if (scene->keys_held.shift == false)
 	{
 		if (scene->keys_held.x)
-		{
 			shape->props.scale.x += 0.05;
-		}
 		if (scene->keys_held.y)
-		{
 			shape->props.scale.y += 0.05;
-		}
 		if (scene->keys_held.z)
-		{
 			shape->props.scale.z += 0.05;
-		}
 	}
 	if (scene->keys_held.shift == true)
 	{
 		if (scene->keys_held.x && shape->props.scale.x > 0.3)
-		{
 			shape->props.scale.x -= 0.05;
-		}
 		if (scene->keys_held.y && shape->props.scale.y > 0.3)
-		{
 			shape->props.scale.y -= 0.05;
-		}
 		if (scene->keys_held.z && shape->props.scale.z > 0.3)
-		{
 			shape->props.scale.z -= 0.05;
-		}
 	}
 }
 
@@ -285,14 +272,14 @@ void	transform_object(t_scene *scene)
 		scale_cube_sides(scene, &scene->shapes[scene->shape_idx]);
 	if (scene->keys_held.shift == false
 		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_y(scene, &scene->shapes[scene->shape_idx],
+		rotate_y(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * 5);
 	if (scene->keys_held.shift == true
 		&& (scene->keys_held.left == true || scene->keys_held.right == true))
-		rotate_object_z(scene, &scene->shapes[scene->shape_idx],
+		rotate_z(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * 5);
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
-		rotate_object_x(scene, &scene->shapes[scene->shape_idx],
+		rotate_x(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * 5);
 	collide_after_transform(scene);
 }
@@ -320,10 +307,21 @@ void	light_controls(t_scene *scene)
 		sphere_to_xyz(&offset, M_PI_2, scene->cam.theta - M_PI_2, 0.2);
 	if (scene->keys_held.a || scene->keys_held.d)
 		add_vec(&light->position, &light->position, &offset);
-	if (scene->keys_held.plus == true)
+	if (scene->keys_held.shift == false && scene->keys_held.plus == true)
 		light->intensity = min(light->intensity + 0.05, 1);
-	if (scene->keys_held.minus == true)
+	if (scene->keys_held.shift == false && scene->keys_held.minus == true)
 		light->intensity = max(light->intensity - 0.05, 0);
+	if (scene->keys_held.up == true || scene->keys_held.down == true)
+		rotate_x(scene, &scene->lights[scene->light_idx].added_rots, -DEG_TO_RAD * 2);
+	if (scene->keys_held.left == true || scene->keys_held.right == true)
+		rotate_y(scene, &scene->lights[scene->light_idx].added_rots, -DEG_TO_RAD * 2);
+	if (scene->keys_held.shift == true && scene->keys_held.plus == true)
+		scene->lights[scene->light_idx].theta += 0.02;
+	if (scene->keys_held.shift == true && scene->keys_held.minus == true)
+	{
+		if (scene->lights[scene->light_idx].theta > 0.1)
+			scene->lights[scene->light_idx].theta -= 0.02;
+	}
 }
 
 void	reset_look_at(t_scene *scene)

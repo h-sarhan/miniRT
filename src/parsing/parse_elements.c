@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 18:42:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/11 19:40:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	parse_light(t_scene *scene, char **splitted)
 	if (scene->lights == NULL)
 		return ;
 	parse_light_props(scene, &scene->lights[scene->count.lights], splitted);
+	identity_matrix(&scene->lights[scene->count.lights].added_rots);
 	scene->count.lights++;
 }
 

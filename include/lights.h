@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lights.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:20:15 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 18:27:38 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/11 19:49:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ struct s_light
 	t_light_type	type;
 	t_vector		position;
 	t_vector		direction;
+	t_vector		init_direction;
+	t_mat4			added_rots;
 	t_color			color;
 	float			intensity;
 	float			theta;
