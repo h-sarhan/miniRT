@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 16:13:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 18:59:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->render_scale = 4;
+	settings->render_scale = 0.4;
 	settings->edit_scale = 0.8;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
@@ -120,9 +120,9 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	close(fd);
-	scene->lights[0].type = SPOT;
-	scene->lights[0].init_direction.z = -1;
-	scene->lights[0].theta = DEG_TO_RAD * 10;
+	// scene->lights[0].type = SPOT;
+	// scene->lights[0].init_direction.z = -1;
+	// scene->lights[0].theta = DEG_TO_RAD * 10;
 	init_settings(&scene->settings);
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);

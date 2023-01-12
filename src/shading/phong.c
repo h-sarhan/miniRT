@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phong.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 18:28:05 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:58:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,19 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
 	t_phong	phong;
 	t_color	result;
-	t_color	pattern_color;	
+	t_color	shape_color;	
 	const float	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
 	const float	attentuation_factor = (60 * scene->lights[light_idx].intensity \
 			- light_dist) / (60 * scene->lights[light_idx].intensity - 1);
 
-	pattern_color = check_pattern_type(itx);
-	blend_colors(&phong.effective_color, &pattern_color,
+	shape_color = get_shape_color(itx);
+	
+	blend_colors(&phong.effective_color, &shape_color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
-		return (get_ambient(scene, attentuation_factor, pattern_color));
-	result = get_ambient(scene, attentuation_factor, pattern_color);
+		return (get_ambient(scene, attentuation_factor, shape_color));
+	result = get_ambient(scene, attentuation_factor, shape_color);
 	if (attentuation_factor < 0)
 		return (result);
 	else if (attentuation_factor > 0 && attentuation_factor <= 1)

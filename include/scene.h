@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 15:57:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 17:58:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	draw_shape_marker(t_scene *scene);
 void	display_loading_bar(t_scene *scene);
 
 // Pattern
-t_color	check_pattern_type(t_intersection *itx);
+t_color	get_shape_color(t_intersection *itx);
 t_color	stripe_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);
 t_color	checker_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);
 t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);

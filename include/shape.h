@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 15:53:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 17:54:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ struct s_shape
 	t_mat4			norm_transf;
 	t_mat4			added_rots;
 	t_color			**texture;
+	int				tex_width;
+	int				tex_height;
 	unsigned int	mlx_color;
 };
 

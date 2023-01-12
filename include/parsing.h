@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 16:20:37 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 17:54:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,5 +227,5 @@ bool	check_colons(char *line);
 bool	parse_split_settings(t_scene *scene, char **settings);
 bool	parse_settings(t_scene *scene, const char *settings_start, size_t *line_num, int fd);
 
-t_color	**parse_texture(char *img_path);
+t_color	**parse_texture(char *img_path, t_shape *shape);
 #endif

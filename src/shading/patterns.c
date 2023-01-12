@@ -6,14 +6,55 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/10 18:04:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 20:24:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_color	check_pattern_type(t_intersection *itx)
+t_color	get_texture_color(t_intersection *itx)
 {
+	t_vector	shape_point;
+	int			u;
+	int			v;
+
+	// shape_point = itx->point;
+	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->point);
+	if (fabs(shape_point.x) < 0.01 && fabs(shape_point.y) < 0.01)
+	{
+		// u = (int)((shape_point.x )* itx->shape->tex_width);
+		// v = (int)((shape_point.y ) * itx->shape->tex_height);
+		// print_color(&itx->shape->texture[0][0]);
+		return (int_to_color(0x00ff00));
+	}
+	if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
+		return (itx->shape->props.color);
+	
+	// printf("point.x = %f\n", shape_point.x);
+	// printf("point.y = %f\n", shape_point.y);
+	// printf("point.z = %f\n", shape_point.z);
+	shape_point.x += 1;
+	shape_point.y += 1;
+	shape_point.x /= 2;
+	shape_point.y /= 2;
+	if (shape_point.x < 0|| shape_point.y < 0)
+		return (itx->shape->props.color);
+	u = (int)(shape_point.x* itx->shape->tex_height) % itx->shape->tex_height;
+	v = (int)(shape_point.y * itx->shape->tex_width) % itx->shape->tex_width;
+	// u = (int)((shape_point.x) * 300);
+	// v = (int)((shape_point.y) * 300);
+	// printf("u = %d\n", u);
+	// printf("v = %d\n", v);
+	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
+		return (itx->shape->props.color);
+	
+	return (itx->shape->texture[u][v]);
+}
+
+t_color	get_shape_color(t_intersection *itx)
+{
+	if (itx->shape->texture != NULL)
+		return (get_texture_color(itx));
 	if (itx->shape->props.pattern_type == NONE)
 		return (itx->shape->props.color);
 	if (itx->shape->props.pattern_type == STRIPE)
