@@ -15,7 +15,8 @@ cy 0,1.6,-2 0,-1,0.0 1 1 10,0,25
 	specular: 1,
 	diffuse: 1,
 	shininess: 200,
-	color: cyan
+	color: cyan,
+	bump: "./assets/baboon.ppm"
 }
 
 

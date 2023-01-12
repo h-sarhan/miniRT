@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/12 16:19:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ bool	is_valid_key(const char *key)
 			|| ft_strcmp(key, "scaleX") == 0
 			|| ft_strcmp(key, "scaleY") == 0
 			|| ft_strcmp(key, "scaleZ") == 0
-			|| ft_strcmp(key, "color") == 0))
+			|| ft_strcmp(key, "color") == 0
+			|| ft_strcmp(key, "bump") == 0))
 		return (true);
 	return (false);
 }
@@ -69,6 +70,17 @@ bool	check_value(const char *key, const char *val, float min, float max)
 	float	parsed_value;
 
 	success = true;
+	if (ft_strcmp_case(key, "bump") == 0)
+	{
+		if (ft_strnstr(val, ".ppm\"", ft_strlen(val)) == NULL
+			|| ft_strcmp(&val[ft_strlen(val) - 5], ".ppm\"") != 0)
+		{
+			printf(INVALID_PROPERTY_VALUE, key, val, val);
+			printf(YELLOW"Only valid .ppm files are supported\n"RESET);
+			return (false);
+		}
+		return (true);
+	}
 	if (is_num(val, true) == false)
 	{
 		printf(INVALID_PROPERTY_VALUE, key, val, val);

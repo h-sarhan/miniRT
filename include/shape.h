@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shape.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 16:07:00 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/12 15:53:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ struct s_shape
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
 	t_mat4			added_rots;
+	t_color			**texture;
 	unsigned int	mlx_color;
 };
 

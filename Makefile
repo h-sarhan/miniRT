@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
+#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/10 14:42:14 by mkhan            ###   ########.fr        #
+#    Updated: 2023/01/12 16:12:25 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 PARSING_SRC =   errors.c shape_errors.c  attribute_errors.c element_errors.c\
 				parse_scene.c parse_shapes1.c parse_shapes2.c parse_elements.c \
 				parse_attributes.c parse_settings.c settings_errors.c \
-				settings_validation.c
+				settings_validation.c parse_texture.c
 
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
@@ -70,8 +70,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address,undefined\
+			-fsanitize=address,undefined\
+			# $(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)
