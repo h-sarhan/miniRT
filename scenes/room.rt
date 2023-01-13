@@ -28,7 +28,7 @@ co 0,.6,-2 0,-1,0.0 1 1 10,0,25
 	color: pink
 }
 
-cu 0,0,0 1 10,10,10
+cu 2,1,0 1 10,10,10
 {
 	reflectiveness: 0.3,               
 	diffuse: 0.9,						
