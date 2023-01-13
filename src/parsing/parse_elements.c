@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/11 19:40:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/13 12:06:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	parse_light_props(t_scene *scene, t_light *light, char **splitted)
 	if (find_error(&scene->error_flags) == false
 		&& (light->intensity < 0.0 || light->intensity > 1.0))
 		scene->error_flags.light.intensity_range = true;
+	light->intensity *= 1.3;
 }
 
 /**

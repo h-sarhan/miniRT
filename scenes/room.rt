@@ -1,9 +1,9 @@
-A 0.05 255,255,255
+A 0.1 255,255,255
 
 C 0,1,-8 0,0,1 60
 
 // orange light
-L 5,10,-5 0.8 200,102,0
+L 5,10,-5 0.8 200,100,20
 
 // white light
 L -10,10,-10 1.0 128,128,153
@@ -16,7 +16,6 @@ cy 0,1.6,-2 0,-1,0.0 1 1 10,0,25
 	diffuse: 1,
 	shininess: 200,
 	color: cyan,
-	bump: "./assets/baboon.ppm"
 }
 
 
@@ -35,7 +34,6 @@ cu 0,0,0 1 10,10,10
 	diffuse: 0.9,						
 	specular: 0.7,
 	shininess: 200,
-	bump: "./assets/baboon.ppm"
 }       
 
 // balls
@@ -53,7 +51,7 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	bump: "./assets/mpatel.ppm"
+	bump: "./assets/patel.ppm"
 }          							
 sp -3.5,1.5,0.5 1 0,0,0
 {

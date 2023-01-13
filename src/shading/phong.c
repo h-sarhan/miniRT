@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 17:58:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/13 16:54:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
 {
 	t_color	ambient;
-
+	(void)attenuation;
 	ambient.a = 0;
 	mult_color(&ambient, &patter_color,
 		scene->ambient.intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
-	if (attenuation < 0)
-		mult_color(&ambient, &ambient, 0);
-	else if (attenuation < 1 && attenuation > 0)
-		mult_color(&ambient, &ambient, attenuation);
+	// if (attenuation < 0)
+	// 	mult_color(&ambient, &ambient, 0);
+	// else if (attenuation < 1 && attenuation > 0)
+	// 	mult_color(&ambient, &ambient, attenuation);
 	return (ambient);
 }
 
@@ -65,8 +65,8 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_color	shape_color;	
 	const float	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const float	attentuation_factor = (60 * scene->lights[light_idx].intensity \
-			- light_dist) / (60 * scene->lights[light_idx].intensity - 1);
+	const float	attentuation_factor = (80 * scene->lights[light_idx].intensity \
+			- light_dist) / (80 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
 	

@@ -1,0 +1,39 @@
+A 0.1 255,255,255
+
+C 0,1,-8 0,0,1 60
+
+// orange light
+L 5,10,-5 0.8 200,100,20
+
+// white light
+L -10,10,-10 1.0 128,128,153
+
+
+
+// balls
+// sp -0.5,1.5,0.5 1.6 0,0,0
+// {
+// 	reflectiveness: 0,               
+// 	diffuse: 1.,						
+// 	specular: 1,
+// 	shininess: 300,
+// 	bump: "./assets/ahmalman.ppm"
+// }          							
+sp -0.5,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 1.,						
+	specular: 1,
+	shininess: 300,
+	bump: "./assets/patel.ppm"
+}          							
+
+// floor
+pl 0,0,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: white
+         }
+
+
