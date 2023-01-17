@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:14:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	check_cube_axis(float *t_min, float *t_max, float origin,
 
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
-	if (fabs(direction) >= EPSILON)
+	if (fabs(direction) >= 0.000001)
 	{
 		*t_min = tmin_numerator / direction;
 		*t_max = tmax_numerator / direction;

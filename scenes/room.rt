@@ -28,7 +28,7 @@ co 0,.6,-2 0,-1,0.0 1 1 10,0,25
 	color: pink
 }
 
-cu 2,1,0 1 10,10,10
+cu 0,0,0 1 10,10,10
 {
 	reflectiveness: 0.3,               
 	diffuse: 0.9,						
@@ -53,10 +53,10 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	shininess: 300,
 	bump: "./assets/patel.ppm"
 }          							
-sp -3.5,1.5,0.5 1 0,0,0
+sp -3.5,1.5,0.5 1 20,127,50
 {
-	reflectiveness: 0,               
-	diffuse: 0.,						
+	reflectiveness: 0.1,               
+	diffuse: 1,						
 	specular: 1,
 	shininess: 300,
 }          							
