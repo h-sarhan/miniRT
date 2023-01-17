@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/12 20:18:49 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/17 19:47:33 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,8 +70,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
-			# -fsanitize=address,undefined\
+			-fsanitize=address,undefined\
+			# $(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)
@@ -85,7 +85,7 @@ $(LIBFT):
 	make -C  libft
 
 $(NAME): $(LIBFT) $(OBJ) Makefile
-	-make -s  all -C $(MLX)
+	@-make -s  all -C $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
 -include $(DEPENDS)

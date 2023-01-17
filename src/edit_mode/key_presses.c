@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 15:08:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:45:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,9 @@ void	default_shape_props(t_props *props)
 
 void	spawn_shape(t_scene *scene)
 {
+	if (scene->count.shapes >= SHAPE_MAX - 1)
+		return ;
+	printf("count: %d\n", scene->count.shapes);
 	scene->shapes[scene->shape_idx].props.highlighted = false;
 	scene->shapes[scene->count.shapes].origin.x = scene->cam.dir.x * 5 \
 		+ scene->cam.position.x;
@@ -229,7 +232,7 @@ bool	is_toggle_key(int key, t_scene *scene)
 			&& (key == KEY_RETURN || key == KEY_1 || key == KEY_2
 				|| key == KEY_3 || key == KEY_4 || key == KEY_5 || key == KEY_6
 				|| key == KEY_TAB || key == KEY_C || key == KEY_T
-				|| key == KEY_P)));
+				|| key == KEY_P || key == KEY_L)));
 }
 
 void	toggle_edit_mode(int key, t_scene *scene)

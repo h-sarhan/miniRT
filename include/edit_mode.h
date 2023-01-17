@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/11 16:38:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:28:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ int		key_release(int key, t_scene *scene);
 int		render_loop(t_scene *scene);
 int		close_window(t_scene *scene);
 void	look_at(t_scene *scene, t_shape *shape);
+void	show_light_banner(t_scene *scene);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/17 19:14:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:49:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 {
 	t_ray	transf_ray;
 
+	if (xs->count >= 200)
+		return (false);
 	if (shape->type == SPHERE)
 		return (intersect_sphere_fast(ray, xs, shape));
 	if (shape->type == PLANE)

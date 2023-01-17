@@ -6,11 +6,18 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:32:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	show_light_banner(t_scene *scene)
+{
+	mlx_string_put(scene->disp->mlx, scene->disp->win,
+		scene->settings.disp_w * .9, 20,
+		0xffffff, "LIGHT MODE");
+}
 
 // NORM LATER
 // Planning to change this significantly so I will norm this later

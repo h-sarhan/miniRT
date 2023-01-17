@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/17 19:22:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 19:35:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,9 @@ void	draw_scene(t_scene *scene)
 	else
 	{
 		draw_shape_marker(scene);
-		if (scene->settings.camera_mode == false)
+		if (scene->settings.light_mode == true)
+			show_light_banner(scene);
+		else if (scene->settings.camera_mode == false)
 			draw_shape_info(scene);
 	}
 }
