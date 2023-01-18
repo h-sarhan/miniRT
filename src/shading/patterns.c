@@ -6,13 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/13 19:13:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 18:52:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-void	spherical_map(float *u, float *v, t_vector *point);
-void	cylindrical_map(float *u, float *v, t_vector *point);
+
 
 t_color	get_texture_color(t_intersection *itx)
 {
@@ -34,13 +33,49 @@ t_color	get_texture_color(t_intersection *itx)
 	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
 		return (itx->shape->props.color);
 	
-	return (itx->shape->texture[(int)u][(int)v]);
+	return (itx->shape->diffuse_tex[(int)u][(int)v]);
+}
+
+t_color	get_texture_color2(t_intersection *itx)
+{
+	t_vector	shape_point;
+	float		u;
+	float		v;
+
+	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->over_point);
+	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
+	{
+		shape_point.x /= itx->shape->props.height;
+		shape_point.y /= itx->shape->props.height;
+		shape_point.y -= 0.5;
+		cylindrical_map(&u, &v, &shape_point);
+	}
+	else
+	{
+		if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
+			return (itx->shape->props.color);
+		spherical_map(&u, &v, &shape_point);
+	}
+	// shape_point.x += 1;
+	// shape_point.y += 1;
+	// shape_point.x /= 2;
+	// shape_point.y /= 2;
+	if (u < 0|| v < 0)
+		return (itx->shape->props.color);
+	// u = (int)(shape_point.x * itx->shape->tex_height);
+	// v = (int)(shape_point.y * itx->shape->tex_width);
+	u = (int)floor(u * itx->shape->tex_height) % itx->shape->tex_height;
+	v = (int)floor(v * itx->shape->tex_width) % itx->shape->tex_width;
+	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
+		return (itx->shape->props.color);
+	
+	return (itx->shape->diffuse_tex[(int)u][(int)v]);
 }
 
 t_color	get_shape_color(t_intersection *itx)
 {
-	if (itx->shape->texture != NULL)
-		return (get_texture_color(itx));
+	if (itx->shape->diffuse_tex != NULL)
+		return (get_texture_color2(itx));
 	if (itx->shape->props.pattern_type == NONE)
 		return (itx->shape->props.color);
 	if (itx->shape->props.pattern_type == STRIPE)

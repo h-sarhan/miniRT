@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 17:54:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:58:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ void	parse_setting(t_shape *shape, char **key_val)
 		shape->props.scale.z = ft_atof(key_val[1], &success);
 	if (ft_strcmp("color", key_val[0]) == 0)
 		shape->props.color = parse_color_value(key_val[1]);
-	if (ft_strcmp("bump", key_val[0]) == 0)
-		shape->texture = parse_texture(key_val[1], shape);
+	if (ft_strcmp("diffuse_texture", key_val[0]) == 0)
+		shape->diffuse_tex = parse_texture(key_val[1], shape);
+	if (ft_strcmp("normal_texture", key_val[0]) == 0)
+		shape->normal_tex = parse_texture(key_val[1], shape);
 }
 
 char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)

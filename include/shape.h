@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 17:54:18 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:57:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ struct s_shape
 	t_mat4			inv_transf;
 	t_mat4			norm_transf;
 	t_mat4			added_rots;
-	t_color			**texture;
+	t_color			**diffuse_tex;
+	t_color			**normal_tex;
 	int				tex_width;
 	int				tex_height;
 	unsigned int	mlx_color;

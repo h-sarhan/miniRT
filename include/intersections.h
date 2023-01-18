@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/17 19:49:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 18:37:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ void			ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y);
 bool	intersect_cylinder(const t_ray *ray, t_shape *shape,
 	t_intersections *xs);
 bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs);
-
+void	spherical_map(float *u, float *v, t_vector *point);
+void	cylindrical_map(float *u, float *v, t_vector *point);
 #endif

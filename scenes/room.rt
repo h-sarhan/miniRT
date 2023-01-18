@@ -46,7 +46,8 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	bump: "./assets/cat.ppm"
+	diffuse_texture: "./assets/gravel_diffuse.ppm",
+	normal_texture: "./assets/gravel_normal.ppm"
 }          							
 sp -2.5,1.5,0.5 1.6 0,0,0
 {
@@ -54,7 +55,7 @@ sp -2.5,1.5,0.5 1.6 0,0,0
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	bump: "./assets/patel.ppm"
+	diffuse_texture: "./assets/patel.ppm"
 }          							
 sp -3.5,1.5,0.5 1 20,127,50
 {
