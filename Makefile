@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/17 19:47:33 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/17 20:18:12 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
 SHADING_SRC = color_operations.c phong.c reflections.c patterns.c
 SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
 
-UI_SRC = arrow.c loading_bar.c marker.c shape_info.c
+UI_SRC = arrow.c loading_bar.c marker.c shape_info.c help_menu.c
 UI_SRC := $(addprefix ui/, $(UI_SRC))
 
 UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
@@ -70,8 +70,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
-			-fsanitize=address,undefined\
-			# $(OPTIMIZATION_FLAGS) \
+			$(OPTIMIZATION_FLAGS) \
+			# -fsanitize=address,undefined\
 
 all:
 	# @make -j20 $(NAME)

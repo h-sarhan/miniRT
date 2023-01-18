@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/17 19:47:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/17 20:04:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	init_display(t_display *disp, t_settings *settings)
 void	init_settings(t_settings *settings)
 {
 	settings->render_scale = 1;
-	settings->edit_scale = 0.2;
+	settings->edit_scale = 0.8;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
@@ -104,8 +104,6 @@ void	setup_hooks(t_scene *scene)
 	mlx_loop_hook(scene->disp->mlx, render_loop, scene);
 }
 
-// ! Put this somewhere
-// ! free_scene(scene);
 int	main(int argc, char **argv)
 {
 	t_scene		*scene;

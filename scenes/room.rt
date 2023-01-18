@@ -37,15 +37,15 @@ cu 0,0,0 1 10,10,10
 }       
 
 // balls
-// sp -0.5,1.5,0.5 1.6 0,0,0
-// {
-// 	reflectiveness: 0,               
-// 	diffuse: 1.,						
-// 	specular: 1,
-// 	shininess: 300,
-// 	bump: "./assets/ahmalman.ppm"
-// }          							
 sp -0.5,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 1.,						
+	specular: 1,
+	shininess: 300,
+	bump: "./assets/cat.ppm"
+}          							
+sp -2.5,1.5,0.5 1.6 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 1.,						

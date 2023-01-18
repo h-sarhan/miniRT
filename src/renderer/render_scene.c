@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/17 19:35:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 10:50:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,9 +177,13 @@ void	draw_scene(t_scene *scene)
 	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
 	printf("render time is %f\n", elapsed);
 	run_workers(workers, scene, false, nearest_neighbours_scaling);
-	if (scene->settings.edit_mode == false)
-		mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
-			scene->disp->display_img, 0, 0);
+	show_help_menu(scene);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
+		scene->disp->display_img, 0, 0);
+	if (scene->help == true)
+	{
+		draw_controls(scene);
+	}
 	else
 	{
 		draw_shape_marker(scene);

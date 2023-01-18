@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/05 17:38:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 10:46:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,4 @@ void	draw_shape_marker(t_scene *scene)
 		project_marker_on_screen(scene, shape);
 		return ;
 	}
-	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
-		scene->disp->display_img, 0, 0);
 }
