@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 10:46:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:12:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,23 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 		draw_arrow(scene, origin_proj.x * scene->settings.disp_w,
 			origin_proj.y * scene->settings.disp_h, origin_proj.z);
 	}
+}
+
+void	project_light_marker_on_screen(t_scene *scene)
+{
+	t_vector	origin_proj;
+	t_light		*light;
+
+	light = &scene->lights[scene->light_idx];
+	mat_vec_multiply(&origin_proj, &scene->cam.transform, &light->position);
+	perspective_projection(&origin_proj, scene);
+	if (origin_proj.z < 0)
+		draw_marker(scene, origin_proj.x * scene->settings.disp_w,
+			origin_proj.y * scene->settings.disp_h, 0x00ffff);
+	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
+		scene->disp->display_img, 0, 0);
+	draw_arrow(scene, origin_proj.x * scene->settings.disp_w,
+		origin_proj.y * scene->settings.disp_h, origin_proj.z);
 }
 
 void	draw_shape_marker(t_scene *scene)

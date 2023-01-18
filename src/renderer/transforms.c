@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/11 19:50:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:33:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	calculate_transforms(t_scene *scene)
 	i = 0;
 	while (i < scene->count.lights)
 	{
-		mat_vec_multiply(&scene->lights[scene->light_idx].direction, &scene->lights[scene->light_idx].added_rots, &scene->lights[scene->light_idx].init_direction);
+		mat_vec_multiply(&scene->lights[i].direction, &scene->lights[i].added_rots, &scene->lights[i].init_direction);
 		i++;
 	}
 }

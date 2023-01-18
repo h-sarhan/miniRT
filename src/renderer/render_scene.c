@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 10:50:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:16:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,14 +181,15 @@ void	draw_scene(t_scene *scene)
 	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
 		scene->disp->display_img, 0, 0);
 	if (scene->help == true)
-	{
 		draw_controls(scene);
-	}
 	else
 	{
 		draw_shape_marker(scene);
 		if (scene->settings.light_mode == true)
+		{
+			project_light_marker_on_screen(scene);
 			show_light_banner(scene);
+		}
 		else if (scene->settings.camera_mode == false)
 			draw_shape_info(scene);
 	}

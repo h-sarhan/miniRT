@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/13 16:54:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:16:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
 	mult_color(&ambient, &patter_color,
 		scene->ambient.intensity);
 	blend_colors(&ambient, &ambient, &scene->ambient.color);
-	// if (attenuation < 0)
-	// 	mult_color(&ambient, &ambient, 0);
-	// else if (attenuation < 1 && attenuation > 0)
-	// 	mult_color(&ambient, &ambient, attenuation);
 	return (ambient);
 }
 

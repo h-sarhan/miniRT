@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/09 01:50:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 16:05:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 		parse_camera(scene, splitted);
 	else if (ft_strcmp(splitted[0], "L") == 0)
 		parse_light(scene, splitted);
+	else if (ft_strcmp(splitted[0], "SL") == 0)
+		parse_spotlight(scene, splitted);
 	else if (is_shape(splitted[0]))
 		parse_shape(scene, splitted);
 	else if (is_settings(line) == true)

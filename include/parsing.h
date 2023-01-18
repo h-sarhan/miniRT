@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/12 17:54:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:49:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ struct s_light_errors
 	bool			max_lights;
 	bool			other;
 	bool			coords;
+	t_orient_error	orient;
+	bool			angle_other;
+	bool			angle_range;
 	t_color_error	color;
 };
 
@@ -144,6 +147,8 @@ bool	find_error(t_error_flags *errors);
 # define CYLINDER_SYNTAX YELLOW"Correct syntax is \"cy [origin] [orientation] [diameter] [height] [color]\"\n"RESET
 # define CONE_SYNTAX YELLOW"Correct syntax is \"co [origin] [orientation] [diameter] [height] [color]\"\n"RESET
 # define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
+# define SPOTLIGHT_SYNTAX YELLOW"Correct syntax is \"SL [origin] [intensity] [orientation] [beam width] [color]\"\n"RESET
+# define SPOTLIGHT_ANGLE_OOR YELLOW"The spotlight beam width value is out of range [1 -> 180] on line #%d\n\n"RED"->\t%s\n\n"RESET
 
 # define SETTINGS_NO_SHAPE RED"Settings at line %ld do not belong to any shape\n"RESET
 
@@ -228,4 +233,6 @@ bool	parse_split_settings(t_scene *scene, char **settings);
 bool	parse_settings(t_scene *scene, const char *settings_start, size_t *line_num, int fd);
 
 t_color	**parse_texture(char *img_path, t_shape *shape);
+void	parse_spotlight(t_scene *scene, char **splitted);
+
 #endif
