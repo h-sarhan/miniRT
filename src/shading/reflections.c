@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:47:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/07 14:35:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/19 10:44:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_color	cast_reflection_ray(t_scene *scene, t_intersection *intersection,
 	itx = hit(&arr);
 	if (itx != NULL)
 	{
-		prepare_computations(itx, &ray);
+		prepare_computations(scene, itx, &ray);
 		reflected = reflection_color(itx, scene, remaining, light_idx);
 	}
 	mult_color(&reflected, &reflected,

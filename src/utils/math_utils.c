@@ -6,27 +6,27 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:21:50 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-float	min(float a, float b)
+double	min(double a, double b)
 {
 	if (a < b)
 		return (a);
 	return (b);
 }
 
-float	max(float a, float b)
+double	max(double a, double b)
 {
 	if (a > b)
 		return (a);
 	return (b);
 }
 
-float	max3(float n1, float n2, float n3)
+double	max3(double n1, double n2, double n3)
 {
 	if (n1 >= n2 && n1 >= n3)
 		return (n1);
@@ -35,7 +35,7 @@ float	max3(float n1, float n2, float n3)
 	return (n3);
 }
 
-float	min3(float n1, float n2, float n3)
+double	min3(double n1, double n2, double n3)
 {
 	if (n1 <= n2 && n1 <= n3)
 		return (n1);

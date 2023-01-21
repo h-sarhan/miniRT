@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/18 18:52:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 t_color	get_texture_color(t_intersection *itx)
 {
 	t_vector	shape_point;
-	float		u;
-	float		v;
+	double		u;
+	double		v;
 
 	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->over_point);
 	if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
@@ -28,21 +28,22 @@ t_color	get_texture_color(t_intersection *itx)
 	shape_point.y /= 2;
 	if (shape_point.x < 0|| shape_point.y < 0)
 		return (itx->shape->props.color);
-	u = (int)(shape_point.x * itx->shape->tex_height) % itx->shape->tex_height;
-	v = (int)(shape_point.y * itx->shape->tex_width) % itx->shape->tex_width;
+	// shape_point.y = 1 - shape_point.y;
+	u = (int)(shape_point.x * (itx->shape->tex_height - 1));
+	v = (int)(shape_point.y * (itx->shape->tex_width - 1));
 	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
 		return (itx->shape->props.color);
-	
 	return (itx->shape->diffuse_tex[(int)u][(int)v]);
 }
 
 t_color	get_texture_color2(t_intersection *itx)
 {
 	t_vector	shape_point;
-	float		u;
-	float		v;
+	double		u;
+	double		v;
 
 	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->over_point);
+	// shape_point.y = 1 - shape_point.y;
 	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
 	{
 		shape_point.x /= itx->shape->props.height;
@@ -60,12 +61,13 @@ t_color	get_texture_color2(t_intersection *itx)
 	// shape_point.y += 1;
 	// shape_point.x /= 2;
 	// shape_point.y /= 2;
+	
 	if (u < 0|| v < 0)
 		return (itx->shape->props.color);
 	// u = (int)(shape_point.x * itx->shape->tex_height);
 	// v = (int)(shape_point.y * itx->shape->tex_width);
-	u = (int)floor(u * itx->shape->tex_height) % itx->shape->tex_height;
-	v = (int)floor(v * itx->shape->tex_width) % itx->shape->tex_width;
+	u = (int)floor(u * (itx->shape->tex_height - 1));
+	v = (int)floor(v * (itx->shape->tex_width - 1));
 	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
 		return (itx->shape->props.color);
 	
@@ -125,7 +127,7 @@ t_color	ring_pattern(t_intersection *itx, t_vector point, t_color a, t_color b)
 t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color b)
 {
 	t_color		color;
-	float		fraction;
+	double		fraction;
 	t_vector	transf_point;
 	t_mat4		pattern_transf;
 	
@@ -142,12 +144,12 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 	return (color);
 }
 
-void	spherical_map(float *u, float *v, t_vector *point)
+void	spherical_map(double *u, double *v, t_vector *point)
 {
-	float		theta;
+	double		theta;
 	t_vector	vec;
-	float		radius;
-	float		phi;
+	double		radius;
+	double		phi;
 
 	vec = *point;
 	vec.w = 0;
@@ -155,12 +157,12 @@ void	spherical_map(float *u, float *v, t_vector *point)
 	radius = vec_magnitude(&vec);
 	phi = acos(point->y / radius);
 	*u = 1 - ((theta / (2 * M_PI)) + 0.5);
-	*v = 1 - phi / M_PI;
+	*v = 1 - (phi / M_PI);
 }
 
-void	cylindrical_map(float *u, float *v, t_vector *point)
+void	cylindrical_map(double *u, double *v, t_vector *point)
 {
-	float	theta;
+	double	theta;
 
 	theta = atan2(point->x, point->z);
 	*u = 1 - (theta / (2 * M_PI) + 0.5);
@@ -169,10 +171,10 @@ void	cylindrical_map(float *u, float *v, t_vector *point)
 
 t_color	checker_pattern(t_intersection *itx, t_vector *point)
 {
-	float		u2;
-	float		v2;
-	float		u;
-	float		v;
+	double		u2;
+	double		v2;
+	double		u;
+	double		v;
 	t_vector	transf_point;
 
 	mat_vec_multiply(&transf_point, &itx->shape->inv_transf, point);

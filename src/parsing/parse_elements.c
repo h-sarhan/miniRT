@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 17:18:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 void	parse_light_props(t_scene *scene, t_light *light, char **splitted)
 {
 	bool	success;
+	double	col_sum;
 
 	success = true;
 	light->type = POINT;
 	parse_color(&light->color, splitted[3], &scene->error_flags.light.color);
 	if (find_error(&scene->error_flags))
 		return ;
+	col_sum = light->color.r + light->color.g + light->color.b;
 	if (light->color.r != 0 && light->color.g != 0 && light->color.b != 0)
 	{
-		light->color.r = light->color.r / (light->color.r + light->color.g + light->color.b);
-		light->color.g = light->color.g / (light->color.r + light->color.g + light->color.b);
-		light->color.b = light->color.b / (light->color.r + light->color.g + light->color.b);
+		light->color.r /= col_sum;
+		light->color.g /= col_sum;
+		light->color.b /= col_sum;
 	}
 	parse_coordinates(&light->position, splitted[1], &success);
 	if (find_error(&scene->error_flags) == false && success == false)
@@ -36,7 +38,7 @@ void	parse_light_props(t_scene *scene, t_light *light, char **splitted)
 	if (find_error(&scene->error_flags) == false
 		&& (light->intensity < 0.0 || light->intensity > 1.0))
 		scene->error_flags.light.intensity_range = true;
-	light->intensity *= 1.3;
+	light->intensity *= 1.5;
 }
 
 /**
@@ -72,6 +74,7 @@ void	parse_light(t_scene *scene, char **splitted)
 void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
 {
 	bool	success;
+	double	col_sum;
 
 	success = true;
 	light->type = SPOT;
@@ -84,7 +87,7 @@ void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
 	if (find_error(&scene->error_flags) == false
 		&& (light->intensity < 0.0 || light->intensity > 1.0))
 		scene->error_flags.light.intensity_range = true;
-	light->intensity *= 1.3;
+	light->intensity *= 1.8;
 	parse_orientation(&light->init_direction, splitted[3], &scene->error_flags.light.orient);
 	if (find_error(&scene->error_flags))
 		return ;
@@ -98,11 +101,12 @@ void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
 	parse_color(&light->color, splitted[5], &scene->error_flags.light.color);
 	if (find_error(&scene->error_flags))
 		return ;
+	col_sum = light->color.r + light->color.g + light->color.b;
 	if (light->color.r != 0 && light->color.g != 0 && light->color.b != 0)
 	{
-		light->color.r = light->color.r / (light->color.r + light->color.g + light->color.b);
-		light->color.g = light->color.g / (light->color.r + light->color.g + light->color.b);
-		light->color.b = light->color.b / (light->color.r + light->color.g + light->color.b);
+		light->color.r /= col_sum;
+		light->color.g /= col_sum;
+		light->color.b /= col_sum;
 	}
 }
 
@@ -149,6 +153,7 @@ void	parse_spotlight(t_scene *scene, char **splitted)
 bool	parse_ambient(t_scene *scene, char **splitted)
 {
 	bool	success;
+	double	col_sum;
 
 	success = true;
 	if (split_count(splitted) != 3)
@@ -170,13 +175,15 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 		&scene->error_flags.ambient.color);
 	if (find_error(&scene->error_flags))
 		return (false);
-	if (scene->ambient.color.r != 0 && scene->ambient.color.g != 0 && scene->ambient.color.b != 0)
+	col_sum = scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b;
+	if (col_sum != 0)
 	{
-		scene->ambient.color.r /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
-		scene->ambient.color.g /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
-		scene->ambient.color.b /= (scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b);
+		scene->ambient.color.r /= col_sum;
+		scene->ambient.color.g /= col_sum;
+		scene->ambient.color.b /= col_sum;
 	}
 	scene->count.ambient_lights++;
+	scene->ambient.intensity *= 1.5;
 	return (true);
 }
 

@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:34:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	fill_in_skipped_pixels_h(float x, float y, t_worker *worker,
+void	fill_in_skipped_pixels_h(double x, double y, t_worker *worker,
 		int threshold)
 {
 	int				c1;
@@ -37,7 +37,7 @@ void	fill_in_skipped_pixels_h(float x, float y, t_worker *worker,
 	}
 }
 
-void	fill_in_skipped_pixels_v(float x, float y, t_worker *worker,
+void	fill_in_skipped_pixels_v(double x, double y, t_worker *worker,
 		int threshold)
 {
 	int				c1;

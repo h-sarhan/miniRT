@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int		ft_atoi(const char *str);
 long	ft_atol(const char *str, bool *check);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-float	ft_atof(const char *str, bool *success);
+double	ft_atof(const char *str, bool *success);
 char	**ft_split_whitespace(char const *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		is_space(char c);
 int		ft_strcmp_case(const char *s1, const char *s2);
 void	ft_swap(int *a, int *b);
-void	ft_swapd(float *a, float *b);
+void	ft_swapd(double *a, double *b);
 
 typedef struct s_list
 {

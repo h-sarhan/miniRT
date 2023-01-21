@@ -6,17 +6,17 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	prepare_computations(t_intersection *intersection,
+void	prepare_computations(t_scene *scene, t_intersection *intersection,
 			t_ray *ray)
 {
 	ray_position(&intersection->point, ray, intersection->time);
-	intersection->normal = normal_at(intersection->shape, &intersection->point);
+	intersection->normal = normal_at(scene, intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->dir);
 	intersection->eye.w = 0;
 	intersection->inside = false;
@@ -34,7 +34,7 @@ void	prepare_computations(t_intersection *intersection,
 
 t_intersection	*hit(t_intersections *xs)
 {
-	float	min_time;
+	double	min_time;
 	int		i;
 	int		idx;
 
@@ -55,10 +55,10 @@ t_intersection	*hit(t_intersections *xs)
 	return (&xs->arr[idx]);
 }
 
-void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
+void	ray_from_cam(t_ray *ray, const t_camera *cam, double x, double y)
 {
-	float		world_x;
-	float		world_y;
+	double		world_x;
+	double		world_y;
 	t_vector	pixel;
 	t_vector	world_point;
 	t_vector	center;
@@ -80,8 +80,8 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
 
 // void	ray_from_cam(t_ray *ray, const t_camera *cam, int x, int y)
 // {
-// 	float		world_x;
-// 	float		world_y;
+// 	double		world_x;
+// 	double		world_y;
 // 	t_vector	pixel;
 // 	t_vector	world_point;
 // 	t_vector	center;
@@ -101,7 +101,7 @@ void	ray_from_cam(t_ray *ray, const t_camera *cam, float x, float y)
 // 	normalize_vec(&ray->direction);
 // }
 
-void	ray_position(t_vector *pos, const t_ray *ray, float time)
+void	ray_position(t_vector *pos, const t_ray *ray, double time)
 {
 	pos->x = ray->dir.x * time + ray->origin.x;
 	pos->y = ray->dir.y * time + ray->origin.y;

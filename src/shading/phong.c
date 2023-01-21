@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 16:16:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
+t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
 {
 	t_color	ambient;
 	(void)attenuation;
@@ -27,8 +27,8 @@ t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
-	float		reflect_dot_eye;
-	float		light_dot_normal;
+	double		reflect_dot_eye;
+	double		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
 
@@ -59,9 +59,9 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_phong	phong;
 	t_color	result;
 	t_color	shape_color;	
-	const float	light_dist = vec_distance(&itx->point, \
+	const double	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const float	attentuation_factor = (80 * scene->lights[light_idx].intensity \
+	const double	attentuation_factor = (80 * scene->lights[light_idx].intensity \
 			- light_dist) / (80 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
@@ -96,7 +96,7 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
-		prepare_computations(itx, ray);
+		prepare_computations(scene, itx, ray);
 		light_idx = 0;
 		while (light_idx < scene->count.lights)
 		{
@@ -113,9 +113,9 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
-	float			distance;
+	double			distance;
 	int				i;
-	float			angle;
+	double			angle;
 	t_ray			ray;
 	t_intersections	arr;
 	t_intersection	*intersection;

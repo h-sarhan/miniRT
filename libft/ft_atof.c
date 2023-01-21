@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:26:16 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/10 15:42:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ static void	handle_error(const char *str, bool *success)
 		*success = false;
 }
 
-float	ft_atof(const char *str, bool *success)
+double	ft_atof(const char *str, bool *success)
 {
-	float	i;
+	double	i;
 	int		sign;
-	float	j;
+	double	j;
 	int		k;
 
 	i = 0;

@@ -2,12 +2,9 @@ A 0.1 255,255,255
 
 C 0,1,-8 0,0,1 60
 
-// orange light
-L 5,10,-5 0.8 200,100,20
-SL -10,10,-10 1.0  0,0,-1 60 128,128,153
+L 5,10,-5 1 255,255,255
 
-// white light
-// L -10,10,-10 1.0 128,128,153
+SL 0,5,0 1.0  0,0,-1 60 255,255,255
 
 
 
@@ -43,11 +40,20 @@ cu 0,0,0 1 10,10,10
 sp -0.5,1.5,0.5 1.6 0,0,0
 {
 	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+	diffuse_texture: "./assets/leaves_diffuse.ppm",
+	normal_texture: "./assets/leaves_normal.ppm"
+}          							
+sp -0.5,2.5,0.5 1.6 255,255,255
+{
+	reflectiveness: 0,               
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	diffuse_texture: "./assets/gravel_diffuse.ppm",
-	normal_texture: "./assets/gravel_normal.ppm"
+	diffuse_texture: "./assets/leaves_diffuse.ppm",
+	// normal_texture: "./assets/leaves_normal.ppm"
 }          							
 sp -2.5,1.5,0.5 1.6 0,0,0
 {
