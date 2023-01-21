@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/21 15:58:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,7 @@ void	light_controls(t_scene *scene)
 	if (scene->keys_held.a || scene->keys_held.d)
 		add_vec(&light->position, &light->position, &offset);
 	if (scene->keys_held.shift == false && scene->keys_held.plus == true)
-		light->intensity = min(light->intensity + 0.05, 1.5);
+		light->intensity = min(light->intensity + 0.05, 2);
 	if (scene->keys_held.shift == false && scene->keys_held.minus == true)
 		light->intensity = max(light->intensity - 0.05, 0);
 	if (scene->keys_held.up == true || scene->keys_held.down == true)

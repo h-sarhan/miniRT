@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ftoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 15:31:54 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/21 15:33:44 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/21 15:54:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-statcic char	*point_num(float num, int start, int len, char *str)
+static char	*point_num(float num, int start, int len, char *str)
 {
 	int	decimal;
 	int	i;

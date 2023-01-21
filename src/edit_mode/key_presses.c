@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/17 20:22:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/21 15:59:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ void	handle_color_change(int key, t_scene *scene, t_color *color)
 		color->b += 10 / 255.0;
 	if (key == KEY_6 && (color->b - 10 / 255.0) > 0)
 		color->b -= 10 / 255.0;
+	// float	col_sum = color->r + color->g + color->b;
+	// if (col_sum < 0.001)
+	// 	return ;
+	// color->r /= col_sum;
+	// color->g /= col_sum;
+	// color->b /= col_sum;
 }
 
 void	sphere_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
