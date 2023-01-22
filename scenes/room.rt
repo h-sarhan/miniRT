@@ -43,8 +43,8 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	diffuse: 0.9,						
 	specular: 0.2,
 	shininess: 30,
-	diffuse_texture: "./assets/leaves_diffuse.ppm",
-	normal_texture: "./assets/leaves_normal.ppm"
+	diffuse_texture: "./assets/gravel_diffuse.ppm",
+	normal_texture: "./assets/gravel_normal.ppm"
 }          							
 sp -0.5,2.5,0.5 1.6 255,255,255
 {
@@ -52,8 +52,8 @@ sp -0.5,2.5,0.5 1.6 255,255,255
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	diffuse_texture: "./assets/leaves_diffuse.ppm",
-	// normal_texture: "./assets/leaves_normal.ppm"
+	diffuse_texture: "./assets/gravel_diffuse.ppm",
+	// normal_texture: "./assets/gravel_normal.ppm"
 }          							
 sp -2.5,1.5,0.5 1.6 0,0,0
 {

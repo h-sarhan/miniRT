@@ -75,17 +75,17 @@ CFLAGS = -Wall -Wextra -Werror -g3 -pthread $(INC) \
 
 all:
 	# @make -j20 $(NAME)
-	@make  $(NAME)
+	-make  $(NAME)
 
 $(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
 
 $(LIBFT):
-	make -C  libft
+	-make -C  libft
 
 $(NAME): $(LIBFT) $(OBJ) Makefile
-	@-make -s  all -C $(MLX)
+	-make  all -C $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
 -include $(DEPENDS)
