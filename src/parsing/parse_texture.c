@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:12:54 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 12:23:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:12:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@ void	read_ppm_header(int fd, int *w, int *h)
 {
 	// char	*header;
 	char	**tokens;
-	char	buff[10000];
+	char	buff[1000];
 	int		bytes;
 
 	bytes = read(fd, buff, 3);
 	// if (header == NULL || ft_strcmp(header, "P6\n") != 0)
 	// 	exit(!printf("ERROR READING FILE\n"));
 	// free(header);
-	ft_bzero(buff, 10000);
 	int i = 0;
 	char ch;
 	read(fd, &ch, 1);
@@ -52,26 +51,19 @@ void	read_ppm_header(int fd, int *w, int *h)
 	// free(header);
 }
 
-t_color	read_ppm_color(int fd)
+t_color	read_ppm_color(unsigned char *buff, int idx)
 {
 	t_color			color;
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
 
-	r = 0;
-	g = 0;
-	b = 0;
-	if (read(fd, &r, 1) < 0)
-		exit(!printf("ERROR READING FILE\n"));
-	if (read(fd, &g, 1) < 0)
-		exit(!printf("ERROR READING FILE\n"));
-	if (read(fd, &b, 1) < 0)
-		exit(!printf("ERROR READING FILE\n"));
+	// 	exit(!printf("ERROR READING FILE\n"));
+	// if (read(fd, &g, 1) < 0)
+	// 	exit(!printf("ERROR READING FILE\n"));
+	// if (read(fd, &b, 1) < 0)
+	// 	exit(!printf("ERROR READING FILE\n"));
 	color.a = 0;
-	color.r = r / 255.0;
-	color.g = g / 255.0;
-	color.b = b / 255.0;
+	color.r = buff[idx * 3] / 255.0;
+	color.g = buff[idx * 3 + 1] / 255.0;
+	color.b = buff[idx * 3 + 2] / 255.0;
 	return (color);
 }
 
@@ -110,29 +102,38 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 	int		j;
 	int		fd;
 	t_color	**colors;
-
+	unsigned char	*buff;
+	int		col_idx;
+	col_idx = 0;
 	img_path = ft_strtrim(img_path, "\"");
 	fd = open(img_path, O_RDONLY);
 	free(img_path);
 	if (fd == -1)
 		exit(!printf(RED"ERROR OPENING TEXTURE FILE `%s`\n"RESET, img_path));
 	read_ppm_header(fd, &shape->tex_width, &shape->tex_height);
-	colors = ft_calloc(shape->tex_height + 1, sizeof(t_color *));
+	buff = malloc(shape->tex_height * shape->tex_width * 3 + 1);
+	i = read(fd, buff, shape->tex_height * shape->tex_width * 3);
+	buff[i] = '\0';
+	colors = malloc((shape->tex_height + 1) * sizeof(t_color *));
+	colors[shape->tex_height] = NULL;
 	i = 0;
 	while (i < shape->tex_height)
-		colors[i++] = ft_calloc(shape->tex_width + 1, sizeof(t_color));
+		colors[i++] = malloc((shape->tex_width + 1) * sizeof(t_color));
 	i = 0;
 	while (i < shape->tex_height)
 	{
 		j = 0;
 		while (j < shape->tex_width)
-			colors[i][j++] = read_ppm_color(fd);
+		{
+			colors[i][j++] = read_ppm_color(buff, col_idx);
+			col_idx++;
+		}
 		i++;
 	}
 	close(fd);
 	// intense memory leak
-	colors = scale_texture(colors, shape->tex_width, shape->tex_height);
-	shape->tex_height = 600;
-	shape->tex_width = 600;
+	// colors = scale_texture(colors, shape->tex_width, shape->tex_height);
+	// shape->tex_height = 600;
+	// shape->tex_width = 600;
 	return (colors);
 }
