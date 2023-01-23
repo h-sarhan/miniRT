@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   patterns.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/23 12:21:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:52:25 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,17 @@ t_color	get_texture_color2(t_intersection *itx)
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}
-	else
+	else if (itx->shape->type ==  SPHERE)
 	{
 		if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
 			return (itx->shape->props.color);
 		spherical_map(&u, &v, &shape_point);
+	}
+	else //(itx->shape->type == CUBE)
+	{
+		// if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
+		// 	return (itx->shape->props.color);
+		cubical_map(&u, &v, &shape_point);
 	}
 	// shape_point.x += 1;
 	// shape_point.y += 1;
@@ -148,6 +154,64 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 	mult_color(&color, &color, fraction);	
 	add_colors(&color, &color, &a);
 	return (color);
+}
+
+void	cube_map_right(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((1 - point->z), 2.0)) / 2.0;
+	*v = (fmod((point->y + 1), 2.0)) / 2.0;
+}
+
+void	cube_map_left(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((point->z + 1), 2.0)) / 2.0;
+	*v = (fmod((point->y + 1), 2.0)) / 2.0;
+}
+
+void	cube_map_up(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((1 - point->x), 2.0)) / 2.0;
+	*v = (fmod((1- point->z), 2.0)) / 2.0;
+}
+void	cube_map_down(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((1 - point->x), 2.0)) / 2.0;
+	*v = (fmod((point->z + 1), 2.0)) / 2.0;
+}
+void	cube_map_front(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((point->x + 1), 2.0)) / 2.0;
+	*v = (fmod((point->y + 1), 2.0)) / 2.0;
+}
+void	cube_map_back(double *u, double *v, t_vector *point)
+{
+	*u = (fmod((1 - point->x), 2.0)) / 2.0;
+	*v = (fmod((point->y + 1), 2.0)) / 2.0;
+}
+
+void	cubical_map(double *u, double *v, t_vector *point)
+{
+	double	abs_x;
+	double	abs_y;
+	double	abs_z;
+	double	coord;
+
+	abs_x = fabs(point->x);
+	abs_y = fabs(point->y);
+	abs_z = fabs(point->z);
+	coord = max3(abs_x, abs_y, abs_z);
+	if (coord == point->x)
+		cube_map_right(u, v, point);
+	else if (coord == -point->x)
+		cube_map_left(u, v, point);
+	else if (coord == point->y)
+		cube_map_up(u, v, point);
+	else if (coord == -point->y)
+		cube_map_down(u, v, point);
+	else if (coord == point->z)
+		cube_map_front(u, v, point);
+	else if (coord == -point->z)
+		cube_map_back(u, v, point);
 }
 
 void	spherical_map(double *u, double *v, t_vector *point)

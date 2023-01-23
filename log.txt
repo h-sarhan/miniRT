@@ -1,0 +1,444 @@
+[[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[0m][[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[0m]
+[[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[31m.[0m][[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[32m=[0m]
+1
+0
+2
+4
+ 
+1
+0
+2
+4
+
+
+1
+0
+2
+4
+ 
+1
+0
+2
+4
+
+
+1
+0
+2
+4
+ 
+1
+0
+2
+4
+
+
+6
+4
+0
+ 
+4
+8
+0
+
+
+render time is 0.039572
+key = 13
+key = 13
+key = 13
+key = 13
+key = 259
+key = 49
+render time is 0.025504
+render time is 0.028337
+key = 13
+render time is 0.028094
+render time is 0.027353
+render time is 0.028522
+render time is 0.028782
+render time is 0.028749
+render time is 0.028407
+render time is 0.028807
+render time is 0.028437
+render time is 0.028765
+key = 13
+key = 13
+render time is 0.028185
+key = 13
+render time is 0.028559
+render time is 0.028374
+key = 13
+key = 13
+render time is 0.029641
+render time is 0.029338
+key = 13
+key = 13
+render time is 0.030169
+render time is 0.028425
+key = 13
+key = 13
+render time is 0.028304
+render time is 0.029194
+key = 13
+key = 13
+render time is 0.028069
+key = 13
+render time is 0.028446
+render time is 0.030666
+key = 13
+key = 13
+render time is 0.028537
+render time is 0.028707
+key = 13
+key = 13
+render time is 0.028742
+render time is 0.030033
+key = 13
+key = 13
+render time is 0.028303
+render time is 0.028696
+key = 13
+render time is 0.028611
+render time is 0.029121
+key = 13
+key = 13
+render time is 0.028557
+key = 13
+render time is 0.028153
+key = 13
+render time is 0.028578
+key = 13
+render time is 0.029207
+render time is 0.028657
+key = 13
+key = 13
+render time is 0.029017
+render time is 0.028605
+key = 13
+key = 13
+key = 31
+render time is 0.028991
+render time is 0.028866
+render time is 0.029273
+render time is 0.028901
+render time is 0.030397
+render time is 0.030457
+render time is 0.032274
+render time is 0.046646
+render time is 0.052049
+render time is 0.044616
+render time is 0.038829
+render time is 0.018922
+render time is 0.019148
+render time is 0.019984
+key = 49
+render time is 0.030695
+key = 49
+render time is 0.018203
+render time is 0.018277
+render time is 0.018804
+key = 2
+render time is 0.018024
+render time is 0.018672
+render time is 0.018890
+render time is 0.018500
+render time is 0.018930
+render time is 0.019063
+render time is 0.018629
+render time is 0.018952
+render time is 0.019310
+render time is 0.018843
+key = 13
+render time is 0.020067
+render time is 0.018987
+render time is 0.018395
+render time is 0.018977
+render time is 0.017889
+render time is 0.018461
+key = 0
+render time is 0.017796
+render time is 0.019420
+render time is 0.018309
+render time is 0.018351
+render time is 0.019883
+render time is 0.018788
+key = 8
+render time is 0.018669
+key = 8
+render time is 0.018830
+key = 17
+render time is 0.019879
+key = 123
+render time is 0.019913
+render time is 0.019835
+render time is 0.020147
+render time is 0.020089
+render time is 0.019384
+render time is 0.020406
+render time is 0.019793
+render time is 0.020055
+render time is 0.020111
+render time is 0.019399
+render time is 0.019892
+key = 123
+render time is 0.019612
+render time is 0.019472
+key = 123
+key = 123
+render time is 0.020030
+render time is 0.019304
+render time is 0.020447
+key = 123
+key = 123
+render time is 0.019638
+key = 123
+render time is 0.018812
+render time is 0.019574
+key = 123
+render time is 0.020311
+render time is 0.019557
+key = 123
+render time is 0.019428
+key = 123
+render time is 0.019963
+key = 123
+render time is 0.020178
+render time is 0.020323
+key = 123
+render time is 0.019879
+key = 123
+render time is 0.019656
+render time is 0.020285
+key = 123
+key = 123
+render time is 0.019185
+render time is 0.019654
+key = 123
+render time is 0.019929
+key = 123
+render time is 0.020104
+render time is 0.019936
+key = 123
+render time is 0.019871
+key = 123
+render time is 0.019584
+render time is 0.020051
+key = 123
+key = 123
+render time is 0.019861
+render time is 0.020173
+key = 123
+render time is 0.019720
+render time is 0.020528
+key = 123
+key = 123
+render time is 0.019552
+render time is 0.019603
+key = 123
+render time is 0.019740
+key = 123
+render time is 0.019276
+render time is 0.019134
+key = 123
+render time is 0.019622
+key = 123
+render time is 0.020128
+render time is 0.019607
+key = 123
+render time is 0.019399
+key = 123
+render time is 0.019428
+key = 123
+render time is 0.019979
+render time is 0.020306
+key = 123
+render time is 0.019484
+key = 123
+render time is 0.019566
+key = 123
+render time is 0.019742
+render time is 0.019349
+key = 123
+render time is 0.020513
+render time is 0.019251
+key = 123
+key = 123
+render time is 0.020725
+render time is 0.019787
+key = 123
+render time is 0.019832
+key = 123
+render time is 0.019955
+render time is 0.019827
+key = 123
+key = 123
+render time is 0.019421
+render time is 0.018900
+key = 123
+render time is 0.020430
+key = 123
+render time is 0.019672
+key = 126
+render time is 0.019816
+render time is 0.020195
+render time is 0.019868
+render time is 0.021050
+render time is 0.019824
+render time is 0.020005
+render time is 0.021387
+render time is 0.021251
+render time is 0.020110
+render time is 0.020237
+key = 126
+render time is 0.020469
+key = 126
+render time is 0.019727
+key = 126
+render time is 0.020001
+render time is 0.019999
+key = 126
+render time is 0.020163
+key = 126
+render time is 0.020180
+render time is 0.019350
+key = 126
+render time is 0.021116
+key = 126
+render time is 0.019818
+render time is 0.018955
+key = 126
+render time is 0.020709
+key = 126
+render time is 0.019839
+key = 126
+render time is 0.019865
+render time is 0.020369
+key = 126
+key = 123
+render time is 0.019831
+render time is 0.020277
+render time is 0.020320
+render time is 0.020143
+render time is 0.019685
+render time is 0.020077
+render time is 0.020395
+render time is 0.021083
+render time is 0.019828
+render time is 0.019903
+key = 123
+render time is 0.019766
+render time is 0.019911
+key = 123
+render time is 0.020987
+render time is 0.020820
+key = 123
+key = 123
+render time is 0.020751
+key = 123
+render time is 0.019850
+render time is 0.020496
+key = 123
+render time is 0.019736
+render time is 0.020369
+key = 123
+key = 123
+render time is 0.019831
+render time is 0.020888
+key = 123
+render time is 0.020268
+render time is 0.020359
+key = 123
+key = 123
+render time is 0.019795
+render time is 0.019993
+key = 123
+render time is 0.021573
+render time is 0.020695
+key = 123
+key = 123
+render time is 0.019159
+render time is 0.019932
+key = 123
+render time is 0.020306
+key = 123
+render time is 0.020010
+render time is 0.019984
+key = 123
+render time is 0.021172
+render time is 0.019764
+key = 123
+key = 123
+render time is 0.019811
+key = 123
+render time is 0.020168
+render time is 0.020541
+render time is 0.019654
+key = 123
+key = 123
+render time is 0.021048
+key = 123
+render time is 0.019823
+render time is 0.019923
+key = 123
+render time is 0.020354
+render time is 0.020870
+key = 123
+key = 123
+render time is 0.019617
+render time is 0.019298
+key = 123
+render time is 0.020436
+key = 123
+render time is 0.020847
+render time is 0.019950
+key = 123
+render time is 0.019800
+render time is 0.020273
+key = 123
+key = 123
+render time is 0.020977
+key = 123
+render time is 0.020064
+render time is 0.020035
+key = 123
+render time is 0.019580
+render time is 0.021178
+key = 123
+key = 123
+render time is 0.019883
+render time is 0.020612
+key = 123
+render time is 0.020953
+key = 123
+render time is 0.020283
+key = 123
+render time is 0.020465
+render time is 0.019673
+key = 123
+render time is 0.019838
+key = 123
+render time is 0.020615
+render time is 0.020288
+key = 123
+key = 123
+render time is 0.020932
+render time is 0.019654
+render time is 0.020697
+key = 123
+key = 123
+render time is 0.020840
+key = 123
+render time is 0.019634
+render time is 0.019992
+key = 123
+render time is 0.019849
+render time is 0.021800
+key = 123
+key = 123
+render time is 0.019625
+render time is 0.020435
+render time is 0.018968
+key = 123
+key = 53
+QUITTING PROGRAM!
+FREE FUNCTION DOES NOT FREE EVERYTHING
