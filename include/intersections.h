@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:21:12 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ bool	intersect_cylinder(const t_ray *ray, t_shape *shape,
 bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs);
 void	spherical_map(double *u, double *v, t_vector *point);
 void	cylindrical_map(double *u, double *v, t_vector *point);
+void	cubical_map(double *u, double *v, t_vector *point);
 #endif
