@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:21:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,16 @@ t_color	get_texture_color2(t_intersection *itx)
 	
 	if (u < 0|| v < 0)
 		return (itx->shape->props.color);
-	// u = (int)(shape_point.x * itx->shape->tex_height);
-	// v = (int)(shape_point.y * itx->shape->tex_width);
-	u = (int)floor(u * (itx->shape->tex_height - 1));
-	v = (int)floor(v * (itx->shape->tex_width - 1));
+	if (itx->shape->tex_tile != 0)
+	{
+		u = (int)floor(u * (itx->shape->tex_height - 1) * itx->shape->tex_tile) % itx->shape->tex_height;
+		v = (int)floor(v * (itx->shape->tex_width - 1) * itx->shape->tex_tile) % itx->shape->tex_width;
+	}
+	else
+	{
+		u = (int)floor(u * (itx->shape->tex_height - 1));
+		v = (int)floor(v * (itx->shape->tex_width - 1));
+	}
 	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
 		return (itx->shape->props.color);
 	

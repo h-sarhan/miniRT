@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:17:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ bool	is_valid_key(const char *key)
 			|| ft_strcmp(key, "color") == 0
 			|| ft_strcmp(key, "normal_texture") == 0
 			|| ft_strcmp(key, "diffuse_texture") == 0
+			|| ft_strcmp(key, "tile_texture") == 0
 			))
 		return (true);
 	return (false);
@@ -117,6 +118,11 @@ bool	is_valid_val(const char *key, const char *val)
 	{
 		min = 0.1;
 		max = 50;
+	}
+	if (ft_strcmp(key, "tile_texture") == 0)
+	{
+		min = 1;
+		max = 10;
 	}
 	if (ft_strcmp(key, "color") == 0)
 		return (is_valid_color(val));

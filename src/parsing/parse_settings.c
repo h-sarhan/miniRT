@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 17:58:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 12:14:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	parse_setting(t_shape *shape, char **key_val)
 		shape->diffuse_tex = parse_texture(key_val[1], shape);
 	if (ft_strcmp("normal_texture", key_val[0]) == 0)
 		shape->normal_tex = parse_texture(key_val[1], shape);
+	if (ft_strcmp("tile_texture", key_val[0]) == 0)
+		shape->tex_tile = ft_atol(key_val[1], &success);
 }
 
 char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)
