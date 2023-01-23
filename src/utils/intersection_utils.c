@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 13:54:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 14:10:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ void	prepare_computations(t_scene *scene, t_intersection *intersection,
 {
 	ray_position(&intersection->point, ray, intersection->time);
 	intersection->normal = normal_at(scene, intersection->shape, &intersection->point);
-	if (intersection->shape->normal_tex != NULL)
-	{
-		intersection->normal = normal_map(&intersection->normal, intersection->shape, &intersection->point);
-	}
 	negate_vec(&intersection->eye, &ray->dir);
 	intersection->eye.w = 0;
 	intersection->inside = false;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 13:53:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 14:02:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,6 @@ t_color	checker_pattern(t_intersection *itx, t_vector *point);
 
 t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);
 t_color	ring_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);
-t_vector	normal_map(t_vector *normal, t_shape *shape, t_vector *itx_point);
+t_vector	normal_map(t_vector *normal, const t_shape *shape, const t_vector *itx_point);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   patterns.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/23 13:52:25 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/23 14:23:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,13 @@ t_color	get_texture_color2(t_intersection *itx)
 	// shape_point.y = 1 - shape_point.y;
 	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
 	{
-		shape_point.x /= itx->shape->props.height;
-		shape_point.y /= itx->shape->props.height;
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}
 	else if (itx->shape->type ==  SPHERE)
 	{
-		if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
-			return (itx->shape->props.color);
+		// if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
+		// 	return (itx->shape->props.color);
 		spherical_map(&u, &v, &shape_point);
 	}
 	else //(itx->shape->type == CUBE)
@@ -150,7 +148,7 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 	transf_point.y += 0.5;
 	transf_point.z += 0.5;
 	sub_colors(&color, &b, &a);
-	fraction = transf_point.x - floorf(transf_point.x);
+	fraction = transf_point.x - floor(transf_point.x);
 	mult_color(&color, &color, fraction);	
 	add_colors(&color, &color, &a);
 	return (color);

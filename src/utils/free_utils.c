@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/04 01:32:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:54:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,36 @@ void	free_split_array(char **arr)
  */
 void	free_scene(t_scene *scene)
 {
-	printf("FREE FUNCTION DOES NOT FREE EVERYTHING\n");
-	if (scene->lights)
+	int	i;
+
+	i = 0;
+	if (scene->lights != NULL)
 		free(scene->lights);
-	if (scene->shapes)
+	while (i < scene->count.shapes)
+	{
+		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
+		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
+		i++;
+	}
+	if (scene->shapes != NULL)
 		free(scene->shapes);
-	free(scene);
+	sem_close(scene->sem_loading);
+	sem_destroy(scene->sem_loading);
+}
+
+void	free_texture(t_shape *shape, t_color **texture)
+{
+	int	i;
+
+	if (texture == NULL)
+		return ;
+	i = 0;
+	while (i < shape->tex_height)
+	{
+		free(texture[i]);
+		i++;
+	}
+	free(texture);
 }
 
 char	*ft_strjoin_free(char *s1, char *s2, int fre)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/19 18:19:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:46:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,6 @@ int	main(int argc, char **argv)
 	if (scene == NULL)
 		return (EXIT_FAILURE);
 	close(fd);
-	// scene->lights[0].type = SPOT;
-	// scene->lights[0].init_direction.z = -1;
-	// scene->lights[0].theta = DEG_TO_RAD * 10;
 	init_settings(&scene->settings);
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);

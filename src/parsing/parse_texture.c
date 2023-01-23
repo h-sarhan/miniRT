@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:12:54 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 13:15:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 16:44:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,58 @@
 
 void	read_ppm_header(int fd, int *w, int *h)
 {
-	// char	*header;
 	char	**tokens;
-	char	buff[1000];
+	char	buff[1001];
 	int		bytes;
+	int		i;
+	char	ch;
 
 	bytes = read(fd, buff, 3);
-	// if (header == NULL || ft_strcmp(header, "P6\n") != 0)
-	// 	exit(!printf("ERROR READING FILE\n"));
-	// free(header);
-	int i = 0;
-	char ch;
-	read(fd, &ch, 1);
-	printf("%c\n", ch);
-	while (ch != '\n')
+	buff[3] = '\0';
+	if (bytes <= 0 || ft_strcmp(buff, "P6\n") != 0)
+	{
+		exit(!printf("1ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
+	i = 0;
+	bytes = read(fd, &ch, 1);
+	while (bytes > 0 && ch != '\n' && i < 1000)
 	{
 		buff[i] = ch;
-		read(fd, &ch, 1);
-		printf("%c\n", ch);
+		bytes = read(fd, &ch, 1);
 		i++;
 	}
+	if (i == 1000 || bytes == 0)
+	{
+		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
 	buff[i] = '\0';
-	// if (header == NULL)
-	// 	exit(!printf("ERROR READING FILE\n"));
-	// buff[bytes] = '\0';
 	tokens = ft_split(buff, ' ');
-	// free(header);
 	if (tokens == NULL)
-		exit(!printf("ERROR READING FILE\n"));
+	{
+		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
+	if (split_count(tokens) != 2)
+	{
+		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
 	*w = ft_atoi(tokens[0]);
 	*h = ft_atoi(tokens[1]);
+	if (*w <= 0 || *h <= 0)
+	{
+		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
 	free_split_array(tokens);
 	bytes = read(fd, buff, 4);
-	// if (header == NULL)
-	// 	exit(!printf("ERROR READING FILE\n"));
-	// free(header);
+	if (bytes <= 0)
+	{
+		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+	}
 }
 
 t_color	read_ppm_color(unsigned char *buff, int idx)
 {
 	t_color			color;
 
-	// 	exit(!printf("ERROR READING FILE\n"));
-	// if (read(fd, &g, 1) < 0)
-	// 	exit(!printf("ERROR READING FILE\n"));
-	// if (read(fd, &b, 1) < 0)
-	// 	exit(!printf("ERROR READING FILE\n"));
 	color.a = 0;
 	color.r = buff[idx * 3] / 255.0;
 	color.g = buff[idx * 3 + 1] / 255.0;
@@ -69,12 +75,13 @@ t_color	read_ppm_color(unsigned char *buff, int idx)
 
 t_color	**parse_texture(char *img_path, t_shape *shape)
 {
-	int		i;
-	int		j;
-	int		fd;
-	t_color	**colors;
+	int				i;
+	int				j;
+	int				fd;
+	t_color			**colors;
 	unsigned char	*buff;
-	int		col_idx;
+	int				col_idx;
+
 	col_idx = 0;
 	img_path = ft_strtrim(img_path, "\"");
 	fd = open(img_path, O_RDONLY);
@@ -84,6 +91,7 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 	read_ppm_header(fd, &shape->tex_width, &shape->tex_height);
 	buff = malloc(shape->tex_height * shape->tex_width * 3 + 1);
 	i = read(fd, buff, shape->tex_height * shape->tex_width * 3);
+	close(fd);
 	buff[i] = '\0';
 	colors = malloc((shape->tex_height + 1) * sizeof(t_color *));
 	colors[shape->tex_height] = NULL;
@@ -101,6 +109,5 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 		}
 		i++;
 	}
-	close(fd);
 	return (colors);
 }
