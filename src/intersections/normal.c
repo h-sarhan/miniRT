@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/22 21:38:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:53:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,48 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 	return (normal);
 }
 
+t_vector	normal_map(t_vector *normal, t_shape *shape, t_vector *itx_point)
+{
+	t_vector	t;
+	t_vector	b;
+	t_vector	up;
+	t_vector	z_up;
+	ft_bzero(&up, sizeof(t_vector));
+	ft_bzero(&z_up, sizeof(t_vector));
+	up.y = 1;
+	z_up.z = 1;
+	cross_product(&t, normal, &up);
+	if (vec_magnitude(&t) < 0.000001)
+		cross_product(&t, normal, &z_up);
+	normalize_vec(&t);
+	cross_product(&b, normal, &t);
+	normalize_vec(&b);
+	t_vector	tex_normal;
+	tex_normal = normal_from_texture(shape, itx_point);
+	
+	t_mat4	tbn;
+	ft_bzero(&tbn, sizeof(t_mat4));
+	tbn[0][0] = t.x;
+	tbn[0][1] = b.x;
+	tbn[0][2] = normal->x;
+	tbn[1][0] = t.y;
+	tbn[1][1] = b.y;
+	tbn[1][2] = normal->y;
+	tbn[2][0] = t.z;
+	tbn[2][1] = b.z;
+	tbn[2][2] = normal->z;
+	tbn[3][3] = 1;
+	t_vector	altered_normal;
+	mat_vec_multiply(&altered_normal, &tbn, &tex_normal);
+	normalize_vec(&altered_normal);
+
+	t_vector	final_normal;
+	mat_vec_multiply(&final_normal, &shape->norm_transf, &final_normal);
+	final_normal.w = 0;
+	normalize_vec(&final_normal);
+	return (final_normal);
+}
+
 t_vector	normal_at(t_scene *scene, const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	normal;
@@ -150,43 +192,7 @@ t_vector	normal_at(t_scene *scene, const t_shape *shape, const t_vector *itx_poi
 		normal.w = 0;
 		if (shape->normal_tex != NULL)
 		{
-			t_vector	t;
-			t_vector	b;
-			t_vector	up;
-			t_vector	z_up;
-			ft_bzero(&up, sizeof(t_vector));
-			ft_bzero(&z_up, sizeof(t_vector));
-			up.y = 1;
-			z_up.z = 1;
-			cross_product(&t, &normal, &up);
-			if (vec_magnitude(&t) < 0.000001)
-				cross_product(&t, &normal, &z_up);
-			normalize_vec(&t);
-			cross_product(&b, &normal, &t);
-			normalize_vec(&b);
-			t_vector	tex_normal;
-			tex_normal = normal_from_texture(shape, itx_point);
 			
-			t_mat4	tbn;
-			ft_bzero(&tbn, sizeof(t_mat4));
-			tbn[0][0] = t.x;
-			tbn[0][1] = b.x;
-			tbn[0][2] = normal.x;
-			tbn[1][0] = t.y;
-			tbn[1][1] = b.y;
-			tbn[1][2] = normal.y;
-			tbn[2][0] = t.z;
-			tbn[2][1] = b.z;
-			tbn[2][2] = normal.z;
-			tbn[3][3] = 1;
-			t_vector	final_normal;
-			mat_vec_multiply(&final_normal, &tbn, &tex_normal);
-			normalize_vec(&final_normal);
-
-			mat_vec_multiply(&world_normal, &shape->norm_transf, &final_normal);
-			world_normal.w = 0;
-			normalize_vec(&world_normal);
-			return (world_normal);
 			// return (final_normal);
 			// t_vector	final_final_normal;
 			// mat_vec_multiply(&final_final_normal, &scene->cam.inv_trans, &final_normal);
