@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:12:54 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 13:12:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:15:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,6 @@ t_color	read_ppm_color(unsigned char *buff, int idx)
 	return (color);
 }
 
-t_color	**scale_texture(t_color **colors, int w, int h)
-{
-	int			x;
-	int			y;
-	int			src_x;
-	int			src_y;
-
-	t_color **colors_scaled = ft_calloc(600 + 1, sizeof(t_color *));
-	int i = 0;
-	while (i < 600)
-		colors_scaled[i++] = ft_calloc(600 + 1, sizeof(t_color));
-	y = 0;
-	while (y < 600)
-	{
-		x = 0;
-		while (x < 600)
-		{
-			src_x = round((x / 600.0) * w);
-			src_y = round((y / 600.0) * h);
-			src_x = min(src_x, w - 1);
-			src_y = min(src_y, h - 1);
-			colors_scaled[y][x] = colors[src_y][src_x];
-			x++;
-		}
-		y++;
-	}
-	return (colors_scaled);
-}
-
 t_color	**parse_texture(char *img_path, t_shape *shape)
 {
 	int		i;
@@ -131,9 +102,5 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 		i++;
 	}
 	close(fd);
-	// intense memory leak
-	// colors = scale_texture(colors, shape->tex_width, shape->tex_height);
-	// shape->tex_height = 600;
-	// shape->tex_width = 600;
 	return (colors);
 }
