@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 16:54:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:03:00 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	free_scene(t_scene *scene)
 	if (scene->shapes != NULL)
 		free(scene->shapes);
 	sem_close(scene->sem_loading);
-	sem_destroy(scene->sem_loading);
+	// sem_destroy(scene->sem_loading);
 }
 
 void	free_texture(t_shape *shape, t_color **texture)
