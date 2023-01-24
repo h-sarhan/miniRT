@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 15:31:54 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/21 15:54:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 16:30:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*ftoa(float num)
 		i[0] /= 10;
 		i[1]++;
 	}
-	str = (char *)malloc(sizeof(char) * (i[1] + 4 + 1));
+	str = (char *)ft_calloc(i[1] + 4 + 1, sizeof(char));
 	dec_num(i[2], i[1], decimal[0], str);
 	point_num(num, decimal[1], i[1], str);
 	return (str);
