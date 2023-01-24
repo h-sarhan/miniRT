@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/21 15:59:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:01:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ bool	is_toggle_key(int key, t_scene *scene)
 				|| key == KEY_3 || key == KEY_4 || key == KEY_5 || key == KEY_6
 				|| key == KEY_TAB || key == KEY_C || key == KEY_T
 				|| key == KEY_P || key == KEY_L || key == KEY_H)));
+				// || key == KEY_P || key == KEY_L)));
 }
 
 void	toggle_edit_mode(int key, t_scene *scene)

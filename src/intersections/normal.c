@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 14:19:36 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 16:59:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,8 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}
-	if (shape->type == CUBE)
+	// if (shape->type == CUBE)
+	else
 		cubical_map(&u, &v, &shape_point);
 	// if (u < 0 || v < 0)
 	// 	return (normal);
