@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:34:51 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:35:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,21 @@ void	fill_in_skipped_pixels_v(double x, double y, t_worker *worker,
 	t_intersections	arr;
 
 	c1 = get_color(worker, x, y - 1);
+	if (y + 2 >= worker->y_end)
+	{
+		if (y < worker->y_end)
+			super_sample_pixel(x, y, &arr, worker);
+		if ((y + 1) < worker->y_end)
+			super_sample_pixel(x, y + 1, &arr, worker);
+		return ;
+	}
 	c4 = get_color(worker, x, y + 2);
 	if (color_difference(c1, c4) > threshold)
 	{
-		if (worker->scene->settings.supersampling == true)
-			super_sample_pixel(x, y - 1, &arr, worker);
+		super_sample_pixel(x, y - 1, &arr, worker);
 		super_sample_pixel(x, y, &arr, worker);
 		super_sample_pixel(x, y + 1, &arr, worker);
-		if (worker->scene->settings.supersampling == true)
-			super_sample_pixel(x, y + 2, &arr, worker);
+		super_sample_pixel(x, y + 2, &arr, worker);
 	}
 	else
 	{

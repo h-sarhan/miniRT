@@ -11,6 +11,11 @@
 #include "font.c"
 
 
+int	mlx_destroy_display(void *mlx_ptr)
+{
+	(void)mlx_ptr;
+}
+
 void	do_loop_hook2(CFRunLoopTimerRef observer, void * info)
 {
   ((mlx_ptr_t *)info)->loop_hook(((mlx_ptr_t *)info)->loop_hook_data);

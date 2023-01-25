@@ -6,11 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 16:05:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 18:13:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "miniRT.h"
+#include "scene.h"
 
 /**
  * @brief Checks if the amount of ambient lights and cameras in a struct
@@ -120,11 +122,19 @@ t_scene	*parse_scene(int fd)
 			continue ;
 		success = parse_line(scene, line, &line_count, fd);
 		if (success == false)
+		{
+			// free(line);
+			get_next_line(-1);
+			free_scene(scene);
 			return (NULL);
+		}
 		line = get_next_line(fd);
 		line_count++;
 	}
 	if (check_element_count(scene) == false)
+	{
+		free_scene(scene);
 		return (NULL);
+	}
 	return (scene);
 }

@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:12:54 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 16:44:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/25 21:04:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	read_ppm_header(int fd, int *w, int *h)
+int	read_ppm_header(int fd, int *w, int *h)
 {
 	char	**tokens;
 	char	buff[1001];
@@ -23,9 +23,7 @@ void	read_ppm_header(int fd, int *w, int *h)
 	bytes = read(fd, buff, 3);
 	buff[3] = '\0';
 	if (bytes <= 0 || ft_strcmp(buff, "P6\n") != 0)
-	{
-		exit(!printf("1ERROR READING FILE and not freeing what I am supposed to free\n"));
-	}
+		return (-1);
 	i = 0;
 	bytes = read(fd, &ch, 1);
 	while (bytes > 0 && ch != '\n' && i < 1000)
@@ -35,31 +33,25 @@ void	read_ppm_header(int fd, int *w, int *h)
 		i++;
 	}
 	if (i == 1000 || bytes == 0)
-	{
-		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
-	}
+		return (-1);
 	buff[i] = '\0';
 	tokens = ft_split(buff, ' ');
 	if (tokens == NULL)
-	{
-		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
-	}
+		return (-1);
 	if (split_count(tokens) != 2)
 	{
-		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
+		free_split_array(tokens);
+		return (-1);
 	}
 	*w = ft_atoi(tokens[0]);
 	*h = ft_atoi(tokens[1]);
-	if (*w <= 0 || *h <= 0)
-	{
-		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
-	}
 	free_split_array(tokens);
+	if (*w <= 0 || *h <= 0)
+		return (-1);
 	bytes = read(fd, buff, 4);
 	if (bytes <= 0)
-	{
-		exit(!printf("ERROR READING FILE and not freeing what I am supposed to free\n"));
-	}
+		return (-1);
+	return (0);
 }
 
 t_color	read_ppm_color(unsigned char *buff, int idx)
@@ -85,13 +77,29 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 	col_idx = 0;
 	img_path = ft_strtrim(img_path, "\"");
 	fd = open(img_path, O_RDONLY);
-	free(img_path);
 	if (fd == -1)
-		exit(!printf(RED"ERROR OPENING TEXTURE FILE `%s`\n"RESET, img_path));
-	read_ppm_header(fd, &shape->tex_width, &shape->tex_height);
+	{
+		printf("Error reading texture file `%s`\n"RESET, img_path);
+		free(img_path);
+		return (NULL);
+	}
+	if (read_ppm_header(fd, &shape->tex_width, &shape->tex_height) == -1)
+	{
+		close(fd);
+		printf("Error reading texture file `%s`\n"RESET, img_path);
+		free(img_path);
+		return (NULL);
+	}
 	buff = malloc(shape->tex_height * shape->tex_width * 3 + 1);
 	i = read(fd, buff, shape->tex_height * shape->tex_width * 3);
 	close(fd);
+	if (i < shape->tex_height * shape->tex_width * 3)
+	{
+		printf("Error reading texture file `%s`\n"RESET, img_path);
+		free(img_path);
+		free(buff);
+		return (NULL);
+	}
 	buff[i] = '\0';
 	colors = malloc((shape->tex_height + 1) * sizeof(t_color *));
 	colors[shape->tex_height] = NULL;
@@ -109,5 +117,7 @@ t_color	**parse_texture(char *img_path, t_shape *shape)
 		}
 		i++;
 	}
+	free(buff);
+	free(img_path);
 	return (colors);
 }

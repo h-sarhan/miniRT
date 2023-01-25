@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 18:15:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ bool	is_valid_color(const char *color);
 bool	check_value(const char *key, const char *val, double min, double max);
 bool	is_valid_val(const char *key, const char *val);
 t_color	parse_color_value(const char *str);
-void	parse_setting(t_shape *shape, char **key_val);
+bool	parse_setting(t_shape *shape, char **key_val);
 bool	check_braces(char *settings_str, size_t *line_num);
 char	*check_settings_str(char *settings_str, size_t *line_num);
 char	*get_settings_str(size_t *line_num, int fd, const char *settings_start);

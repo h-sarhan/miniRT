@@ -12,6 +12,7 @@
 
 
 
+
 void    *mlx_new_image(mlx_ptr_t *mlx_ptr, int width, int height)
 {
   mlx_img_list_t        *newimg;

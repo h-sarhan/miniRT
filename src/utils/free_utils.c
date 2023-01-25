@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 17:03:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:57:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,21 @@ void	free_scene(t_scene *scene)
 {
 	int	i;
 
+	if (scene == NULL)
+		return ;
+	if (scene->disp != NULL && scene->disp->mlx != NULL)
+	{
+		mlx_destroy_image(scene->disp->mlx, scene->disp->display_img);
+		mlx_destroy_image(scene->disp->mlx, scene->disp->render_img);
+		mlx_destroy_image(scene->disp->mlx, scene->disp->edit_img);
+		mlx_destroy_window(scene->disp->mlx, scene->disp->win);
+		mlx_destroy_display(scene->disp->mlx);
+		free(scene->disp->mlx);
+	}
 	i = 0;
 	if (scene->lights != NULL)
 		free(scene->lights);
-	while (i < scene->count.shapes)
+	while (i < scene->count.shapes && scene->shapes != NULL)
 	{
 		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
 		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
@@ -50,8 +61,10 @@ void	free_scene(t_scene *scene)
 	}
 	if (scene->shapes != NULL)
 		free(scene->shapes);
-	sem_close(scene->sem_loading);
-	// sem_destroy(scene->sem_loading);
+	if (scene->sem_loading != NULL)
+		sem_close(scene->sem_loading);
+	sem_unlink("/loading");
+	free(scene);
 }
 
 void	free_texture(t_shape *shape, t_color **texture)

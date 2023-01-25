@@ -9,13 +9,16 @@
 */
 
 #include	"mlx_int.h"
+#include <X11/X.h>
+#include <X11/Xutil.h>
 
 
 int	mlx_int_anti_resize_win(t_xvar *xvar,Window win,int w,int h)
 {
   XSizeHints    hints;
   long		toto;
-  
+
+  bzero(&hints, sizeof(XSizeHints));
   XGetWMNormalHints(xvar->display,win,&hints,&toto);
   hints.width = w;
   hints.height = h;

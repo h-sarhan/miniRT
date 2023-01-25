@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 13:53:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/12 16:27:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:56:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,20 @@ char	*ft_newline(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*str[1024];
+	static char	*str;
 	char		*s;
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
 	{
-		if (str[fd] != NULL)
-			free(str[fd]);
-		str[fd] = NULL;
+		if (str != NULL)
+			free(str);
+		str = NULL;
 		return (NULL);
 	}
-	str[fd] = ft_readline(fd, str[fd], BUFFER_SIZE);
-	if (!str[fd])
+	str = ft_readline(fd, str, BUFFER_SIZE);
+	if (!str)
 		return (NULL);
-	s = ft_currentline(str[fd]);
-	str[fd] = ft_newline(str[fd]);
+	s = ft_currentline(str);
+	str = ft_newline(str);
 	return (s);
 }

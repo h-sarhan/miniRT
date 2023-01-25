@@ -6,11 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 16:59:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:37:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+#include "scene.h"
 
 /**
  * @brief Opens a file and checks for errors with the arguments provided to
@@ -67,8 +68,8 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->render_scale = 1;
-	settings->edit_scale = 0.4;
+	settings->render_scale = 0.1;
+	settings->edit_scale = 0.1;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
@@ -110,13 +111,15 @@ int	main(int argc, char **argv)
 	t_display	disp;
 	int			fd;
 
-	srand(time(NULL));
 	fd = open_file(argc, argv);
 	if (fd == -1)
 		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	if (scene == NULL)
+	{
+		free_scene(scene);
 		return (EXIT_FAILURE);
+	}
 	close(fd);
 	init_settings(&scene->settings);
 	sem_unlink("/loading");

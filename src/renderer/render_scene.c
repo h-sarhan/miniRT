@@ -6,52 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:36:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-#include <stdlib.h>
-
-// * Does not skip pixels
-// void	*render_scene(t_worker *worker)
-// {
-// 	t_intersections	arr;
-// 	int				x;
-// 	int				y;
-// 	unsigned int	shape_idx;
-// 	t_ray			ray;
-// 	t_color			color;
-// 	int				line_counter;
-
-// 	line_counter = 0;
-// 	y = worker->y_start - 1;
-// 	while (++y < worker->y_end)
-// 	{
-// 		x = -1;
-// 		while (++x < worker->width)
-// 		{
-// 			set_color(worker, x, y, 0);
-// 			ray_from_cam(&ray, &worker->scene->cam, x, y);
-// 			shape_idx = -1;
-// 			arr.count = 0;
-// 			while (++shape_idx < worker->scene->count.shapes)
-// 			{
-// 				intersect(&worker->scene->shapes[shape_idx], &ray, &arr);
-// 			}
-// 			color = calculate_lighting(&arr, worker->scene, &ray);
-// 			set_color(worker, x, y, create_mlx_color(&color));
-// 		}
-// 		line_counter++;
-// 		if (worker->scene->settings.edit_mode == false
-// 			&& (line_counter == (worker->y_end - worker->y_start) / 5))
-// 		{
-// 			sem_post(worker->scene->sem_loading);
-// 			line_counter = 0;
-// 		}
-// 	}
-// 	return (NULL);
-// }
 
 void	*render_scene(t_worker *worker)
 {
@@ -75,8 +34,6 @@ void	*render_scene(t_worker *worker)
 		update_loading_bar(worker, &line_counter);
 		y += 1;
 	}
-	// fill_in_horizontal(worker, 15);
-	// fill_in_vertical(worker, 15);
 	return (NULL);
 }
 
