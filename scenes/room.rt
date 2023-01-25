@@ -43,9 +43,9 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	diffuse: 0.9,						
 	specular: 0.2,
 	shininess: 30,
-diffuse_texture: "./assets/cobblestone_diffuse.ppm",
-	normal_texture: "./assets/cobblestone_normal.ppm",
-	tile_texture : 4,
+ diffuse_texture: "./assets/leather_diffuse.ppm",
+	# normal_texture: "./assets/bark_normal.ppm",
+	tile_texture : 2,
 }   
 
 sp -0.5,2.5,0.5 1.6 255,255,255
@@ -54,9 +54,9 @@ sp -0.5,2.5,0.5 1.6 255,255,255
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 200,
-	diffuse_texture: "./assets/cobblestone_diffuse.ppm",
-	// normal_texture: "./assets/cobblestone_normal.ppm"
-	tile_texture : 4,
+	diffuse_texture: "./assets/leather_diffuse.ppm",
+	// normal_texture: "./assets/leather_normal.ppm"
+	tile_texture : 2,
 }          							
 sp -2.5,1.5,0.5 1.6 0,0,0
 {
@@ -64,7 +64,7 @@ sp -2.5,1.5,0.5 1.6 0,0,0
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	diffuse_texture: "./assets/marcos.ppm"
+	diffuse_texture: "./assets/shrek.ppm"
 }          							
 sp -2.5,1.5,-1.5 1.6 0,0,0
 {

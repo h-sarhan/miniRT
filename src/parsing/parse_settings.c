@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/25 19:45:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 01:44:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)
 		*line_num += 1;
 		if (line == NULL)
 			break ;
-		while (ft_strncmp(line, "//", 2) == 0 && line != NULL)
+		while ((ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0) && line != NULL)
 		{
 			free(line);
 			line = ft_strtrim_free(get_next_line(fd), " \t\n");
