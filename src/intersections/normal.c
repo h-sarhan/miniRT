@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 16:59:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:02:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,9 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 	mat_vec_multiply(&shape_point, &shape->inv_transf, itx_point);
 	if (shape->type == SPHERE)
 		spherical_map(&u, &v, &shape_point);
-	if (shape->type == CYLINDER || shape->type == CONE)
+	else if (shape->type == CYLINDER || shape->type == CONE)
 	{
+		shape_point.y /= shape->props.height;
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}
@@ -155,7 +156,7 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 	normal.w = 0;
 	normal.x = 2 * normal_coords.r - 1;
 	normal.y = 2 * normal_coords.g - 1;
-	normal.z = 2 *normal_coords.b - 1;
+	normal.z = 2 * normal_coords.b - 1;
 	normalize_vec(&normal);
 	return (normal);
 }

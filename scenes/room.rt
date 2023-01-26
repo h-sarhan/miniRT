@@ -44,7 +44,7 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	specular: 0.2,
 	shininess: 30,
  diffuse_texture: "./assets/leather_diffuse.ppm",
-	# normal_texture: "./assets/bark_normal.ppm",
+	 normal_texture: "./assets/leather_normal.ppm",
 	tile_texture : 2,
 }   
 

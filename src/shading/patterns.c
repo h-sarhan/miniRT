@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/23 14:23:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:02:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ t_color	get_texture_color2(t_intersection *itx)
 	double		u;
 	double		v;
 
-	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->over_point);
+	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->point);
 	// shape_point.y = 1 - shape_point.y;
 	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
 	{
+		shape_point.y /= itx->shape->props.height;
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}

@@ -1,0 +1,112 @@
+A 0.1 255,255,255
+
+C 0,1,-8 0,0,1 60
+
+// orange light
+L 5,10,-5 0.8 200,100,20
+
+// white light
+L -10,10,-10 1.0 128,128,153
+
+
+
+sp -0.5,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/wicker_diffuse.ppm",
+	 normal_texture: "./assets/wicker_normal.ppm",
+	tile_texture : 2,
+}  
+
+sp -0.5,2.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/bark_diffuse.ppm",
+	 normal_texture: "./assets/bark_normal.ppm",
+	tile_texture : 2,
+}   
+cu -0.5,3.5,0.5 0.8 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/cat.ppm",
+}  
+
+sp 3.5,3.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/cobblestone_diffuse.ppm",
+	 normal_texture: "./assets/cobblestone_normal.ppm",
+	tile_texture : 2,
+}   
+sp 1.5,5.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/gravel_diffuse.ppm",
+	 normal_texture: "./assets/gravel_normal.ppm",
+	tile_texture : 2,
+}   
+sp -5.5,5.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/leather_diffuse.ppm",
+	 normal_texture: "./assets/leather_normal.ppm",
+	tile_texture : 2,
+}   
+sp -2.5,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/orange_diffuse.ppm",
+	 normal_texture: "./assets/orange_normal.ppm",
+	tile_texture : 10,
+}   
+sp -6.5,5.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/watermelon_diffuse.ppm",
+	 normal_texture: "./assets/watermelon_normal.ppm",
+	tile_texture : 1,
+}   
+
+sp -2,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/tree.ppm",
+	tile_texture : 1,
+}   
+
+// floor
+pl 0,0,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: white
+         }
+
+
