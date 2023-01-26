@@ -6,16 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 00:41:55 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 01:15:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
-#include "libft.h"
-#include "mathRT.h"
 #include "miniRT.h"
-#include "parsing.h"
-#include "utils.h"
 
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
@@ -94,7 +89,7 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 		{
 			t_vector	resolution;
 
-			sub_vec(&resolution, &sphere->origin, &box->origin);
+			sub_vec(&resolution, &sphere->origin, &point_on_box);
 			normalize_vec(&resolution);
 			scale_vec(&resolution, &resolution, sphere->props.radius - distance);
 			if (box_sphere)
@@ -117,7 +112,7 @@ bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 	t_vector	box_min;
 	t_vector	sides = box->props.scale;
 	t_vector	box_half;
-	float	extent;
+	float		extent;
 
 	add_vec(&box_max, &box->origin, &sides);
 	sub_vec(&box_min, &box->origin, &sides);
