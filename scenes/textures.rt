@@ -18,7 +18,6 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	shininess: 30,
  diffuse_texture: "./assets/leather_diffuse.ppm",
 	 normal_texture: "./assets/leather_normal.ppm",
-	 roughness_texture: "./assets/leather_roughness.ppm",
 	tile_texture : 1,
 }  
 
@@ -30,7 +29,6 @@ sp 1.5,1.5,0.5 1.6 0,0,0
 	shininess: 200,
  diffuse_texture: "./assets/leather_diffuse.ppm",
 	 normal_texture: "./assets/leather_normal.ppm",
-	#  roughness_texture: "./assets/leather_roughness.ppm",
 	tile_texture : 1,
 }  
 
@@ -39,7 +37,7 @@ sp 1.5,1.5,0.5 1.6 0,0,0
 # 	reflectiveness: 0,               
 # 	diffuse: 0.9,						
 # 	specular: 0.2,
-# 	shininess: 30,
+# 	shininess: 30,  
 #  diffuse_texture: "./assets/bark_diffuse.ppm",
 # 	 normal_texture: "./assets/bark_normal.ppm",
 # 	tile_texture : 2,

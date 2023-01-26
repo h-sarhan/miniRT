@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 17:22:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:21:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	else
 		mult_color(&phong->specular, &scene->lights[light_idx].color,
 			itx->shape->props.specular * \
-			pow(reflect_dot_eye, get_roughness(itx))
+			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* scene->lights[light_idx].intensity);
 	return (true);
 }

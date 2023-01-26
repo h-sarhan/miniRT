@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/26 17:22:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:20:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,48 +78,6 @@ t_color	get_texture_color2(t_intersection *itx)
 	return (itx->shape->diffuse_tex[(int)u][(int)v]);
 }
 
-double	get_roughness(t_intersection *itx)
-{
-	t_vector	shape_point;
-	double		u;
-	double		v;
-
-	if (itx->shape->roughness_tex == NULL)
-		return (itx->shape->props.shininess);
-	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->point);
-	// shape_point.y = 1 - shape_point.y;
-	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
-	{
-		shape_point.y /= itx->shape->props.height;
-		shape_point.y -= 0.5;
-		cylindrical_map(&u, &v, &shape_point);
-	}
-	else if (itx->shape->type == SPHERE)
-		spherical_map(&u, &v, &shape_point);
-	else
-		cubical_map(&u, &v, &shape_point);
-	// shape_point.x += 1;
-	// shape_point.y += 1;
-	// shape_point.x /= 2;
-	// shape_point.y /= 2;
-	
-	if (u < 0|| v < 0)
-		return (itx->shape->props.shininess);
-	if (itx->shape->tex_tile != 0)
-	{
-		u = (int)floor(u * (itx->shape->tex_height - 1) * itx->shape->tex_tile) % itx->shape->tex_height;
-		v = (int)floor(v * (itx->shape->tex_width - 1) * itx->shape->tex_tile) % itx->shape->tex_width;
-	}
-	else
-	{
-		u = (int)floor(u * (itx->shape->tex_height - 1));
-		v = (int)floor(v * (itx->shape->tex_width - 1));
-	}
-	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
-		return (itx->shape->props.shininess);
-	t_color	roughness = itx->shape->roughness_tex[(int)u][(int)v];
-	return ((1 - max(roughness.r, 0)) * 200);
-}
 
 t_color	get_shape_color(t_intersection *itx)
 {
