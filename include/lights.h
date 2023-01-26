@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:20:15 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ struct s_light
 	t_vector		init_direction;
 	t_mat4			added_rots;
 	t_color			color;
-	double			intensity;
-	double			theta;
+	float			intensity;
+	float			theta;
 };
 
 /**
@@ -51,7 +51,7 @@ struct s_light
 typedef struct s_ambient	t_ambient;
 struct s_ambient
 {
-	double	intensity;
+	float	intensity;
 	t_color	color;
 };
 

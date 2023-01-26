@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/21 15:33:04 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/01/26 20:13:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		is_space(char c);
 int		ft_strcmp_case(const char *s1, const char *s2);
 void	ft_swap(int *a, int *b);
-void	ft_swapd(double *a, double *b);
+void	ft_swapd(float *a, float *b);
 char	*ftoa(float num);
 
 typedef struct s_list

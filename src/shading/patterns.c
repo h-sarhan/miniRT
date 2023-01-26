@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/26 18:20:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // t_color	get_texture_color(t_intersection *itx)
 // {
 // 	t_vector	shape_point;
-// 	double		u;
-// 	double		v;
+// 	float		u;
+// 	float		v;
 
 // 	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->over_point);
 // 	if (shape_point.x > 1 || shape_point.y > 1 || shape_point.x < -1 || shape_point.y < -1)
@@ -40,8 +40,8 @@
 t_color	get_texture_color2(t_intersection *itx)
 {
 	t_vector	shape_point;
-	double		u;
-	double		v;
+	float		u;
+	float		v;
 
 	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->point);
 	// shape_point.y = 1 - shape_point.y;
@@ -132,7 +132,7 @@ t_color	ring_pattern(t_intersection *itx, t_vector point, t_color a, t_color b)
 t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color b)
 {
 	t_color		color;
-	double		fraction;
+	float		fraction;
 	t_vector	transf_point;
 	t_mat4		pattern_transf;
 	
@@ -149,45 +149,45 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 	return (color);
 }
 
-void	cube_map_right(double *u, double *v, t_vector *point)
+void	cube_map_right(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((1 - point->z), 2.0)) / 2.0;
 	*v = (fmod((point->y + 1), 2.0)) / 2.0;
 }
 
-void	cube_map_left(double *u, double *v, t_vector *point)
+void	cube_map_left(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((point->z + 1), 2.0)) / 2.0;
 	*v = (fmod((point->y + 1), 2.0)) / 2.0;
 }
 
-void	cube_map_up(double *u, double *v, t_vector *point)
+void	cube_map_up(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((1 - point->x), 2.0)) / 2.0;
 	*v = (fmod((1- point->z), 2.0)) / 2.0;
 }
-void	cube_map_down(double *u, double *v, t_vector *point)
+void	cube_map_down(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((1 - point->x), 2.0)) / 2.0;
 	*v = (fmod((point->z + 1), 2.0)) / 2.0;
 }
-void	cube_map_front(double *u, double *v, t_vector *point)
+void	cube_map_front(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((point->x + 1), 2.0)) / 2.0;
 	*v = (fmod((point->y + 1), 2.0)) / 2.0;
 }
-void	cube_map_back(double *u, double *v, t_vector *point)
+void	cube_map_back(float *u, float *v, t_vector *point)
 {
 	*u = (fmod((1 - point->x), 2.0)) / 2.0;
 	*v = (fmod((point->y + 1), 2.0)) / 2.0;
 }
 
-void	cubical_map(double *u, double *v, t_vector *point)
+void	cubical_map(float *u, float *v, t_vector *point)
 {
-	double	abs_x;
-	double	abs_y;
-	double	abs_z;
-	double	coord;
+	float	abs_x;
+	float	abs_y;
+	float	abs_z;
+	float	coord;
 
 	abs_x = fabs(point->x);
 	abs_y = fabs(point->y);
@@ -207,12 +207,12 @@ void	cubical_map(double *u, double *v, t_vector *point)
 		cube_map_back(u, v, point);
 }
 
-void	spherical_map(double *u, double *v, t_vector *point)
+void	spherical_map(float *u, float *v, t_vector *point)
 {
-	double		theta;
+	float		theta;
 	t_vector	vec;
-	double		radius;
-	double		phi;
+	float		radius;
+	float		phi;
 
 	vec = *point;
 	vec.w = 0;
@@ -223,9 +223,9 @@ void	spherical_map(double *u, double *v, t_vector *point)
 	*v = 1 - (phi / M_PI);
 }
 
-void	cylindrical_map(double *u, double *v, t_vector *point)
+void	cylindrical_map(float *u, float *v, t_vector *point)
 {
-	double	theta;
+	float	theta;
 
 	theta = atan2(point->x, point->z);
 	*u = 1 - (theta / (2 * M_PI) + 0.5);
@@ -234,10 +234,10 @@ void	cylindrical_map(double *u, double *v, t_vector *point)
 
 t_color	checker_pattern(t_intersection *itx, t_vector *point)
 {
-	double		u2;
-	double		v2;
-	double		u;
-	double		v;
+	float		u2;
+	float		v2;
+	float		u;
+	float		v;
 	t_vector	transf_point;
 
 	mat_vec_multiply(&transf_point, &itx->shape->inv_transf, point);

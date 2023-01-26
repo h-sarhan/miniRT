@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 16:47:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,11 @@ void	draw_shape_info(t_scene *scene)
 }
 
 // ! Not currently using but could be helpful later
-// void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
+// void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 // {
-// 	double	dy;
-// 	double	dx;
-// 	double	steps;
+// 	float	dy;
+// 	float	dx;
+// 	float	steps;
 // 	int		i;
 // 	char	*dst;
 

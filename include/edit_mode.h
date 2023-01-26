@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 16:11:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ bool	collide(t_scene *scene, bool resolve, int depth,
 			t_shape *transformed_shape);
 int		mouse_rotate(t_scene *scene);
 
-void	rotate_x(t_scene *scene, t_mat4 *rot_mat, double deg);
-void	rotate_y(t_scene *scene, t_mat4 *rot_mat, double deg);
-void	rotate_z(t_scene *scene, t_mat4 *rot_mat, double deg);
+void	rotate_x(t_scene *scene, t_mat4 *rot_mat, float deg);
+void	rotate_y(t_scene *scene, t_mat4 *rot_mat, float deg);
+void	rotate_z(t_scene *scene, t_mat4 *rot_mat, float deg);
 int		mouse_down(int key_code, int x, int y, t_scene *scene);
 int		mouse_up(int key_code, int x, int y, t_scene *scene);
 int		key_press(int key, t_scene *scene);

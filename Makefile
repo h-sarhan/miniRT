@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/26 01:42:21 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/26 20:55:35 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,12 +58,12 @@ OS := $(shell uname)
 CC = gcc
 ifeq ($(OS),Linux)
 	INC = -Iinclude -Ilibft -Imlx -I/usr/include -Imlx_linux
-	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
+	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 	MLX = mlx_linux
 else
 	INC = -Iinclude -Ilibft -Imlx 
-	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
+	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops 
 	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit 
 	MLX = mlx
 endif

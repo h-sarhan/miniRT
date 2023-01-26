@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 18:20:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ typedef struct s_shape_props	t_props;
 struct s_shape_props
 {
 	bool			highlighted;
-	double			radius;
-	double			radius_squared;
-	double			height;
-	double			diffuse;
-	double			specular;
-	double			shininess;
-	double			reflectiveness;
-	double			distance_from_origin;
+	float			radius;
+	float			radius_squared;
+	float			height;
+	float			diffuse;
+	float			specular;
+	float			shininess;
+	float			reflectiveness;
+	float			distance_from_origin;
 	t_color			color;
 	t_vector		rot;
 	t_vector		scale;

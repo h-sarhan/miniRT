@@ -6,16 +6,16 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 15:56:36 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-static bool	within_cone_radius(const t_ray *ray, double t, double cone_val)
+static bool	within_cone_radius(const t_ray *ray, float t, float cone_val)
 {
-	double	x;
-	double	z;
+	float	x;
+	float	z;
 
 	x = ray->origin.x + ray->dir.x * t;
 	z = ray->origin.z + ray->dir.z * t;
@@ -28,7 +28,7 @@ static bool	check_cone_caps(const t_ray *ray, t_shape *shape,
 		t_intersections *xs)
 {
 	bool	intersected;
-	double	t;
+	float	t;
 
 	intersected = false;
 	if (fabs(ray->dir.y) > EPSILON)
@@ -54,10 +54,10 @@ static bool	check_cone_caps(const t_ray *ray, t_shape *shape,
 }
 
 static bool	add_cone_intersections(t_shape *shape, const t_ray *ray,
-	t_intersections *xs, double *ts)
+	t_intersections *xs, float *ts)
 {
-	double	y0;
-	double	y1;
+	float	y0;
+	float	y1;
 	bool	intersected;
 
 	intersected = false;
@@ -82,9 +82,9 @@ static bool	add_cone_intersections(t_shape *shape, const t_ray *ray,
 	return (intersected);
 }
 
-static double	get_cone_discriminant(const t_ray *ray, double *abc)
+static float	get_cone_discriminant(const t_ray *ray, float *abc)
 {
-	double	discriminant;
+	float	discriminant;
 
 	abc[0] = ray->dir.x * ray->dir.x - ray->dir.y * ray->dir.y \
 	+ ray->dir.z * ray->dir.z;
@@ -101,9 +101,9 @@ static double	get_cone_discriminant(const t_ray *ray, double *abc)
 bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs)
 {
 	bool	intersected;
-	double	abc[3];
-	double	discriminant;
-	double	ts[2];
+	float	abc[3];
+	float	discriminant;
+	float	ts[2];
 
 	intersected = check_cone_caps(ray, shape, xs);
 	discriminant = get_cone_discriminant(ray, abc);

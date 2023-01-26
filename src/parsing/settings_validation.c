@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 18:20:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ bool	is_valid_color(const char *color)
 	return (false);
 }
 
-bool	check_value(const char *key, const char *val, double min, double max)
+bool	check_value(const char *key, const char *val, float min, float max)
 {
 	bool	success;
-	double	parsed_value;
+	float	parsed_value;
 
 	success = true;
 	if (ft_strcmp_case(key, "diffuse_texture") == 0 || ft_strcmp_case(key, "normal_texture") == 0
@@ -101,8 +101,8 @@ bool	check_value(const char *key, const char *val, double min, double max)
 
 bool	is_valid_val(const char *key, const char *val)
 {
-	double	min;
-	double	max;
+	float	min;
+	float	max;
 
 	if (val == NULL || ft_strlen(val) == 0)
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 14:02:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_vector	cylinder_normal(const t_shape *shape, const t_vector *itx_point)
 {
-	double		distance;
+	float		distance;
 	t_vector	normal;
 	t_vector	point;
 	t_vector	world_normal;
@@ -43,7 +43,7 @@ t_vector	cylinder_normal(const t_shape *shape, const t_vector *itx_point)
 
 t_vector	cone_normal(const t_shape *shape, const t_vector *itx_point)
 {
-	double		distance;
+	float		distance;
 	t_vector	normal;
 	t_vector	point;
 	t_vector	world_normal;
@@ -91,7 +91,7 @@ t_vector	plane_normal(const t_shape *shape, const t_vector *itx_point)
 
 t_vector	cube_normal(const t_shape *shape, const t_vector *itx_point)
 {
-	double		maxc;
+	float		maxc;
 	t_vector	normal;
 
 	mat_vec_multiply(&normal, &shape->inv_transf, itx_point);
@@ -119,8 +119,8 @@ t_vector	cube_normal(const t_shape *shape, const t_vector *itx_point)
 t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	shape_point;
-	double		u;
-	double		v;
+	float		u;
+	float		v;
 	t_vector	normal;
 	t_color		normal_coords;
 

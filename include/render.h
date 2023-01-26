@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 17:24:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int		get_color(t_worker *worker, int x, int y);
 void	set_color(t_worker *worker, int x, int y, int color);
 
 t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray);
-t_color	render_pixel(double x, double y, t_intersections *arr, t_worker *worker);
-t_color	super_sample_pixel(double x, double y, t_intersections *arr, t_worker *worker);
+t_color	render_pixel(float x, float y, t_intersections *arr, t_worker *worker);
+t_color	super_sample_pixel(float x, float y, t_intersections *arr, t_worker *worker);
 void	fill_in_horizontal(t_worker *worker, int threshold);
 void	fill_in_vertical(t_worker *worker, int threshold);
 void	update_loading_bar(t_worker *worker, int *line_counter);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/20 18:55:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 21:28:27 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	t_shape *sphere)
 {
 	t_vector	oc;
-	double		b;
-	double		c;
-	double		h;
+	float		b;
+	float		c;
+	float		h;
 
 	sub_vec(&oc, &ray->origin, &sphere->origin);
 	b = dot_product(&oc, &ray->dir);
@@ -36,11 +36,11 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	return (true);
 }
 
-static void	check_cube_axis(double *t_min, double *t_max, double origin,
-		double direction)
+static void	check_cube_axis(float *t_min, float *t_max, float origin,
+		float direction)
 {
-	double	tmin_numerator;
-	double	tmax_numerator;
+	float	tmin_numerator;
+	float	tmax_numerator;
 
 	tmin_numerator = (-1 - origin);
 	tmax_numerator = 1 - origin;
@@ -62,8 +62,8 @@ bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 {
 	t_vector	tmin_vec;
 	t_vector	tmax_vec;
-	double		tmin;
-	double		tmax;
+	float		tmin;
+	float		tmax;
 
 	check_cube_axis(&tmin_vec.x, &tmax_vec.x, ray->origin.x, ray->dir.x);
 	check_cube_axis(&tmin_vec.y, &tmax_vec.y, ray->origin.y, ray->dir.y);
@@ -80,17 +80,17 @@ bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs)
 	return (true);
 }
 
-bool	intersect_plane_fast(const t_ray *ray, t_shape *shape,
+bool	intersect_plane_fast(const t_ray *ray, t_shape *plane,
 		t_intersections *xs)
 {
-	double	denom;
+	float	denom;
 
-	denom = dot_product(&ray->dir, &shape->orientation);
+	denom = dot_product(&ray->dir, &plane->orientation);
 	if (fabs(denom) < 0.00001)
 		return (false);
-	xs->arr[xs->count].time = -(dot_product(&ray->origin, &shape->orientation) \
-		- shape->props.distance_from_origin) / denom;
-	xs->arr[xs->count].shape = shape;
+	xs->arr[xs->count].time = -(dot_product(&ray->origin, &plane->orientation) \
+		+ plane->props.distance_from_origin) / denom;
+	xs->arr[xs->count].shape = plane;
 	xs->count++;
 	return (true);
 }

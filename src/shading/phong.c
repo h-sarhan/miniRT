@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 18:21:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "scene.h"
 
-t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
+t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
 {
 	t_color	ambient;
 	(void)attenuation;
@@ -28,8 +28,8 @@ t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
-	double		reflect_dot_eye;
-	double		light_dot_normal;
+	float		reflect_dot_eye;
+	float		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
 
@@ -60,9 +60,9 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_phong	phong;
 	t_color	result;
 	t_color	shape_color;	
-	const double	light_dist = vec_distance(&itx->point, \
+	const float	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const double	attentuation_factor = (80 * scene->lights[light_idx].intensity \
+	const float	attentuation_factor = (80 * scene->lights[light_idx].intensity \
 			- light_dist) / (80 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
@@ -114,9 +114,9 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 
 bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 {
-	double			distance;
+	float			distance;
 	int				i;
-	double			angle;
+	float			angle;
 	t_ray			ray;
 	t_intersections	arr;
 	t_intersection	*intersection;
