@@ -129,5 +129,6 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a, t_color
 t_color	ring_pattern(t_intersection *itx, t_vector point, t_color a, t_color b);
 t_vector	normal_map(t_vector *normal, const t_shape *shape, const t_vector *itx_point);
 void	free_texture(t_shape *shape, t_color **texture);
+double	get_roughness(t_intersection *itx);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/25 16:57:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:09:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	free_scene(t_scene *scene)
 	{
 		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
 		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
+		free_texture(&scene->shapes[i], scene->shapes[i].roughness_tex);
 		i++;
 	}
 	if (scene->shapes != NULL)

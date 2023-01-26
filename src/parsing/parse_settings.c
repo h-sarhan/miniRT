@@ -6,13 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 01:44:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:00:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-#include "parsing.h"
-#include <stdio.h>
 
 t_color	parse_color_value(const char *str)
 {
@@ -79,6 +77,12 @@ bool	parse_setting(t_shape *shape, char **key_val)
 	{
 		shape->normal_tex = parse_texture(key_val[1], shape);
 		if (shape->normal_tex == NULL)
+			return (false);
+	}
+	if (ft_strcmp("roughness_texture", key_val[0]) == 0)
+	{
+		shape->roughness_tex = parse_texture(key_val[1], shape);
+		if (shape->roughness_tex == NULL)
 			return (false);
 	}
 	if (ft_strcmp("tile_texture", key_val[0]) == 0)

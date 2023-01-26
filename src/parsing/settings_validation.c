@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 12:46:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:10:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ bool	is_valid_key(const char *key)
 			|| ft_strcmp(key, "color") == 0
 			|| ft_strcmp(key, "normal_texture") == 0
 			|| ft_strcmp(key, "diffuse_texture") == 0
+			|| ft_strcmp(key, "roughness_texture") == 0
 			|| ft_strcmp(key, "tile_texture") == 0
 			))
 		return (true);
@@ -73,7 +74,8 @@ bool	check_value(const char *key, const char *val, double min, double max)
 	double	parsed_value;
 
 	success = true;
-	if (ft_strcmp_case(key, "diffuse_texture") == 0 || ft_strcmp_case(key, "normal_texture") == 0)
+	if (ft_strcmp_case(key, "diffuse_texture") == 0 || ft_strcmp_case(key, "normal_texture") == 0
+	|| ft_strcmp_case(key, "roughness_texture") == 0)
 	{
 		if (ft_strnstr(val, ".ppm\"", ft_strlen(val)) == NULL
 			|| ft_strcmp(&val[ft_strlen(val) - 5], ".ppm\"") != 0)

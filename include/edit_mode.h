@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 17:00:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:11:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 #  define KEY_X 120
 #  define KEY_Y 16
 #  define KEY_Z 6
-#  define KEY_L 37
+#  define KEY_L 108
 #  define KEY_J 106
 #  define KEY_H 104
 # else

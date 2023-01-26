@@ -6,14 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:12:54 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 01:41:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:39:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "miniRT.h"
-#include <stdio.h>
-#include <unistd.h>
 
 int	read_ppm_header(int fd, int *w, int *h)
 {

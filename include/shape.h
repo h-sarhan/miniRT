@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/23 12:04:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 16:01:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ struct s_shape
 	t_mat4			added_rots;
 	t_color			**diffuse_tex;
 	t_color			**normal_tex;
+	t_color			**roughness_tex;
 	int				tex_width;
 	int				tex_height;
 	int				tex_tile;

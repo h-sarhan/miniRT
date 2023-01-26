@@ -6,11 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:47:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/19 10:44:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 17:15:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "color.h"
 #include "miniRT.h"
+#include "scene.h"
 
 void	reflect_vector(t_vector *res, t_vector *in_vector, t_vector *normal)
 {
