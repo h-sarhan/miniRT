@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/26 23:14:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@
 #  define LEFT_MOUSE_DOWN 1
 #  define KEY_T 116
 #  define KEY_X 120
-#  define KEY_Y 16
-#  define KEY_Z 6
+#  define KEY_Y 121
+#  define KEY_Z 122
 #  define KEY_L 108
 #  define KEY_J 106
 #  define KEY_H 104

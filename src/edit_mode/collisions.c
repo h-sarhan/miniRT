@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 23:05:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 00:41:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,88 @@ bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 	return (false);
 }
 
+t_vector	closest_point_on_box(const t_vector *point, const t_shape *box)
+{
+	t_vector	point_to_center;
+	t_vector	closest;
 
-// bool	sphere_box_collision()
-// {
-// 	// Find point p on OBB closest to sphere center
-// 	ClosestPtPointOBB(s.c, b, p);
-// 	// Sphere and OBB intersect if the (squared) distance from sphere
-// 	// center to point p is less than the (squared) sphere radius
-// 	Vectorv=p- s.c;
-// 	return Dot(v, v) <= s.r * s.r
-// }
+	ft_bzero(&closest, sizeof(t_vector));
+	sub_vec(&point_to_center, point, &box->origin);
+	closest = box->origin;
+	t_vector	box_u;
+	box_u.x = box->added_rots[0][0];
+	box_u.y = box->added_rots[1][0];
+	box_u.z = box->added_rots[2][0];
+	box_u.w = 0;
+	normalize_vec(&box_u);
+	t_vector	box_v;
+	box_v.x = box->added_rots[0][1];
+	box_v.y = box->added_rots[1][1];
+	box_v.z = box->added_rots[2][1];
+	box_v.w = 0;
+	normalize_vec(&box_v);
+	t_vector	box_w;
+	box_w.x = box->added_rots[0][2];
+	box_w.y = box->added_rots[1][2];
+	box_w.z = box->added_rots[2][2];
+	box_w.w = 0;
+	normalize_vec(&box_w);
+	
+	t_vector	step;
+	float dist = dot_product(&point_to_center, &box_u);
+	if (dist > box->props.scale.x)
+		dist = box->props.scale.x;
+	if (dist < -box->props.scale.x)
+		dist = -box->props.scale.x;
+	scale_vec(&step, &box_u, dist);
+	add_vec(&closest, &closest, &step);
+	dist = dot_product(&point_to_center, &box_v);
+	if (dist > box->props.scale.y)
+		dist = box->props.scale.y;
+	if (dist < -box->props.scale.y)
+		dist = -box->props.scale.y;
+	scale_vec(&step, &box_v, dist);
+	add_vec(&closest, &closest, &step);
+	dist = dot_product(&point_to_center, &box_w);
+	if (dist > box->props.scale.z)
+		dist = box->props.scale.z;
+	if (dist < -box->props.scale.z)
+		dist = -box->props.scale.z;
+	scale_vec(&step, &box_w, dist);
+	add_vec(&closest, &closest, &step);
+	return (closest);
+}
+
+bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool resolve)
+{
+	t_vector	point_on_box  = closest_point_on_box(&sphere->origin, box);
+	float	distance = vec_distance(&point_on_box, &sphere->origin);
+	t_vector box_to_sphere;
+	sub_vec(&box_to_sphere, &point_on_box, &sphere->origin);
+	if (dot_product(&box_to_sphere, &box_to_sphere) <= sphere->props.radius_squared)
+	{
+		if (resolve)
+		{
+			t_vector	resolution;
+
+			sub_vec(&resolution, &sphere->origin, &box->origin);
+			normalize_vec(&resolution);
+			scale_vec(&resolution, &resolution, sphere->props.radius - distance);
+			if (box_sphere)
+				add_vec(&sphere->origin, &sphere->origin, &resolution);
+			else
+				sub_vec(&box->origin, &box->origin, &resolution);
+		}
+		return (true);
+	}
+	else
+	{
+		return (false);
+	}
+}
 
 
-bool	box_plane_collsions(t_shape *box, const t_shape *plane, bool resolve)
+bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 {
 	t_vector	box_max;
 	t_vector	box_min;
@@ -50,14 +119,10 @@ bool	box_plane_collsions(t_shape *box, const t_shape *plane, bool resolve)
 	t_vector	box_half;
 	float	extent;
 
-	// scale_vec(&sides, &sides, 0.5);
 	add_vec(&box_max, &box->origin, &sides);
 	sub_vec(&box_min, &box->origin, &sides);
 	sub_vec(&box_half, &box_max, &box_min);
 	scale_vec(&box_half, &box_half, 0.5);
-	// print_vector(&box_max);
-	// printf("\n");
-	// print_vector(&box_min);
 	t_vector	box_u;
 	box_u.x = box->added_rots[0][0];
 	box_u.y = box->added_rots[1][0];
@@ -428,7 +493,7 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CUBE && shape2->type == PLANE)
 			{
-				if (box_plane_collsions(shape1, shape2, resolve) == true)
+				if (box_plane_collsion(shape1, shape2, resolve) == true)
 				{
 					collided = true;
 				}
@@ -444,6 +509,22 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			else if (shape1->type == SPHERE && shape2->type == CYLINDER && transformed_shape != shape2)
 			{
 				if (cylinder_sphere_collision(shape2, shape1, false, resolve))
+				{
+					collided = true;
+					// printf("sphere cylinder collision\n");
+				}
+			}
+			else if (shape1->type == SPHERE && shape2->type == CUBE && transformed_shape != shape2)
+			{
+				if (sphere_box_collision(shape2, shape1, false, resolve) == true)
+				{
+					collided = true;
+					// printf("sphere cylinder collision\n");
+				}
+			}
+			else if (shape1->type == CUBE && shape2->type == SPHERE && transformed_shape != shape2)
+			{
+				if (sphere_box_collision(shape1, shape2, true, resolve) == true)
 				{
 					collided = true;
 					// printf("sphere cylinder collision\n");
