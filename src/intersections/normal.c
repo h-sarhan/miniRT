@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:45:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,11 +135,10 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 		shape_point.y -= 0.5;
 		cylindrical_map(&u, &v, &shape_point);
 	}
-	// if (shape->type == CUBE)
 	else
 		cubical_map(&u, &v, &shape_point);
-	// if (u < 0 || v < 0)
-	// 	return (normal);
+	if (u < 0 || v < 0)
+		return (normal);
 	if (shape->tex_tile != 0)
 	{
 		u = (int)floor(u * (shape->tex_height - 1) * shape->tex_tile) % shape->tex_height;
@@ -150,8 +149,8 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 		u = (int)floor(u * (shape->tex_height - 1));
 		v = (int)floor(v * (shape->tex_width - 1));
 	}
-	// if (u >= shape->tex_height || v >= shape->tex_width)
-	// 	return (normal);
+	if (u >= shape->tex_height || v >= shape->tex_width)
+		return (normal);
 	normal_coords = shape->normal_tex[(int)u][(int)v];
 	normal.w = 0;
 	normal.x = 2 * normal_coords.r - 1;
@@ -192,15 +191,7 @@ t_vector	normal_map(t_vector *normal, const t_shape *shape, const t_vector *itx_
 	tbn[2][1] = b.z;
 	tbn[2][2] = normal->z;
 	tbn[3][3] = 1;
-	// t_vector	altered_normal;
-	// mat_vec_multiply(&altered_normal, &tbn, &tex_normal);
-	// normalize_vec(&altered_normal);
 
-	// t_vector	final_normal;
-	// mat_vec_multiply(&final_normal, &shape->norm_transf, &altered_normal);
-	// final_normal.w = 0;
-	// normalize_vec(&final_normal);
-	// return (final_normal);
 	t_vector	final_normal;
 	mat_vec_multiply(&final_normal, &tbn, &tex_normal);
 	normalize_vec(&final_normal);

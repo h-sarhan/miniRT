@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:25 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 20:34:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:56:08 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_shape(t_shape *shape, t_scene *scene)
 	shape->props.specular = 0.9;
 	shape->props.shininess = 200;
 	shape->props.pattern_type = NONE;
+	shape->tex_tile = 1;
 	identity_matrix(&shape->added_rots);
 }
 

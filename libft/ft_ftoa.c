@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 15:31:54 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/27 20:28:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:42:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ char	*ftoa(float num)
 	int		i[3];
 	int		decimal[2];
 
-	if (num < -2147483648 || num > 2147483647)
-		return ("Invalid");
 	i[2] = 0;
 	if (num < 0)
 	{
