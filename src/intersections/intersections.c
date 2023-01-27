@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/26 21:28:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:09:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	intersect_sphere_fast(const t_ray *ray, t_intersections *xs,
 	return (true);
 }
 
-static void	check_cube_axis(float *t_min, float *t_max, float origin,
+void	check_cube_axis(float *t_min, float *t_max, float origin,
 		float direction)
 {
 	float	tmin_numerator;

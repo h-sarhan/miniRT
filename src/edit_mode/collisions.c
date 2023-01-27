@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 01:15:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 14:42:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -524,6 +524,20 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 					collided = true;
 					// printf("sphere cylinder collision\n");
 				}
+			}
+			else if (shape1->type == CUBE && shape2->type == CUBE &&  transformed_shape != shape2)
+			{
+				
+				// if (shape2 == transformed_shape)
+				// {
+				// 	if (box_box_collision(shape2, shape1, resolve))
+				// 		collided = true;
+				// }
+				// else if (box_box_collision(shape1, shape2, resolve) == true)
+				// {
+				// 	collided = true;
+				// 	// printf("sphere cylinder collision\n");
+				// }
 			}
 			idx2++;
 		}

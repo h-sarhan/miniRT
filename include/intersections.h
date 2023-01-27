@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:09:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,7 @@ bool	intersect_cone(const t_ray *ray, t_shape *shape, t_intersections *xs);
 void	spherical_map(float *u, float *v, t_vector *point);
 void	cylindrical_map(float *u, float *v, t_vector *point);
 void	cubical_map(float *u, float *v, t_vector *point);
+bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
+void	check_cube_axis(float *t_min, float *t_max, float origin,
+		float direction);
 #endif
