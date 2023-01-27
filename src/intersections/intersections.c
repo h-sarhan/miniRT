@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/27 13:09:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:04:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ bool	intersect_plane_fast(const t_ray *ray, t_shape *plane,
 	if (fabs(denom) < 0.00001)
 		return (false);
 	xs->arr[xs->count].time = -(dot_product(&ray->origin, &plane->orientation) \
-		+ plane->props.distance_from_origin) / denom;
+		- plane->props.distance_from_origin) / denom;
 	xs->arr[xs->count].shape = plane;
 	xs->count++;
 	return (true);

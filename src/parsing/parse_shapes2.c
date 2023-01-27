@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:25 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 01:23:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:04:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_shape(t_shape *shape, t_scene *scene)
 	}
 	if (shape->type == PLANE)
 		shape->props.distance_from_origin = \
-			fabs(dot_product(&shape->orientation, &shape->origin));
+			(dot_product(&shape->orientation, &shape->origin));
 	shape->props.reflectiveness = 0.1;
 	shape->id = scene->count.shapes;
 	scene->count.shapes++;

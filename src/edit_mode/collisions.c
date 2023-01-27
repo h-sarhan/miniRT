@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 01:52:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 02:15:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 	box_w.w = 0;
 	normalize_vec(&box_w);
 	extent = box->props.scale.x * fabs(dot_product(&plane->orientation, &box_u)) + box->props.scale.y * fabs(dot_product(&plane->orientation, &box_v)) + box->props.scale.z * fabs(dot_product(&plane->orientation, &box_w));
-	float center_to_plane = dot_product(&box->origin, &plane->orientation) + fabs(plane->props.distance_from_origin);
+	float center_to_plane = dot_product(&box->origin, &plane->orientation) - (plane->props.distance_from_origin);
 	if (center_to_plane > extent || center_to_plane < -extent)
 		return (false);
 	if (resolve)
@@ -170,8 +170,8 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	t_vector	normal;
 	normal = plane->orientation;
 	normal.w = 0;
-	float d = - (dot_product(&normal, &plane->origin));
-	float distance = (dot_product(&normal, &sphere->origin) + d);
+	// float d = - (dot_product(&normal, &plane->origin));
+	float distance = (dot_product(&normal, &sphere->origin) - plane->props.distance_from_origin);
 	if (fabs(distance) < sphere->props.radius)
 		return (true);
 	return (false);
