@@ -6,11 +6,11 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/01/26 20:55:35 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/01/27 14:49:47 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c collisions.c 
+EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c collisions.c separating_axis.c
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
