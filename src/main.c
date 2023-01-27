@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:55:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:33:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	open_file(int argc, char **argv)
 void	init_display(t_display *disp, t_settings *settings)
 {
 	disp->mlx = mlx_init();
+	if (disp->mlx == NULL)
+		return ;
 	disp->win = mlx_new_window(disp->mlx, settings->disp_w,
 			settings->disp_h, "MiniRT");
 	disp->render_img = mlx_new_image(disp->mlx, settings->render_w,
@@ -68,14 +70,14 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->render_scale = 0.5;
-	settings->edit_scale = 0.4;
+	settings->render_scale = 1;
+	settings->edit_scale = 0.8;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
 	settings->edit_h = 1080 * settings->edit_scale;
-	settings->disp_w = 1920 * 0.5;
-	settings->disp_h = 1080 * 0.5;
+	settings->disp_w = 1920 * 0.8;
+	settings->disp_h = 1080 * 0.8;
 	settings->collisions = true;
 	settings->reflection_depth = 2;
 }
@@ -125,6 +127,11 @@ int	main(int argc, char **argv)
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	init_display(&disp, &scene->settings);
+	if (disp.mlx == NULL)
+	{
+		// ! HANDLE ERROR HERE
+
+	}
 	scene->disp = &disp;
 	setup_hooks(scene);
 	camera_init(&scene->cam, scene);

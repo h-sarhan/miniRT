@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 14:49:20 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 15:51:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:13:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
 // From Real Time Collision Detection (2005) pg.103 - 105
-bool	test_box_axes(t_shape *b1, t_shape *b2)
+bool	test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution)
 {
 	t_vector	b1_u[3];
 	b1_u[0].x = b1->added_rots[0][0];
@@ -91,64 +91,139 @@ bool	test_box_axes(t_shape *b1, t_shape *b2)
 	b2_e[0] = b2->props.scale.x;
 	b2_e[1] = b2->props.scale.y;
 	b2_e[2] = b2->props.scale.z;
-	// float	res_distance = INFINITY;
+	float	res_distance = INFINITY;
 	t_vector	res_axis;
+	// res_axis = b1_u[0];
 	ft_bzero(&res_axis, sizeof(t_vector));
 	float	ra, rb;
 	for (int i = 0; i < 3; i++) {
 		ra = b1_e[i];
 		rb = b2_e[0] * abs_rot[i][0] + b2_e[1] * abs_rot[i][1] + b2_e[2] * abs_rot[i][2];
 		if (fabs(t[i]) > (ra + rb)) return false;
-		// if (fabs(t[i]) < res_distance)
-		// {
-		// 	res_distance = fabs(t[i]);
-		// 	res_axis.x = 
-		// }
+		if (((ra + rb) - fabs(t[i])) < res_distance)
+		{
+			// res_axis.x = abs_rot[i][0];
+			// res_axis.y = abs_rot[i][1];
+			// res_axis.z = abs_rot[i][2];
+			res_distance = (ra + rb) - fabs(t[i]);
+			res_axis = b1_u[i];
+		}
 	}
 // Test axes L = B0, L = B1, L = B2
 	for (int i = 0; i < 3; i++) {
 		ra = b1_e[0] * abs_rot[0][i] + b1_e[1] * abs_rot[1][i] + b1_e[2] * abs_rot[2][i];
 		rb = b2_e[i];
 		if (fabs(t[0] * rot[0][i] + t[1] * rot[1][i] + t[2] * rot[2][i]) > (ra + rb)) return false;
+		if (((ra + rb) - fabs(t[0] * rot[0][i] + t[1] * rot[1][i] + t[2] * rot[2][i])) < res_distance)
+		{
+			res_distance = (ra + rb) - fabs(t[0] * rot[0][i] + t[1] * rot[1][i] + t[2] * rot[2][i]);
+			res_axis = b2_u[i];
+		}
 	}
 	// Test axis L = A0 x B0
-ra = b1_e[1] * abs_rot[2][0] + b1_e[2] * abs_rot[1][0];
-rb = b2_e[1] * abs_rot[0][2] + b2_e[2] * abs_rot[0][1];
-if (fabs(t[2] * rot[1][0] - t[1] * rot[2][0]) > ra + rb) return 0;
-// Test axis L = A0 x B1
-ra = b1_e[1] * abs_rot[2][1] + b1_e[2] * abs_rot[1][1];
-rb = b2_e[0] * abs_rot[0][2] + b2_e[2] * abs_rot[0][0];
-if (fabs(t[2] * rot[1][1] - t[1] * rot[2][1]) > ra + rb) return 0;
-// Test axis L = A0 x B2
-ra = b1_e[1] * abs_rot[2][2] + b1_e[2] * abs_rot[1][2];
-rb = b2_e[0] * abs_rot[0][1] + b2_e[1] * abs_rot[0][0];
-if (fabs(t[2] * rot[1][2] - t[1] * rot[2][2]) > ra + rb) return 0;
+// ra = b1_e[1] * abs_rot[2][0] + b1_e[2] * abs_rot[1][0];
+// rb = b2_e[1] * abs_rot[0][2] + b2_e[2] * abs_rot[0][1];
+// if (fabs(t[2] * rot[1][0] - t[1] * rot[2][0]) > (ra + rb)) return 0;
 
+// if (fabs(t[2] * rot[1][0] - t[1] * rot[2][0]) < res_distance)
+// 	res_distance = fabs(t[2] * rot[1][0] - t[1] * rot[2][0]);
+	
+// Test axis L = A0 x B1
+// ra = b1_e[1] * abs_rot[2][1] + b1_e[2] * abs_rot[1][1];
+// rb = b2_e[0] * abs_rot[0][2] + b2_e[2] * abs_rot[0][0];
+// if (fabs(t[2] * rot[1][1] - t[1] * rot[2][1]) > (ra + rb)) return 0;
+
+// if (fabs(t[2] * rot[1][1] - t[1] * rot[2][1]) < res_distance)
+// 	res_distance = fabs(t[2] * rot[1][1] - t[1] * rot[2][1]);
+
+
+
+
+// Test axis L = A0 x B2
+// ra = b1_e[1] * abs_rot[2][2] + b1_e[2] * abs_rot[1][2];
+// rb = b2_e[0] * abs_rot[0][1] + b2_e[1] * abs_rot[0][0];
+// if (fabs(t[2] * rot[1][2] - t[1] * rot[2][2]) > (ra + rb)) return 0;
+
+// if (fabs(t[2] * rot[1][2] - t[1] * rot[2][2]) < res_distance)
+// 	res_distance = fabs(t[2] * rot[1][2] - t[1] * rot[2][2]);
 
 // Test axis L = A1 x B0
-ra = b1_e[0] * abs_rot[2][0] + b1_e[2] * abs_rot[0][0];
-rb = b2_e[1] * abs_rot[1][2] + b2_e[2] * abs_rot[1][1];
-	if (fabs(t[0] * rot[2][0] - t[2] * rot[0][0]) > ra + rb) return 0;
-	// Test axis L = A1 x B1
-ra = b1_e[0] * abs_rot[2][1] + b1_e[2] * abs_rot[0][1];
-rb = b2_e[0] * abs_rot[1][2] + b2_e[2] * abs_rot[1][0];
-if (fabs(t[0] * rot[2][1] - t[2] * rot[0][1]) > ra + rb) return 0;
-// Test axis L = A1 x B2
-ra = b1_e[0] * abs_rot[2][2] + b1_e[2] * abs_rot[0][2];
-rb = b2_e[0] * abs_rot[1][1] + b2_e[1] * abs_rot[1][0];
-if (fabs(t[0] * rot[2][2] - t[2] * rot[0][2]) > ra + rb) return 0;
-// Test axis L = A2 x B0
-ra = b1_e[0] * abs_rot[1][0] + b1_e[1] * abs_rot[0][0];
-rb = b2_e[1] * abs_rot[2][2] + b2_e[2] * abs_rot[2][1];
-if (fabs(t[1] * rot[0][0] - t[0] * rot[1][0]) > ra + rb) return 0;
-// Test axis L = A2 x B1
-ra = b1_e[0] * abs_rot[1][1] + b1_e[1] * abs_rot[0][1];
-rb = b2_e[0] * abs_rot[2][2] + b2_e[2] * abs_rot[2][0];
-if (fabs(t[1] * rot[0][1] - t[0] * rot[1][1]) > ra + rb) return 0;
-// Test axis L = A2 x B2
-ra = b1_e[0] * abs_rot[1][2] + b1_e[1] * abs_rot[0][2];
-rb = b2_e[0] * abs_rot[2][1] + b2_e[1] * abs_rot[2][0];
-if (fabs(t[1] * rot[0][2] - t[0] * rot[1][2]) > ra + rb) return 0;
+// ra = b1_e[0] * abs_rot[2][0] + b1_e[2] * abs_rot[0][0];
+// rb = b2_e[1] * abs_rot[1][2] + b2_e[2] * abs_rot[1][1];
+// if (fabs(t[0] * rot[2][0] - t[2] * rot[0][0]) > (ra + rb)) return 0;
 
+
+// if (fabs(t[0] * rot[2][0] - t[2] * rot[0][0]) < res_distance)
+// 	res_distance = fabs(t[0] * rot[2][0] - t[2] * rot[0][0]);
+
+
+
+	// Test axis L = A1 x B1
+// ra = b1_e[0] * abs_rot[2][1] + b1_e[2] * abs_rot[0][1];
+// rb = b2_e[0] * abs_rot[1][2] + b2_e[2] * abs_rot[1][0];
+// if (fabs(t[0] * rot[2][1] - t[2] * rot[0][1]) > (ra + rb)) return 0;
+
+// if (fabs(t[0] * rot[2][1] - t[2] * rot[0][1]) < res_distance)
+// 	res_distance = fabs(t[0] * rot[2][1] - t[2] * rot[0][1]);
+
+
+
+// Test axis L = A1 x B2
+// ra = b1_e[0] * abs_rot[2][2] + b1_e[2] * abs_rot[0][2];
+// rb = b2_e[0] * abs_rot[1][1] + b2_e[1] * abs_rot[1][0];
+// if (fabs(t[0] * rot[2][2] - t[2] * rot[0][2]) > (ra + rb)) return 0;
+
+
+
+// if (fabs(t[0] * rot[2][2] - t[2] * rot[0][2]) < res_distance)
+// 	res_distance = fabs(t[0] * rot[2][2] - t[2] * rot[0][2]);
+
+
+
+
+
+
+
+// Test axis L = A2 x B0
+// ra = b1_e[0] * abs_rot[1][0] + b1_e[1] * abs_rot[0][0];
+// rb = b2_e[1] * abs_rot[2][2] + b2_e[2] * abs_rot[2][1];
+// if (fabs(t[1] * rot[0][0] - t[0] * rot[1][0]) > (ra + rb)) return 0;
+
+
+// if (fabs(t[1] * rot[0][0] - t[0] * rot[1][0]) < res_distance)
+// 	res_distance = fabs(t[1] * rot[0][0] - t[0] * rot[1][0]);
+
+
+
+
+
+
+// Test axis L = A2 x B1
+// ra = b1_e[0] * abs_rot[1][1] + b1_e[1] * abs_rot[0][1];
+// rb = b2_e[0] * abs_rot[2][2] + b2_e[2] * abs_rot[2][0];
+// if (fabs(t[1] * rot[0][1] - t[0] * rot[1][1]) > (ra + rb)) return 0;
+
+
+
+// if (fabs(t[1] * rot[0][1] - t[0] * rot[1][1]) < res_distance)
+// 	res_distance = fabs(t[1] * rot[0][1] - t[0] * rot[1][1]);
+
+
+// Test axis L = A2 x B2
+// ra = b1_e[0] * abs_rot[1][2] + b1_e[1] * abs_rot[0][2];
+// rb = b2_e[0] * abs_rot[2][1] + b2_e[1] * abs_rot[2][0];
+// if (fabs(t[1] * rot[0][2] - t[0] * rot[1][2]) > (ra + rb)) return 0;
+
+// if (fabs(t[1] * rot[0][2] - t[0] * rot[1][2]) < res_distance)
+// 	res_distance = fabs(t[1] * rot[0][2] - t[0] * rot[1][2]);
+	
+
+	if (resolution != NULL)
+	{
+		*resolution = res_axis;
+		normalize_vec(resolution);
+		// t_vector	orient;
+		scale_vec(resolution, resolution, res_distance + 0.001);
+	}
 	return (true);
 }

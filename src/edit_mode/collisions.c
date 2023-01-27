@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 15:38:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 20:36:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 	box_w.w = 0;
 	normalize_vec(&box_w);
 	extent = box->props.scale.x * fabs(dot_product(&plane->orientation, &box_u)) + box->props.scale.y * fabs(dot_product(&plane->orientation, &box_v)) + box->props.scale.z * fabs(dot_product(&plane->orientation, &box_w));
-	float center_to_plane = dot_product(&box->origin, &plane->orientation) + plane->props.distance_from_origin;
+	float center_to_plane = dot_product(&box->origin, &plane->orientation) + fabs(plane->props.distance_from_origin);
 	if (center_to_plane > extent || center_to_plane < -extent)
 		return (false);
 	if (resolve)
@@ -436,12 +436,26 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 {
 	(void)resolve;
-	if (test_box_axes(box_1, box_2) == true)
+	t_vector	resolution;
+	if (resolve == true)
+	{
+		if (test_box_axes(box_1, box_2, &resolution) == true)
+		{
+			ft_bzero(&box_1->props.color, sizeof(t_color));
+			box_1->props.color.g = 1;
+			print_vector(&resolution);
+			add_vec(&box_1->origin, &box_1->origin, &resolution);
+			return (true);
+		}
+		ft_bzero(&box_1->props.color, sizeof(t_color));
+		box_1->props.color.r = 1;
+		return (false);
+	}
+	else if (test_box_axes(box_1, box_2, NULL) == true)
 	{
 		ft_bzero(&box_1->props.color, sizeof(t_color));
 		box_1->props.color.g = 1;
 		return (true);
-		
 	}
 	ft_bzero(&box_1->props.color, sizeof(t_color));
 	box_1->props.color.r = 1;
