@@ -58,7 +58,7 @@ sp -0.5,2.5,0.5 1.6 255,255,255
 	// normal_texture: "./assets/leather_normal.ppm"
 	tile_texture : 2,
 }          							
-sp -2.5,1.5,0.5 1.6 0,0,0
+cu -2.5,1.5,0.5 1 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 1.,						
