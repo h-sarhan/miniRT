@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 22:16:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 22:22:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,9 +454,9 @@ bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 	{
 		if (test_box_axes(box_1, box_2, &resolution) == true)
 		{
-			ft_bzero(&box_1->props.color, sizeof(t_color));
-			box_1->props.color.g = 1;
-			print_vector(&resolution);
+			// ft_bzero(&box_1->props.color, sizeof(t_color));
+			// box_1->props.color.g = 1;
+			// print_vector(&resolution);
 			t_vector	b1_norm;
 			t_vector	b2_norm;
 			mat_vec_multiply(&b1_norm, &box_1->added_rots, &box_1->orientation);
@@ -465,18 +465,18 @@ bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 			add_vec(&box_2->origin, &box_2->origin, &resolution);
 			return (true);
 		}
-		ft_bzero(&box_1->props.color, sizeof(t_color));
-		box_1->props.color.r = 1;
+		// ft_bzero(&box_1->props.color, sizeof(t_color));
+		// box_1->props.color.r = 1;
 		return (false);
 	}
 	else if (test_box_axes(box_1, box_2, NULL) == true)
 	{
-		ft_bzero(&box_1->props.color, sizeof(t_color));
-		box_1->props.color.g = 1;
+		// ft_bzero(&box_1->props.color, sizeof(t_color));
+		// box_1->props.color.g = 1;
 		return (true);
 	}
-	ft_bzero(&box_1->props.color, sizeof(t_color));
-	box_1->props.color.r = 1;
+	// ft_bzero(&box_1->props.color, sizeof(t_color));
+	// box_1->props.color.r = 1;
 	return (false);
 }
 bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape)
