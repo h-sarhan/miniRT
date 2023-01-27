@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 23:16:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 22:13:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,21 +211,21 @@ void	collide_after_transform(t_scene *scene)
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus || scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
 		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
-	if (scene->keys_held.plus == true)
-	{
-		if (collide(scene, false, 1, NULL) == true)
-		{
-			scene->keys_held.plus = false;
-			scene->keys_held.minus = true;
-			if (scene->keys_held.shift == false)
-				scale_object(scene, &scene->shapes[scene->shape_idx]);
-			else
-				change_height(scene, &scene->shapes[scene->shape_idx]);
-			scene->keys_held.minus = false;
-			calculate_transforms(scene);
-			draw_scene(scene);
-		}
-	}
+	// if (scene->keys_held.plus == true)
+	// {
+	// 	if (collide(scene, false, 1, NULL) == true)
+	// 	{
+	// 		scene->keys_held.plus = false;
+	// 		scene->keys_held.minus = true;
+	// 		if (scene->keys_held.shift == false)
+	// 			scale_object(scene, &scene->shapes[scene->shape_idx]);
+	// 		else
+	// 			change_height(scene, &scene->shapes[scene->shape_idx]);
+	// 		scene->keys_held.minus = false;
+	// 		calculate_transforms(scene);
+	// 		draw_scene(scene);
+	// 	}
+	// }
 }
 
 void	scale_cube_sides(t_scene *scene, t_shape *shape)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 13:59:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 22:04:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,15 +151,15 @@ void	draw_scene(t_scene *scene)
 	t_worker		workers[NUM_THREADS];
 	struct timespec	start;
 	struct timespec	finish;
-	// float			elapsed;
+	float			elapsed;
 
 	init_workers(workers, scene);
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	run_workers(workers, scene, true, render_scene_fast);
 	clock_gettime(CLOCK_MONOTONIC, &finish);
-	// elapsed = (finish.tv_sec - start.tv_sec);
-	// elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
-	// printf("render time is %f\n", elapsed);
+	elapsed = (finish.tv_sec - start.tv_sec);
+	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+	printf("render time is %f\n", elapsed);
 	run_workers(workers, scene, false, nearest_neighbours_scaling);
 	show_help_menu(scene);
 	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,

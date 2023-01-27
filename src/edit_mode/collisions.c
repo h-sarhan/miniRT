@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 20:51:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 22:16:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 {
 	t_vector	point_on_box  = closest_point_on_box(&sphere->origin, box);
 	float	distance = vec_distance(&point_on_box, &sphere->origin);
+	if (distance > 2)
+		return (false);
 	t_vector box_to_sphere;
 	sub_vec(&box_to_sphere, &point_on_box, &sphere->origin);
 	if (dot_product(&box_to_sphere, &box_to_sphere) <= sphere->props.radius_squared)
@@ -90,8 +92,12 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 			t_vector	resolution;
 
 			sub_vec(&resolution, &sphere->origin, &point_on_box);
+			if (vec_magnitude(&resolution) < 0.0001)
+				return (true);
 			normalize_vec(&resolution);
 			scale_vec(&resolution, &resolution, sphere->props.radius - distance);
+			if (vec_magnitude(&resolution) > 1)
+				return (true);
 			if (box_sphere)
 				add_vec(&sphere->origin, &sphere->origin, &resolution);
 			else
@@ -232,8 +238,9 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up_vector);
 	if (fabs(vec_magnitude(&cylinder_normal)) < 0.001)
 	{
-		printf("THIS SHHOULDNT HAPPEN1\n");
-		exit(1);
+		// printf("THIS SHHOULDNT HAPPEN1\n");
+		// exit(1);
+		return (false);
 	}
 	normalize_vec(&cylinder_normal);
 	sub_vec(&cylinder_to_sphere, &cylinder->origin, &sphere->origin);
@@ -290,8 +297,10 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 		sub_vec(&dir, &sphere->origin, &dir);
 		if (fabs(vec_magnitude(&dir)) < 0.001)
 		{
-			printf("THIS SHHOULDNT HAPPEN2\\n");
-			exit(1);
+			// printf("THIS SHHOULDNT HAPPEN2\\n");
+			// exit(1);
+		return (false);
+			
 		}
 		normalize_vec(&dir);
 		scale_vec(&dir, &dir, cylinder->props.radius);
@@ -304,8 +313,10 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 			negate_vec(&resolution, &resolution);
 			if (fabs(vec_magnitude(&resolution)) < 0.001)
 			{
-				printf("THIS SHHOULDNT HAPPEN3\n");
-				exit(1);
+				// printf("THIS SHHOULDNT HAPPEN3\n");
+				// exit(1);
+		return (false);
+				
 			}
 			normalize_vec(&resolution);
 			if (cylinder_sphere == true && resolve)
@@ -336,8 +347,10 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 			negate_vec(&resolution, &resolution);
 			if (fabs(vec_magnitude(&resolution)) < 0.001)
 			{
-				printf("THIS SHHOULDNT HAPPEN4\n");
-				exit(1);
+				// printf("THIS SHHOULDNT HAPPEN4\n");
+
+				// exit(1);
+				return (false);
 			}
 			normalize_vec(&resolution);
 			if (cylinder_sphere == true && resolve)
@@ -444,7 +457,12 @@ bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 			ft_bzero(&box_1->props.color, sizeof(t_color));
 			box_1->props.color.g = 1;
 			print_vector(&resolution);
-			add_vec(&box_1->origin, &box_1->origin, &resolution);
+			t_vector	b1_norm;
+			t_vector	b2_norm;
+			mat_vec_multiply(&b1_norm, &box_1->added_rots, &box_1->orientation);
+			mat_vec_multiply(&b2_norm, &box_2->added_rots, &box_2->orientation);
+			print_vector(&resolution);
+			add_vec(&box_2->origin, &box_2->origin, &resolution);
 			return (true);
 		}
 		ft_bzero(&box_1->props.color, sizeof(t_color));
@@ -548,26 +566,26 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CUBE && shape2->type == SPHERE && transformed_shape != shape2)
 			{
-				if (sphere_box_collision(shape1, shape2, false, resolve) == true)
+				if (sphere_box_collision(shape1, shape2, true, resolve) == true)
 				{
 					collided = true;
 					// printf("sphere cylinder collision\n");
 				}
 			}
-			// else if (shape1->type == CUBE && shape2->type == CUBE &&  transformed_shape != shape2)
-			// {
-				
-			// 	if (shape2 == transformed_shape)
-			// 	{
-			// 		if (box_box_collision(shape2, shape1, resolve))
-			// 			collided = true;
-			// 	}
-			// 	else if (box_box_collision(shape1, shape2, resolve) == true)
-			// 	{
-			// 		collided = true;
-			// 		// printf("sphere cylinder collision\n");
-			// 	}
-			// }
+			else if (shape1->type == CUBE && shape2->type == CUBE)
+			{
+				if (box_box_collision(shape1, shape2, false) == true)
+				{
+					collided = true;
+					if (resolve == true)
+					{
+						if (shape2 == transformed_shape)
+							box_box_collision(shape2, shape1, true);
+						else
+							box_box_collision(shape1, shape2, true);
+					}
+				}
+			}
 			idx2++;
 		}
 		idx1++;
