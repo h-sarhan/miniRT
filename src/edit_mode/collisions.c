@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 22:22:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/27 22:31:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 {
 	t_vector	point_on_box  = closest_point_on_box(&sphere->origin, box);
 	float	distance = vec_distance(&point_on_box, &sphere->origin);
-	if (distance > 2)
-		return (false);
+	// if (distance > 2)
+	// 	return (false);
 	t_vector box_to_sphere;
 	sub_vec(&box_to_sphere, &point_on_box, &sphere->origin);
 	if (dot_product(&box_to_sphere, &box_to_sphere) <= sphere->props.radius_squared)
@@ -96,8 +96,8 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 				return (true);
 			normalize_vec(&resolution);
 			scale_vec(&resolution, &resolution, sphere->props.radius - distance);
-			if (vec_magnitude(&resolution) > 1)
-				return (true);
+			// if (vec_magnitude(&resolution) > 1)
+			// 	return (true);
 			if (box_sphere)
 				add_vec(&sphere->origin, &sphere->origin, &resolution);
 			else
