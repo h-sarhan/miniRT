@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:38:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,30 @@ void	rotate_along_mouse_axis(t_scene *scene)
 	}
 }
 
+
+void	mouse_move(t_scene *scene)
+{
+	(void)scene;
+	// t_intersections	arr;
+	// t_intersection	*itx;
+	// t_ray			mouse_selection;
+	// int				shape_idx;
+
+	// ray_from_cam(&mouse_selection, &scene->cam,
+	// 	((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+	// 	((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
+	// shape_idx = -1;
+	// arr.count = 0;
+	// while (++shape_idx < scene->count.shapes)
+	// 	intersect(&scene->shapes[shape_idx], &mouse_selection, &arr);
+	// itx = hit(&arr);
+	// if (itx == NULL || itx->shape->type == PLANE)
+	// 	return ;
+}
+
 int	mouse_rotate(t_scene *scene)
 {
-	if (scene->mouse.key != LEFT_MOUSE_DOWN || !scene->settings.edit_mode)
+	if (scene->mouse.key != LEFT_MOUSE_DOWN || !scene->settings.edit_mode || scene->keys_held.shift == true)
 		return (0);
 	scene->mouse.prev_x = scene->mouse.x;
 	scene->mouse.prev_y = scene->mouse.y;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 22:13:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 14:34:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,6 +370,7 @@ int	render_loop(t_scene *scene)
 	{
 		transform_object(scene);
 		mouse_rotate(scene);
+		mouse_move(scene);
 	}
 	else if (scene->settings.edit_mode == true && scene->settings.light_mode == true)
 	{
