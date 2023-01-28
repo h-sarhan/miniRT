@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 14:38:05 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:25:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,48 @@ void	rotate_along_mouse_axis(t_scene *scene)
 void	mouse_move(t_scene *scene)
 {
 	(void)scene;
-	// t_intersections	arr;
-	// t_intersection	*itx;
-	// t_ray			mouse_selection;
-	// int				shape_idx;
-
-	// ray_from_cam(&mouse_selection, &scene->cam,
-	// 	((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
-	// 	((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
-	// shape_idx = -1;
-	// arr.count = 0;
-	// while (++shape_idx < scene->count.shapes)
-	// 	intersect(&scene->shapes[shape_idx], &mouse_selection, &arr);
-	// itx = hit(&arr);
-	// if (itx == NULL || itx->shape->type == PLANE)
-	// 	return ;
+	t_intersections	arr;
+	t_intersection	*itx;
+	t_ray			mouse_selection;
+	
+	if (scene->mouse.key != LEFT_MOUSE_DOWN || scene->keys_held.shift == true)
+		return ;
+	mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win, &scene->mouse.x,
+		&scene->mouse.y);
+	ray_from_cam(&mouse_selection, &scene->cam,
+		((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
+	int shape_idx = -1;
+	arr.count = 0;
+	while (++shape_idx < scene->count.shapes)
+		intersect(&scene->shapes[shape_idx], &mouse_selection, &arr);
+	itx = hit(&arr);
+	if (itx == NULL || itx->shape->type == PLANE)
+		return ;
+	
+	t_vector	plane_origin;
+	t_vector	plane_orientation;
+	float		distance_from_origin;
+	negate_vec(&plane_orientation, &scene->cam.dir);
+	plane_origin = scene->shapes[scene->shape_idx].origin;
+	distance_from_origin = dot_product(&plane_orientation, &plane_origin);
+	float denom = dot_product(&mouse_selection.dir, &plane_orientation);
+	if (fabs(denom) < 0.00001)
+		return ;
+	float t = -(dot_product(&mouse_selection.origin, &plane_orientation) \
+		- distance_from_origin) / denom;
+	t_vector	position_on_plane;
+	ray_position(&position_on_plane, &mouse_selection, t);
+	scene->shapes[scene->shape_idx].origin = position_on_plane;
+	if (scene->settings.collisions == true)
+			collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+	calculate_transforms(scene);
+	draw_scene(scene);
 }
 
 int	mouse_rotate(t_scene *scene)
 {
-	if (scene->mouse.key != LEFT_MOUSE_DOWN || !scene->settings.edit_mode || scene->keys_held.shift == true)
+	if (scene->mouse.key != LEFT_MOUSE_DOWN || !scene->settings.edit_mode || scene->keys_held.shift == false)
 		return (0);
 	scene->mouse.prev_x = scene->mouse.x;
 	scene->mouse.prev_y = scene->mouse.y;
