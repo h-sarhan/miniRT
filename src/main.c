@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 20:14:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:32:14 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	init_settings(t_settings *settings)
 	settings->disp_w = 1920 * 0.8;
 	settings->disp_h = 1080 * 0.8;
 	settings->collisions = true;
-	settings->reflection_depth = 2;
+	settings->reflection_depth = REFLECTION_DEPTH;
 }
 
 void	setup_hooks(t_scene *scene)
