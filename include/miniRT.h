@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 12:15:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 12:39:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@
 # include "../libft/libft.h"
 # ifdef __linux__
 #  include "../mlx_linux/mlx.h"
+#  define LINUX 1
 # else
 #  include "../mlx/mlx.h"
+#  define LINUX 0
 # endif
 # include "mathRT.h"
 # include "color.h"

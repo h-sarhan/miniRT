@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 12:25:57 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 12:43:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,13 +292,12 @@ int	close_window(t_scene *scene)
 	return (0);
 }
 
-void *play_music(void *scene_ptr)
+void play_music(t_scene *scene)
 {
-	t_scene	*scene = scene_ptr;
 	if (scene->music_pid != 0)
 		kill(scene->music_pid, SIGINT);
 	if (scene->keys_held.shift == true)
-		return (NULL);
+		return ;
 	int	pid = fork();
 	if (pid == 0)
 	{
@@ -306,17 +305,14 @@ void *play_music(void *scene_ptr)
 		exit(0);
 	}
 	scene->music_pid = pid;
-	return (NULL);
 }
 
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
-	if (key == KEY_M)
+	if (key == KEY_M && !LINUX)
 	{
-		pthread_t music_thread;
-		pthread_create(&music_thread, NULL, play_music, scene);
-		pthread_detach(music_thread);
+		play_music(scene);
 	}
 	if (key == KEY_J)
 	{
