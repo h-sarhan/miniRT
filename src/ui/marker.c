@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 18:47:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 00:35:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 			t_vector	projected_point_2;
 			mat_vec_multiply(&projected_point_2, &scene->cam.transform, point_to_draw_2);
 			perspective_projection(&projected_point_2, scene);
+			projected_point_1.x *= scene->settings.disp_w;
+			projected_point_2.x *= scene->settings.disp_w;
+			projected_point_1.y *= scene->settings.disp_h;
+			projected_point_2.y *= scene->settings.disp_h;
 			dda(scene, projected_point_1.x, projected_point_2.x, projected_point_1.y, projected_point_2.y, 0x00ff00);
 
 		}
