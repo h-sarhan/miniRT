@@ -6,12 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 12:30:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 17:35:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "scene.h"
+t_vector *point_to_draw_1;
+t_vector *point_to_draw_2;
 
 /**
  * @brief Opens a file and checks for errors with the arguments provided to
@@ -112,6 +114,9 @@ int	main(int argc, char **argv)
 	t_scene		*scene;
 	t_display	disp;
 	int			fd;
+	
+	point_to_draw_1 = ft_calloc(sizeof(t_vector), 1);
+	point_to_draw_2 = ft_calloc(sizeof(t_vector), 1);
 
 	fd = open_file(argc, argv);
 	if (fd == -1)

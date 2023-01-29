@@ -6,11 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:30:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 16:12:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 18:47:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+extern t_vector *point_to_draw_1;
+extern t_vector *point_to_draw_2;
 
 void	draw_marker(t_scene *scene, int x, int y, int color)
 {
@@ -64,6 +67,34 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 		if (origin_proj.z < 0)
 			draw_marker(scene, origin_proj.x * scene->settings.disp_w,
 				origin_proj.y * scene->settings.disp_h, 0x00ffff);
+		if (vec_magnitude(point_to_draw_1) > 0)
+		{
+			t_vector	projected_point;
+			mat_vec_multiply(&projected_point, &scene->cam.transform, point_to_draw_1);
+			perspective_projection(&projected_point, scene);
+			draw_marker(scene, projected_point.x * scene->settings.disp_w,
+				projected_point.y * scene->settings.disp_h, 0xff0000);
+		}
+		if (vec_magnitude(point_to_draw_2) > 0)
+		{
+			t_vector	projected_point;
+			mat_vec_multiply(&projected_point, &scene->cam.transform, point_to_draw_2);
+			perspective_projection(&projected_point, scene);
+			draw_marker(scene, projected_point.x * scene->settings.disp_w,
+				projected_point.y * scene->settings.disp_h, 0xff00);
+		}
+		if (vec_magnitude(point_to_draw_1) > 0 && vec_magnitude(point_to_draw_2) > 0)
+		{
+			printf("vkrdjhb\n");
+			t_vector	projected_point_1;
+			mat_vec_multiply(&projected_point_1, &scene->cam.transform, point_to_draw_1);
+			perspective_projection(&projected_point_1, scene);
+			t_vector	projected_point_2;
+			mat_vec_multiply(&projected_point_2, &scene->cam.transform, point_to_draw_2);
+			perspective_projection(&projected_point_2, scene);
+			dda(scene, projected_point_1.x, projected_point_2.x, projected_point_1.y, projected_point_2.y, 0x00ff00);
+
+		}
 		mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
 			scene->disp->display_img, 0, 0);
 		draw_arrow(scene, origin_proj.x * scene->settings.disp_w,

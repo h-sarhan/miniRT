@@ -6,12 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 20:43:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 18:42:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mathRT.h"
 #include "miniRT.h"
+
+extern t_vector *point_to_draw_1;
+extern t_vector *point_to_draw_2;
 
 // HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
@@ -233,6 +236,58 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	{
 		return (true);
 	}
+	return (false);
+}
+
+t_vector	closest_point_on_cylinder(t_shape *cylinder, t_vector *point)
+{
+	t_vector	point_to_cylinder;
+	sub_vec(&point_to_cylinder, point, &cylinder->origin);
+	t_vector	cylinder_normal;
+	t_vector	up;
+	ft_bzero(&up, sizeof(t_vector));
+	up.y = 1;
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up);
+	normalize_vec(&cylinder_normal);
+	
+	float d = dot_product(&cylinder_normal, &point_to_cylinder);
+	if (d > 0 && d > cylinder->props.height / 2)
+		d = cylinder->props.height / 2;
+	if (d < 0 && d < - cylinder->props.height / 2)
+		d = -cylinder->props.height / 2;
+	scale_vec(&cylinder_normal, &cylinder_normal, d);
+	t_vector closest_point;
+	add_vec(&closest_point, &cylinder->origin, &cylinder_normal);
+	normalize_vec(&cylinder_normal);
+	return closest_point;
+}
+
+
+bool	box_cylinder_collision(t_shape *cylinder, t_shape *box, bool box_cylinder, bool resolve)
+{
+	(void)resolve;
+	(void)box_cylinder;
+	t_vector	point_on_box = closest_point_on_box(&cylinder->origin, box);
+	t_vector	point_on_cylinder = closest_point_on_cylinder(cylinder, &point_on_box);
+	int i = 0;
+	while (i < 20)
+	{
+		point_on_box = closest_point_on_box(&point_on_cylinder, box);
+		point_on_cylinder = closest_point_on_cylinder(cylinder, &point_on_box);
+		i++;
+	}
+
+	*point_to_draw_1 = point_on_cylinder;
+	*point_to_draw_2 = point_on_box;
+	if (vec_distance(&point_on_cylinder, &point_on_box) < cylinder->props.radius)
+	{
+		ft_bzero(&box->props.color, sizeof(t_color));
+		box->props.color.g = 1;
+		return (true);
+
+	}
+	ft_bzero(&box->props.color, sizeof(t_color));
+	box->props.color.r = 1;
 	return (false);
 }
 
@@ -499,6 +554,7 @@ bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 	// box_1->props.color.r = 1;
 	return (false);
 }
+
 bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape)
 {
 	t_shape			*shape1;
@@ -587,6 +643,22 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			else if (shape1->type == CUBE && shape2->type == SPHERE && transformed_shape != shape2)
 			{
 				if (sphere_box_collision(shape1, shape2, true, resolve) == true)
+				{
+					collided = true;
+					// printf("sphere cylinder collision\n");
+				}
+			}
+			else if (shape1->type == CUBE && shape2->type == CYLINDER && transformed_shape != shape2)
+			{
+				if (box_cylinder_collision(shape2, shape1, false, resolve) == true)
+				{
+					collided = true;
+					// printf("sphere cylinder collision\n");
+				}
+			}
+			else if (shape1->type == CYLINDER && shape2->type == CUBE && transformed_shape != shape2)
+			{
+				if (box_cylinder_collision(shape1, shape2, true, resolve) == true)
 				{
 					collided = true;
 					// printf("sphere cylinder collision\n");

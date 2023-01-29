@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 12:39:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 18:44:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@
 # include "render.h"
 # include "parsing.h"
 # include "utils.h"
+extern t_vector *point_to_draw_1;
+extern t_vector *point_to_draw_2;
 
 # define EPSILON 0.001f
+void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 12:43:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 16:47:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ void play_music(t_scene *scene)
 	int	pid = fork();
 	if (pid == 0)
 	{
-		execlp("afplay", "afplay", "./assets/music.mp3", 0);
+		execlp("afplay", "afplay", "./assets/sound.mp3", 0);
 		exit(0);
 	}
 	scene->music_pid = pid;
