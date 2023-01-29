@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 20:32:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 12:30:52 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	init_display(t_display *disp, t_settings *settings)
 void	init_settings(t_settings *settings)
 {
 	settings->render_scale = 1;
-	settings->edit_scale = 0.8;
+	settings->edit_scale = 0.7;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;

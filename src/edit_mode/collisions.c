@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 02:15:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/28 20:43:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,10 +223,8 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
 	if (fabs(normal_dot_product - 1) < 0.00001)
 	{
-		printf("%f\n", cylinder_to_plane_proj);
 		if (cylinder_to_plane_proj <= cylinder->props.height / 2)
 		{
-			printf("Colliding\n");
 			return (true);
 		}
 		return (false);

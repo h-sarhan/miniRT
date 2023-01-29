@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 17:38:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 12:25:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,6 @@ bool	is_toggle_key(int key, t_scene *scene)
 				|| key == KEY_3 || key == KEY_4 || key == KEY_5 || key == KEY_6
 				|| key == KEY_TAB || key == KEY_C || key == KEY_T
 				|| key == KEY_P || key == KEY_L || key == KEY_H)));
-				// || key == KEY_P || key == KEY_L)));
 }
 
 void	toggle_edit_mode(int key, t_scene *scene)
@@ -286,14 +285,39 @@ void	toggle_shape(t_scene *scene)
 int	close_window(t_scene *scene)
 {
 	printf("QUITTING PROGRAM!\n");
+	if (scene->music_pid != 0)
+		kill(scene->music_pid, SIGINT);
 	free_scene(scene);
 	exit(EXIT_SUCCESS);
 	return (0);
 }
 
+void *play_music(void *scene_ptr)
+{
+	t_scene	*scene = scene_ptr;
+	if (scene->music_pid != 0)
+		kill(scene->music_pid, SIGINT);
+	if (scene->keys_held.shift == true)
+		return (NULL);
+	int	pid = fork();
+	if (pid == 0)
+	{
+		execlp("afplay", "afplay", "./assets/music.mp3", 0);
+		exit(0);
+	}
+	scene->music_pid = pid;
+	return (NULL);
+}
+
 int	key_press(int key, t_scene *scene)
 {
 	printf("key = %d\n", key);
+	if (key == KEY_M)
+	{
+		pthread_t music_thread;
+		pthread_create(&music_thread, NULL, play_music, scene);
+		pthread_detach(music_thread);
+	}
 	if (key == KEY_J)
 	{
 		scene->settings.supersampling = !scene->settings.supersampling;
@@ -322,6 +346,8 @@ int	key_press(int key, t_scene *scene)
 	}
 	if (key == KEY_ESC)
 	{
+		
+		// pthr
 		close_window(scene);
 		return (0);
 	}

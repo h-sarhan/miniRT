@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 20:25:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/29 11:49:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,13 @@ void	mouse_move(t_scene *scene)
 	
 	if (scene->mouse.key != LEFT_MOUSE_DOWN || scene->keys_held.shift == true)
 		return ;
+	scene->mouse.prev_x = scene->mouse.x;
+	scene->mouse.prev_y = scene->mouse.y;
 	mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win, &scene->mouse.x,
 		&scene->mouse.y);
 	ray_from_cam(&mouse_selection, &scene->cam,
-		((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
-		((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
+		((float)scene->mouse.prev_x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		((float)scene->mouse.prev_y * scene->settings.edit_h / scene->settings.disp_h) + .5);
 	int shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)
@@ -109,6 +111,9 @@ void	mouse_move(t_scene *scene)
 	float		distance_from_origin;
 	negate_vec(&plane_orientation, &scene->cam.dir);
 	plane_origin = scene->shapes[scene->shape_idx].origin;
+	ray_from_cam(&mouse_selection, &scene->cam,
+		((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
 	distance_from_origin = dot_product(&plane_orientation, &plane_origin);
 	float denom = dot_product(&mouse_selection.dir, &plane_orientation);
 	if (fabs(denom) < 0.00001)
@@ -117,9 +122,12 @@ void	mouse_move(t_scene *scene)
 		- distance_from_origin) / denom;
 	t_vector	position_on_plane;
 	ray_position(&position_on_plane, &mouse_selection, t);
+	// t_vector	pos_diff;
+	// sub_vec(&pos_diff, &scene->shapes[scene->shape_idx].origin, &position_on_plane);
+	// add_vec(&scene->shapes[scene->shape_idx].origin, &scene->shapes[scene->shape_idx].origin, &pos_diff);
 	scene->shapes[scene->shape_idx].origin = position_on_plane;
 	if (scene->settings.collisions == true)
-			collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
 	calculate_transforms(scene);
 	draw_scene(scene);
 }
