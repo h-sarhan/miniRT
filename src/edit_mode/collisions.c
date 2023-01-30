@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 18:42:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 19:14:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,19 @@
 extern t_vector *point_to_draw_1;
 extern t_vector *point_to_draw_2;
 
-// HANDLE OBJECTS THAT ARE ALREADY COLLIDING WHEN THE SCENE STARTS
+
+// static bool	within_cylinder_radius(const t_ray *ray, float t)
+// {
+// 	float	x;
+// 	float	z;
+
+// 	x = ray->origin.x + ray->dir.x * t;
+// 	z = ray->origin.z + ray->dir.z * t;
+// 	if ((x * x + z * z) <= 1)
+// 		return (true);
+// 	return (false);
+// }
+
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
 	float		distance;
@@ -224,7 +236,7 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	cylinder_to_plane_proj = fabs(dot_product(&plane->orientation, &cylinder_to_plane));
 	float	normal_dot_product;
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
-	if (fabs(normal_dot_product - 1) < 0.00001)
+	if (fabs(normal_dot_product - 1) < 0.001)
 	{
 		if (cylinder_to_plane_proj <= cylinder->props.height / 2)
 		{
@@ -280,14 +292,7 @@ bool	box_cylinder_collision(t_shape *cylinder, t_shape *box, bool box_cylinder, 
 	*point_to_draw_1 = point_on_cylinder;
 	*point_to_draw_2 = point_on_box;
 	if (vec_distance(&point_on_cylinder, &point_on_box) < cylinder->props.radius)
-	{
-		ft_bzero(&box->props.color, sizeof(t_color));
-		box->props.color.g = 1;
 		return (true);
-
-	}
-	ft_bzero(&box->props.color, sizeof(t_color));
-	box->props.color.r = 1;
 	return (false);
 }
 

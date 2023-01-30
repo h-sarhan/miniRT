@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 18:56:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,18 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 	arr.count = 0;
 	if (scene->lights[light_idx].type == SPOT)
 	{
-		angle = dot_product(&ray.dir, &scene->lights[light_idx].direction);
-		angle = acos(angle);
-		if (angle > (scene->lights[light_idx].theta / 2))
+		normalize_vec(&ray.dir);
+		normalize_vec(&scene->lights[light_idx].direction);
+		angle = (dot_product(&ray.dir, &scene->lights[light_idx].direction));
+		if (angle < 0)
 			return (true);
+		if (angle >= -1 && angle <= 1)
+		{
+			angle = acos(angle);
+			// printf("%f\n", angle);
+			if (angle > (scene->lights[light_idx].theta / 4))
+				return (true);
+		}
 	}
 	while (++i < scene->count.shapes)
 		intersect(&scene->shapes[i], &ray, &arr);

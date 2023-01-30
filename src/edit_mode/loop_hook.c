@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 14:34:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 19:00:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,8 @@ void	light_controls(t_scene *scene)
 		if (scene->lights[scene->light_idx].theta > 0.1)
 			scene->lights[scene->light_idx].theta -= 0.02;
 	}
+	normalize_vec(&scene->lights[scene->light_idx].direction);
+	print_vector(&scene->lights[scene->light_idx].direction);
 }
 
 void	reset_look_at(t_scene *scene)
