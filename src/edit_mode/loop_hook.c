@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 19:00:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 19:17:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,6 +326,8 @@ void	light_controls(t_scene *scene)
 	}
 	normalize_vec(&scene->lights[scene->light_idx].direction);
 	print_vector(&scene->lights[scene->light_idx].direction);
+	printf("Position\n");
+	print_vector(&scene->lights[scene->light_idx].position);
 }
 
 void	reset_look_at(t_scene *scene)

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 18:56:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/30 19:37:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,24 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	float		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
+	float		spotlight_angle;
 
+	spotlight_angle = 0;
 	sub_vec(&light_v, &scene->lights[light_idx].position, &itx->over_point);
 	normalize_vec(&light_v);
 	itx->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &itx->normal);
-	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point))
+	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point, &spotlight_angle))
 		return (false);
 	mult_color(&phong->diffuse, &phong->effective_color,
 		itx->shape->props.diffuse * light_dot_normal
 		* scene->lights[light_idx].intensity);
+	if (scene->lights[light_idx].type == SPOT &&
+		acos(spotlight_angle) > scene->lights[light_idx].theta * 0.9 / 4)
+	{
+		mult_color(&phong->diffuse, &phong->diffuse,
+			0.8);
+	}
 	negate_vec(&light_v, &light_v);
 	reflect_vector(&reflect_v, &light_v, &itx->normal);
 	reflect_dot_eye = dot_product(&reflect_v, &itx->eye);
@@ -112,7 +120,7 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 	return (final_color);
 }
 
-bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
+bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, float *angle_ret)
 {
 	float			distance;
 	int				i;
@@ -132,6 +140,7 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point)
 		normalize_vec(&ray.dir);
 		normalize_vec(&scene->lights[light_idx].direction);
 		angle = (dot_product(&ray.dir, &scene->lights[light_idx].direction));
+		*angle_ret = angle;
 		if (angle < 0)
 			return (true);
 		if (angle >= -1 && angle <= 1)
