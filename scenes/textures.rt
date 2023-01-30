@@ -2,8 +2,8 @@ A 0.1 255,255,255
 
 C 0,1,-8 0,0,1 60
 
-// orange light
-L 5,10,-5 0.8 100,100,80
+L 5,10,-5 1 100,100,80
+L -15,5,-5 1 100,100,120
 
 // white light
 SL 0,1,-2 1.0 0,0,-1 100 128,128,153
@@ -43,13 +43,23 @@ sp -0.5,2.5,0.5 1.6 0,0,0
 	tile_texture : 2,
 }   
 
-cu -0.5,3.5,0.5 1 0,0,0
+cu -2.5,4.5,0.5 0.6 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 0.9,						
 	specular: 0.2,
 	shininess: 30,
  diffuse_texture: "./assets/cat.ppm",
+	tile_texture : 1,
+}  
+
+cu -3.5,1.5,0.5 0.7 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/patel.ppm",
 	tile_texture : 1,
 }  
 
@@ -84,7 +94,7 @@ sp -6.5,5.5,0.5 1.6 0,0,0
 	 normal_texture: "./assets/watermelon_normal.ppm",
 	tile_texture : 1,
 }   
-sp -6.5,5.5,0.5 1.6 0,0,0
+sp -6.5,3.5,0.5 1.6 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 0.9,						
@@ -94,7 +104,7 @@ sp -6.5,5.5,0.5 1.6 0,0,0
 	tile_texture : 1,
 }   
 
-sp -2,1.5,0.5 1.6 0,0,0
+sp -2,4.5,0.5 1.6 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 0.9,						
