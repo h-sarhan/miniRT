@@ -8,6 +8,54 @@ L 5,10,-5 1 255,180,107
 SL 3.58,10.7,-19.80 1.0 	 0.15,0.36,-0.92 60 180,180,255
 
 
+// floor
+pl 0,0,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: white
+         }
+
+// ceiling
+pl 0,20,0 0,-1,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// back wall
+pl 0,0,20 0,0,-1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// front wall
+pl 0,0,-20 0,0,1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// left wall
+pl -20,0,0 1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// right wall
+pl 20,0,0 -1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
 
 cy -3,2.6,-2 0,-1,0.0 3 0.1 10,0,25
 {
@@ -56,15 +104,15 @@ sp -0.5,1.5,0.5 1.6 0,0,0
 	tile_texture : 2,
 }   
 
-sp -0.5,2.5,0.5 1.6 255,255,255
+cu -0.5,2.5,0.5 0.8 255,255,255
 {
 	reflectiveness: 0,               
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 200,
-	diffuse_texture: "./assets/leather_diffuse.ppm",
+	diffuse_texture: "./assets/cat.ppm",
 	// normal_texture: "./assets/leather_normal.ppm"
-	tile_texture : 2,
+	tile_texture : 1,
 }          							
 cu -2.5,1.5,0.5 1 0,0,0
 {
@@ -72,15 +120,16 @@ cu -2.5,1.5,0.5 1 0,0,0
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	diffuse_texture: "./assets/shrek.ppm"
+	diffuse_texture: "./assets/uae.ppm"
 }          							
-cu -0.5,3.5,-1.5 0.8 0,0,0
+
+cu -0.5,3.5,-1.5 1 0,0,0
 {
 	reflectiveness: 0,               
 	diffuse: 1.,						
 	specular: 1,
 	shininess: 300,
-	diffuse_texture: "./assets/patel.ppm"
+	diffuse_texture: "./assets/42_logo.ppm"
 }          							
 sp -3.5,1.5,0.5 1 20,127,50
 {
@@ -132,50 +181,4 @@ sp 1.5,0.5,-2 0.7 126,255,26
 	color: gray
 }
 
-// floor
-pl 0,0,0 0,1,0 255,230,230
-{
-	reflectiveness: 0.1,               
-	specular: 0,
-	color: white
-         }
 
-// ceiling
-pl 0,20,0 0,-1,0 255,230,230
-{
-	reflectiveness: 0,               
-	specular: 0,
-	color: white
-}
-
-// back wall
-pl 0,0,20 0,0,-1 255,230,230
-{
-	reflectiveness: 0,               
-	specular: 0,
-	color: white
-}
-
-// front wall
-pl 0,0,-20 0,0,1 255,230,230
-{
-	reflectiveness: 0,               
-	specular: 0,
-	color: white
-}
-
-// left wall
-pl -20,0,0 1,0,0 255,230,230
-{
-	reflectiveness: 0,               
-	specular: 0,
-	color: white
-}
-
-// right wall
-pl 20,0,0 -1,0,0 255,230,230
-{
-	reflectiveness: 0,               
-	specular: 0,
-	color: white
-}

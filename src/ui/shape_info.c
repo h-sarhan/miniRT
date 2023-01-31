@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 16:56:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/31 20:03:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,10 @@ void	dda(t_scene *scene, float x1, float x2, float y1, float y2, int color)
 
 	dx = (x2 - x1);
 	dy = (y2 - y1);
+	if ((fabs(x1 - x2) + fabs(y1 - y2)) < 2)
+	{
+		return ;
+	}
 	if (fabs(dx) > fabs(dy))
 		steps = fabs(dx);
 	else

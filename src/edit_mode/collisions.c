@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 19:14:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/31 20:50:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,10 +263,10 @@ t_vector	closest_point_on_cylinder(t_shape *cylinder, t_vector *point)
 	normalize_vec(&cylinder_normal);
 	
 	float d = dot_product(&cylinder_normal, &point_to_cylinder);
-	if (d > 0 && d > cylinder->props.height / 2)
-		d = cylinder->props.height / 2;
-	if (d < 0 && d < - cylinder->props.height / 2)
-		d = -cylinder->props.height / 2;
+	if (d > 0 && d > cylinder->props.height / 2 + cylinder->props.radius)
+		d = cylinder->props.height / 2 + cylinder->props.radius;
+	if (d < 0 && d < - cylinder->props.height / 2 - cylinder->props.radius)
+		d = -cylinder->props.height / 2 - cylinder->props.radius;
 	scale_vec(&cylinder_normal, &cylinder_normal, d);
 	t_vector closest_point;
 	add_vec(&closest_point, &cylinder->origin, &cylinder_normal);
@@ -274,25 +274,12 @@ t_vector	closest_point_on_cylinder(t_shape *cylinder, t_vector *point)
 	return closest_point;
 }
 
-
-bool	box_cylinder_collision(t_shape *cylinder, t_shape *box, bool box_cylinder, bool resolve)
+bool	box_cylinder_collision(t_shape *box, t_shape *cylinder, bool box_cylinder, bool resolve)
 {
-	(void)resolve;
-	(void)box_cylinder;
-	t_vector	point_on_box = closest_point_on_box(&cylinder->origin, box);
-	t_vector	point_on_cylinder = closest_point_on_cylinder(cylinder, &point_on_box);
-	int i = 0;
-	while (i < 20)
-	{
-		point_on_box = closest_point_on_box(&point_on_cylinder, box);
-		point_on_cylinder = closest_point_on_cylinder(cylinder, &point_on_box);
-		i++;
-	}
-
-	*point_to_draw_1 = point_on_cylinder;
-	*point_to_draw_2 = point_on_box;
-	if (vec_distance(&point_on_cylinder, &point_on_box) < cylinder->props.radius)
-		return (true);
+	(void) box_cylinder;
+	(void) resolve;
+	(void) box;
+	(void) cylinder;
 	return (false);
 }
 

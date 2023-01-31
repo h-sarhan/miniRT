@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 19:37:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/31 12:36:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,7 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 		* scene->lights[light_idx].intensity);
 	if (scene->lights[light_idx].type == SPOT &&
 		acos(spotlight_angle) > scene->lights[light_idx].theta * 0.9 / 4)
-	{
-		mult_color(&phong->diffuse, &phong->diffuse,
-			0.8);
-	}
+		mult_color(&phong->diffuse, &phong->diffuse, 0.8);
 	negate_vec(&light_v, &light_v);
 	reflect_vector(&reflect_v, &light_v, &itx->normal);
 	reflect_dot_eye = dot_product(&reflect_v, &itx->eye);
@@ -146,7 +143,6 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, float *angl
 		if (angle >= -1 && angle <= 1)
 		{
 			angle = acos(angle);
-			// printf("%f\n", angle);
 			if (angle > (scene->lights[light_idx].theta / 4))
 				return (true);
 		}
