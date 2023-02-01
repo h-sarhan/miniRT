@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/31 15:56:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 14:51:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void	cubical_map(float *u, float *v, t_vector *point);
 bool	intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
 bool	test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution);
 t_vector	cube_normal(const t_shape *shape, const t_vector *itx_point);
+t_vector	cylinder_support_function(const t_vector *dir, const t_shape *cyl);
 
 #endif

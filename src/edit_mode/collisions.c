@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/31 20:50:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 15:43:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,23 @@ bool	box_cylinder_collision(t_shape *box, t_shape *cylinder, bool box_cylinder, 
 	return (false);
 }
 
+bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
+{
+	(void)cyl1;
+	(void)cyl2;
+	(void)resolve;
+	t_vector	dir;
+	ft_bzero(&dir, sizeof(t_vector));
+	// sub_vec(&dir, &cyl2->origin, &cyl1->origin);
+	dir.x = 1;
+	dir.y = 1;
+	normalize_vec(&dir);
+	*point_to_draw_1 = cylinder_support_function(&dir, cyl1);
+	// *point_to_draw_2 = cylinder_support_function(&dir, cyl2);
+	print_vector(point_to_draw_1);
+	return (false);
+}
+
 bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder_sphere, bool resolve)
 {
 	t_vector	resolution;
@@ -431,6 +448,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
 	t_vector	up_vector;
+	
 	ft_bzero(&up_vector, sizeof(t_vector));
 	up_vector.y = 1;
 	mat_vec_multiply(&cylinder_normal, &cylinder->added_rots, &up_vector);
@@ -594,12 +612,12 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CYLINDER && shape2->type == PLANE)
 			{
-				if (cylinder_plane_collision(shape1, shape2) == true)
-				{
-					collided = true;
-					if (resolve == true)
-						cylinder_plane_collision_resolution(shape1, shape2);
-				}
+				// if (cylinder_plane_collision(shape1, shape2) == true)
+				// {
+				// 	collided = true;
+				// 	if (resolve == true)
+				// 		cylinder_plane_collision_resolution(shape1, shape2);
+				// }
 			}
 			else if (shape1->type == CUBE && shape2->type == PLANE)
 			{
@@ -654,6 +672,20 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				{
 					collided = true;
 					// printf("sphere cylinder collision\n");
+				}
+			}
+			else if (shape1->type == CYLINDER && shape2->type == CYLINDER)
+			{
+				if (cylinder_cylinder_collision(shape1, shape2, false) == true)
+				{
+					collided = true;
+					if (resolve == true)
+					{
+						if (shape2 == transformed_shape)
+							cylinder_cylinder_collision(shape2, shape1, true);
+						else
+							cylinder_cylinder_collision(shape1, shape2, true);
+					}
 				}
 			}
 			else if (shape1->type == CUBE && shape2->type == CUBE)
