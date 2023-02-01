@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/29 11:49:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 18:28:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	mouse_move(t_scene *scene)
 	// add_vec(&scene->shapes[scene->shape_idx].origin, &scene->shapes[scene->shape_idx].origin, &pos_diff);
 	scene->shapes[scene->shape_idx].origin = position_on_plane;
 	if (scene->settings.collisions == true)
-		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 	calculate_transforms(scene);
 	draw_scene(scene);
 }
@@ -145,7 +145,7 @@ int	mouse_rotate(t_scene *scene)
 	{
 		rotate_along_mouse_axis(scene);
 		if (scene->settings.collisions == true)
-			collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+			collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

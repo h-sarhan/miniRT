@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/31 15:53:27 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 18:28:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void	collide_after_transform(t_scene *scene)
 			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
 			|| scene->keys_held.left || scene->keys_held.plus
 			|| scene->keys_held.minus || scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
-		collide(scene, true, 100, &scene->shapes[scene->shape_idx]);
+		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 	// if (scene->keys_held.plus == true)
 	// {
 	// 	if (collide(scene, false, 1, NULL) == true)

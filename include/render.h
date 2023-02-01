@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/31 11:58:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 18:02:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void	update_loading_bar(t_worker *worker, int *line_counter);
 void	init_workers(t_worker *workers, t_scene *scene);
 void	run_workers(t_worker *workers, t_scene *scene, bool loading,
 			void *func);
+t_vector	box_support_function(const t_vector *dir, const t_shape *box);
 
 #endif
