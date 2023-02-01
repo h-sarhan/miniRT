@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:31:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
+void	calculate_orientation(t_mat4 *rot_transform, const t_shape *shape)
 {
 	t_vector	up;
 	t_vector	ax;
@@ -23,21 +23,18 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 		return ;
 	if (shape->orientation.x == 0 && fabs(shape->orientation.y + 1) < 0.001
 		&& shape->orientation.z == 0)
-	{
-		rotation_matrix_x(rot_transform, -M_PI);
-		return ;
-	}
+		return (rotation_matrix_x(rot_transform, -M_PI));
 	up.x = 0;
 	up.y = 1;
 	up.z = 0;
 	up.w = 0;
 	ax.w = 0;
-	normalize_vec(&shape->orientation);
 	normalize_vec(&up);
 	cross_product(&ax, &up, &shape->orientation);
 	normalize_vec(&ax);
 	angle = acos(dot_product(&shape->orientation, &up));
 	axis_angle(rot_transform, &ax, angle);
+	
 }
 
 void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
@@ -76,6 +73,7 @@ void	calculate_shape_transforms(t_shape *shape)
 	if (shape->type == CYLINDER || shape->type == CONE)
 		scaling_matrix(&scale, shape->props.scale.x,
 			1, shape->props.scale.z);
+	normalize_vec(&shape->orientation);
 	if (shape->type == PLANE || shape->type == CYLINDER
 		|| shape->type == CONE)
 		calculate_orientation(&rot, shape);

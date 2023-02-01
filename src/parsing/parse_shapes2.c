@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:13:25 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/28 02:04:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:33:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ void	init_shape(t_shape *shape, t_scene *scene)
 	shape->props.scale.y = shape->props.radius;
 	shape->props.scale.z = shape->props.radius;
 	shape->props.radius_squared = shape->props.radius * shape->props.radius;
-	if (shape->type == CYLINDER)
-	{
-		ft_bzero(&shape->orientation, sizeof(t_vector));
-		shape->orientation.y = 1;
-		shape->props.scale.y = 1;
-	}
 	if (shape->type == PLANE)
 		shape->props.distance_from_origin = \
 			(dot_product(&shape->orientation, &shape->origin));

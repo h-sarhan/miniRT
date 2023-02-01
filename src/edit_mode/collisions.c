@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 15:43:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:35:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,8 +291,9 @@ bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
 	t_vector	dir;
 	ft_bzero(&dir, sizeof(t_vector));
 	// sub_vec(&dir, &cyl2->origin, &cyl1->origin);
-	dir.x = 1;
+	// dir.x = 1;
 	dir.y = 1;
+	// dir.z = 1;
 	normalize_vec(&dir);
 	*point_to_draw_1 = cylinder_support_function(&dir, cyl1);
 	// *point_to_draw_2 = cylinder_support_function(&dir, cyl2);
@@ -676,6 +677,7 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CYLINDER && shape2->type == CYLINDER)
 			{
+				calculate_transforms(scene);
 				if (cylinder_cylinder_collision(shape1, shape2, false) == true)
 				{
 					collided = true;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 15:43:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:40:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,33 @@ int	sign(float num)
 	return (1);
 }
 
-// This assumes that the cylinder is centered at the origin with default orientation
+
+// from: https://www.cas.mcmaster.ca/~carette/SE3GB3/2006/notes/gjk1_pres.pdf
 t_vector	cylinder_support_function(const t_vector *dir, const t_shape *cyl)
 {
-	(void) dir;
-	t_vector	point;
-	ft_bzero(&point, sizeof(t_vector));
-	point.w = 1;
-	point.y = sign(dir->y) * cyl->props.height / 2;
-	float	dist_from_center = sqrt(dir->x * dir->x + dir->z * dir->z);
-	if (dist_from_center < 0.01)
+	t_vector	support_point;
+	t_vector	w;
+	t_vector	cyl_normal;
+	t_vector	up_vector;
+	
+	ft_bzero(&up_vector, sizeof(t_vector));
+	up_vector.y = 1;
+	mat_vec_multiply(&cyl_normal, &cyl->transf, &up_vector);
+	normalize_vec(&cyl_normal);
+	float	u_d = dot_product(&cyl_normal, dir);
+	scale_vec(&w, &cyl_normal, -u_d);
+	add_vec(&w, &w, dir);
+	t_vector	rhs;
+	scale_vec(&rhs, &cyl_normal, sign(dot_product(&cyl_normal, dir)) * cyl->props.height / 2);
+	add_vec(&support_point, &cyl->origin, &rhs);
+	if (vec_magnitude(&w) < 0.01)
 	{
-		return (point);
+		support_point.w = 1;
+		return (support_point);
 	}
-	point.x = (cyl->props.radius / dist_from_center) * dir->x;
-	point.z = (cyl->props.radius / dist_from_center) * dir->z;
-	return (point);
+	normalize_vec(&w);
+	scale_vec(&w, &w, cyl->props.radius);
+	add_vec(&support_point, &support_point, &w);
+	support_point.w = 1;
+	return (support_point);
 }
