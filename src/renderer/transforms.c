@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 18:16:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 18:27:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 
 	if (shape->orientation.x == 0 && fabs(shape->orientation.y - 1) < 0.001
 		&& shape->orientation.z == 0)
-		return ;
+		return (rotation_matrix_x(rot_transform, 0));
 	if (shape->orientation.x == 0 && fabs(shape->orientation.y + 1) < 0.001
 		&& shape->orientation.z == 0)
 		return (rotation_matrix_x(rot_transform, -M_PI));

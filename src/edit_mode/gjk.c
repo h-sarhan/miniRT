@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 17:01:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:25:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,49 @@ t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl)
 	return (support_point);
 }
 
-t_vector	gjk_support(const t_shape *shape1, const t_shape *shape2, const t_vector *dir)
+// http://uu.diva-portal.org/smash/get/diva2:343820/FULLTEXT01.pdf
+t_vector	cone_furthest_point(const t_vector *dir, t_shape *cone)
+{
+	t_vector	support_point;
+	t_vector	w;
+	t_vector	cyl_normal;
+	t_vector	up_vector;
+	
+	ft_bzero(&up_vector, sizeof(t_vector));
+	up_vector.y = 1;
+	mat_vec_multiply(&cyl_normal, &cone->transf, &up_vector);
+	normalize_vec(&cyl_normal);
+	float	u_d = dot_product(&cyl_normal, dir);
+	scale_vec(&w, &cyl_normal, -u_d);
+	add_vec(&w, &w, dir);
+	t_vector	rhs;
+	scale_vec(&rhs, &cyl_normal, sign(dot_product(&cyl_normal, dir)) * cone->props.height / 2);
+	add_vec(&support_point, &cone->origin, &rhs);
+	if (dot_product(&cyl_normal, dir) < 0)
+	{
+		support_point.w = 1;
+		return (support_point);
+	}
+	else
+	{
+		scale_vec(&rhs, &cyl_normal, 0);
+		add_vec(&support_point, &cone->origin, &rhs);
+	}
+	if (vec_magnitude(&w) < 0.01)
+	{
+		if (dot_product(&cyl_normal, dir) < 0)
+			printf("Negative dot product\n");
+		support_point.w = 1;
+		return (support_point);
+	}
+	normalize_vec(&w);
+	scale_vec(&w, &w, cone->props.radius);
+	add_vec(&support_point, &support_point, &w);
+	support_point.w = 1;
+	return (support_point);
+}
+
+t_vector	gjk_support(t_shape *shape1,  t_shape *shape2, const t_vector *dir)
 {
 	t_vector	s1_furthest;
 	t_vector	s2_furthest;
@@ -130,10 +172,14 @@ t_vector	gjk_support(const t_shape *shape1, const t_shape *shape2, const t_vecto
 		s1_furthest = cylinder_furthest_point(dir, shape1);
 	if (shape1->type == CUBE)
 		s1_furthest = box_furthest_point(dir, shape1);
+	// if (shape1->type == CUBE)
+	// 	s1_furthest = cone_furthest_point(dir, shape1);
 	if (shape2->type == CYLINDER)
 		s2_furthest = cylinder_furthest_point(&dir2, shape2);
 	if (shape2->type == CUBE)
 		s2_furthest = box_furthest_point(&dir2, shape2);
+	// if (shape2->type == CONE)
+	// 	s2_furthest = cone_furthest_point(&dir2, shape2);
 	sub_vec(&res, &s1_furthest, &s2_furthest);
 	return (res);
 }
@@ -319,7 +365,7 @@ bool	handle_simplex(t_vector *simplex, t_vector *dir, int *simplex_size)
 }
 
 // GJK algorithm based on: https://blog.winter.dev/2020/gjk-algorithm/
-bool	gjk(const t_shape *s1, const t_shape *s2)
+bool	gjk(t_shape *s1, t_shape *s2)
 {
 	t_vector	dir;
 	t_vector	simplex[4];

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 16:55:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:01:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -569,6 +569,7 @@ bool	box_box_collision(t_shape *box_1, t_shape *box_2, bool resolve)
 	// box_1->props.color.r = 1;
 	return (false);
 }
+t_vector	cone_furthest_point(const t_vector *dir, const t_shape *cone);
 
 bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape)
 {
@@ -709,6 +710,17 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 							box_box_collision(shape1, shape2, true);
 					}
 				}
+			}
+			else if (shape1->type == CONE)
+			{
+				t_vector	dir;
+				calculate_transforms(scene);
+				
+				ft_bzero(&dir, sizeof(t_vector));
+				dir.y = 1;
+				t_vector furthest_point = cone_furthest_point(&dir, shape1);
+				*point_to_draw_1 = furthest_point;
+				
 			}
 			idx2++;
 		}

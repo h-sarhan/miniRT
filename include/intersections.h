@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/02 16:33:08 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 18:13:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ int			intersect_shadowed(t_shape *shape, const t_ray *ray, t_intersections *xs);
 
 t_vector	box_furthest_point(const t_vector *dir, const t_shape *box);
 t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl);
-bool	gjk(const t_shape *s1, const t_shape *s2);
+bool	gjk(t_shape *s1,  t_shape *s2);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 15:56:36 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:37:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	within_cone_radius(const t_ray *ray, float t, float cone_val)
 
 	x = ray->origin.x + ray->dir.x * t;
 	z = ray->origin.z + ray->dir.z * t;
-	if (x * x + z * z <= fabs(cone_val) * fabs(cone_val))
+	if ((x * x + z * z) <= (fabs(cone_val) * fabs(cone_val)))
 		return (true);
 	return (false);
 }
