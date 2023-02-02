@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 18:26:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 16:55:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,6 @@
 
 extern t_vector *point_to_draw_1;
 extern t_vector *point_to_draw_2;
-
-
-// static bool	within_cylinder_radius(const t_ray *ray, float t)
-// {
-// 	float	x;
-// 	float	z;
-
-// 	x = ray->origin.x + ray->dir.x * t;
-// 	z = ray->origin.z + ray->dir.z * t;
-// 	if ((x * x + z * z) <= 1)
-// 		return (true);
-// 	return (false);
-// }
 
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
@@ -276,20 +263,25 @@ t_vector	closest_point_on_cylinder(t_shape *cylinder, t_vector *point)
 
 bool	box_cylinder_collision(t_shape *box, t_shape *cylinder, bool box_cylinder, bool resolve)
 {
-	(void) box_cylinder;
-	(void) box;
-	(void) resolve;
-	(void) cylinder;
+	(void)box;
+	(void)cylinder;
+	(void)resolve;
+	(void)box_cylinder;
 	t_vector	dir;
 	ft_bzero(&dir, sizeof(t_vector));
-	// sub_vec(&dir, &cyl2->origin, &cyl1->origin);
-	// dir.x = 1;
 	dir.y = 1;
-	// dir.z = 1;
-	normalize_vec(&dir);
-	*point_to_draw_1 = box_support_function(&dir, box);
-	// *point_to_draw_2 = cylinder_support_function(&dir, cyl2);
-	// print_vector(point_to_draw_1);
+	if (gjk(box, cylinder) == true)
+	{
+		ft_bzero(&box->props.color, sizeof(t_color));
+		box->props.color.g = 1;
+		ft_bzero(&cylinder->props.color, sizeof(t_color));
+		cylinder->props.color.g = 1;
+		return (true);
+	}
+	ft_bzero(&box->props.color, sizeof(t_color));
+	box->props.color.r = 1;
+	ft_bzero(&cylinder->props.color, sizeof(t_color));
+	cylinder->props.color.r = 1;
 	return (false);
 }
 
@@ -300,14 +292,16 @@ bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
 	(void)resolve;
 	t_vector	dir;
 	ft_bzero(&dir, sizeof(t_vector));
-	// sub_vec(&dir, &cyl2->origin, &cyl1->origin);
-	// dir.x = 1;
 	dir.y = 1;
-	// dir.z = 1;
-	normalize_vec(&dir);
-	// *point_to_draw_1 = cylinder_support_function(&dir, cyl1);
-	// *point_to_draw_2 = cylinder_support_function(&dir, cyl2);
-	// print_vector(point_to_draw_1);
+	if (gjk(cyl1, cyl2) == true)
+	{
+		printf("colliding\n");
+		ft_bzero(&cyl1->props.color, sizeof(t_color));
+		cyl1->props.color.g = 1;
+		return (true);
+	}
+	ft_bzero(&cyl1->props.color, sizeof(t_color));
+	cyl1->props.color.r = 1;
 	return (false);
 }
 
@@ -462,7 +456,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	
 	ft_bzero(&up_vector, sizeof(t_vector));
 	up_vector.y = 1;
-	mat_vec_multiply(&cylinder_normal, &cylinder->added_rots, &up_vector);
+	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up_vector);
 	if (vec_magnitude(&cylinder_normal) < 0.001)
 	{
 		return ;
@@ -693,13 +687,13 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				if (cylinder_cylinder_collision(shape1, shape2, false) == true)
 				{
 					collided = true;
-					if (resolve == true)
-					{
-						if (shape2 == transformed_shape)
-							cylinder_cylinder_collision(shape2, shape1, true);
-						else
-							cylinder_cylinder_collision(shape1, shape2, true);
-					}
+					// if (resolve == true)
+					// {
+					// 	if (shape2 == transformed_shape)
+					// 		cylinder_cylinder_collision(shape2, shape1, true);
+					// 	else
+					// 		cylinder_cylinder_collision(shape1, shape2, true);
+					// }
 				}
 			}
 			else if (shape1->type == CUBE && shape2->type == CUBE)

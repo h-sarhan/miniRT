@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 18:02:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 13:27:58 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define RENDER_H
 
 # define NUM_THREADS 16
-# define REFLECTION_DEPTH 2
+# define REFLECTION_DEPTH 1
 
 typedef struct s_worker		t_worker;
 struct s_worker
