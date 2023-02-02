@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/31 12:36:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 13:25:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,18 +124,14 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, float *angl
 	float			angle;
 	t_ray			ray;
 	t_intersections	arr;
-	t_intersection	*intersection;
 
 	sub_vec(&ray.dir, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.dir);
 	scale_vec(&ray.dir, &ray.dir, 1 / distance);
 	ray.origin = *itx_point;
-	i = -1;
 	arr.count = 0;
 	if (scene->lights[light_idx].type == SPOT)
 	{
-		normalize_vec(&ray.dir);
-		normalize_vec(&scene->lights[light_idx].direction);
 		angle = (dot_product(&ray.dir, &scene->lights[light_idx].direction));
 		*angle_ret = angle;
 		if (angle < 0)
@@ -147,10 +143,17 @@ bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, float *angl
 				return (true);
 		}
 	}
+	i = -1;
 	while (++i < scene->count.shapes)
-		intersect(&scene->shapes[i], &ray, &arr);
-	intersection = hit(&arr);
-	if (intersection && intersection->time < distance)
-		return (true);
+	{
+		int num_itx = intersect_shadowed(&scene->shapes[i], &ray, &arr);
+		int j = arr.count - num_itx;
+		while (j < arr.count)
+		{
+			if (arr.arr[j].time > 0 && arr.arr[j].time < distance)
+				return (true);
+			j++;
+		}
+	}
 	return (false);
 }

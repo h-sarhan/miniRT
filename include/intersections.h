@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/01 18:16:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 13:20:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,6 @@ bool	test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution);
 t_vector	cube_normal(const t_shape *shape, const t_vector *itx_point);
 t_vector	cylinder_support_function(const t_vector *dir, const t_shape *cyl);
 void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape);
-t_vector	transformed_cylinder_support_function(const t_vector *dir, const t_shape *cyl);
+int	intersect_shadowed(t_shape *shape, const t_ray *ray, t_intersections *xs);
 
 #endif

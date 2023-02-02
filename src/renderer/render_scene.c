@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 22:04:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 13:06:37 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ void	*render_scene_fast(t_worker *worker)
 		update_loading_bar(worker, &line_counter);
 		y += 3;
 	}
-	fill_in_horizontal(worker, 15);
-	fill_in_vertical(worker, 15);
+	fill_in_horizontal(worker, 25);
+	fill_in_vertical(worker, 25);
 	return (NULL);
 }
 
