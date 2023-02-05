@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:31:39 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	top_corner_arrows(t_scene *scene, int x, int y)
 	}
 }
 
-void	draw_arrow(t_scene *scene, int x, int y, float z)
+void	draw_arrow(t_scene *scene, int x, int y, double z)
 {
 	if (z > 0)
 	{

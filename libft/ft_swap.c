@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:13:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:13:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_swap(int *a, int *b)
 	*b = tmp;
 }
 
-void	ft_swapd(float *a, float *b)
+void	ft_swapd(double *a, double *b)
 {
 	double	tmp;
 

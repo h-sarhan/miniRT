@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 11:53:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param mat 2x2 matrix
  * @return The determinat of the 2x2 matrix
  */
-static float	det2(const t_mat2 *mat)
+static double	det2(const t_mat2 *mat)
 {
 	return ((*mat)[0][0] * (*mat)[1][1] - (*mat)[0][1] * (*mat)[1][0]);
 }
@@ -95,7 +95,7 @@ void	submat4(t_mat3 *res, const t_mat4 *mat, int row, int col)
  * @param col Column of the cofactor
  * @return The cofactor at mat[row][col]
  */
-static float	cofactor3(const t_mat3 *mat3, int row, int col)
+static double	cofactor3(const t_mat3 *mat3, int row, int col)
 {
 	t_mat2	mat2;
 
@@ -110,7 +110,7 @@ static float	cofactor3(const t_mat3 *mat3, int row, int col)
  * @param mat3 Matrix to find the determinant of
  * @return The determinant of a 3 by 3 matrix
  */
-float	det3(const t_mat3 *mat3)
+double	det3(const t_mat3 *mat3)
 {
 	return (cofactor3(mat3, 0, 0) * (*mat3)[0][0]
 			+ cofactor3(mat3, 0, 1) * (*mat3)[0][1]

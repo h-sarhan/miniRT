@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:46:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	add_colors(t_color *res, const t_color *c1, const t_color *c2)
  * @param color The color to be multiplied
  * @param val The value to multiply the color with
  */
-void	mult_color(t_color *res, const t_color *color, float val)
+void	mult_color(t_color *res, const t_color *color, double val)
 {
 	res->r = color->r * val;
 	res->g = color->g * val;

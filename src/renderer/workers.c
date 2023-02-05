@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:36:01 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	init_workers(t_worker *workers, t_scene *scene)
 		workers[i].max_workers = NUM_THREADS;
 		workers[i].worker_id = i;
 		workers[i].scene = scene;
-		workers[i].y_start = (workers[i].height / (float)NUM_THREADS) * i;
-		workers[i].y_end = (workers[i].height / (float)NUM_THREADS) * (i + 1);
+		workers[i].y_start = (workers[i].height / (double)NUM_THREADS) * i;
+		workers[i].y_end = (workers[i].height / (double)NUM_THREADS) * (i + 1);
 		workers[i].y_scale_start = (scene->settings.disp_h \
-			/ (float)NUM_THREADS) * i;
+			/ (double)NUM_THREADS) * i;
 		workers[i].y_scale_end = (scene->settings.disp_h \
-			/ (float)NUM_THREADS) * (i + 1);
+			/ (double)NUM_THREADS) * (i + 1);
 		i++;
 	}
 }

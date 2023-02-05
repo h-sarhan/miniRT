@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 15:19:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 {
 	t_vector	up;
 	t_vector	ax;
-	float		angle;
+	double		angle;
 
 	if (shape->orientation.x == 0 && fabs(shape->orientation.y - 1) < 0.001
 		&& shape->orientation.z == 0)

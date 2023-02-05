@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	parse_light_props(t_scene *scene, t_light *light, char **splitted)
 {
 	bool	success;
-	float	col_sum;
+	double	col_sum;
 
 	success = true;
 	light->type = POINT;
@@ -74,7 +74,7 @@ void	parse_light(t_scene *scene, char **splitted)
 void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
 {
 	bool	success;
-	float	col_sum;
+	double	col_sum;
 
 	success = true;
 	light->type = SPOT;
@@ -153,7 +153,7 @@ void	parse_spotlight(t_scene *scene, char **splitted)
 bool	parse_ambient(t_scene *scene, char **splitted)
 {
 	bool	success;
-	float	col_sum;
+	double	col_sum;
 
 	success = true;
 	if (split_count(splitted) != 3)

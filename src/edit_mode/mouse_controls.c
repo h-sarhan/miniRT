@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:20:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/01 18:28:49 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	mouse_select(t_scene *scene, float x, float y)
+void	mouse_select(t_scene *scene, double x, double y)
 {
 	t_intersections	arr;
 	t_intersection	*itx;
@@ -96,8 +96,8 @@ void	mouse_move(t_scene *scene)
 	mlx_mouse_get_pos(scene->disp->mlx, scene->disp->win, &scene->mouse.x,
 		&scene->mouse.y);
 	ray_from_cam(&mouse_selection, &scene->cam,
-		((float)scene->mouse.prev_x * scene->settings.edit_w / scene->settings.disp_w) + .5,
-		((float)scene->mouse.prev_y * scene->settings.edit_h / scene->settings.disp_h) + .5);
+		((double)scene->mouse.prev_x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		((double)scene->mouse.prev_y * scene->settings.edit_h / scene->settings.disp_h) + .5);
 	int shape_idx = -1;
 	arr.count = 0;
 	while (++shape_idx < scene->count.shapes)
@@ -108,17 +108,17 @@ void	mouse_move(t_scene *scene)
 	
 	t_vector	plane_origin;
 	t_vector	plane_orientation;
-	float		distance_from_origin;
+	double		distance_from_origin;
 	negate_vec(&plane_orientation, &scene->cam.dir);
 	plane_origin = scene->shapes[scene->shape_idx].origin;
 	ray_from_cam(&mouse_selection, &scene->cam,
-		((float)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
-		((float)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
+		((double)scene->mouse.x * scene->settings.edit_w / scene->settings.disp_w) + .5,
+		((double)scene->mouse.y * scene->settings.edit_h / scene->settings.disp_h) + .5);
 	distance_from_origin = dot_product(&plane_orientation, &plane_origin);
-	float denom = dot_product(&mouse_selection.dir, &plane_orientation);
+	double denom = dot_product(&mouse_selection.dir, &plane_orientation);
 	if (fabs(denom) < 0.00001)
 		return ;
-	float t = -(dot_product(&mouse_selection.origin, &plane_orientation) \
+	double t = -(dot_product(&mouse_selection.origin, &plane_orientation) \
 		- distance_from_origin) / denom;
 	t_vector	position_on_plane;
 	ray_position(&position_on_plane, &mouse_selection, t);

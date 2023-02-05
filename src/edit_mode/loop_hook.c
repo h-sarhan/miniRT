@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 17:20:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_color_change(int key, t_scene *scene, t_color *color);
 
-t_vector	*sphere_to_xyz(t_vector *vec, float phi, float theta, float r)
+t_vector	*sphere_to_xyz(t_vector *vec, double phi, double theta, double r)
 {
 	vec->x = r * sin(phi) * cos(theta);
 	vec->z = r * sin(phi) * sin(theta);
@@ -115,7 +115,7 @@ void	move_object_v(t_scene *scene, t_shape *shape)
 
 void	scale_object(t_scene *scene, t_shape *shape)
 {
-	float	amount;
+	double	amount;
 
 	amount = 0.04;
 	if (scene->keys_held.minus == true)
@@ -155,7 +155,7 @@ void	change_height(t_scene *scene, t_shape *shape)
 	}
 }
 
-void	rotate_x(t_scene *scene, t_mat4 *rot_mat, float deg)
+void	rotate_x(t_scene *scene, t_mat4 *rot_mat, double deg)
 {
 	t_mat4		rot;
 	t_vector	ax;
@@ -176,7 +176,7 @@ void	rotate_x(t_scene *scene, t_mat4 *rot_mat, float deg)
 	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
-void	rotate_y(t_scene *scene, t_mat4 *rot_mat, float deg)
+void	rotate_y(t_scene *scene, t_mat4 *rot_mat, double deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;
@@ -189,7 +189,7 @@ void	rotate_y(t_scene *scene, t_mat4 *rot_mat, float deg)
 	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
-void	rotate_z(t_scene *scene, t_mat4 *rot_mat, float deg)
+void	rotate_z(t_scene *scene, t_mat4 *rot_mat, double deg)
 {
 	t_mat4	rot;
 	t_mat4	mat_copy;

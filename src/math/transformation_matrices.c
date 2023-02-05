@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param y The value along the y-axis to be translated.
  * @param z The value along the z-axis to be translated.
  */
-void	translate_matrix(t_mat4 *mat, float x, float y, float z)
+void	translate_matrix(t_mat4 *mat, double x, double y, double z)
 {
 	ft_bzero(mat, sizeof(t_mat4));
 	(*mat)[0][0] = 1;
@@ -38,7 +38,7 @@ void	translate_matrix(t_mat4 *mat, float x, float y, float z)
  * @param y The value along the y-axis to be scaled.
  * @param z The value along the z-axis to be scaled.
  */
-void	scaling_matrix(t_mat4 *mat, float x, float y, float z)
+void	scaling_matrix(t_mat4 *mat, double x, double y, double z)
 {
 	ft_bzero(mat, sizeof(t_mat4));
 	(*mat)[0][0] = x;
@@ -52,7 +52,7 @@ void	scaling_matrix(t_mat4 *mat, float x, float y, float z)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_x(t_mat4 *mat, float r)
+void	rotation_matrix_x(t_mat4 *mat, double r)
 {
 	ft_bzero(mat, sizeof(t_mat4));
 	(*mat)[0][0] = 1;
@@ -68,7 +68,7 @@ void	rotation_matrix_x(t_mat4 *mat, float r)
  * @param mat The matrix to be initialized
  * @param r angle in radians
  */
-void	rotation_matrix_y(t_mat4 *mat, float r)
+void	rotation_matrix_y(t_mat4 *mat, double r)
 {
 	ft_bzero(mat, sizeof(t_mat4));
 	(*mat)[0][0] = cos(r);
@@ -85,7 +85,7 @@ void	rotation_matrix_y(t_mat4 *mat, float r)
  * @param r angle in radians
  */
 // we are not using this
-// void	rotation_matrix_z(t_mat4 *mat, float r)
+// void	rotation_matrix_z(t_mat4 *mat, double r)
 // {
 // 	ft_bzero(mat, sizeof(t_mat4));
 // 	(*mat)[0][0] = cos(r);
@@ -96,7 +96,7 @@ void	rotation_matrix_y(t_mat4 *mat, float r)
 // 	(*mat)[3][3] = 1;
 // }
 
-void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, float angle)
+void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, double angle)
 {
 	(*rot_mat)[0][0] = cos(angle) + ax->x * ax->x * (1 - cos(angle));
 	(*rot_mat)[0][1] = ax->x * ax->y * (1 - cos(angle)) - ax->z * sin(angle);

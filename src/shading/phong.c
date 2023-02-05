@@ -6,14 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 15:26:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "scene.h"
 
-t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
+t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
 {
 	t_color	ambient;
 	(void)attenuation;
@@ -28,11 +28,11 @@ t_color	get_ambient(t_scene *scene, float attenuation, t_color patter_color)
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
-	float		reflect_dot_eye;
-	float		light_dot_normal;
+	double		reflect_dot_eye;
+	double		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
-	float		spotlight_angle;
+	double		spotlight_angle;
 
 	spotlight_angle = 0;
 	sub_vec(&light_v, &scene->lights[light_idx].position, &itx->over_point);
@@ -65,9 +65,9 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_phong	phong;
 	t_color	result;
 	t_color	shape_color;	
-	const float	light_dist = vec_distance(&itx->point, \
+	const double	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const float	attentuation_factor = (100 * scene->lights[light_idx].intensity \
+	const double	attentuation_factor = (100 * scene->lights[light_idx].intensity \
 			- light_dist) / (100 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
@@ -117,11 +117,11 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 	return (final_color);
 }
 
-bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, float *angle_ret)
+bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, double *angle_ret)
 {
-	float			distance;
+	double			distance;
 	int				i;
-	float			angle;
+	double			angle;
 	t_ray			ray;
 	t_intersections	arr;
 

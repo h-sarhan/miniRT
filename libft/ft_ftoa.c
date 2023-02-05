@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 15:31:54 by mkhan             #+#    #+#             */
-/*   Updated: 2023/01/27 20:42:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*point_num(float num, int start, int len, char *str)
+static char	*point_num(double num, int start, int len, char *str)
 {
 	int	decimal;
 	int	i;
@@ -20,8 +20,8 @@ static char	*point_num(float num, int start, int len, char *str)
 	decimal = 0;
 	len = ft_strlen(str);
 	str[len] = '.';
-	num = num - (float)decimal;
-	num = num - (float)start;
+	num = num - (double)decimal;
+	num = num - (double)start;
 	num = fabs(num) * 100;
 	decimal = (int)num;
 	i = 1;
@@ -53,7 +53,7 @@ static char	*dec_num(int is_negative, int len, int decimal, char *str)
 	return (str);
 }
 
-char	*ftoa(float num)
+char	*ftoa(double num)
 {
 	char	*str;
 	int		i[3];

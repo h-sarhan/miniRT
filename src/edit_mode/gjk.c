@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:00:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 extern t_vector *point_to_draw_1;
 extern t_vector *point_to_draw_2;
 
-int	sign(float num)
+int	sign(double num)
 {
 	if (num < 0)
 		return (-1);
@@ -72,9 +72,9 @@ t_vector	box_furthest_point(const t_vector *dir, const t_shape *box)
 		mat_vec_multiply(&transf_vtx[i], &box->transf, &vtx[i]);
 	
 	int	i = 0;
-	float	largest = - INFINITY;
+	double	largest = - INFINITY;
 	int	largest_idx = 0;
-	float	res;
+	double	res;
 	while (i < 8)
 	{
 		res = dot_product(dir, &transf_vtx[i]);
@@ -100,7 +100,7 @@ t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl)
 	up_vector.y = 1;
 	mat_vec_multiply(&cyl_normal, &cyl->transf, &up_vector);
 	normalize_vec(&cyl_normal);
-	float	u_d = dot_product(&cyl_normal, dir);
+	double	u_d = dot_product(&cyl_normal, dir);
 	scale_vec(&w, &cyl_normal, -u_d);
 	add_vec(&w, &w, dir);
 	t_vector	rhs;
@@ -128,7 +128,7 @@ t_vector	cone_furthest_point(const t_vector *dir, t_shape *cone)
 	
 	mat_vec_multiply(&cone_normal, &cone->transf, &up_vector);
 	normalize_vec(&cone_normal);
-	float	u_d = dot_product(&cone_normal, dir);
+	double	u_d = dot_product(&cone_normal, dir);
 	if (fabs(u_d) > 1)
 	{
 		exit(!printf("jhbvndjnvflunfliubnluijnfg\n"));

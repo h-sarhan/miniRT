@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 20:45:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ extern t_vector *point_to_draw_2;
 
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
-	float		distance;
+	double		distance;
 	t_vector	center_diff;
 
 	sub_vec(&center_diff, &sphere1->origin, &sphere2->origin);
@@ -56,7 +56,7 @@ t_vector	closest_point_on_box(const t_vector *point, const t_shape *box)
 	normalize_vec(&box_w);
 	
 	t_vector	step;
-	float dist = dot_product(&point_to_center, &box_u);
+	double dist = dot_product(&point_to_center, &box_u);
 	if (dist > box->props.scale.x)
 		dist = box->props.scale.x;
 	if (dist < -box->props.scale.x)
@@ -95,7 +95,7 @@ bool	sphere_box_collision(t_shape *box, t_shape *sphere, bool box_sphere, bool r
 			if (vec_magnitude(&resolution) < 0.0001)
 				return (true);
 			normalize_vec(&resolution);
-			float	distance = vec_distance(&point_on_box, &sphere->origin);
+			double	distance = vec_distance(&point_on_box, &sphere->origin);
 			scale_vec(&resolution, &resolution, sphere->props.radius - distance);
 			// if (vec_magnitude(&resolution) > 1)
 			// 	return (true);
@@ -119,7 +119,7 @@ bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 	t_vector	box_min;
 	t_vector	sides = box->props.scale;
 	t_vector	box_half;
-	float		extent;
+	double		extent;
 
 	add_vec(&box_max, &box->origin, &sides);
 	sub_vec(&box_min, &box->origin, &sides);
@@ -144,7 +144,7 @@ bool	box_plane_collsion(t_shape *box, const t_shape *plane, bool resolve)
 	box_w.w = 0;
 	normalize_vec(&box_w);
 	extent = box->props.scale.x * fabs(dot_product(&plane->orientation, &box_u)) + box->props.scale.y * fabs(dot_product(&plane->orientation, &box_v)) + box->props.scale.z * fabs(dot_product(&plane->orientation, &box_w));
-	float center_to_plane = dot_product(&box->origin, &plane->orientation) - (plane->props.distance_from_origin);
+	double center_to_plane = dot_product(&box->origin, &plane->orientation) - (plane->props.distance_from_origin);
 	if (center_to_plane > extent || center_to_plane < -extent)
 		return (false);
 	if (resolve)
@@ -172,8 +172,8 @@ bool	sphere_plane_collision(t_shape *sphere, const t_shape *plane)
 	t_vector	normal;
 	normal = plane->orientation;
 	normal.w = 0;
-	// float d = - (dot_product(&normal, &plane->origin));
-	float distance = (dot_product(&normal, &sphere->origin) - plane->props.distance_from_origin);
+	// double d = - (dot_product(&normal, &plane->origin));
+	double distance = (dot_product(&normal, &sphere->origin) - plane->props.distance_from_origin);
 	if (fabs(distance) < sphere->props.radius)
 		return (true);
 	return (false);
@@ -184,7 +184,7 @@ void	sphere_sphere_collision_resolution(t_shape *sphere1, t_shape *sphere2)
 	t_vector	dir;
 
 	sub_vec(&dir, &sphere1->origin, &sphere2->origin);
-	float dist = vec_magnitude(&dir);
+	double dist = vec_magnitude(&dir);
 	if (dist < 0.001)
 		return ;
 	normalize_vec(&dir);
@@ -196,7 +196,7 @@ void	sphere_plane_collision_resolution(t_shape *sphere, t_shape *plane)
 {
 	t_vector	resolution;
 	t_vector	origin_to_plane;
-	float		distance;
+	double		distance;
 
 	sub_vec(&origin_to_plane, &sphere->origin, &plane->origin);
 	distance = sphere->props.radius - fabs(dot_product(&origin_to_plane, &plane->orientation));
@@ -219,9 +219,9 @@ bool	cylinder_plane_collision(t_shape *cylinder, t_shape *plane)
 	normalize_vec(&cylinder_normal);
 	t_vector	cylinder_to_plane;
 	sub_vec(&cylinder_to_plane, &cylinder->origin, &plane->origin);
-	float	cylinder_to_plane_proj;
+	double	cylinder_to_plane_proj;
 	cylinder_to_plane_proj = fabs(dot_product(&plane->orientation, &cylinder_to_plane));
-	float	normal_dot_product;
+	double	normal_dot_product;
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
 	if (fabs(normal_dot_product - 1) < 0.001)
 	{
@@ -249,7 +249,7 @@ t_vector	closest_point_on_cylinder(t_shape *cylinder, t_vector *point)
 	mat_vec_multiply(&cylinder_normal, &cylinder->transf, &up);
 	normalize_vec(&cylinder_normal);
 	
-	float d = dot_product(&cylinder_normal, &point_to_cylinder);
+	double d = dot_product(&cylinder_normal, &point_to_cylinder);
 	if (d > 0 && d > cylinder->props.height / 2 + cylinder->props.radius)
 		d = cylinder->props.height / 2 + cylinder->props.radius;
 	if (d < 0 && d < - cylinder->props.height / 2 - cylinder->props.radius)
@@ -338,7 +338,7 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 	}
 	normalize_vec(&cylinder_normal);
 	sub_vec(&cylinder_to_sphere, &cylinder->origin, &sphere->origin);
-	float		v_dist = dot_product(&cylinder_to_sphere, &cylinder_normal);
+	double		v_dist = dot_product(&cylinder_to_sphere, &cylinder_normal);
 	t_vector	top_cap_center;
 	t_vector	bottom_cap_center;
 
@@ -361,11 +361,11 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 		t_vector	cap_to_sphere;
 
 		sub_vec(&cap_to_sphere, &cap_center, &sphere->origin);
-		float	dist = vec_magnitude(&cap_to_sphere);
-		float	v_cap_distance = fabs(fabs(v_dist) - (cylinder->props.height / 2));
+		double	dist = vec_magnitude(&cap_to_sphere);
+		double	v_cap_distance = fabs(fabs(v_dist) - (cylinder->props.height / 2));
 		if ((dist * dist - v_cap_distance * v_cap_distance) < 0)
 			return (false);
-		float	h_cap_distance = sqrt(dist * dist - v_cap_distance * v_cap_distance);
+		double	h_cap_distance = sqrt(dist * dist - v_cap_distance * v_cap_distance);
 		if (h_cap_distance < cylinder->props.radius && v_cap_distance < sphere->props.radius)
 		{
 			resolution = cylinder_normal;
@@ -402,7 +402,7 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 		scale_vec(&dir, &dir, cylinder->props.radius);
 		t_vector	edge;
 		add_vec(&edge, &cap_center, &dir);
-		float	edge_distance = vec_distance(&edge, &sphere->origin);
+		double	edge_distance = vec_distance(&edge, &sphere->origin);
 		if (edge_distance < sphere->props.radius && v_cap_distance < sphere->props.radius)
 		{
 			sub_vec(&resolution, &edge, &sphere->origin);
@@ -436,7 +436,7 @@ bool	cylinder_sphere_collision(t_shape *cylinder, t_shape *sphere, bool cylinder
 		scale_vec(&center_delta, &cylinder_normal, -(v_dist));
 		t_vector	center_adjusted;
 		add_vec(&center_adjusted, &cylinder->origin, &center_delta);
-		float	dist = vec_distance(&center_adjusted, &sphere->origin);
+		double	dist = vec_distance(&center_adjusted, &sphere->origin);
 		if (dist < (cylinder->props.radius + sphere->props.radius))
 		{
 			sub_vec(&resolution, &center_adjusted, &sphere->origin);
@@ -486,16 +486,16 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	add_vec(&bottom_cap_center, &bottom_cap_center, &cylinder->origin);
 	t_vector	cap_to_plane;
 	sub_vec(&cap_to_plane, &top_cap_center, &plane->origin);
-	float d1 = fabs(dot_product(&cap_to_plane, &plane->orientation));
+	double d1 = fabs(dot_product(&cap_to_plane, &plane->orientation));
 	sub_vec(&cap_to_plane, &bottom_cap_center, &plane->origin);
-	float d2 = fabs(dot_product(&cap_to_plane, &plane->orientation));
+	double d2 = fabs(dot_product(&cap_to_plane, &plane->orientation));
 	t_vector	cap_center;
 	if (d1 < d2)
 		cap_center = top_cap_center;
 	else
 		cap_center = bottom_cap_center;
 	t_vector	resolution;
-	float	normal_dot_product;
+	double	normal_dot_product;
 	normal_dot_product = fabs(dot_product(&plane->orientation, &cylinder_normal));
 	if (fabs(normal_dot_product - 1) < 0.00001)
 	{
@@ -511,7 +511,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	// Ax + By + Cz + D = 0
 	// A, B, C are the xyz values of the normal to the plane.
 	// D can be found by plugging a point in. The point will just be the cylinder cap
-	float		d = -(dot_product(&cylinder_normal, &cap_center));
+	double		d = -(dot_product(&cylinder_normal, &cap_center));
 	// Normal of the secondary plane is the normal of the cylinder
 	// We intersect a ray starting from the cylinder center in the direction of motion
 	t_ray ray;
@@ -522,7 +522,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 	if (fabs(dot_product(&cylinder_normal, &ray.dir)) > 0.001)
 	{
 
-		float	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.dir);
+		double	t = -(dot_product(&cylinder_normal, &ray.origin) + d) / dot_product(&cylinder_normal, &ray.dir);
 		t_vector	point_on_secondary_plane;
 		ray_position(&point_on_secondary_plane, &ray, t);
 		t_vector	dir;
@@ -535,7 +535,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 		add_vec(&end_point, &cap_center, &dir);
 		t_vector	plane_to_end_point;
 		sub_vec(&plane_to_end_point, &end_point, &plane->origin);
-		float	dist = fabs(dot_product(&plane_to_end_point, &plane->orientation));
+		double	dist = fabs(dot_product(&plane_to_end_point, &plane->orientation));
 		// resolution = *offset;
 		// negate_vec(&resolution, &plane->orientation);
 		resolution = plane->orientation;
@@ -547,7 +547,7 @@ void	cylinder_plane_collision_resolution(t_shape *cylinder, t_shape *plane)
 		// This is the case when the direction of motion is perpendicular to the cylinder normal
 		t_vector	center_to_point;
 		sub_vec(&center_to_point, &plane->origin, &cylinder->origin);
-		float	dist = fabs(dot_product(&center_to_point, &plane->orientation));
+		double	dist = fabs(dot_product(&center_to_point, &plane->orientation));
 		t_vector	resolution;
 		resolution = plane->orientation;
 		// negate_vec(&resolution, &plane->orientation);

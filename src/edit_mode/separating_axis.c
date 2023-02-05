@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 14:49:20 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 22:20:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution)
 	rot[3][3] = 1;
 	t_vector	center_distance;
 	sub_vec(&center_distance, &b2->origin, &b1->origin);
-	float	t[3];
+	double	t[3];
 	t[0] = dot_product(&center_distance, &b1_u[0]);
 	t[1] = dot_product(&center_distance, &b1_u[1]);
 	t[2] = dot_product(&center_distance, &b1_u[2]);
@@ -83,19 +83,19 @@ bool	test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution)
 		}
 		i++;
 	}
-	float	b1_e[3];
+	double	b1_e[3];
 	b1_e[0] = b1->props.scale.x;
 	b1_e[1] = b1->props.scale.y;
 	b1_e[2] = b1->props.scale.z;
-	float	b2_e[3];
+	double	b2_e[3];
 	b2_e[0] = b2->props.scale.x;
 	b2_e[1] = b2->props.scale.y;
 	b2_e[2] = b2->props.scale.z;
-	float	res_distance = INFINITY;
+	double	res_distance = INFINITY;
 	t_vector	res_axis;
 	// res_axis = b1_u[0];
 	ft_bzero(&res_axis, sizeof(t_vector));
-	float	ra, rb;
+	double	ra, rb;
 	for (int i = 0; i < 3; i++) {
 		ra = b1_e[i];
 		rb = b2_e[0] * abs_rot[i][0] + b2_e[1] * abs_rot[i][1] + b2_e[2] * abs_rot[i][2];

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/30 00:32:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_color_change(int key, t_scene *scene, t_color *color)
 		color->b += 10 / 255.0;
 	if (key == KEY_6 && (color->b - 10 / 255.0) > 0)
 		color->b -= 10 / 255.0;
-	// float	col_sum = color->r + color->g + color->b;
+	// double	col_sum = color->r + color->g + color->b;
 	// if (col_sum < 0.001)
 	// 	return ;
 	// color->r /= col_sum;

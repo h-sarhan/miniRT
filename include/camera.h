@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:21:42 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 20:09:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ struct s_camera
 {
 	t_vector	position;
 	t_vector	dir;
-	float		fov;
-	float		pixel_size;
-	float		half_width;
-	float		half_height;
+	double		fov;
+	double		pixel_size;
+	double		half_width;
+	double		half_height;
 	t_mat4		transform;
 	t_mat4		inv_trans;
-	float		phi;
-	float		theta;
+	double		phi;
+	double		theta;
 	
 };
 
