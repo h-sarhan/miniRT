@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 19:01:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 11:02:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,6 @@ bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
 	dir.y = 1;
 	if (gjk(cyl1, cyl2) == true)
 	{
-		printf("colliding\n");
 		ft_bzero(&cyl1->props.color, sizeof(t_color));
 		cyl1->props.color.g = 1;
 		return (true);
@@ -581,6 +580,8 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 	idx1 = 0;
 	collided = false;
 	(void)collided;
+	calculate_transforms(scene);
+	
 	while (idx1 < scene->count.shapes)
 	{
 		shape1 = &scene->shapes[idx1];
@@ -666,7 +667,6 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CUBE && shape2->type == CYLINDER && transformed_shape != shape2)
 			{
-				calculate_transforms(scene);
 				if (box_cylinder_collision(shape1, shape2, false, resolve) == true)
 				{
 					collided = true;
@@ -675,7 +675,6 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CYLINDER && shape2->type == CUBE && transformed_shape != shape2)
 			{
-				calculate_transforms(scene);
 				if (box_cylinder_collision(shape2, shape1, true, resolve) == true)
 				{
 					collided = true;
@@ -684,7 +683,6 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			}
 			else if (shape1->type == CYLINDER && shape2->type == CYLINDER)
 			{
-				calculate_transforms(scene);
 				if (cylinder_cylinder_collision(shape1, shape2, false) == true)
 				{
 					collided = true;
@@ -714,7 +712,6 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 			else if (shape1->type == CONE)
 			{
 				t_vector	dir;
-				calculate_transforms(scene);
 				
 				ft_bzero(&dir, sizeof(t_vector));
 				dir.y = 1;

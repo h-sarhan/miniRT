@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/27 20:45:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 15:28:23 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ t_vector	cone_normal(const t_shape *shape, const t_vector *itx_point)
 	mat_vec_multiply(&point, &shape->inv_transf, itx_point);
 	distance = point.x * point.x + point.z * point.z;
 	ft_bzero(&normal, sizeof(t_vector));
-	if (distance < fabs(point.y) * fabs(point.y)
-		&& (point.y >= (shape->props.height / 2) - EPSILON))
+	if (distance < fabs(point.y) * fabs(point.y) && (point.y >= 0.5 - EPSILON))
 		normal.y = 1;
 	else if (distance < fabs(point.y) * fabs(point.y) && (point.y <= EPSILON))
 		normal.y = -1;
@@ -66,7 +65,7 @@ t_vector	cone_normal(const t_shape *shape, const t_vector *itx_point)
 		normalize_vec(&normal);
 	}
 	if (shape->normal_tex != NULL)
-			return (normal_map(&normal, shape, itx_point));
+		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	normalize_vec(&world_normal);
 	return (world_normal);

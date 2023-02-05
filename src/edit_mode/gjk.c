@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 19:25:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/02 20:05:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,20 +136,18 @@ t_vector	cone_furthest_point(const t_vector *dir, t_shape *cone)
 	t_vector	rhs;
 	scale_vec(&rhs, &cyl_normal, sign(dot_product(&cyl_normal, dir)) * cone->props.height / 2);
 	add_vec(&support_point, &cone->origin, &rhs);
-	if (dot_product(&cyl_normal, dir) < 0)
-	{
-		support_point.w = 1;
-		return (support_point);
-	}
-	else
-	{
+	// if (dot_product(&cyl_normal, dir) < 0)
+	// {
+	// 	support_point.w = 1;
+	// 	return (support_point);
+	// }
+	// else
+	// {
 		scale_vec(&rhs, &cyl_normal, 0);
 		add_vec(&support_point, &cone->origin, &rhs);
-	}
+	// }
 	if (vec_magnitude(&w) < 0.01)
 	{
-		if (dot_product(&cyl_normal, dir) < 0)
-			printf("Negative dot product\n");
 		support_point.w = 1;
 		return (support_point);
 	}

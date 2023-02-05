@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/02 13:25:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 15:26:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 	t_color	shape_color;	
 	const float	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const float	attentuation_factor = (80 * scene->lights[light_idx].intensity \
-			- light_dist) / (80 * scene->lights[light_idx].intensity - 1);
+	const float	attentuation_factor = (100 * scene->lights[light_idx].intensity \
+			- light_dist) / (100 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
 	
