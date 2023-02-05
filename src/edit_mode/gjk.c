@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 18:32:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 21:00:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,59 +120,38 @@ t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl)
 
 t_vector	cone_furthest_point(const t_vector *dir, t_shape *cone)
 {
-	t_vector	support_point;
-	t_vector	w;
 	t_vector	cone_normal;
 	t_vector	up_vector;
-	
+	t_vector	w;
 	ft_bzero(&up_vector, sizeof(t_vector));
 	up_vector.y = 1;
+	
 	mat_vec_multiply(&cone_normal, &cone->transf, &up_vector);
 	normalize_vec(&cone_normal);
 	float	u_d = dot_product(&cone_normal, dir);
-	if (fabs(fabs(u_d) - 1) < 0.001 && u_d > 0)
+	if (fabs(u_d) > 1)
 	{
-		support_point = cone->origin;
-		support_point.w = 1;
-		return (support_point);
-	}
-	if (fabs(fabs(u_d) - 1) < 0.001 && u_d < 0)
-	{
-		printf("HERE\n");
-		support_point = cone->origin;
-		scale_vec(&cone_normal, &cone_normal, -cone->props.height);
-		add_vec(&support_point, &support_point, &cone_normal);
-		support_point.w = 1;
-		return (support_point);
+		exit(!printf("jhbvndjnvflunfliubnluijnfg\n"));
 	}
 	scale_vec(&w, &cone_normal, -u_d);
-	
 	add_vec(&w, &w, dir);
-
-	t_vector	rhs;
-	scale_vec(&rhs, &cone_normal, sign(u_d) * cone->props.height);
-	add_vec(&support_point, &cone->origin, &rhs);
-
-	t_vector	sp_to_o;
-	sub_vec(&sp_to_o, &cone->origin, &support_point);
-	normalize_vec(&sp_to_o);
-	if (dot_product(&sp_to_o, &cone_normal) < 0)
-	{
-		normalize_vec(&w);
-		scale_vec(&w, &w, cone->props.radius);
-		support_point = cone->origin;
-		add_vec(&support_point, &support_point, &w);
-		support_point.w = 1;
-		return (support_point);
-	}
 	normalize_vec(&w);
-	scale_vec(&w, &w, 0);
-	add_vec(&support_point, &support_point, &w);
-	support_point.w = 1;
-	return (support_point);
+	scale_vec(&w, &w, cone->props.radius);
+	t_vector	support_point1 = cone->origin;
+	add_vec(&support_point1, &support_point1, &w);
+	normalize_vec(&cone_normal);
+	t_vector	support_point2;
+	support_point2 = cone->origin;
+	scale_vec(&cone_normal, &cone_normal, -cone->props.height);
+	add_vec(&support_point2, &support_point2, &cone_normal);
+	if (dot_product(dir, &support_point1) > dot_product(dir, &support_point2))
+	{
+		return (support_point1);
+	}
+	return (support_point2);
 }
 
-t_vector	gjk_support(t_shape *shape1,  t_shape *shape2, const t_vector *dir)
+t_vector	gjk_support(t_shape *shape1, t_shape *shape2, const t_vector *dir)
 {
 	t_vector	s1_furthest;
 	t_vector	s2_furthest;
@@ -193,6 +172,8 @@ t_vector	gjk_support(t_shape *shape1,  t_shape *shape2, const t_vector *dir)
 	if (shape2->type == CONE)
 		s2_furthest = cone_furthest_point(&dir2, shape2);
 	sub_vec(&res, &s1_furthest, &s2_furthest);
+	*point_to_draw_1 = s1_furthest;
+	*point_to_draw_2 = s2_furthest;
 	return (res);
 }
 
@@ -345,7 +326,6 @@ bool	tetrahedron_contains_origin(t_vector *simplex, t_vector *dir, int *simplex_
 		return (triangle_contains_origin(simplex, dir, simplex_size));
 	}
 
-	// if (SameDirection(adb, ao))
 	if (dot_product(&adb, &ao) > 0)
 	{
 		*simplex_size = 3;
@@ -390,10 +370,11 @@ bool	gjk(t_shape *s1, t_shape *s2)
 	add_to_simplex(simplex, &support, &simplex_size);
 	negate_vec(&dir, &support);
 	normalize_vec(&dir);
-	// int	safety = 1000;
+	int	safety = 100;
 	int	i = 0;
-	while (1)
+	while (i < safety)
 	{
+		normalize_vec(&dir);
 		support = gjk_support(s1, s2, &dir);
 		if (dot_product(&support, &dir) <= 0)
 			return (false);

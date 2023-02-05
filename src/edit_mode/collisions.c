@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 18:33:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 20:45:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -741,7 +741,7 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				
 				ft_bzero(&dir, sizeof(t_vector));
 				dir.x = 1;
-				dir.y = 1;
+				// dir.y = 1;
 				normalize_vec(&dir);
 				t_vector furthest_point = cone_furthest_point(&dir, shape1);
 				*point_to_draw_1 = furthest_point;
