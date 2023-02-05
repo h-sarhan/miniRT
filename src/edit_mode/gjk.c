@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 15:32:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 18:32:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl)
 	t_vector	w;
 	t_vector	cyl_normal;
 	t_vector	up_vector;
-	
+
 	ft_bzero(&up_vector, sizeof(t_vector));
 	up_vector.y = 1;
 	mat_vec_multiply(&cyl_normal, &cyl->transf, &up_vector);
@@ -118,33 +118,55 @@ t_vector	cylinder_furthest_point(const t_vector *dir, const t_shape *cyl)
 	return (support_point);
 }
 
-// http://uu.diva-portal.org/smash/get/diva2:343820/FULLTEXT01.pdf
 t_vector	cone_furthest_point(const t_vector *dir, t_shape *cone)
 {
 	t_vector	support_point;
 	t_vector	w;
-	t_vector	cyl_normal;
+	t_vector	cone_normal;
 	t_vector	up_vector;
 	
 	ft_bzero(&up_vector, sizeof(t_vector));
 	up_vector.y = 1;
-	mat_vec_multiply(&cyl_normal, &cone->transf, &up_vector);
-	normalize_vec(&cyl_normal);
-	float	u_d = dot_product(&cyl_normal, dir);
-	scale_vec(&w, &cyl_normal, -u_d);
-	add_vec(&w, &w, dir);
-	t_vector	rhs;
-	scale_vec(&rhs, &cyl_normal, sign(dot_product(&cyl_normal, dir)) * cone->props.height / 2);
-	add_vec(&support_point, &cone->origin, &rhs);
-	scale_vec(&rhs, &cyl_normal, 0);
-	add_vec(&support_point, &cone->origin, &rhs);
-	if (vec_magnitude(&w) < 0.01)
+	mat_vec_multiply(&cone_normal, &cone->transf, &up_vector);
+	normalize_vec(&cone_normal);
+	float	u_d = dot_product(&cone_normal, dir);
+	if (fabs(fabs(u_d) - 1) < 0.001 && u_d > 0)
 	{
+		support_point = cone->origin;
+		support_point.w = 1;
+		return (support_point);
+	}
+	if (fabs(fabs(u_d) - 1) < 0.001 && u_d < 0)
+	{
+		printf("HERE\n");
+		support_point = cone->origin;
+		scale_vec(&cone_normal, &cone_normal, -cone->props.height);
+		add_vec(&support_point, &support_point, &cone_normal);
+		support_point.w = 1;
+		return (support_point);
+	}
+	scale_vec(&w, &cone_normal, -u_d);
+	
+	add_vec(&w, &w, dir);
+
+	t_vector	rhs;
+	scale_vec(&rhs, &cone_normal, sign(u_d) * cone->props.height);
+	add_vec(&support_point, &cone->origin, &rhs);
+
+	t_vector	sp_to_o;
+	sub_vec(&sp_to_o, &cone->origin, &support_point);
+	normalize_vec(&sp_to_o);
+	if (dot_product(&sp_to_o, &cone_normal) < 0)
+	{
+		normalize_vec(&w);
+		scale_vec(&w, &w, cone->props.radius);
+		support_point = cone->origin;
+		add_vec(&support_point, &support_point, &w);
 		support_point.w = 1;
 		return (support_point);
 	}
 	normalize_vec(&w);
-	scale_vec(&w, &w, cone->props.radius);
+	scale_vec(&w, &w, 0);
 	add_vec(&support_point, &support_point, &w);
 	support_point.w = 1;
 	return (support_point);
@@ -162,14 +184,14 @@ t_vector	gjk_support(t_shape *shape1,  t_shape *shape2, const t_vector *dir)
 		s1_furthest = cylinder_furthest_point(dir, shape1);
 	if (shape1->type == CUBE)
 		s1_furthest = box_furthest_point(dir, shape1);
-	// if (shape1->type == CUBE)
-	// 	s1_furthest = cone_furthest_point(dir, shape1);
+	if (shape1->type == CONE)
+		s1_furthest = cone_furthest_point(dir, shape1);
 	if (shape2->type == CYLINDER)
 		s2_furthest = cylinder_furthest_point(&dir2, shape2);
 	if (shape2->type == CUBE)
 		s2_furthest = box_furthest_point(&dir2, shape2);
-	// if (shape2->type == CONE)
-	// 	s2_furthest = cone_furthest_point(&dir2, shape2);
+	if (shape2->type == CONE)
+		s2_furthest = cone_furthest_point(&dir2, shape2);
 	sub_vec(&res, &s1_furthest, &s2_furthest);
 	return (res);
 }

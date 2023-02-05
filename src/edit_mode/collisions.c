@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 11:02:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/05 18:33:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,25 @@ bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
 	}
 	ft_bzero(&cyl1->props.color, sizeof(t_color));
 	cyl1->props.color.r = 1;
+	return (false);
+}
+
+bool	cone_cone_collision(t_shape *co1, t_shape *co2, bool resolve)
+{
+	(void)co1;
+	(void)co2;
+	(void)resolve;
+	t_vector	dir;
+	ft_bzero(&dir, sizeof(t_vector));
+	dir.y = 1;
+	if (gjk(co1, co2) == true)
+	{
+		ft_bzero(&co1->props.color, sizeof(t_color));
+		co1->props.color.g = 1;
+		return (true);
+	}
+	ft_bzero(&co1->props.color, sizeof(t_color));
+	co1->props.color.r = 1;
 	return (false);
 }
 
@@ -695,6 +714,13 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 					// }
 				}
 			}
+			else if (shape1->type == CONE && shape2->type == CONE)
+			{
+				if (cone_cone_collision(shape1, shape2, false) == true)
+				{
+					collided = true;
+				}
+			}
 			else if (shape1->type == CUBE && shape2->type == CUBE)
 			{
 				if (box_box_collision(shape1, shape2, false) == true)
@@ -714,7 +740,9 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				t_vector	dir;
 				
 				ft_bzero(&dir, sizeof(t_vector));
+				dir.x = 1;
 				dir.y = 1;
+				normalize_vec(&dir);
 				t_vector furthest_point = cone_furthest_point(&dir, shape1);
 				*point_to_draw_1 = furthest_point;
 				
