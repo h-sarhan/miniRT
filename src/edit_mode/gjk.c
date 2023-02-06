@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/06 13:42:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,8 @@ bool	tetrahedron_contains_origin(t_vector *simplex, t_vector *dir, int *simplex_
 	t_vector acd; // = ac.cross(ad);
 	t_vector adb; // = ad.cross(ab);
 	cross_product(&abc, &ab, &ac);
-	cross_product(&acd, &ab, &ac);
+	cross_product(&acd, &ac, &ad);
+	cross_product(&adb, &ad, &ab);
 	if (dot_product(&abc, &ao) > 0)
 	{
 		*simplex_size = 3;
