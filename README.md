@@ -33,8 +33,8 @@ MiniRT is a 3D rendering software based on the ray tracing algorithm. The subjec
 * Reflections
 * Anti Aliasing
 
-## Gallery
-
-
-
 ## Controls
+![](https://github.com/Mohammed-Ehsan02/miniRT/blob/collision/assets/screenshots/screenshot3.png)
+
+## Collision Detection
+![](https://github.com/Mohammed-Ehsan02/miniRT/blob/collision/assets/screenshots/collision.gif)
