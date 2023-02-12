@@ -20,9 +20,21 @@ MiniRT is a 3D rendering software based on the ray tracing algorithm. The subjec
 
 ## Bonus
 
-*not done*
+* Edit mode: Edit shape properties like position, orientation, scale, and color in real-time
+* Camera mode: Move camera around the scene
+* Light mode: Edit light properties
+* Mouse controls: Move and rotate objects around with mouse input
+* Look at animation: The camera pans to an object when you press a button
+* Multi-threaded rendering
+* Spotlights
+* Patterns
+* Diffuse and normal texture mapping
+* Additional shapes: Cone and cube
+* Reflections
+* Anti Aliasing
+
 ## Gallery
 
-*Put pictures here*
 
-## Keybinds
+
+## Controls
