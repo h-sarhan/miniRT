@@ -1,6 +1,7 @@
 # miniRT
 
-![](https://github.com/Mohammed-Ehsan02/miniRT/blob/collision/assets/banner.gif)
+<img src="https://github.com/Mohammed-Ehsan02/miniRT/blob/collision/assets/banner.gif" max-width="100%" height="100%"/>
+
 3D computer graphics project for 42 Abu Dhabi, built using the C programming language and MiniLibX.
 
 # About
