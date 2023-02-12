@@ -6,7 +6,7 @@
 
 # About
 
-MiniRT is a 3D rendering software based on the ray tracing algorithm. The subject only requires you to render static images based on a text file describing the scene. A lot of our time was spent working on additional features focused on real-time interactivity in the 3D environment.
+MiniRT is a 3D rendering software based on the ray tracing algorithm. The subject only requires you to render static images based on a text file describing the scene, but our miniRT has a lot of additional features. A lot of our time was spent working on features focused on real-time interactivity in the 3D environment.
 
 # Features
 ## Mandatory
