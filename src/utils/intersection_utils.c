@@ -6,17 +6,17 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 15:11:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	prepare_computations(t_scene *scene, t_intersection *intersection,
+void	prepare_computations(t_intersection *intersection,
 			t_ray *ray)
 {
 	ray_position(&intersection->point, ray, intersection->time);
-	intersection->normal = normal_at(scene, intersection->shape, &intersection->point);
+	intersection->normal = normal_at(intersection->shape, &intersection->point);
 	negate_vec(&intersection->eye, &ray->dir);
 	intersection->eye.w = 0;
 	intersection->inside = false;

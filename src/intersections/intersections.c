@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:07:05 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 15:26:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,40 +113,4 @@ bool	intersect(t_shape *shape, const t_ray *ray, t_intersections *xs)
 	else if (shape->type == CUBE)
 		return (intersect_cube(shape, &transf_ray, xs));
 	return (false);
-}
-
-int	intersect_shadowed(t_shape *shape, const t_ray *ray, t_intersections *xs)
-{
-	t_ray	transf_ray;
-	const int		num_itx = xs->count;
-
-	if (xs->count >= 200)
-		return (false);
-	if (shape->type == SPHERE)
-	{
-		intersect_sphere_fast(ray, xs, shape);
-		return (xs->count - num_itx);
-	}
-	if (shape->type == PLANE)
-	{
-		intersect_plane_fast(ray, shape, xs);
-		return (xs->count - num_itx);
-	}
-	transform_ray(&transf_ray, ray, shape);
-	if (shape->type == CYLINDER)
-	{
-		intersect_cylinder(&transf_ray, shape, xs);
-		return (xs->count - num_itx);
-	}
-	if (shape->type == CONE)
-	{
-		intersect_cone(&transf_ray, shape, xs);
-		return (xs->count - num_itx);
-	}
-	else if (shape->type == CUBE)
-	{
-		intersect_cube(shape, &transf_ray, xs);
-		return (xs->count - num_itx);
-	}
-	return (0);
 }

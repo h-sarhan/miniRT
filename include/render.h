@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 15:11:28 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ struct s_worker
 	t_scene	*scene;
 };
 
-void	prepare_computations(t_scene *scene, t_intersection *intersection,
-			t_ray *ray);
+void	prepare_computations(t_intersection *intersection, t_ray *ray);
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx);
 

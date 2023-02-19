@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 14:39:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 14:45:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,8 +303,6 @@ void	rest_of_key_presses(int key, t_scene *scene)
 	if (key == KEY_TAB && scene->settings.edit_mode
 		&& scene->settings.light_mode)
 		scene->light_idx = (scene->light_idx + 1) % scene->count.lights;
-	if (key == KEY_ESC)
-		return (close_window(scene));
 	if (key == KEY_H)
 		scene->help = !scene->help;
 	if (key == KEY_P)
@@ -337,6 +335,8 @@ int	key_press(int key, t_scene *scene)
 		handle_color_change(key, scene,
 			&scene->shapes[scene->shape_idx].props.color);
 	rest_of_key_presses(key, scene);
+	if (key == KEY_ESC)
+		return (close_window(scene));
 	if (!is_toggle_key(key, scene))
 		return (0);
 	calculate_transforms(scene);

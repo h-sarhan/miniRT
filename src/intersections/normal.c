@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 15:09:55 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_vector	cylinder_normal(const t_shape *shape, const t_vector *itx_point)
 		normalize_vec(&normal);
 	}
 	if (shape->normal_tex != NULL)
-			return (normal_map(&normal, shape, itx_point));
+		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
@@ -60,8 +60,7 @@ t_vector	cone_normal(const t_shape *shape, const t_vector *itx_point)
 		normal.y = sqrt(distance);
 		if (point.y > 0)
 			normal.y *= -1;
-		normal.x = point.x;
-		normal.z = point.z;
+		normal = (t_vector){point.x, normal.y, point.z, 0};
 		normalize_vec(&normal);
 	}
 	if (shape->normal_tex != NULL)
@@ -81,7 +80,7 @@ t_vector	plane_normal(const t_shape *shape, const t_vector *itx_point)
 	object_normal.z = 0;
 	object_normal.w = 0;
 	if (shape->normal_tex != NULL)
-			return (normal_map(&object_normal, shape, itx_point));
+		return (normal_map(&object_normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
@@ -115,13 +114,40 @@ t_vector	cube_normal(const t_shape *shape, const t_vector *itx_point)
 	return (normal);
 }
 
+t_vector	get_texture_coords(const t_shape *shape, double u, double v,
+				t_vector *normal)
+{
+	t_color		normal_coords;
+
+	if (shape->tex_tile != 0)
+	{
+		u = (int)floor(u * (shape->tex_height - 1) * shape->tex_tile) \
+			% shape->tex_height;
+		v = (int)floor(v * (shape->tex_width - 1) * shape->tex_tile) \
+			% shape->tex_width;
+	}
+	else
+	{
+		u = (int)floor(u * (shape->tex_height - 1));
+		v = (int)floor(v * (shape->tex_width - 1));
+	}
+	if (u >= shape->tex_height || v >= shape->tex_width)
+		return (*normal);
+	normal_coords = shape->normal_tex[(int)u][(int)v];
+	normal->w = 0;
+	normal->x = 2 * normal_coords.r - 1;
+	normal->y = 2 * normal_coords.g - 1;
+	normal->z = 2 * normal_coords.b - 1;
+	normalize_vec(normal);
+	return (*normal);
+}
+
 t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	shape_point;
 	double		u;
 	double		v;
 	t_vector	normal;
-	t_color		normal_coords;
 
 	ft_bzero(&normal, sizeof(t_vector));
 	normal.y = 1;
@@ -138,98 +164,41 @@ t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
 		cubical_map(&u, &v, &shape_point);
 	if (u < 0 || v < 0)
 		return (normal);
-	if (shape->tex_tile != 0)
-	{
-		u = (int)floor(u * (shape->tex_height - 1) * shape->tex_tile) % shape->tex_height;
-		v = (int)floor(v * (shape->tex_width - 1) * shape->tex_tile) % shape->tex_width;
-	}
-	else
-	{
-		u = (int)floor(u * (shape->tex_height - 1));
-		v = (int)floor(v * (shape->tex_width - 1));
-	}
-	if (u >= shape->tex_height || v >= shape->tex_width)
-		return (normal);
-	normal_coords = shape->normal_tex[(int)u][(int)v];
-	normal.w = 0;
-	normal.x = 2 * normal_coords.r - 1;
-	normal.y = 2 * normal_coords.g - 1;
-	normal.z = 2 * normal_coords.b - 1;
-	normalize_vec(&normal);
-	return (normal);
+	return (get_texture_coords(shape, u, v, &normal));
 }
 
-t_vector	normal_map(t_vector *normal, const t_shape *shape, const t_vector *itx_point)
+t_vector	sphere_normal(t_vector *normal, const t_shape *shape,
+				const t_vector *itx_point)
 {
-	t_vector	t;
-	t_vector	b;
-	t_vector	up;
-	t_vector	z_up;
-	ft_bzero(&up, sizeof(t_vector));
-	ft_bzero(&z_up, sizeof(t_vector));
-	up.y = 1;
-	z_up.z = 1;
-	cross_product(&t, normal, &up);
-	if (vec_magnitude(&t) < 0.000001)
-		cross_product(&t, normal, &z_up);
-	normalize_vec(&t);
-	cross_product(&b, normal, &t);
-	normalize_vec(&b);
-	t_vector	tex_normal;
-	tex_normal = normal_from_texture(shape, itx_point);
-	
-	t_mat4	tbn;
-	ft_bzero(&tbn, sizeof(t_mat4));
-	tbn[0][0] = t.x;
-	tbn[0][1] = b.x;
-	tbn[0][2] = normal->x;
-	tbn[1][0] = t.y;
-	tbn[1][1] = b.y;
-	tbn[1][2] = normal->y;
-	tbn[2][0] = t.z;
-	tbn[2][1] = b.z;
-	tbn[2][2] = normal->z;
-	tbn[3][3] = 1;
+	t_vector	world_normal;
 
-	t_vector	final_normal;
-	mat_vec_multiply(&final_normal, &tbn, &tex_normal);
-	normalize_vec(&final_normal);
-
-	t_vector world_normal;
-	mat_vec_multiply(&world_normal, &shape->norm_transf, &final_normal);
+	mat_vec_multiply(normal, &shape->inv_transf, itx_point);
+	normalize_vec(normal);
+	normal->w = 0;
+	if (shape->normal_tex != NULL)
+		return (normal_map(normal, shape, itx_point));
+	mat_vec_multiply(&world_normal, &shape->norm_transf, normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
 	return (world_normal);
 }
 
-t_vector	normal_at(t_scene *scene, const t_shape *shape, const t_vector *itx_point)
+t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	normal;
 	t_vector	world_normal;
 
-	(void)scene;
 	if (shape->type == SPHERE)
-	{
-		mat_vec_multiply(&normal, &shape->inv_transf, itx_point);
-		normalize_vec(&normal);
-		normal.w = 0;
-		if (shape->normal_tex != NULL)
-			return (normal_map(&normal, shape, itx_point));
-		mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
-		world_normal.w = 0;
-		normalize_vec(&world_normal);
-		return (world_normal);
-	}
+		return (sphere_normal(&normal, shape, itx_point));
 	else if (shape->type == PLANE)
 		return (plane_normal(shape, itx_point));
-		
 	else if (shape->type == CYLINDER)
 		return (cylinder_normal(shape, itx_point));
 	else if (shape->type == CONE)
 		return (cone_normal(shape, itx_point));
 	normal = cube_normal(shape, itx_point);
 	if (shape->normal_tex != NULL)
-			return (normal_map(&normal, shape, itx_point));
+		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);

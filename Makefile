@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 12:59:02 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/02/19 15:12:23 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c mouse_utils.c
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
-					cylinder_intersection.c
+					cylinder_intersection.c normal_map.c
 INTERSECTIONS_SRC := $(addprefix intersections/, $(INTERSECTIONS_SRC))
 
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c \

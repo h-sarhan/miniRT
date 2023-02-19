@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 15:25:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 	ft_bzero(&final_color, sizeof(t_color));
 	if (itx != NULL)
 	{
-		prepare_computations(scene, itx, ray);
+		prepare_computations(itx, ray);
 		light_idx = 0;
 		while (light_idx < scene->count.lights)
 		{
@@ -117,43 +117,45 @@ t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray)
 	return (final_color);
 }
 
-bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, double *angle_ret)
+bool	check_spotlight(t_scene *scene, int light_idx, t_ray *ray,
+			double *angle)
+{
+	if (scene->lights[light_idx].type == SPOT)
+	{
+		*angle = (dot_product(&ray->dir, &scene->lights[light_idx].direction));
+		if (*angle < 0)
+			return (true);
+		if (*angle >= -1 && *angle <= 1)
+		{
+			*angle = acos(*angle);
+			if (*angle > (scene->lights[light_idx].theta / 4))
+				return (true);
+		}
+	}
+	return (false);
+}
+
+bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point,
+			double *angle)
 {
 	double			distance;
 	int				i;
-	double			angle;
 	t_ray			ray;
 	t_intersections	arr;
+	t_intersection	*itx;
 
 	sub_vec(&ray.dir, &scene->lights[light_idx].position, itx_point);
 	distance = vec_magnitude(&ray.dir);
 	scale_vec(&ray.dir, &ray.dir, 1 / distance);
 	ray.origin = *itx_point;
-	arr.count = 0;
-	if (scene->lights[light_idx].type == SPOT)
-	{
-		angle = (dot_product(&ray.dir, &scene->lights[light_idx].direction));
-		*angle_ret = angle;
-		if (angle < 0)
-			return (true);
-		if (angle >= -1 && angle <= 1)
-		{
-			angle = acos(angle);
-			if (angle > (scene->lights[light_idx].theta / 4))
-				return (true);
-		}
-	}
+	if (check_spotlight(scene, light_idx, &ray, angle) == true)
+		return (true);
 	i = -1;
+	arr.count = 0;
 	while (++i < scene->count.shapes)
-	{
-		int num_itx = intersect_shadowed(&scene->shapes[i], &ray, &arr);
-		int j = arr.count - num_itx;
-		while (j < arr.count)
-		{
-			if (arr.arr[j].time > 0 && arr.arr[j].time < distance)
-				return (true);
-			j++;
-		}
-	}
+		intersect(&scene->shapes[i], &ray, &arr);
+	itx = hit(&arr);
+	if (itx && itx->time < distance)
+		return (true);
 	return (false);
 }
