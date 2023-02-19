@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:45:14 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:30:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	calculate_orientation(t_mat4 *rot_transform, t_shape *shape)
 	normalize_vec(&ax);
 	angle = acos(dot_product(&shape->orientation, &up));
 	axis_angle(rot_transform, &ax, angle);
-	
 }
 
 void	multiply_transforms(t_shape *shape, t_mat4 *scale, t_mat4 *rot,
@@ -104,7 +103,8 @@ void	calculate_transforms(t_scene *scene)
 	i = 0;
 	while (i < scene->count.lights)
 	{
-		mat_vec_multiply(&scene->lights[i].direction, &scene->lights[i].added_rots, &scene->lights[i].init_direction);
+		mat_vec_multiply(&scene->lights[i].direction,
+			&scene->lights[i].added_rots, &scene->lights[i].init_direction);
 		i++;
 	}
 }

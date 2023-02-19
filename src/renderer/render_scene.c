@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:36:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,29 @@ t_color	render_pixel(double x, double y, t_intersections *arr, t_worker *worker)
 t_color	super_sample_pixel(double x, double y, t_intersections *arr,
 			t_worker *worker)
 {
-	int			i;
-	int			j;
-	t_color		color;
-	t_color		avg_color;
-	const double	samples = 2;
+	int				i;
+	int				j;
+	t_color			color;
+	t_color			avg_color;
 
-	if (worker->scene->settings.supersampling == false || worker->scene->settings.edit_mode == false)
+	if (worker->scene->settings.supersampling == false
+		|| worker->scene->settings.edit_mode == false)
 		return (render_pixel(x, y, arr, worker));
 	ft_bzero(&avg_color, sizeof(t_color));
-	i = 0;
 	color = render_pixel(x, y, arr, worker);
 	add_colors(&avg_color, &avg_color, &color);
-	while (i < samples)
+	i = -1;
+	while (++i < 2)
 	{
-		j = 0;
-		while (j < samples)
+		j = -1;
+		while (++j < 2)
 		{
-			color = render_pixel(x + (i + 0.5) / samples, y + (j + 0.5) / samples, arr, worker);
+			color = render_pixel(x + (i + 0.5) / 2, y + (j + 0.5) / 2,
+					arr, worker);
 			add_colors(&avg_color, &avg_color, &color);
-			j++;
 		}
-		i++;
 	}
-	mult_color(&avg_color, &avg_color, 1.0 / (samples * samples + 1));
+	mult_color(&avg_color, &avg_color, 1.0 / (5));
 	set_color(worker, x, y, create_mlx_color(&avg_color));
 	return (avg_color);
 }
@@ -116,10 +115,10 @@ void	*render_scene_fast(t_worker *worker)
 
 void	*nearest_neighbours_scaling(t_worker *worker)
 {
-	int			x;
-	int			y;
-	int			src_x;
-	int			src_y;
+	int	x;
+	int	y;
+	int	src_x;
+	int	src_y;
 
 	y = worker->y_scale_start - 1;
 	while (++y < worker->y_scale_end)
@@ -149,17 +148,9 @@ void	*nearest_neighbours_scaling(t_worker *worker)
 void	draw_scene(t_scene *scene)
 {
 	t_worker		workers[NUM_THREADS];
-	struct timespec	start;
-	struct timespec	finish;
-	double			elapsed;
 
 	init_workers(workers, scene);
-	clock_gettime(CLOCK_MONOTONIC, &start);
 	run_workers(workers, scene, true, render_scene_fast);
-	clock_gettime(CLOCK_MONOTONIC, &finish);
-	elapsed = (finish.tv_sec - start.tv_sec);
-	elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
-	printf("render time is %f\n", elapsed);
 	run_workers(workers, scene, false, nearest_neighbours_scaling);
 	show_help_menu(scene);
 	mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,
