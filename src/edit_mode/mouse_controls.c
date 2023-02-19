@@ -126,8 +126,8 @@ void	mouse_move(t_scene *scene)
 	// sub_vec(&pos_diff, &scene->shapes[scene->shape_idx].origin, &position_on_plane);
 	// add_vec(&scene->shapes[scene->shape_idx].origin, &scene->shapes[scene->shape_idx].origin, &pos_diff);
 	scene->shapes[scene->shape_idx].origin = position_on_plane;
-	if (scene->settings.collisions == true)
-		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
+	// if (scene->settings.collisions == true)
+	// 	collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 	calculate_transforms(scene);
 	draw_scene(scene);
 }
@@ -144,8 +144,8 @@ int	mouse_rotate(t_scene *scene)
 		|| abs(scene->mouse.y - scene->mouse.prev_y) > 1)
 	{
 		rotate_along_mouse_axis(scene);
-		if (scene->settings.collisions == true)
-			collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
+		// if (scene->settings.collisions == true)
+		// 	collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 		calculate_transforms(scene);
 		draw_scene(scene);
 	}

@@ -21,7 +21,7 @@
 # define LIGHT_MAX 20
 # define SHAPE_MAX 100
 
-typedef struct s_color_error	t_color_error;
+typedef struct s_color_error		t_color_error;
 struct s_color_error
 {
 	bool	r;
@@ -30,7 +30,7 @@ struct s_color_error
 	bool	other;
 };
 
-typedef struct s_orient_error	t_orient_error;
+typedef struct s_orient_error		t_orient_error;
 struct s_orient_error
 {
 	bool	x;
@@ -40,7 +40,7 @@ struct s_orient_error
 	bool	other;
 };
 
-typedef struct s_ambient_errors	t_ambient_errors;
+typedef struct s_ambient_errors		t_ambient_errors;
 struct s_ambient_errors
 {
 	bool			intensity_other;
@@ -49,7 +49,7 @@ struct s_ambient_errors
 	t_color_error	color;
 };
 
-typedef struct s_cam_errors	t_cam_errors;
+typedef struct s_cam_errors			t_cam_errors;
 struct s_cam_errors
 {
 	bool			other;
@@ -60,7 +60,7 @@ struct s_cam_errors
 	t_orient_error	dir;
 };
 
-typedef struct s_light_errors	t_light_errors;
+typedef struct s_light_errors		t_light_errors;
 struct s_light_errors
 {
 	bool			intensity_other;
@@ -74,7 +74,7 @@ struct s_light_errors
 	t_color_error	color;
 };
 
-typedef struct s_shape_errors	t_shape_errors;
+typedef struct s_shape_errors		t_shape_errors;
 struct s_shape_errors
 {
 	bool			max_shapes;
@@ -103,74 +103,117 @@ struct	s_parse_error_flags
 
 bool	find_error(t_error_flags *errors);
 
-// Error with parsing these elements
-// ambient/camera/camera fov/light intensity/sphere diameter/sphere/plane/cylinder/
-// cylinder height/cylinder diameter/cube/cube side length/shape
-# define GENERIC_ERROR YELLOW"Error with parsing %s on line #%d\n\n"RED"->\t%s\n\n"
+# define GENERIC_ERROR "\x1b[33mError with parsing %s on \
+line #%d\n\n\x1b[31m->\t%s\n\n"
 
-// orientation errors
-# define ORIENT_X_OOR "\x1b[33mThe x value is out of range [-1.0 -> 1.0]\n\x1b[0m"
-# define ORIENT_Y_OOR "\x1b[33mThe y value is out of range [-1.0 -> 1.0]\n\x1b[0m"
-# define ORIENT_Z_OOR "\x1b[33mThe z value is out of range [-1.0 -> 1.0]\n\x1b[0m"
-# define ORIENT_ZERO "\x1b[33mThe orientation vector cannot be the zero vector\n\x1b[0m"
+# define ORIENT_X_OOR "\x1b[33mThe x value is out of range \
+[-1.0 -> 1.0]\n\x1b[0m"
 
-// color errors
-# define RED_OOR YELLOW"The red value is out of range [0 -> 255]\n"RESET
-# define GREEN_OOR YELLOW"The green value is out of range [0 -> 255]\n"RESET
-# define BLUE_OOR YELLOW"The blue value is out of range [0 -> 255]\n"RESET
+# define ORIENT_Y_OOR "\x1b[33mThe y value is out of range \
+[-1.0 -> 1.0]\n\x1b[0m"
 
-// multi errors (multiple cameras/ multiple ambient lights)
-# define MULTI_ELEMENT_ERROR RED"Error: Scene contains multiple %s\n"RESET
+# define ORIENT_Z_OOR "\x1b[33mThe z value is out of range \
+[-1.0 -> 1.0]\n\x1b[0m"
 
-// no errors (no cameras/ no ambient lights)
-# define NO_ELEMENT_ERROR RED"Error: Scene contains no %s\n"RESET
+# define ORIENT_ZERO "\x1b[33mThe orientation vector cannot be the \
+zero vector\n\x1b[0m"
 
-// max element error (> MAX_LIGHTS or > MAX_SHAPES)
-# define MAX_ELEMENT_ERROR RED"Error: Scene contains more than %d %s\n"RESET
+# define RED_OOR "\x1b[33mThe red value is out of range \
+[0 -> 255]\n\x1b[0m"
 
-# define UNKNOWN_IDENTIFIER YELLOW"Unknown identifier \"%s\" on line #%d\n"RED"->\t%s\n"RESET
+# define GREEN_OOR "\x1b[33mThe green value is out of range \
+[0 -> 255]\n\x1b[0m"
 
-// Ambient intensity out of range/ light intensity out of range
-# define LIGHT_INTENSITY_OOR YELLOW"%s intensity value is out of range on line #%d\n\n"RED"->\t%s\n\n"RESET
+# define BLUE_OOR "\x1b[33mThe blue value is out of range \
+[0 -> 255]\n\x1b[0m"
 
-# define CAMERA_UP_VECTOR YELLOW"Camera orientation cannot be the up vector (0, 1, 0)\n"RESET
-# define CAMERA_FOV_OOR YELLOW"The fov value is out of range [1 -> 180]\n"RESET
+# define MULTI_ELEMENT_ERROR "\x1b[31mError: Scene contains multiple \
+%s\n\x1b[0m"
 
-// diameter/side length/height
-# define POSITIVE_VALUE YELLOW"%s has to be a positive number on line #%d\n\n"RED"->\t%s\n\n"RESET
+# define NO_ELEMENT_ERROR "\x1b[31mError: Scene contains no \
+%s\n\x1b[0m"
 
-# define LIGHT_SYNTAX YELLOW"Correct syntax is \"L [origin] [intensity] [color]\"\n"RESET
-# define AMBIENT_LIGHT_SYNTAX YELLOW"Correct syntax is \"A [intensity] [color]\"\n"RESET
-# define CAMERA_SYNTAX YELLOW"Correct syntax is \"C [origin] [orientation] [fov]\"\n"RESET
-# define SPHERE_SYNTAX YELLOW"Correct syntax is \"sp [origin] [diameter] [color]\"\n"RESET
-# define PLANE_SYNTAX YELLOW"Correct syntax is \"pl [origin] [orientation] [color]\"\n"RESET
-# define CYLINDER_SYNTAX YELLOW"Correct syntax is \"cy [origin] [orientation] [diameter] [height] [color]\"\n"RESET
-# define CONE_SYNTAX YELLOW"Correct syntax is \"co [origin] [orientation] [diameter] [height] [color]\"\n"RESET
-# define CUBE_SYNTAX YELLOW"Correct syntax is \"cu [origin] [side length] [color]\"\n"RESET
-# define SPOTLIGHT_SYNTAX YELLOW"Correct syntax is \"SL [origin] [intensity] [orientation] [beam width] [color]\"\n"RESET
-# define SPOTLIGHT_ANGLE_OOR YELLOW"The spotlight beam width value is out of range [1 -> 180] on line #%d\n\n"RED"->\t%s\n\n"RESET
+# define MAX_ELEMENT_ERROR "\x1b[31mError: Scene contains more than \
+%d %s\n\x1b[0m"
 
-# define SETTINGS_NO_SHAPE RED"Settings at line %ld do not belong to any shape\n"RESET
+# define UNKNOWN_IDENTIFIER "\x1b[33mUnknown identifier \"%s\" on \
+line #%d\n\x1b[31m->\t%s\n\x1b[0m"
 
-# define UNTERMINATED_SETTINGS RED"Unterminated shape settings starting at line %ld\n"RESET
+# define LIGHT_INTENSITY_OOR "\x1b[33m%s intensity value is out of range on \
+line #%d\n\n\x1b[31m->\t%s\n\n\x1b[0m"
 
-# define EMPTY_SETTINGS RED"Empty shape settings starting at line %ld\n"RESET
+# define CAMERA_UP_VECTOR "\x1b[33mCamera orientation cannot be the up vector \
+(0, 1, 0)\n\x1b[0m"
 
-# define EXTRA_OPENING_BRACE RED"Shape settings starting at line %ld contains an extra opening brace\n"RESET
+# define CAMERA_FOV_OOR "\x1b[33mThe fov value is out of range \
+[1 -> 180]\n\x1b[0m"
 
-# define EXTRA_CLOSING_BRACE RED"Shape settings starting at line %ld contains an extra closing brace\n"RESET
+# define POSITIVE_VALUE "\x1b[33m%s has to be a positive number on line \
+#%d\n\n\x1b[31m->\t%s\n\n\x1b[0m"
 
-# define INVALID_TERMINATION RED"Shape settings starting at line %ld is not terminated correctly\n"RESET
+# define LIGHT_SYNTAX "\x1b[33mCorrect syntax is \"L [origin] [intensity] \
+[color]\"\n\x1b[0m"
 
-# define INVALID_PROPERTY YELLOW"Error with parsing this property\n"RED"->\t%s\n"YELLOW"Correct syntax is KEY : VALUE\n"RESET
+# define AMBIENT_LIGHT_SYNTAX "\x1b[33mCorrect syntax is \"A [intensity] \
+[color]\"\n\x1b[0m"
 
-# define INVALID_KEY YELLOW"Error with parsing this property\n"RED"->\t%s\n"YELLOW"`%s` is not a valid key\n"RESET
+# define CAMERA_SYNTAX "\x1b[33mCorrect syntax is \"C [origin] [orientation] \
+[fov]\"\n\x1b[0m"
 
-# define COLOR_SETTING_ERROR YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"`%s` is not a valid value\n"MAGENTA"Available colors are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n"RESET
+# define SPHERE_SYNTAX "\x1b[33mCorrect syntax is \"sp [origin] [diameter] \
+[color]\"\n\x1b[0m"
 
-# define INVALID_PROPERTY_VALUE YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"`%s` is not a valid value\n"RESET
+# define PLANE_SYNTAX "\x1b[33mCorrect syntax is \"pl [origin] [orientation] \
+[color]\"\n\x1b[0m"
 
-# define INVALID_PROPERTY_RANGE YELLOW"Error with parsing this property\n"RED"->\t%s : %s\n"YELLOW"%s has to be between %.2f and %.2f\n"RESET
+# define CYLINDER_SYNTAX "\x1b[33mCorrect syntax is \"cy [origin] \
+[orientation] [diameter] [height] [color]\"\n\x1b[0m"
+
+# define CONE_SYNTAX "\x1b[33mCorrect syntax is \"co [origin] [orientation] \
+[diameter] [height] [color]\"\n\x1b[0m"
+
+# define CUBE_SYNTAX "\x1b[33mCorrect syntax is \"cu [origin] [side length] \
+[color]\"\n\x1b[0m"
+
+# define SPOTLIGHT_SYNTAX "\x1b[33mCorrect syntax is \"SL [origin] [intensity] \
+[orientation] [beam width] [color]\"\n\x1b[0m"
+
+# define SPOTLIGHT_ANGLE_OOR "\x1b[33mThe spotlight beam width value is out \
+of range [1 -> 180] on line #%d\n\n\x1b[31m->\t%s\n\n\x1b[0m"
+
+# define SETTINGS_NO_SHAPE "\x1b[31mSettings at line %ld do not belong to any \
+shape\n\x1b[0m"
+
+# define UNTERMINATED_SETTINGS "\x1b[31mUnterminated shape settings starting \
+at line %ld\n\x1b[0m"
+
+# define EMPTY_SETTINGS "\x1b[31mEmpty shape settings starting at line \
+%ld\n\x1b[0m"
+
+# define EXTRA_OPENING_BRACE "\x1b[31mShape settings starting at line %ld \
+contains an extra opening brace\n\x1b[0m"
+
+# define EXTRA_CLOSING_BRACE "\x1b[31mShape settings starting at line %ld \
+contains an extra closing brace\n\x1b[0m"
+
+# define INVALID_TERMINATION "\x1b[31mShape settings starting at line %ld is \
+not terminated correctly\n\x1b[0m"
+
+# define INVALID_PROPERTY "\x1b[33mError with parsing this property \
+\n\x1b[31m->\t%s\n\x1b[33mCorrect syntax is KEY : VALUE\n\x1b[0m"
+
+# define INVALID_KEY "\x1b[33mError with parsing this property\n\x1b \
+[31m->\t%s\n\x1b[33m`%s` is not a valid key\n\x1b[0m"
+
+# define COLOR_SETTING_ERROR "\x1b[33mError with parsing this property\n\x1b \
+[31m->\t%s : %s\n\x1b[33m`%s` is not a valid value\n\e[0;35mAvailable colors \
+are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n\x1b[0m"
+
+# define INVALID_PROPERTY_VALUE "\x1b[33mError with parsing this property\n \
+\x1b[31m->\t%s : %s\n\x1b[33m`%s` is not a valid value\n\x1b[0m"
+
+# define INVALID_PROPERTY_RANGE "\x1b[33mError with parsing this property \
+\n\x1b[31m->\t%s : %s\n\x1b[33m%s has to be between %.2f and %.2f\n\x1b[0m"
 
 bool	parse_ambient(t_scene *scene, char **splitted);
 void	parse_camera(t_scene *scene, char **splitted);
@@ -182,7 +225,8 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 			size_t *line_num, int fd);
 
 void	parse_coordinates(t_vector *position, const char *str, bool *success);
-void	parse_orientation(t_vector *orientation, const char *str, t_orient_error *err);
+void	parse_orientation(t_vector *orientation, const char *str,
+			t_orient_error *err);
 
 void	parse_color(t_color *color, const char *str, t_color_error *errs);
 
@@ -208,14 +252,14 @@ bool	print_orient_error(t_orient_error *err, const char *line, int line_num,
 			char *element);
 bool	print_ambient_light_error(t_ambient_errors *err, const char *line,
 			int line_num);
-			
+
 bool	print_cam_error(t_cam_errors *err, const char *line, int line_num);
 bool	print_light_error(t_light_errors *err, const char *line, int line_num);
 bool	print_sphere_error(t_shape_errors *err, const char *line, int line_num);
 bool	print_cube_error(t_shape_errors *err, const char *line, int line_num);
 bool	print_plane_error(t_shape_errors *err, const char *line, int line_num);
 bool	print_cylinder_error(t_shape_errors *err, const char *line,
-		int line_num);
+			int line_num);
 bool	print_cone_error(t_shape_errors *err, const char *line, int line_num);
 
 bool	is_settings(const char *line);
@@ -230,7 +274,8 @@ char	*check_settings_str(char *settings_str, size_t *line_num);
 char	*get_settings_str(size_t *line_num, int fd, const char *settings_start);
 bool	check_colons(char *line);
 bool	parse_split_settings(t_scene *scene, char **settings);
-bool	parse_settings(t_scene *scene, const char *settings_start, size_t *line_num, int fd);
+bool	parse_settings(t_scene *scene, const char *settings_start,
+			size_t *line_num, int fd);
 
 t_color	**parse_texture(char *img_path, t_shape *shape);
 void	parse_spotlight(t_scene *scene, char **splitted);

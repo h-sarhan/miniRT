@@ -39,7 +39,7 @@ int				color_mix(int c1, int c2, double mix);
 int				color_difference(int c1, int c2);
 void			sub_colors(t_color *res, const t_color *c1, const t_color *c2);
 
-typedef struct s_phong	t_phong;
+typedef struct s_phong		t_phong;
 struct	s_phong
 {
 	t_color	effective_color;

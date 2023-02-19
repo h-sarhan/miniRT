@@ -42,10 +42,6 @@
 # include "render.h"
 # include "parsing.h"
 # include "utils.h"
-extern t_vector *point_to_draw_1;
-extern t_vector *point_to_draw_2;
-
 # define EPSILON 0.001f
-void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color);
 
 #endif

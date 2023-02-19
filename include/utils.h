@@ -17,7 +17,7 @@ void	free_split_array(char **arr);
 char	*ft_strtrim_free(char *s, char *set);
 double	max3(double n1, double n2, double n3);
 double	min3(double n1, double n2, double n3);
-double		min(double a, double b);
+double	min(double a, double b);
 double	max(double a, double b);
 
 void	transform_ray(t_ray *transformed_ray, const t_ray *ray,

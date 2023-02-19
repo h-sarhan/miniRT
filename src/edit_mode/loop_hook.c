@@ -202,31 +202,31 @@ void	rotate_z(t_scene *scene, t_mat4 *rot_mat, double deg)
 	mat_multiply(rot_mat, &rot, &mat_copy);
 }
 
-void	collide_after_transform(t_scene *scene)
-{
-	if (scene->settings.collisions && (scene->keys_held.w
-			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
-			|| scene->keys_held.up || scene->keys_held.right
-			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
-			|| scene->keys_held.left || scene->keys_held.plus
-			|| scene->keys_held.minus || scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
-		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
-	// if (scene->keys_held.plus == true)
-	// {
-	// 	if (collide(scene, false, 1, NULL) == true)
-	// 	{
-	// 		scene->keys_held.plus = false;
-	// 		scene->keys_held.minus = true;
-	// 		if (scene->keys_held.shift == false)
-	// 			scale_object(scene, &scene->shapes[scene->shape_idx]);
-	// 		else
-	// 			change_height(scene, &scene->shapes[scene->shape_idx]);
-	// 		scene->keys_held.minus = false;
-	// 		calculate_transforms(scene);
-	// 		draw_scene(scene);
-	// 	}
-	// }
-}
+// void	collide_after_transform(t_scene *scene)
+// {
+// 	// if (scene->settings.collisions && (scene->keys_held.w
+// 	// 		|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
+// 	// 		|| scene->keys_held.up || scene->keys_held.right
+// 	// 		|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
+// 	// 		|| scene->keys_held.left || scene->keys_held.plus
+// 	// 		|| scene->keys_held.minus || scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
+// 	// 	collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
+// 	// if (scene->keys_held.plus == true)
+// 	// {
+// 	// 	if (collide(scene, false, 1, NULL) == true)
+// 	// 	{
+// 	// 		scene->keys_held.plus = false;
+// 	// 		scene->keys_held.minus = true;
+// 	// 		if (scene->keys_held.shift == false)
+// 	// 			scale_object(scene, &scene->shapes[scene->shape_idx]);
+// 	// 		else
+// 	// 			change_height(scene, &scene->shapes[scene->shape_idx]);
+// 	// 		scene->keys_held.minus = false;
+// 	// 		calculate_transforms(scene);
+// 	// 		draw_scene(scene);
+// 	// 	}
+// 	// }
+// }
 
 void	scale_cube_sides(t_scene *scene, t_shape *shape)
 {
@@ -283,7 +283,6 @@ void	transform_object(t_scene *scene)
 	if (scene->keys_held.up == true || scene->keys_held.down == true)
 		rotate_x(scene, &scene->shapes[scene->shape_idx].added_rots,
 			DEG_TO_RAD * 5);
-	collide_after_transform(scene);
 }
 
 void	light_controls(t_scene *scene)

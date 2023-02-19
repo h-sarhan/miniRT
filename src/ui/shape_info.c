@@ -127,36 +127,36 @@ void	draw_shape_info(t_scene *scene)
 }
 
 // ! Not currently using but could be helpful later
-void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
-{
-	double	dy;
-	double	dx;
-	double	steps;
-	int		i;
-	char	*dst;
+// void	dda(t_scene *scene, double x1, double x2, double y1, double y2, int color)
+// {
+// 	double	dy;
+// 	double	dx;
+// 	double	steps;
+// 	int		i;
+// 	char	*dst;
 
-	dx = (x2 - x1);
-	dy = (y2 - y1);
-	if ((fabs(x1 - x2) + fabs(y1 - y2)) < 2)
-	{
-		return ;
-	}
-	if (fabs(dx) > fabs(dy))
-		steps = fabs(dx);
-	else
-		steps = fabs(dy);
-	i = 0;
-	dx /= steps;
-	dy /= steps;
-	while (i <= steps)
-	{
-		if (y1 < scene->settings.disp_h && x1 < scene->settings.disp_w && x1 >= 0 && y1 >= 0)
-		{
-			dst = scene->disp->disp_addr + (int)((int)y1 * scene->settings.disp_w + (int)x1) * scene->disp->bpp;
-			*(unsigned int*)dst = color;
-		}
-		y1 += dy;
-		x1 += dx;
-		i++;
-	}
-}
+// 	dx = (x2 - x1);
+// 	dy = (y2 - y1);
+// 	if ((fabs(x1 - x2) + fabs(y1 - y2)) < 2)
+// 	{
+// 		return ;
+// 	}
+// 	if (fabs(dx) > fabs(dy))
+// 		steps = fabs(dx);
+// 	else
+// 		steps = fabs(dy);
+// 	i = 0;
+// 	dx /= steps;
+// 	dy /= steps;
+// 	while (i <= steps)
+// 	{
+// 		if (y1 < scene->settings.disp_h && x1 < scene->settings.disp_w && x1 >= 0 && y1 >= 0)
+// 		{
+// 			dst = scene->disp->disp_addr + (int)((int)y1 * scene->settings.disp_w + (int)x1) * scene->disp->bpp;
+// 			*(unsigned int*)dst = color;
+// 		}
+// 		y1 += dy;
+// 		x1 += dx;
+// 		i++;
+// 	}
+// }

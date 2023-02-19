@@ -35,7 +35,6 @@ struct s_camera
 	t_mat4		inv_trans;
 	double		phi;
 	double		theta;
-	
 };
 
 void	view_transform(t_mat4 *res, const t_vector *from, const t_vector *up,

@@ -95,7 +95,6 @@ void	project_marker_on_screen(t_scene *scene, t_shape *shape)
 			projected_point_2.x *= scene->settings.disp_w;
 			projected_point_1.y *= scene->settings.disp_h;
 			projected_point_2.y *= scene->settings.disp_h;
-			dda(scene, projected_point_1.x, projected_point_2.x, projected_point_1.y, projected_point_2.y, 0x00ff00);
 		}
 
 		mlx_put_image_to_window(scene->disp->mlx, scene->disp->win,

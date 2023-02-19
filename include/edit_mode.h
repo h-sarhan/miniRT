@@ -121,8 +121,6 @@ struct s_keys
 	bool	o;
 };
 
-bool	collide(t_scene *scene, bool resolve, int depth,
-			t_shape *transformed_shape);
 int		mouse_rotate(t_scene *scene);
 
 void	rotate_x(t_scene *scene, t_mat4 *rot_mat, double deg);

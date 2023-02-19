@@ -36,7 +36,8 @@ void	prepare_computations(t_scene *scene, t_intersection *intersection,
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx);
 
-bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point, double *);
+bool	is_shadowed(t_scene *scene, int light_idx,
+			t_vector *itx_point, double *angle_ret);
 
 t_color	cast_reflection_ray(t_scene *scene, t_intersection *intersection,
 			int remaining, int light_idx);
@@ -46,14 +47,15 @@ int		get_color(t_worker *worker, int x, int y);
 void	set_color(t_worker *worker, int x, int y, int color);
 
 t_color	shade_point(t_intersections *arr, t_scene *scene, t_ray *ray);
-t_color	render_pixel(double x, double y, t_intersections *arr, t_worker *worker);
-t_color	super_sample_pixel(double x, double y, t_intersections *arr, t_worker *worker);
+t_color	render_pixel(double x, double y, t_intersections *arr,
+			t_worker *worker);
+t_color	super_sample_pixel(double x, double y, t_intersections *arr,
+			t_worker *worker);
 void	fill_in_horizontal(t_worker *worker, int threshold);
 void	fill_in_vertical(t_worker *worker, int threshold);
 void	update_loading_bar(t_worker *worker, int *line_counter);
 void	init_workers(t_worker *workers, t_scene *scene);
 void	run_workers(t_worker *workers, t_scene *scene, bool loading,
 			void *func);
-t_vector	box_support_function(const t_vector *dir, const t_shape *box);
 
 #endif

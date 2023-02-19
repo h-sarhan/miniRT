@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c collisions.c separating_axis.c gjk.c
+EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
