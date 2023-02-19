@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 16:32:52 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 16:48:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,12 @@ void	parse_light(t_scene *scene, char **splitted)
 	scene->count.lights++;
 }
 
-void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
+void	parse_spotlight_props2(t_light *light, char **splitted, t_scene *scene)
 {
 	bool	success;
 	double	col_sum;
 
 	success = true;
-	light->type = SPOT;
-	parse_coordinates(&light->position, splitted[1], &success);
-	if (find_error(&scene->error_flags) == false && success == false)
-		scene->error_flags.light.coords = true;
-	light->intensity = ft_atof(splitted[2], &success);
-	if (find_error(&scene->error_flags) == false && success == false)
-		scene->error_flags.light.intensity_other = true;
-	if (find_error(&scene->error_flags) == false
-		&& (light->intensity < 0.0 || light->intensity > 1.0))
-		scene->error_flags.light.intensity_range = true;
-	light->intensity *= 1.8;
-	parse_orientation(&light->init_direction, splitted[3], &scene->error_flags.light.orient);
-	if (find_error(&scene->error_flags))
-		return ;
 	light->theta = ft_atof(splitted[4], &success);
 	if (find_error(&scene->error_flags) == false && success == false)
 		scene->error_flags.light.angle_other = true;
@@ -108,6 +94,29 @@ void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
 		light->color.g /= col_sum;
 		light->color.b /= col_sum;
 	}
+}
+
+void	parse_spotlight_props(t_scene *scene, t_light *light, char **splitted)
+{
+	bool	success;
+
+	success = true;
+	light->type = SPOT;
+	parse_coordinates(&light->position, splitted[1], &success);
+	if (find_error(&scene->error_flags) == false && success == false)
+		scene->error_flags.light.coords = true;
+	light->intensity = ft_atof(splitted[2], &success);
+	if (find_error(&scene->error_flags) == false && success == false)
+		scene->error_flags.light.intensity_other = true;
+	if (find_error(&scene->error_flags) == false
+		&& (light->intensity < 0.0 || light->intensity > 1.0))
+		scene->error_flags.light.intensity_range = true;
+	light->intensity *= 1.8;
+	parse_orientation(&light->init_direction, splitted[3],
+		&scene->error_flags.light.orient);
+	if (find_error(&scene->error_flags))
+		return ;
+	parse_spotlight_props2(light, splitted, scene);
 }
 
 /**
@@ -140,6 +149,23 @@ void	parse_spotlight(t_scene *scene, char **splitted)
 	scene->count.lights++;
 }
 
+bool	parse_ambient_props(t_scene *scene)
+{
+	double	col_sum;
+
+	col_sum = scene->ambient.color.r + scene->ambient.color.g \
+	+ scene->ambient.color.b;
+	if (col_sum != 0)
+	{
+		scene->ambient.color.r /= col_sum;
+		scene->ambient.color.g /= col_sum;
+		scene->ambient.color.b /= col_sum;
+	}
+	scene->count.ambient_lights++;
+	scene->ambient.intensity *= 2;
+	return (true);
+}
+
 /**
  * @brief Parses an ambient light according to the specification provided in the
  *  scene file
@@ -153,7 +179,6 @@ void	parse_spotlight(t_scene *scene, char **splitted)
 bool	parse_ambient(t_scene *scene, char **splitted)
 {
 	bool	success;
-	double	col_sum;
 
 	success = true;
 	if (split_count(splitted) != 3)
@@ -175,16 +200,7 @@ bool	parse_ambient(t_scene *scene, char **splitted)
 		&scene->error_flags.ambient.color);
 	if (find_error(&scene->error_flags))
 		return (false);
-	col_sum = scene->ambient.color.r + scene->ambient.color.g + scene->ambient.color.b;
-	if (col_sum != 0)
-	{
-		scene->ambient.color.r /= col_sum;
-		scene->ambient.color.g /= col_sum;
-		scene->ambient.color.b /= col_sum;
-	}
-	scene->count.ambient_lights++;
-	scene->ambient.intensity *= 2;
-	return (true);
+	return (parse_ambient_props(scene));
 }
 
 /**

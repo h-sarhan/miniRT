@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 13:02:58 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/18 17:50:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:23:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,8 @@ bool	print_light_error(t_light_errors *err, const char *line, int line_num)
 			"spotlight orientation") && err->orient.other == true)
 		printf(SPOTLIGHT_SYNTAX);
 	else if (err->angle_other)
-	{
-		printf(GENERIC_ERROR, "spotlight beam width", line_num, line);
-		printf(SPOTLIGHT_SYNTAX);
-	}
+		printf(GENERIC_ERROR""SPOTLIGHT_SYNTAX, "spotlight beam width",
+			line_num, line);
 	else if (err->angle_range)
 		printf(SPOTLIGHT_ANGLE_OOR, line_num, line);
 	if (err->coords || err->intensity_other || err->other)

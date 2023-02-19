@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 17:48:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ not terminated correctly\n\x1b[0m"
 [31m->\t%s : %s\n\x1b[33m`%s` is not a valid value\n\e[0;35mAvailable colors \
 are BLUE, RED, PURPLE, GREEN, YELLOW, PINK, BLACK, GRAY\n\x1b[0m"
 
-# define INVALID_PROPERTY_VALUE "\x1b[33mError with parsing this property\n \
+# define INVALID_PROP_VALUE "\x1b[33mError with parsing this property\n \
 \x1b[31m->\t%s : %s\n\x1b[33m`%s` is not a valid value\n\x1b[0m"
 
 # define INVALID_PROPERTY_RANGE "\x1b[33mError with parsing this property \

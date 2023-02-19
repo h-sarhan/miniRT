@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/24 18:13:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 16:47:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,16 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num, int fd)
 	return (!find_error(&scene->error_flags));
 }
 
+t_scene	*check_elements(t_scene *scene)
+{
+	if (check_element_count(scene) == false)
+	{
+		free_scene(scene);
+		return (NULL);
+	}
+	return (scene);
+}
+
 /**
  * @brief Parses a .rt file into a scene struct
  * @param fd The file descriptor of a .rt file
@@ -123,7 +133,6 @@ t_scene	*parse_scene(int fd)
 		success = parse_line(scene, line, &line_count, fd);
 		if (success == false)
 		{
-			// free(line);
 			get_next_line(-1);
 			free_scene(scene);
 			return (NULL);
@@ -131,10 +140,5 @@ t_scene	*parse_scene(int fd)
 		line = get_next_line(fd);
 		line_count++;
 	}
-	if (check_element_count(scene) == false)
-	{
-		free_scene(scene);
-		return (NULL);
-	}
-	return (scene);
+	return (check_elements(scene));
 }

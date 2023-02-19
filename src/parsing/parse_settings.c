@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 18:20:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:21:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,29 @@ t_color	parse_color_value(const char *str)
 	return (int_to_color(hex_color));
 }
 
+bool	parse_rest_of_settings(t_shape *shape, char **key_val)
+{
+	bool	success;
+
+	if (ft_strcmp("color", key_val[0]) == 0)
+		shape->props.color = parse_color_value(key_val[1]);
+	if (ft_strcmp("diffuse_texture", key_val[0]) == 0)
+	{
+		shape->diffuse_tex = parse_texture(key_val[1], shape);
+		if (shape->diffuse_tex == NULL)
+			return (false);
+	}
+	if (ft_strcmp("normal_texture", key_val[0]) == 0)
+	{
+		shape->normal_tex = parse_texture(key_val[1], shape);
+		if (shape->normal_tex == NULL)
+			return (false);
+	}
+	if (ft_strcmp("tile_texture", key_val[0]) == 0)
+		shape->tex_tile = ft_atol(key_val[1], &success);
+	return (true);
+}
+
 bool	parse_setting(t_shape *shape, char **key_val)
 {
 	bool	success;
@@ -65,22 +88,8 @@ bool	parse_setting(t_shape *shape, char **key_val)
 		shape->props.scale.y = ft_atof(key_val[1], &success);
 	if (ft_strcmp("scaleZ", key_val[0]) == 0)
 		shape->props.scale.z = ft_atof(key_val[1], &success);
-	if (ft_strcmp("color", key_val[0]) == 0)
-		shape->props.color = parse_color_value(key_val[1]);
-	if (ft_strcmp("diffuse_texture", key_val[0]) == 0)
-	{
-		shape->diffuse_tex = parse_texture(key_val[1], shape);
-		if (shape->diffuse_tex == NULL)
-			return (false);
-	}
-	if (ft_strcmp("normal_texture", key_val[0]) == 0)
-	{
-		shape->normal_tex = parse_texture(key_val[1], shape);
-		if (shape->normal_tex == NULL)
-			return (false);
-	}
-	if (ft_strcmp("tile_texture", key_val[0]) == 0)
-		shape->tex_tile = ft_atol(key_val[1], &success);
+	if (parse_rest_of_settings(shape, key_val) == false)
+		return (false);
 	return (true);
 }
 
@@ -96,7 +105,8 @@ char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)
 		*line_num += 1;
 		if (line == NULL)
 			break ;
-		while ((ft_strncmp(line, "//", 2) == 0 || ft_strncmp(line, "#", 1) == 0) && line != NULL)
+		while ((ft_strncmp(line, "//", 2) == 0
+				|| ft_strncmp(line, "#", 1) == 0) && line != NULL)
 		{
 			free(line);
 			line = ft_strtrim_free(get_next_line(fd), " \t\n");
@@ -112,6 +122,41 @@ char	*get_settings_str(size_t *line_num, int fd, const char *settings_start)
 	return (settings_str);
 }
 
+bool	check_key_val_split(char **key_val, char **settings, int line_idx)
+{
+	if (!key_val[0] || !*key_val[0] || !key_val[1] || !*key_val[1])
+	{
+		if (key_val[0] == NULL)
+			printf(INVALID_KEY, settings[line_idx], key_val[0]);
+		else
+			printf(INVALID_PROP_VALUE, key_val[0], key_val[1], key_val[1]);
+		return (free_split_array(key_val), false);
+	}
+	return (true);
+}
+
+bool	check_key_vals(char **key_val, char **settings, t_scene *scene,
+			int line_idx)
+{
+	if (!key_val[0] || !*key_val[0] || !key_val[1] || !*key_val[1])
+	{
+		if (key_val[0] == NULL)
+			printf(INVALID_KEY, settings[line_idx], key_val[0]);
+		else
+			printf(INVALID_PROP_VALUE, key_val[0], key_val[1], key_val[1]);
+		return (free_split_array(key_val), false);
+	}
+	if (!is_valid_key(key_val[0]) || !is_valid_val(key_val[0], key_val[1]))
+	{
+		if (!is_valid_key(key_val[0]))
+			printf(INVALID_KEY, settings[line_idx], key_val[0]);
+		return (free_split_array(key_val), false);
+	}
+	if (!parse_setting(&scene->shapes[scene->count.shapes - 1], key_val))
+		return (free_split_array(key_val), false);
+	return (true);
+}
+
 bool	parse_split_settings(t_scene *scene, char **settings)
 {
 	int		line_idx;
@@ -123,39 +168,12 @@ bool	parse_split_settings(t_scene *scene, char **settings)
 		if (check_colons(settings[line_idx]) == false)
 			return (false);
 		key_val = ft_split(settings[line_idx], ':');
-		if (key_val[0] == NULL || *key_val[0] == '\0' ||key_val[1] == NULL || *key_val[1] == '\0')
-		{
-			if (key_val[0] == NULL)
-				printf(INVALID_KEY, settings[line_idx], key_val[0]);
-			else
-				printf(INVALID_PROPERTY_VALUE, key_val[0], key_val[1], key_val[1]);
-			free_split_array(key_val);
+		if (check_key_val_split(key_val, settings, line_idx) == false)
 			return (false);
-		}
-		
 		key_val[0] = ft_strtrim_free(key_val[0], " \n\t");
 		key_val[1] = ft_strtrim_free(key_val[1], " \n\t");
-		if (key_val[0] == NULL || *key_val[0] == '\0' ||key_val[1] == NULL || *key_val[1] == '\0')
-		{
-			if (key_val[0] == NULL)
-				printf(INVALID_KEY, settings[line_idx], key_val[0]);
-			else
-				printf(INVALID_PROPERTY_VALUE, key_val[0], key_val[1], key_val[1]);
-			free_split_array(key_val);
+		if (check_key_vals(key_val, settings, scene, line_idx) == false)
 			return (false);
-		}
-		if (!is_valid_key(key_val[0]) || !is_valid_val(key_val[0], key_val[1]))
-		{
-			if (!is_valid_key(key_val[0]))
-				printf(INVALID_KEY, settings[line_idx], key_val[0]);
-			free_split_array(key_val);
-			return (false);
-		}
-		if (parse_setting(&scene->shapes[scene->count.shapes - 1], key_val) == false)
-		{
-			free_split_array(key_val);
-			return (false);
-		}
 		free_split_array(key_val);
 		line_idx++;
 	}

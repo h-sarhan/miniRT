@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 16:19:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 17:48:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	is_valid_key(const char *key)
 			|| ft_strcmp(key, "normal_texture") == 0
 			|| ft_strcmp(key, "diffuse_texture") == 0
 			|| ft_strcmp(key, "tile_texture") == 0
-			))
+		))
 		return (true);
 	return (false);
 }
@@ -73,29 +73,24 @@ bool	check_value(const char *key, const char *val, double min, double max)
 	double	parsed_value;
 
 	success = true;
-	if (ft_strcmp_case(key, "diffuse_texture") == 0 || ft_strcmp_case(key, "normal_texture") == 0
+	if (ft_strcmp_case(key, "diffuse_texture") == 0
+		|| ft_strcmp_case(key, "normal_texture") == 0
 	)
 	{
 		if (ft_strnstr(val, ".ppm\"", ft_strlen(val)) == NULL
 			|| ft_strcmp(&val[ft_strlen(val) - 5], ".ppm\"") != 0)
 		{
-			printf(INVALID_PROPERTY_VALUE, key, val, val);
+			printf(INVALID_PROP_VALUE, key, val, val);
 			printf(YELLOW"Only valid .ppm files are supported\n"RESET);
 			return (false);
 		}
 		return (true);
 	}
 	if (is_num(val, true) == false)
-	{
-		printf(INVALID_PROPERTY_VALUE, key, val, val);
-		return (false);
-	}
+		return (!printf(INVALID_PROP_VALUE, key, val, val));
 	parsed_value = ft_atof(val, &success);
 	if (success == false || parsed_value < min || parsed_value > max)
-	{
-		printf(INVALID_PROPERTY_RANGE, key, val, key, min, max);
-		return (false);
-	}
+		return (!printf(INVALID_PROPERTY_RANGE, key, val, key, min, max));
 	return (true);
 }
 
@@ -109,22 +104,13 @@ bool	is_valid_val(const char *key, const char *val)
 	min = 0.0;
 	max = 1.0;
 	if (ft_strcmp(key, "shininess") == 0)
-	{
-		min = 10;
-		max = 400;
-	}
+		return (check_value(key, val, 10, 400));
 	if (ft_strncmp(key, "rot", 3) == 0)
-		max = 360;
+		return (check_value(key, val, 0.0, 360));
 	if (ft_strncmp(key, "scale", 5) == 0)
-	{
-		min = 0.1;
-		max = 50;
-	}
+		return (check_value(key, val, 0.1, 50));
 	if (ft_strcmp(key, "tile_texture") == 0)
-	{
-		min = 1;
-		max = 16;
-	}
+		return (check_value(key, val, 1, 16));
 	if (ft_strcmp(key, "color") == 0)
 		return (is_valid_color(val));
 	return (check_value(key, val, min, max));
