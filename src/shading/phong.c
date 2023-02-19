@@ -6,17 +6,17 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 15:25:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 19:09:25 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "scene.h"
 
-t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
+t_color	get_ambient(t_scene *scene, t_color patter_color)
 {
 	t_color	ambient;
-	(void)attenuation;
+
 	ambient.a = 0;
 	mult_color(&ambient, &patter_color,
 		scene->ambient.intensity);
@@ -24,11 +24,24 @@ t_color	get_ambient(t_scene *scene, double attenuation, t_color patter_color)
 	return (ambient);
 }
 
-// light attenuation example code
+void	calculate_specular(t_vector *reflect_v, t_intersection *itx,
+			t_phong *phong, t_light *light)
+{
+	double	reflect_dot_eye;
+
+	reflect_dot_eye = dot_product(reflect_v, &itx->eye);
+	if (reflect_dot_eye <= 0)
+		ft_bzero(&phong->specular, sizeof(t_color));
+	else
+		mult_color(&phong->specular, &light->color,
+			itx->shape->props.specular * \
+			pow(reflect_dot_eye, itx->shape->props.shininess)
+			* light->intensity);
+}
+
 bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	t_intersection *itx, t_phong *phong)
 {
-	double		reflect_dot_eye;
 	double		light_dot_normal;
 	t_vector	light_v;
 	t_vector	reflect_v;
@@ -39,50 +52,42 @@ bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
 	normalize_vec(&light_v);
 	itx->normal.w = 0;
 	light_dot_normal = dot_product(&light_v, &itx->normal);
-	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point, &spotlight_angle))
+	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point,
+			&spotlight_angle))
 		return (false);
-	mult_color(&phong->diffuse, &phong->effective_color,
-		itx->shape->props.diffuse * light_dot_normal
-		* scene->lights[light_idx].intensity);
-	if (scene->lights[light_idx].type == SPOT &&
-		acos(spotlight_angle) > scene->lights[light_idx].theta * 0.9 / 4)
+	mult_color(&phong->diffuse, &phong->effective_color, light_dot_normal
+		* itx->shape->props.diffuse * scene->lights[light_idx].intensity);
+	if (scene->lights[light_idx].type == SPOT
+		&& acos(spotlight_angle) > scene->lights[light_idx].theta * 0.9 / 4)
 		mult_color(&phong->diffuse, &phong->diffuse, 0.8);
 	negate_vec(&light_v, &light_v);
 	reflect_vector(&reflect_v, &light_v, &itx->normal);
-	reflect_dot_eye = dot_product(&reflect_v, &itx->eye);
-	if (reflect_dot_eye <= 0)
-		ft_bzero(&phong->specular, sizeof(t_color));
-	else
-		mult_color(&phong->specular, &scene->lights[light_idx].color,
-			itx->shape->props.specular * \
-			pow(reflect_dot_eye, itx->shape->props.shininess)
-			* scene->lights[light_idx].intensity);
+	calculate_specular(&reflect_v, itx, phong, &scene->lights[light_idx]);
 	return (true);
 }
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
 {
-	t_phong	phong;
-	t_color	result;
-	t_color	shape_color;	
+	t_phong			phong;
+	t_color			result;
+	t_color			shape_color;	
 	const double	light_dist = vec_distance(&itx->point, \
 			&scene->lights[light_idx].position);
-	const double	attentuation_factor = (100 * scene->lights[light_idx].intensity \
+	const double	attenuation = (100 * scene->lights[light_idx].intensity \
 			- light_dist) / (100 * scene->lights[light_idx].intensity - 1);
 
 	shape_color = get_shape_color(itx);
-	
 	blend_colors(&phong.effective_color, &shape_color,
 		&scene->lights[light_idx].color);
 	if (get_specular_and_diffuse(scene, light_idx, itx, &phong) == false)
-		return (get_ambient(scene, attentuation_factor, shape_color));
-	result = get_ambient(scene, attentuation_factor, shape_color);
-	if (attentuation_factor < 0)
+		return (get_ambient(scene, shape_color));
+	result = get_ambient(scene, shape_color);
+	if (attenuation < 0)
 		return (result);
-	else if (attentuation_factor > 0 && attentuation_factor <= 1)
+	else if (attenuation > 0 && attenuation <= 1)
 	{
-		mult_color(&phong.diffuse, &phong.diffuse, attentuation_factor);
-		mult_color(&phong.specular, &phong.specular, attentuation_factor);
+		mult_color(&phong.diffuse, &phong.diffuse, attenuation);
+		mult_color(&phong.specular, &phong.specular, attenuation);
 	}
 	result.r += phong.diffuse.r + phong.specular.r;
 	result.g += phong.diffuse.g + phong.specular.g;
