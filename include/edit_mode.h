@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 13:01:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@
 # endif
 # define ON_DESTROY 17
 
+// Forward declaration
+struct						s_ray;
+typedef struct s_ray		t_ray;
+
 typedef struct s_keys		t_keys;
 struct s_keys
 {
@@ -134,5 +138,7 @@ int		render_loop(t_scene *scene);
 int		close_window(t_scene *scene);
 void	look_at(t_scene *scene, t_shape *shape);
 void	show_light_banner(t_scene *scene);
+void	rotate_along_mouse_axis(t_scene *scene);
+void	drag_along_plane(t_scene *scene, t_ray *mouse_selection);
 
 #endif
