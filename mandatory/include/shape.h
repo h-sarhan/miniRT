@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 23:07:55 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 00:40:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ enum e_shape_type
 	CYLINDER,
 	CONE,
 	CUBE,
-	TRIANGLE,
 };
 
 /**

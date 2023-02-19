@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   normal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:52:03 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 22:30:11 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:44:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ t_vector	cylinder_normal(const t_shape *shape, const t_vector *itx_point)
 		normal.z = point.z;
 		normalize_vec(&normal);
 	}
-	if (shape->normal_tex != NULL)
-		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
@@ -63,14 +61,12 @@ t_vector	cone_normal(const t_shape *shape, const t_vector *itx_point)
 		normal = (t_vector){point.x, normal.y, point.z, 0};
 		normalize_vec(&normal);
 	}
-	if (shape->normal_tex != NULL)
-		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	normalize_vec(&world_normal);
 	return (world_normal);
 }
 
-t_vector	plane_normal(const t_shape *shape, const t_vector *itx_point)
+t_vector	plane_normal(const t_shape *shape)
 {
 	t_vector	object_normal;
 	t_vector	world_normal;
@@ -79,8 +75,6 @@ t_vector	plane_normal(const t_shape *shape, const t_vector *itx_point)
 	object_normal.y = 1;
 	object_normal.z = 0;
 	object_normal.w = 0;
-	if (shape->normal_tex != NULL)
-		return (normal_map(&object_normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &object_normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);
@@ -122,8 +116,6 @@ t_vector	sphere_normal(t_vector *normal, const t_shape *shape,
 	mat_vec_multiply(normal, &shape->inv_transf, itx_point);
 	normalize_vec(normal);
 	normal->w = 0;
-	if (shape->normal_tex != NULL)
-		return (normal_map(normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);

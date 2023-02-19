@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 23:01:51 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:37:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,16 +221,12 @@ void	parse_light(t_scene *scene, char **splitted);
 
 bool	parse_shape(t_scene *scene, char **splitted);
 
-bool	parse_settings(t_scene *scene, const char *settings_start,
-			size_t *line_num, int fd);
-
 void	parse_coordinates(t_vector *position, const char *str, bool *success);
 void	parse_orientation(t_vector *orientation, const char *str,
 			t_orient_error *err);
 
 void	parse_color(t_color *color, const char *str, t_color_error *errs);
 
-bool	is_settings(const char *line);
 bool	is_shape(const char *identifier);
 
 bool	is_num(const char *str, bool decimal);
@@ -262,25 +258,10 @@ bool	print_cylinder_error(t_shape_errors *err, const char *line,
 			int line_num);
 bool	print_cone_error(t_shape_errors *err, const char *line, int line_num);
 
-bool	is_settings(const char *line);
 bool	is_valid_key(const char *key);
 bool	is_valid_color(const char *color);
 bool	check_value(const char *key, const char *val, double min, double max);
 bool	is_valid_val(const char *key, const char *val);
 t_color	parse_color_value(const char *str);
-bool	parse_setting(t_shape *shape, char **key_val);
-bool	check_braces(char *settings_str, size_t *line_num);
-char	*check_settings_str(char *settings_str, size_t *line_num);
-char	*get_settings_str(size_t *line_num, int fd, const char *settings_start);
-bool	check_colons(char *line);
-bool	parse_split_settings(t_scene *scene, char **settings);
-bool	parse_settings(t_scene *scene, const char *settings_start,
-			size_t *line_num, int fd);
-
-t_color	**parse_texture(char *img_path, t_shape *shape);
-void	parse_spotlight(t_scene *scene, char **splitted);
-bool	check_key_vals(char **key_val, char **settings, t_scene *scene,
-			int line_idx);
-bool	check_key_val_split(char **key_val, char **settings, int line_idx);
 
 #endif

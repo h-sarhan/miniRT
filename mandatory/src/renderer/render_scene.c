@@ -3,56 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 22:39:41 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:57:42 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	*render_scene(t_worker *worker)
+void	render_scene(t_scene *scene)
 {
 	t_intersections	arr;
 	int				x;
 	int				y;
-	int				line_counter;
 
-	line_counter = 0;
-	y = worker->y_start;
-	while (y < worker->y_end)
+	y = 0;
+	while (y < scene->settings.disp_h)
 	{
 		x = 0;
-		while (x < worker->width)
+		while (x < scene->settings.disp_w)
 		{
-			set_color(worker, x, y, 0);
-			render_pixel(x, y, &arr, worker);
+			set_color(scene, x, y, 0);
+			render_pixel(x, y, &arr, scene);
 			x += 1;
 		}
-		line_counter++;
-		update_loading_bar(worker, &line_counter);
 		y += 1;
 	}
-	return (NULL);
 }
 
-t_color	render_pixel(double x, double y, t_intersections *arr, t_worker *worker)
+t_color	render_pixel(double x, double y, t_intersections *arr, t_scene *scene)
 {
 	int		shape_idx;
 	t_scene	*scene;
 	t_ray	ray;
 	t_color	color;
 
-	set_color(worker, x, y, 0);
-	scene = worker->scene;
+	set_color(scene, x, y, 0);
 	ray_from_cam(&ray, &scene->cam, x + 0.5, y + 0.5);
 	shape_idx = -1;
 	arr->count = 0;
 	while (++shape_idx < scene->count.shapes)
 		intersect(&scene->shapes[shape_idx], &ray, arr);
 	color = shade_point(arr, scene, &ray);
-	set_color(worker, x, y, create_mlx_color(&color));
+	set_color(scene, x, y, create_mlx_color(&color));
 	return (color);
 }
 

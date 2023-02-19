@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:46:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 20:59:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 00:51:13 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ int	get_color(t_worker *worker, int x, int y)
 	return (*(int *)(worker->addr + ((y * worker->width) + x) * bpp));
 }
 
-void	set_color(t_worker *worker, int x, int y, int color)
+void	set_color(t_scene *scene, int x, int y, int color)
 {
 	int	bpp;
 
-	if (x >= worker->width || y > worker->height || x < 0 || y < 0)
+	if (x >= scene->settings.disp_w || y > scene->settings.disp_h || x < 0
+		|| y < 0)
 		return ;
-	bpp = worker->scene->disp->bpp;
-	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
+	bpp = scene->disp->bpp;
+	*(int *)(scene->disp->render_addr + ((y * scene->settings.disp_w) \
+		+ x) * bpp) = color;
 }

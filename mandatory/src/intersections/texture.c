@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:29:30 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 22:30:39 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:45:36 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,6 @@ t_vector	get_texture_coords(const t_shape *shape, double u, double v,
 	return (*normal);
 }
 
-t_vector	normal_from_texture(const t_shape *shape, const t_vector *itx_point)
-{
-	t_vector	shape_point;
-	double		u;
-	double		v;
-	t_vector	normal;
-
-	ft_bzero(&normal, sizeof(t_vector));
-	normal.y = 1;
-	mat_vec_multiply(&shape_point, &shape->inv_transf, itx_point);
-	if (shape->type == SPHERE)
-		spherical_map(&u, &v, &shape_point);
-	else if (shape->type == CYLINDER || shape->type == CONE)
-	{
-		shape_point.y /= shape->props.height;
-		shape_point.y -= 0.5;
-		cylindrical_map(&u, &v, &shape_point);
-	}
-	else
-		cubical_map(&u, &v, &shape_point);
-	if (u < 0 || v < 0)
-		return (normal);
-	return (get_texture_coords(shape, u, v, &normal));
-}
-
 t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 {
 	t_vector	normal;
@@ -73,14 +48,12 @@ t_vector	normal_at(const t_shape *shape, const t_vector *itx_point)
 	if (shape->type == SPHERE)
 		return (sphere_normal(&normal, shape, itx_point));
 	else if (shape->type == PLANE)
-		return (plane_normal(shape, itx_point));
+		return (plane_normal(shape));
 	else if (shape->type == CYLINDER)
 		return (cylinder_normal(shape, itx_point));
 	else if (shape->type == CONE)
 		return (cone_normal(shape, itx_point));
 	normal = cube_normal(shape, itx_point);
-	if (shape->normal_tex != NULL)
-		return (normal_map(&normal, shape, itx_point));
 	mat_vec_multiply(&world_normal, &shape->norm_transf, &normal);
 	world_normal.w = 0;
 	normalize_vec(&world_normal);

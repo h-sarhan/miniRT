@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 00:40:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,47 +93,15 @@ struct s_scene
 	t_shape			*shapes;
 	t_el_count		count;
 	t_display		*disp;
-	t_keys			keys_held;
 	t_settings		settings;
 	int				shape_idx;
 	int				light_idx;
-	sem_t			*sem_loading;
-	t_look_at		look_at;
-	t_mouse			mouse;
 	t_error_flags	error_flags;
-	bool			help;
-	int				music_pid;
 };
 
 void		free_scene(t_scene *scene);
 
 void		calculate_transforms(t_scene *scene);
 void		draw_scene(t_scene *scene);
-
-// ui.h
-void		draw_marker(t_scene *scene, int x, int y, int color);
-void		draw_arrow(t_scene *scene, int x, int y, double z);
-void		perspective_projection(t_vector *point, const t_scene *scene);
-void		draw_shape_info(t_scene *scene);
-void		draw_shape_marker(t_scene *scene);
-void		show_help_menu(t_scene *scene);
-void		display_loading_bar(t_scene *scene);
-void		draw_controls(t_scene *scene);
-void		project_light_marker_on_screen(t_scene *scene);
-
-// Pattern
-t_color		get_shape_color(t_intersection *itx);
-t_color		stripe_pattern(t_intersection *itx, t_vector point, t_color a,
-				t_color b);
-t_color		checker_pattern(t_intersection *itx, t_vector *point);
-
-t_color		gradient_pattern(t_intersection *itx, t_vector point, t_color a,
-				t_color b);
-t_color		ring_pattern(t_intersection *itx, t_vector point, t_color a,
-				t_color b);
-t_vector	normal_map(t_vector *normal, const t_shape *shape,
-				const t_vector *itx_point);
-void		free_texture(t_shape *shape, t_color **texture);
-void		mouse_move(t_scene *scene);
 
 #endif

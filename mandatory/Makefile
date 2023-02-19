@@ -3,17 +3,12 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
+#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 23:08:38 by mkhan            ###   ########.fr        #
+#    Updated: 2023/02/20 00:48:22 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c mouse_utils.c \
-				key_look_at.c key_shape.c key_toggle.c light_controls.c \
-				loop_hook_rotate.c lopp_hook_move.c 
-EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
 					cylinder_intersection.c normal_map.c texture.c
@@ -25,13 +20,11 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
 PARSING_SRC =   errors.c shape_errors.c  attribute_errors.c element_errors.c\
 				parse_scene.c parse_shapes1.c parse_shapes2.c parse_elements.c \
-				parse_attributes.c parse_settings.c settings_errors.c \
-				settings_validation.c parse_texture.c parse_spotlight.c \
-				parse_settings1.c
+				parse_attributes.c
 
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
-RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
+RENDERER_SRC = camera.c render_scene.c \
 				transforms.c workers.c
 RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
 
@@ -47,7 +40,7 @@ UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
 UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
 
 
-SRC = $(EDIT_MODE_SRC) $(INTERSECTIONS_SRC) $(MATH_SRC) $(PARSING_SRC) \
+SRC = $(INTERSECTIONS_SRC) $(MATH_SRC) $(PARSING_SRC) \
 	$(RENDERER_SRC) $(SHADING_SRC) $(UI_SRC) $(UTILS_SRC) main.c
 SRC := $(addprefix src/, $(SRC))
 

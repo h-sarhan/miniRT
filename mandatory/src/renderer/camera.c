@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 22:39:48 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:56:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,29 +90,29 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	camera->pixel_size = (camera->half_width * 2) / w;
 }
 
-void	*nearest_neighbours_scaling(t_worker *worker)
+void	*nearest_neighbours_scaling(t_scene *scene)
 {
 	int	x;
 	int	y;
 	int	src_x;
 	int	src_y;
 
-	y = worker->y_scale_start - 1;
-	while (++y < worker->y_scale_end)
+	y = -1;
+	while (++y < scene->settings.disp_h)
 	{
 		x = -1;
-		while (++x < worker->scene->settings.disp_w)
+		while (++x < scene->settings.disp_w)
 		{
-			src_x = round((x / (double)worker->scene->settings.disp_w) * \
-			worker->width);
-			src_y = round((y / (double)worker->scene->settings.disp_h) * \
-			worker->height);
-			src_x = min(src_x, worker->width - 1);
-			src_y = min(src_y, worker->height - 1);
-			*(unsigned int *)(worker->scene->disp->disp_addr + (y * \
-			worker->scene->settings.disp_w + x) * worker->scene->disp->bpp) \
-			= *(unsigned int *)(worker->addr + (src_y * \
-			worker->width + src_x) * worker->scene->disp->bpp);
+			src_x = round((x / (double)scene->settings.disp_w) * \
+			scene->settings.render_w);
+			src_y = round((y / (double)scene->settings.disp_h) * \
+			scene->settings.render_h);
+			src_x = min(src_x, scene->settings.render_w - 1);
+			src_y = min(src_y, scene->settings.render_h - 1);
+			*(unsigned int *)(scene->disp->disp_addr + (y * \
+			scene->settings.disp_w + x) * scene->disp->bpp) \
+			= *(unsigned int *)(scene->disp->render_addr + (src_y * \
+			scene->settings.render_w + src_x) * scene->disp->bpp);
 		}
 	}
 	return (NULL);

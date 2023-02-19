@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 23:09:25 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 00:44:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,15 @@ bool			intersect_cylinder(const t_ray *ray, t_shape *shape,
 					t_intersections *xs);
 bool			intersect_cone(const t_ray *ray, t_shape *shape,
 					t_intersections *xs);
-void			spherical_map(double *u, double *v, t_vector *point);
-void			cylindrical_map(double *u, double *v, t_vector *point);
-void			cubical_map(double *u, double *v, t_vector *point);
 bool			intersect_cube(t_shape *shape, t_ray *ray, t_intersections *xs);
-bool			test_box_axes(t_shape *b1, t_shape *b2, t_vector *resolution);
 t_vector		cube_normal(const t_shape *shape, const t_vector *itx_point);
 void			calculate_orientation(t_mat4 *rot_transform, t_shape *shape);
-int				intersect_shadowed(t_shape *shape, const t_ray *ray,
-					t_intersections *xs);
 
-t_vector		box_furthest_point(const t_vector *dir, const t_shape *box);
-t_vector		cylinder_furthest_point(const t_vector *dir,
-					const t_shape *cyl);
-t_vector		normal_from_texture(const t_shape *shape,
-					const t_vector *itx_point);
-t_vector		get_texture_coords(const t_shape *shape, double u, double v,
-					t_vector *normal);
-t_vector		normal_from_texture(const t_shape *shape,
-					const t_vector *itx_point);
 t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
 t_vector		cylinder_normal(const t_shape *shape,
 					const t_vector *itx_point);
 t_vector		cone_normal(const t_shape *shape, const t_vector *itx_point);
-t_vector		plane_normal(const t_shape *shape, const t_vector *itx_point);
+t_vector		plane_normal(const t_shape *shape);
 t_vector		cube_normal(const t_shape *shape, const t_vector *itx_point);
 t_vector		sphere_normal(t_vector *normal, const t_shape *shape,
 					const t_vector *itx_point);
