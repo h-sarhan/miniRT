@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 20:37:02 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 20:56:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,12 @@ void	free_split_array(char **arr)
 	free(arr);
 }
 
-void	free_textures(t_scene *scene)
-{
-	int	i;
-
-	i = -1;
-	while (++i < scene->count.shapes && scene->shapes != NULL)
-	{
-		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
-		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
-	}
-}
-
 /**
  * @brief Frees a scene struct
  * @param scene Pointer to scene struct to be freed
  */
 void	free_scene(t_scene *scene)
 {
-	int	i;
-
 	if (scene == NULL)
 		return ;
 	if (scene->disp != NULL && scene->disp->mlx != NULL)
@@ -71,21 +57,6 @@ void	free_scene(t_scene *scene)
 		sem_close(scene->sem_loading);
 	sem_unlink("/loading");
 	free(scene);
-}
-
-void	free_texture(t_shape *shape, t_color **texture)
-{
-	int	i;
-
-	if (texture == NULL)
-		return ;
-	i = 0;
-	while (i < shape->tex_height)
-	{
-		free(texture[i]);
-		i++;
-	}
-	free(texture);
 }
 
 char	*ft_strjoin_free(char *s1, char *s2, int fre)

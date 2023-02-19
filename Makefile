@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 20:24:07 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/02/19 21:04:43 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,14 +32,15 @@ RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
 				transforms.c workers.c
 RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
 
-SHADING_SRC = color_operations.c phong.c reflections.c patterns.c
+SHADING_SRC = color_operations.c phong.c reflections.c patterns.c cube_mapping1.c \
+				cube_mapping2.c
 SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
 
 UI_SRC = arrow.c loading_bar.c marker.c shape_info.c help_menu.c
 UI_SRC := $(addprefix ui/, $(UI_SRC))
 
 UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
-		parse_utils.c 
+		parse_utils.c free_textures.c color_arithmetic.c
 UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
 
 

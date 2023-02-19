@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color_operations.c                                 :+:      :+:    :+:   */
+/*   free_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 17:46:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 20:59:22 by hsarhan          ###   ########.fr       */
+/*   Created: 2023/02/19 20:56:57 by hsarhan           #+#    #+#             */
+/*   Updated: 2023/02/19 20:57:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	get_color(t_worker *worker, int x, int y)
+void	free_textures(t_scene *scene)
 {
-	int	bpp;
+	int	i;
 
-	bpp = worker->scene->disp->bpp;
-	return (*(int *)(worker->addr + ((y * worker->width) + x) * bpp));
+	i = -1;
+	while (++i < scene->count.shapes && scene->shapes != NULL)
+	{
+		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
+		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
+	}
 }
 
-void	set_color(t_worker *worker, int x, int y, int color)
+void	free_texture(t_shape *shape, t_color **texture)
 {
-	int	bpp;
+	int	i;
 
-	if (x >= worker->width || y > worker->height || x < 0 || y < 0)
+	if (texture == NULL)
 		return ;
-	bpp = worker->scene->disp->bpp;
-	*(int *)(worker->addr + ((y * worker->width) + x) * bpp) = color;
+	i = 0;
+	while (i < shape->tex_height)
+	{
+		free(texture[i]);
+		i++;
+	}
+	free(texture);
 }

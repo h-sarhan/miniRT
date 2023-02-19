@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 19:02:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 21:02:26 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,67 +125,6 @@ t_color	gradient_pattern(t_intersection *itx, t_vector point, t_color a,
 	mult_color(&color, &color, fraction);
 	add_colors(&color, &color, &a);
 	return (color);
-}
-
-void	cube_map_right(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((1 - point->z), 2.0)) / 2.0;
-	*v = (fmod((point->y + 1), 2.0)) / 2.0;
-}
-
-void	cube_map_left(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((point->z + 1), 2.0)) / 2.0;
-	*v = (fmod((point->y + 1), 2.0)) / 2.0;
-}
-
-void	cube_map_up(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((1 - point->x), 2.0)) / 2.0;
-	*v = (fmod((1 - point->z), 2.0)) / 2.0;
-}
-
-void	cube_map_down(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((1 - point->x), 2.0)) / 2.0;
-	*v = (fmod((point->z + 1), 2.0)) / 2.0;
-}
-
-void	cube_map_front(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((point->x + 1), 2.0)) / 2.0;
-	*v = (fmod((point->y + 1), 2.0)) / 2.0;
-}
-
-void	cube_map_back(double *u, double *v, t_vector *point)
-{
-	*u = (fmod((1 - point->x), 2.0)) / 2.0;
-	*v = (fmod((point->y + 1), 2.0)) / 2.0;
-}
-
-void	cubical_map(double *u, double *v, t_vector *point)
-{
-	double	abs_x;
-	double	abs_y;
-	double	abs_z;
-	double	coord;
-
-	abs_x = fabs(point->x);
-	abs_y = fabs(point->y);
-	abs_z = fabs(point->z);
-	coord = max3(abs_x, abs_y, abs_z);
-	if (coord == point->x)
-		cube_map_right(u, v, point);
-	else if (coord == -point->x)
-		cube_map_left(u, v, point);
-	else if (coord == point->y)
-		cube_map_up(u, v, point);
-	else if (coord == -point->y)
-		cube_map_down(u, v, point);
-	else if (coord == point->z)
-		cube_map_front(u, v, point);
-	else if (coord == -point->z)
-		cube_map_back(u, v, point);
 }
 
 void	spherical_map(double *u, double *v, t_vector *point)

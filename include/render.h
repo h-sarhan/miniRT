@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 15:11:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 21:03:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,13 @@ void	update_loading_bar(t_worker *worker, int *line_counter);
 void	init_workers(t_worker *workers, t_scene *scene);
 void	run_workers(t_worker *workers, t_scene *scene, bool loading,
 			void *func);
+
+void	cube_map_right(double *u, double *v, t_vector *point);
+void	cube_map_left(double *u, double *v, t_vector *point);
+void	cube_map_up(double *u, double *v, t_vector *point);
+void	cube_map_down(double *u, double *v, t_vector *point);
+void	cube_map_front(double *u, double *v, t_vector *point);
+void	cube_map_back(double *u, double *v, t_vector *point);
+void	cubical_map(double *u, double *v, t_vector *point);
 
 #endif
