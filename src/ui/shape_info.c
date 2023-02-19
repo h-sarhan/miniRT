@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shape_info.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:32:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 19:26:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:32:34 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-void	show_light_banner(t_scene *scene)
-{
-	mlx_string_put(scene->disp->mlx, scene->disp->win,
-		scene->settings.disp_w * .9, 20,
-		0xffffff, "LIGHT MODE");
-}
 
 void	draw_shape_type(t_scene *scene, t_shape *shape, t_vector *origin_proj)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 12:19:12 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 15:10:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 23:09:25 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,18 @@ t_vector		box_furthest_point(const t_vector *dir, const t_shape *box);
 t_vector		cylinder_furthest_point(const t_vector *dir,
 					const t_shape *cyl);
 t_vector		normal_from_texture(const t_shape *shape,
+					const t_vector *itx_point);
+t_vector		get_texture_coords(const t_shape *shape, double u, double v,
+					t_vector *normal);
+t_vector		normal_from_texture(const t_shape *shape,
+					const t_vector *itx_point);
+t_vector		normal_at(const t_shape *shape, const t_vector *itx_point);
+t_vector		cylinder_normal(const t_shape *shape,
+					const t_vector *itx_point);
+t_vector		cone_normal(const t_shape *shape, const t_vector *itx_point);
+t_vector		plane_normal(const t_shape *shape, const t_vector *itx_point);
+t_vector		cube_normal(const t_shape *shape, const t_vector *itx_point);
+t_vector		sphere_normal(t_vector *normal, const t_shape *shape,
 					const t_vector *itx_point);
 
 #endif

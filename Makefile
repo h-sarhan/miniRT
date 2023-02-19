@@ -3,18 +3,20 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
+#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 21:04:43 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/02/19 23:08:38 by mkhan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c mouse_utils.c
+EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c mouse_utils.c \
+				key_look_at.c key_shape.c key_toggle.c light_controls.c \
+				loop_hook_rotate.c lopp_hook_move.c 
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
-					cylinder_intersection.c normal_map.c
+					cylinder_intersection.c normal_map.c texture.c
 INTERSECTIONS_SRC := $(addprefix intersections/, $(INTERSECTIONS_SRC))
 
 MATH_SRC = vector_arithmetic.c vector_operations.c matrix_operations.c \
@@ -24,7 +26,8 @@ MATH_SRC := $(addprefix math/, $(MATH_SRC))
 PARSING_SRC =   errors.c shape_errors.c  attribute_errors.c element_errors.c\
 				parse_scene.c parse_shapes1.c parse_shapes2.c parse_elements.c \
 				parse_attributes.c parse_settings.c settings_errors.c \
-				settings_validation.c parse_texture.c
+				settings_validation.c parse_texture.c parse_spotlight.c \
+				parse_settings1.c
 
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
@@ -33,7 +36,7 @@ RENDERER_SRC = camera.c fill_pixels.c render_scene.c \
 RENDERER_SRC := $(addprefix renderer/, $(RENDERER_SRC))
 
 SHADING_SRC = color_operations.c phong.c reflections.c patterns.c cube_mapping1.c \
-				cube_mapping2.c
+				cube_mapping2.c shape_texture.c
 SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
 
 UI_SRC = arrow.c loading_bar.c marker.c shape_info.c help_menu.c

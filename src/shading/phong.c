@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   phong.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 19:09:25 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:36:22 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,6 @@ void	calculate_specular(t_vector *reflect_v, t_intersection *itx,
 			itx->shape->props.specular * \
 			pow(reflect_dot_eye, itx->shape->props.shininess)
 			* light->intensity);
-}
-
-bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
-	t_intersection *itx, t_phong *phong)
-{
-	double		light_dot_normal;
-	t_vector	light_v;
-	t_vector	reflect_v;
-	double		spotlight_angle;
-
-	spotlight_angle = 0;
-	sub_vec(&light_v, &scene->lights[light_idx].position, &itx->over_point);
-	normalize_vec(&light_v);
-	itx->normal.w = 0;
-	light_dot_normal = dot_product(&light_v, &itx->normal);
-	if (light_dot_normal < 0 || is_shadowed(scene, light_idx, &itx->over_point,
-			&spotlight_angle))
-		return (false);
-	mult_color(&phong->diffuse, &phong->effective_color, light_dot_normal
-		* itx->shape->props.diffuse * scene->lights[light_idx].intensity);
-	if (scene->lights[light_idx].type == SPOT
-		&& acos(spotlight_angle) > scene->lights[light_idx].theta * 0.9 / 4)
-		mult_color(&phong->diffuse, &phong->diffuse, 0.8);
-	negate_vec(&light_v, &light_v);
-	reflect_vector(&reflect_v, &light_v, &itx->normal);
-	calculate_specular(&reflect_v, itx, phong, &scene->lights[light_idx]);
-	return (true);
 }
 
 t_color	phong(t_intersection *itx, t_scene *scene, int light_idx)
@@ -137,30 +110,5 @@ bool	check_spotlight(t_scene *scene, int light_idx, t_ray *ray,
 				return (true);
 		}
 	}
-	return (false);
-}
-
-bool	is_shadowed(t_scene *scene, int light_idx, t_vector *itx_point,
-			double *angle)
-{
-	double			distance;
-	int				i;
-	t_ray			ray;
-	t_intersections	arr;
-	t_intersection	*itx;
-
-	sub_vec(&ray.dir, &scene->lights[light_idx].position, itx_point);
-	distance = vec_magnitude(&ray.dir);
-	scale_vec(&ray.dir, &ray.dir, 1 / distance);
-	ray.origin = *itx_point;
-	if (check_spotlight(scene, light_idx, &ray, angle) == true)
-		return (true);
-	i = -1;
-	arr.count = 0;
-	while (++i < scene->count.shapes)
-		intersect(&scene->shapes[i], &ray, &arr);
-	itx = hit(&arr);
-	if (itx && itx->time < distance)
-		return (true);
 	return (false);
 }

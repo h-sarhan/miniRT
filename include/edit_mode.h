@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edit_mode.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:44:18 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 13:01:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 23:09:20 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,20 +125,40 @@ struct s_keys
 	bool	o;
 };
 
-int		mouse_rotate(t_scene *scene);
-
-void	rotate_x(t_scene *scene, t_mat4 *rot_mat, double deg);
-void	rotate_y(t_scene *scene, t_mat4 *rot_mat, double deg);
-void	rotate_z(t_scene *scene, t_mat4 *rot_mat, double deg);
-int		mouse_down(int key_code, int x, int y, t_scene *scene);
-int		mouse_up(int key_code, int x, int y, t_scene *scene);
-int		key_press(int key, t_scene *scene);
-int		key_release(int key, t_scene *scene);
-int		render_loop(t_scene *scene);
-int		close_window(t_scene *scene);
-void	look_at(t_scene *scene, t_shape *shape);
-void	show_light_banner(t_scene *scene);
-void	rotate_along_mouse_axis(t_scene *scene);
-void	drag_along_plane(t_scene *scene, t_ray *mouse_selection);
+int			mouse_rotate(t_scene *scene);
+void		rotate_x(t_scene *scene, t_mat4 *rot_mat, double deg);
+void		rotate_y(t_scene *scene, t_mat4 *rot_mat, double deg);
+void		rotate_z(t_scene *scene, t_mat4 *rot_mat, double deg);
+int			mouse_down(int key_code, int x, int y, t_scene *scene);
+int			mouse_up(int key_code, int x, int y, t_scene *scene);
+int			key_press(int key, t_scene *scene);
+int			key_release(int key, t_scene *scene);
+int			render_loop(t_scene *scene);
+int			close_window(t_scene *scene);
+void		look_at(t_scene *scene, t_shape *shape);
+void		show_light_banner(t_scene *scene);
+void		rotate_along_mouse_axis(t_scene *scene);
+void		drag_along_plane(t_scene *scene, t_ray *mouse_selection);
+void		toggle_edit_mode(int key, t_scene *scene);
+void		select_shape(int key, t_scene *scene);
+void		spawn_shape(t_scene *scene);
+void		toggle_reflections(t_scene *scene);
+void		toggle_keys_held(int key, t_scene *scene, bool on_off);
+bool		is_toggle_key(int key, t_scene *scene);
+void		toggle_shape(t_scene *scene);
+void		camera_controls(t_scene *scene);
+void		move_cam(t_scene *scene);
+void		move_object_fwd(t_scene *scene, t_shape *shape);
+void		move_object_h(t_scene *scene, t_shape *shape);
+void		transform_object(t_scene *scene);
+void		light_controls(t_scene *scene);
+void		look_at_animation(t_scene *scene);
+bool		is_loop_hook_key(t_scene *scene);
+void		move_object_h(t_scene *scene, t_shape *shape);
+void		move_object_v(t_scene *scene, t_shape *shape);
+t_vector	*sphere_to_xyz(t_vector *vec, double phi, double theta, double r);
+void		change_height(t_scene *scene, t_shape *shape);
+void		scale_cube_sides(t_scene *scene, t_shape *shape);
+void		scale_object(t_scene *scene, t_shape *shape);
 
 #endif

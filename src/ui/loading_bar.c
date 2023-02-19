@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_bar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:33:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 17:34:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:32:36 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,11 @@ void	display_loading_bar(t_scene *scene)
 		}
 		ft_putstr_fd(RESET"]\n", 1);
 	}
+}
+
+void	show_light_banner(t_scene *scene)
+{
+	mlx_string_put(scene->disp->mlx, scene->disp->win,
+		scene->settings.disp_w * .9, 20,
+		0xffffff, "LIGHT MODE");
 }

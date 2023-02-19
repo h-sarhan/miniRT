@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:45:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 17:48:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 23:01:51 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,5 +279,8 @@ bool	parse_settings(t_scene *scene, const char *settings_start,
 
 t_color	**parse_texture(char *img_path, t_shape *shape);
 void	parse_spotlight(t_scene *scene, char **splitted);
+bool	check_key_vals(char **key_val, char **settings, t_scene *scene,
+			int line_idx);
+bool	check_key_val_split(char **key_val, char **settings, int line_idx);
 
 #endif

@@ -3,75 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   patterns.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 13:23:32 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 21:02:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:34:48 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-t_color	texture_mapping(t_intersection *itx, double u, double v)
-{
-	if (itx->shape->tex_tile != 0)
-	{
-		u = (int)floor(u * (itx->shape->tex_height - 1) * itx->shape->tex_tile) \
-		% itx->shape->tex_height;
-		v = (int)floor(v * (itx->shape->tex_width - 1) * itx->shape->tex_tile) \
-		% itx->shape->tex_width;
-	}
-	else
-	{
-		u = (int)floor(u * (itx->shape->tex_height - 1));
-		v = (int)floor(v * (itx->shape->tex_width - 1));
-	}
-	if (u >= itx->shape->tex_height || v >= itx->shape->tex_width)
-		return (itx->shape->props.color);
-	return (itx->shape->diffuse_tex[(int)u][(int)v]);
-}
-
-t_color	get_texture_color(t_intersection *itx)
-{
-	t_vector	shape_point;
-	double		u;
-	double		v;
-
-	mat_vec_multiply(&shape_point, &itx->shape->inv_transf, &itx->point);
-	if (itx->shape->type == CYLINDER || itx->shape->type == CONE)
-	{
-		shape_point.y /= itx->shape->props.height;
-		shape_point.y -= 0.5;
-		cylindrical_map(&u, &v, &shape_point);
-	}
-	else if (itx->shape->type == SPHERE)
-		spherical_map(&u, &v, &shape_point);
-	else
-		cubical_map(&u, &v, &shape_point);
-	if (u < 0 || v < 0)
-		return (itx->shape->props.color);
-	return (texture_mapping(itx, u, v));
-}
-
-t_color	get_shape_color(t_intersection *itx)
-{
-	if (itx->shape->diffuse_tex != NULL)
-		return (get_texture_color(itx));
-	if (itx->shape->props.pattern_type == NONE)
-		return (itx->shape->props.color);
-	if (itx->shape->props.pattern_type == STRIPE)
-		return (stripe_pattern(itx, itx->over_point, int_to_color(0xffffff),
-				int_to_color(0xff0000)));
-	if (itx->shape->props.pattern_type == CHECKER_BOARD)
-		return (checker_pattern(itx, &itx->over_point));
-	if (itx->shape->props.pattern_type == GRADIENT)
-		return (gradient_pattern(itx, itx->over_point, int_to_color(0xff0000),
-				int_to_color(0x0000ff)));
-	if (itx->shape->props.pattern_type == RING)
-		return (ring_pattern(itx, itx->over_point, int_to_color(0xff0000),
-				int_to_color(0x0000ff)));
-	return (itx->shape->props.color);
-}
 
 t_color	stripe_pattern(t_intersection *itx, t_vector point,
 			t_color a, t_color b)
@@ -141,15 +80,6 @@ void	spherical_map(double *u, double *v, t_vector *point)
 	phi = acos(point->y / radius);
 	*u = 1 - ((theta / (2 * M_PI)) + 0.5);
 	*v = 1 - (phi / M_PI);
-}
-
-void	cylindrical_map(double *u, double *v, t_vector *point)
-{
-	double	theta;
-
-	theta = atan2(point->x, point->z);
-	*u = 1 - (theta / (2 * M_PI) + 0.5);
-	*v = point->y - floor(point->y);
 }
 
 t_color	checker_pattern(t_intersection *itx, t_vector *point)

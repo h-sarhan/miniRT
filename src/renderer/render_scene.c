@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_scene.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:37:41 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 18:36:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:39:41 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,34 +110,6 @@ void	*render_scene_fast(t_worker *worker)
 	}
 	fill_in_horizontal(worker, 25);
 	fill_in_vertical(worker, 25);
-	return (NULL);
-}
-
-void	*nearest_neighbours_scaling(t_worker *worker)
-{
-	int	x;
-	int	y;
-	int	src_x;
-	int	src_y;
-
-	y = worker->y_scale_start - 1;
-	while (++y < worker->y_scale_end)
-	{
-		x = -1;
-		while (++x < worker->scene->settings.disp_w)
-		{
-			src_x = round((x / (double)worker->scene->settings.disp_w) * \
-			worker->width);
-			src_y = round((y / (double)worker->scene->settings.disp_h) * \
-			worker->height);
-			src_x = min(src_x, worker->width - 1);
-			src_y = min(src_y, worker->height - 1);
-			*(unsigned int *)(worker->scene->disp->disp_addr + (y * \
-			worker->scene->settings.disp_w + x) * worker->scene->disp->bpp) \
-			= *(unsigned int *)(worker->addr + (src_y * \
-			worker->width + src_x) * worker->scene->disp->bpp);
-		}
-	}
 	return (NULL);
 }
 

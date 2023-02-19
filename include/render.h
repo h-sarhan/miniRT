@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 11:29:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 21:03:46 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 23:07:11 by mkhan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,16 @@ void	cube_map_down(double *u, double *v, t_vector *point);
 void	cube_map_front(double *u, double *v, t_vector *point);
 void	cube_map_back(double *u, double *v, t_vector *point);
 void	cubical_map(double *u, double *v, t_vector *point);
+void	*nearest_neighbours_scaling(t_worker *worker);
+bool	get_specular_and_diffuse(t_scene *scene, int light_idx,
+			t_intersection *itx, t_phong *phong);
+void	cylindrical_map(double *u, double *v, t_vector *point);
+t_color	get_shape_color(t_intersection *itx);
+t_color	get_texture_color(t_intersection *itx);
+t_color	texture_mapping(t_intersection *itx, double u, double v);
+bool	check_spotlight(t_scene *scene, int light_idx, t_ray *ray,
+			double *angle);
+void	calculate_specular(t_vector *reflect_v, t_intersection *itx,
+			t_phong *phong, t_light *light);
 
 #endif
