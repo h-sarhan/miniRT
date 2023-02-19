@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 10:20:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 18:21:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 20:37:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,14 @@ bool	parse_rest_of_settings(t_shape *shape, char **key_val)
 		shape->props.color = parse_color_value(key_val[1]);
 	if (ft_strcmp("diffuse_texture", key_val[0]) == 0)
 	{
+		free_texture(shape, shape->diffuse_tex);
 		shape->diffuse_tex = parse_texture(key_val[1], shape);
 		if (shape->diffuse_tex == NULL)
 			return (false);
 	}
 	if (ft_strcmp("normal_texture", key_val[0]) == 0)
 	{
+		free_texture(shape, shape->normal_tex);
 		shape->normal_tex = parse_texture(key_val[1], shape);
 		if (shape->normal_tex == NULL)
 			return (false);

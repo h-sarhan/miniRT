@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 15:12:23 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/02/19 20:24:07 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ UI_SRC = arrow.c loading_bar.c marker.c shape_info.c help_menu.c
 UI_SRC := $(addprefix ui/, $(UI_SRC))
 
 UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
-		print_utils.c parse_utils.c 
+		parse_utils.c 
 UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
 
 

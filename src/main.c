@@ -6,13 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/06 13:43:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 20:30:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-t_vector *point_to_draw_1;
-t_vector *point_to_draw_2;
 
 /**
  * @brief Opens a file and checks for errors with the arguments provided to
@@ -113,35 +111,25 @@ int	main(int argc, char **argv)
 	t_scene		*scene;
 	t_display	disp;
 	int			fd;
-	
-	point_to_draw_1 = ft_calloc(sizeof(t_vector), 1);
-	point_to_draw_2 = ft_calloc(sizeof(t_vector), 1);
 
 	fd = open_file(argc, argv);
 	if (fd == -1)
 		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	if (scene == NULL)
-	{
-		free_scene(scene);
-		return (EXIT_FAILURE);
-	}
+		return (free_scene(scene), EXIT_FAILURE);
 	close(fd);
 	init_settings(&scene->settings);
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	init_display(&disp, &scene->settings);
 	if (disp.mlx == NULL)
-	{
-		// ! HANDLE ERROR HERE
-
-	}
+		return (free_scene(scene), EXIT_FAILURE);
 	scene->disp = &disp;
 	setup_hooks(scene);
 	camera_init(&scene->cam, scene);
 	scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x);
 	scene->cam.phi = acos(scene->cam.dir.y);
-	calculate_transforms(scene);
 	calculate_transforms(scene);
 	draw_scene(scene);
 	mlx_loop(disp.mlx);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 10:14:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/26 18:21:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 20:37:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ void	free_split_array(char **arr)
 	free(arr);
 }
 
+void	free_textures(t_scene *scene)
+{
+	int	i;
+
+	i = -1;
+	while (++i < scene->count.shapes && scene->shapes != NULL)
+	{
+		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
+		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
+	}
+}
+
 /**
  * @brief Frees a scene struct
  * @param scene Pointer to scene struct to be freed
@@ -50,15 +62,9 @@ void	free_scene(t_scene *scene)
 		mlx_destroy_display(scene->disp->mlx);
 		free(scene->disp->mlx);
 	}
-	i = 0;
+	free_textures(scene);
 	if (scene->lights != NULL)
 		free(scene->lights);
-	while (i < scene->count.shapes && scene->shapes != NULL)
-	{
-		free_texture(&scene->shapes[i], scene->shapes[i].diffuse_tex);
-		free_texture(&scene->shapes[i], scene->shapes[i].normal_tex);
-		i++;
-	}
 	if (scene->shapes != NULL)
 		free(scene->shapes);
 	if (scene->sem_loading != NULL)
