@@ -1,0 +1,78 @@
+//{
+//	edit_scale: 0 - 1.0,
+//	render_scale: 0 - 1.0,
+//	display_scale: 0 - 1.0,
+//	reflection_depth: 0 - 4,
+//}
+
+A 0.1 255,255,255
+C 0,1,-10 0,0,1 60
+
+
+// white light
+L 0,8,-10 1 150,134,153
+
+
+// cylinders
+cy 0.0,0,0 1,1,0 2 1 200,200,255
+// cy 0.0,0,0 1,0,0 1 1 10,10,255
+
+cy 5,2,0 1,1,0 2.5 3 10,10,255
+
+// this should be TARS
+// cu 0,2,0 1 10,10,255
+
+// floor
+pl 0,-10,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: black
+}
+pl 0,10,0 0,-1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: black
+}
+// ceiling
+// pl 0,20,0 0,1,0 255,230,230
+// {
+// 	reflectiveness: 0,               
+// 	specular: 0,
+// 	color: white
+// }
+
+// back wall
+// pl 0,0,20 0,0,1 255,230,230
+// {
+// 	reflectiveness: 0,               
+// 	specular: 0,
+// 	color: white
+// }
+
+// front wall
+// pl 0,0,-20 0,0,1 255,230,230
+// {
+// 	reflectiveness: 0,               
+// 	specular: 0,
+// 	color: white
+// }
+
+// left wall
+// pl -20,0,0 1,0,0 255,230,230
+// {
+// 	reflectiveness: 0,               
+// 	specular: 0,
+// 	color: white
+// }
+
+// right wall
+// pl 20,0,0 1,0,0 255,230,230
+// {
+// 	reflectiveness: 0,               
+// 	specular: 0,
+// 	color: white
+// }
+
+

@@ -1,0 +1,148 @@
+//{
+//	edit_scale: 0 - 1.0,
+//	render_scale: 0 - 1.0,
+//	display_scale: 0 - 1.0,
+//	reflection_depth: 0 - 4,
+//}
+
+A 0.1 255,255,255
+C 0,1,-8 0,0,1 60
+
+// orange light
+L 5,10,-5 0.6 200,102,0
+
+// white light
+L -10,10,-10 0.8 128,128,153
+
+// floor
+pl 0,0,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: white
+}
+
+// ceiling
+pl 0,20,0 0,-1,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// back wall
+pl 0,0,10 0,0,-1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// front wall
+pl 0,0,-20 0,0,1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// left wall
+pl -20,0,0 1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// right wall
+pl 20,0,0 -1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+
+
+cy 0,1,-2 0,1,0.0 2 2 254,1,154
+{
+	reflectiveness: 0.2,
+	specular: 0.7,
+	diffuse: 0.9,
+	shininess: 200,
+}
+
+
+// balls
+sp -0.5,1,0.5 1.6 0,0,0
+{
+	reflectiveness: 0.9,               
+	diffuse: 0.,						
+	specular: 1,
+	shininess: 300,
+}          							
+sp -3.5,1,0.5 1 0,0,0
+{
+	reflectiveness: 0.9,               
+	diffuse: 0.,						
+	specular: 1,
+	shininess: 300,
+}          							
+
+sp -2.5,2,1 1.5 26,255,127
+{
+	reflectiveness: 0.1,               
+	diffuse: 0.9,						
+	specular: 0.5,
+	shininess: 200,
+	color: pink
+}
+sp -1.5,1,-1.5 1. 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: green
+}
+sp 1.5,1,1 1.7 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: purple
+}
+sp 3.2,1,0.5 0.8 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: yellow
+}
+sp 1.5,1,-2 0.7 126,255,26
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: gray
+}
+sp 2.5,1,-2 0.7 126,255,26
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: gray
+}
+sp -2.5,1,-2 0.7 126,255,26
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: gray
+}
+

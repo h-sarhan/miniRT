@@ -1,0 +1,168 @@
+A 0.1 255,255,255
+
+C 0,1.5,-12 0,0,1 60
+
+// L 5,10,-5 1 255,220,225
+L 3,8,-4 1 255,190,120
+
+SL 3.58,10.7,-19.80 1.0 	 0.15,0.36,-0.92 80 190,180,255
+
+
+// floor
+pl 0,0,0 0,1,0 255,230,230
+{
+	reflectiveness: 0.1,               
+	specular: 0,
+	color: white
+         }
+
+// ceiling
+pl 0,20,0 0,-1,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// back wall
+pl 0,0,20 0,0,-1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// front wall
+pl 0,0,-20 0,0,1 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// left wall
+pl -20,0,0 1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+// right wall
+pl 20,0,0 -1,0,0 255,230,230
+{
+	reflectiveness: 0,               
+	specular: 0,
+	color: white
+}
+
+
+cy -3,2.6,-2 0,-1,0.0 3 0.1 10,0,25
+{
+	reflectiveness: 1,
+	specular: 1,
+	diffuse: 0,
+	shininess: 200,
+}
+
+cy 0,1.6,-2 0,-1,0.0 1 1 10,0,25
+{
+	reflectiveness: 0.5,
+	specular: 1,
+	diffuse: 1,
+	shininess: 200,
+	color: cyan
+}
+
+
+co 0,.6,-2 0,-1,0.0 1 1 10,0,25
+{
+	reflectiveness: 0.1,
+	specular: 1,
+	diffuse: 1,
+	shininess: 200,
+	color: pink
+}
+
+cu 3,1,0 1 10,10,10
+{
+	reflectiveness: 0.3,               
+	diffuse: 0.9,						
+	specular: 0.7,
+	shininess: 200,
+}       
+
+//balls
+sp -0.5,1.5,0.5 1.6 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 0.9,						
+	specular: 0.2,
+	shininess: 30,
+ diffuse_texture: "./assets/leather_diffuse.ppm",
+	 normal_texture: "./assets/leather_normal.ppm",
+	tile_texture : 2,
+}   
+
+cu -0.5,2.5,0.5 0.8 255,255,255
+{
+	reflectiveness: 0,               
+	diffuse: 1.,						
+	specular: 1,
+	shininess: 200,
+	diffuse_texture: "./assets/cat.ppm",
+	// normal_texture: "./assets/leather_normal.ppm"
+	tile_texture : 1,
+}          							
+
+cu -0.5,3.5,-1.5 1 0,0,0
+{
+	reflectiveness: 0,               
+	diffuse: 1.,						
+	specular: 1,
+	shininess: 300,
+	diffuse_texture: "./assets/patel.ppm"
+}          							
+
+sp -2.5,2,1.5 1.5 26,255,127
+{
+	reflectiveness: 0.1,               
+	diffuse: 0.9,						
+	specular: 0.5,
+	shininess: 200,
+	color: pink
+}
+sp -1.5,0.7,-1.5 1. 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: green
+}
+sp 1.5,1,0.5 1.7 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: purple
+}
+sp 3.2,1.4,0.5 0.8 26,255,127
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: yellow
+}
+sp 1.5,0.5,-2 0.7 126,255,26
+{
+	reflectiveness: 0.1,
+	diffuse: 0.9,						
+	specular: 0.6,
+	shininess: 200,
+	color: gray
+}
+
+
