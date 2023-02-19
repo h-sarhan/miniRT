@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/19 14:39:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,6 @@ void	handle_color_change(int key, t_scene *scene, t_color *color)
 		color->b += 10 / 255.0;
 	if (key == KEY_6 && (color->b - 10 / 255.0) > 0)
 		color->b -= 10 / 255.0;
-	// double	col_sum = color->r + color->g + color->b;
-	// if (col_sum < 0.001)
-	// 	return ;
-	// color->r /= col_sum;
-	// color->g /= col_sum;
-	// color->b /= col_sum;
 }
 
 void	sphere_lookat_pos(t_vector *cam_to_object, t_look_at *look_at,
@@ -220,7 +214,8 @@ void	toggle_keys_held2(int key, t_scene *scene, bool on_off)
 
 void	select_shape(int key, t_scene *scene)
 {
-	if (key == KEY_TAB && scene->settings.edit_mode == true && scene->settings.light_mode == false)
+	if (key == KEY_TAB && scene->settings.edit_mode == true
+		&& scene->settings.light_mode == false)
 	{
 		scene->shapes[scene->shape_idx].props.highlighted = false;
 		scene->shape_idx = (scene->shape_idx + 1) % scene->count.shapes;
@@ -248,20 +243,8 @@ void	toggle_edit_mode(int key, t_scene *scene)
 	}
 }
 
-void	toggle_shape(t_scene *scene)
+void	toggle_shape_properties(t_shape *shape)
 {
-	t_shape	*shape;
-
-	shape = &scene->shapes[scene->shape_idx];
-	shape->props.radius = max(shape->props.radius, 0.5);
-	shape->props.radius_squared = shape->props.radius * shape->props.radius;
-	shape->props.height = max(shape->props.height, 0.5);
-	shape->props.scale.x = shape->props.radius;
-	shape->props.scale.y = shape->props.radius;
-	shape->props.scale.z = shape->props.radius;
-	ft_bzero(&shape->orientation, sizeof(t_vector));
-	shape->orientation.y = 1;
-	identity_matrix(&shape->added_rots);
 	if (shape->type == SPHERE)
 		shape->type = CUBE;
 	else if (shape->type == CUBE)
@@ -282,6 +265,23 @@ void	toggle_shape(t_scene *scene)
 		shape->type = SPHERE;
 }
 
+void	toggle_shape(t_scene *scene)
+{
+	t_shape	*shape;
+
+	shape = &scene->shapes[scene->shape_idx];
+	shape->props.radius = max(shape->props.radius, 0.5);
+	shape->props.radius_squared = shape->props.radius * shape->props.radius;
+	shape->props.height = max(shape->props.height, 0.5);
+	shape->props.scale.x = shape->props.radius;
+	shape->props.scale.y = shape->props.radius;
+	shape->props.scale.z = shape->props.radius;
+	ft_bzero(&shape->orientation, sizeof(t_vector));
+	shape->orientation.y = 1;
+	identity_matrix(&shape->added_rots);
+	toggle_shape_properties(shape);
+}
+
 int	close_window(t_scene *scene)
 {
 	printf("QUITTING PROGRAM!\n");
@@ -292,28 +292,35 @@ int	close_window(t_scene *scene)
 	return (0);
 }
 
-void play_music(t_scene *scene)
+void	rest_of_key_presses(int key, t_scene *scene)
 {
-	if (scene->music_pid != 0)
-		kill(scene->music_pid, SIGINT);
-	if (scene->keys_held.shift == true)
-		return ;
-	int	pid = fork();
-	if (pid == 0)
+	toggle_edit_mode(key, scene);
+	select_shape(key, scene);
+	if (key == KEY_R)
+		toggle_reflections(scene);
+	if (key == KEY_L)
+		scene->settings.light_mode = !scene->settings.light_mode;
+	if (key == KEY_TAB && scene->settings.edit_mode
+		&& scene->settings.light_mode)
+		scene->light_idx = (scene->light_idx + 1) % scene->count.lights;
+	if (key == KEY_ESC)
+		return (close_window(scene));
+	if (key == KEY_H)
+		scene->help = !scene->help;
+	if (key == KEY_P)
 	{
-		execlp("afplay", "afplay", "./assets/music.mp3", NULL);
-		exit(0);
+		scene->shapes[scene->shape_idx].props.pattern_type += 1;
+		scene->shapes[scene->shape_idx].props.pattern_type %= 5;
 	}
-	scene->music_pid = pid;
+	if (key == KEY_C && scene->settings.edit_mode == true)
+		scene->settings.camera_mode = !scene->settings.camera_mode;
+	toggle_keys_held(key, scene, true);
+	if (key == KEY_SPACE || key == KEY_R)
+		camera_init(&scene->cam, scene);
 }
 
 int	key_press(int key, t_scene *scene)
 {
-	printf("key = %d\n", key);
-	if (key == KEY_M && !LINUX)
-	{
-		play_music(scene);
-	}
 	if (key == KEY_J)
 	{
 		scene->settings.supersampling = !scene->settings.supersampling;
@@ -327,40 +334,9 @@ int	key_press(int key, t_scene *scene)
 	if (scene->settings.light_mode == true)
 		handle_color_change(key, scene, &scene->lights[scene->light_idx].color);
 	else
-		handle_color_change(key, scene, &scene->shapes[scene->shape_idx].props.color);
-	toggle_edit_mode(key, scene);
-	select_shape(key, scene);
-	if (key == KEY_R)
-		toggle_reflections(scene);
-	if (key == KEY_L)
-	{
-		scene->settings.light_mode = !scene->settings.light_mode;
-	}
-	if (key == KEY_TAB && scene->settings.edit_mode == true && scene->settings.light_mode == true)
-	{
-		scene->light_idx = (scene->light_idx + 1) % scene->count.lights;
-	}
-	if (key == KEY_ESC)
-	{
-		
-		// pthr
-		close_window(scene);
-		return (0);
-	}
-	if (key == KEY_H)
-	{
-		scene->help = !scene->help;
-	}
-	if (key == KEY_P)
-	{
-		scene->shapes[scene->shape_idx].props.pattern_type += 1;
-		scene->shapes[scene->shape_idx].props.pattern_type %= 5;
-	}
-	if (key == KEY_C && scene->settings.edit_mode == true)
-		scene->settings.camera_mode = !scene->settings.camera_mode;
-	toggle_keys_held(key, scene, true);
-	if (key == KEY_SPACE || key == KEY_R)
-		camera_init(&scene->cam, scene);
+		handle_color_change(key, scene,
+			&scene->shapes[scene->shape_idx].props.color);
+	rest_of_key_presses(key, scene);
 	if (!is_toggle_key(key, scene))
 		return (0);
 	calculate_transforms(scene);
