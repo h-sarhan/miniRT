@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:40:23 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/20 00:36:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 07:46:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@
 # ifdef __linux__
 #  include "../mlx_linux/mlx.h"
 #  define LINUX 1
+#  define KEY_ESC 65307
 # else
 #  include "../mlx/mlx.h"
 #  define LINUX 0
+#  define KEY_ESC 53
 # endif
 # include "mathRT.h"
 # include "color.h"

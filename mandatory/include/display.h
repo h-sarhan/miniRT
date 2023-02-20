@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 00:39:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/02 21:08:52 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 07:37:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,8 @@ struct	s_display
 {
 	void	*mlx;
 	void	*win;
-	void	*edit_img;
-	char	*edit_addr;
 	void	*display_img;
 	char	*disp_addr;
-	void	*render_img;
-	char	*render_addr;
 	int		bpp;
 	int		line_length;
 	int		endian;

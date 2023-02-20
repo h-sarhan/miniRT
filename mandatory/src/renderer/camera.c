@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:39:44 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/20 00:56:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 07:54:49 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,8 @@ void	camera_init(t_camera *camera, t_scene *scene)
 	double	h;
 	double	w;
 
-	h = scene->settings.render_h;
-	w = scene->settings.render_w;
-	if (scene->settings.edit_mode == true)
-	{
-		h = scene->settings.edit_h;
-		w = scene->settings.edit_w;
-	}
+	h = scene->settings.disp_h;
+	w = scene->settings.disp_w;
 	half_view = tan((camera->fov / 2.0f) * M_PI / 180.0f);
 	aspect = w / h;
 	if (aspect >= 1)
@@ -88,32 +83,4 @@ void	camera_init(t_camera *camera, t_scene *scene)
 		camera->half_height = half_view;
 	}
 	camera->pixel_size = (camera->half_width * 2) / w;
-}
-
-void	*nearest_neighbours_scaling(t_scene *scene)
-{
-	int	x;
-	int	y;
-	int	src_x;
-	int	src_y;
-
-	y = -1;
-	while (++y < scene->settings.disp_h)
-	{
-		x = -1;
-		while (++x < scene->settings.disp_w)
-		{
-			src_x = round((x / (double)scene->settings.disp_w) * \
-			scene->settings.render_w);
-			src_y = round((y / (double)scene->settings.disp_h) * \
-			scene->settings.render_h);
-			src_x = min(src_x, scene->settings.render_w - 1);
-			src_y = min(src_y, scene->settings.render_h - 1);
-			*(unsigned int *)(scene->disp->disp_addr + (y * \
-			scene->settings.disp_w + x) * scene->disp->bpp) \
-			= *(unsigned int *)(scene->disp->render_addr + (src_y * \
-			scene->settings.render_w + src_x) * scene->disp->bpp);
-		}
-	}
-	return (NULL);
 }

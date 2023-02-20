@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:46:46 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/20 00:40:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 07:54:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,50 +31,12 @@ struct	s_el_count
 	int	shapes;
 };
 
-typedef struct s_look_at	t_look_at;
-struct s_look_at
-{
-	t_vector	final_pos;
-	t_vector	initial_orientation;
-	t_vector	final_dir;
-	t_vector	current_dir;
-	t_vector	pos_diff;
-	t_vector	dir_diff;
-	bool		trigger;
-	int			step_num;
-	int			step_amount;
-};
-
-typedef struct s_mouse		t_mouse;
-struct	s_mouse
-{
-	bool	active;
-	bool	toggle;
-	int		prev_x;
-	int		prev_y;
-	int		x;
-	int		y;
-	int		key;
-};
-
 typedef struct s_settings	t_settings;
 struct s_settings
 {
 	int			disp_h;
 	int			disp_w;
-	int			render_h;
-	int			render_w;
-	int			edit_h;
-	int			edit_w;
-	bool		camera_mode;
-	bool		edit_mode;
-	bool		light_mode;
 	int			reflection_depth;
-	double		edit_scale;
-	double		render_scale;
-	bool		collisions;
-	bool		help_menu;
-	bool		supersampling;
 };
 
 /**
