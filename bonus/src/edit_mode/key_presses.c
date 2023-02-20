@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_presses.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 19:35:57 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 22:19:42 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/20 07:44:51 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	handle_color_change(int key, t_scene *scene, t_color *color)
 int	close_window(t_scene *scene)
 {
 	printf("QUITTING PROGRAM!\n");
-	if (scene->music_pid != 0)
-		kill(scene->music_pid, SIGINT);
 	free_scene(scene);
 	exit(EXIT_SUCCESS);
 	return (0);
