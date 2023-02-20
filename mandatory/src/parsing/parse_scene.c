@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:00:17 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/20 00:46:47 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 08:29:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ static bool	parse_line(t_scene *scene, char *line, size_t *line_num)
 t_scene	*check_elements(t_scene *scene)
 {
 	if (check_element_count(scene) == false)
-	{
-		free_scene(scene);
 		return (NULL);
-	}
 	return (scene);
 }
 

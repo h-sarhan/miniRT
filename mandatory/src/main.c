@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/20 07:55:07 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 08:23:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->disp_w = 1920 * 0.8;
-	settings->disp_h = 1080 * 0.8;
+	settings->disp_w = 1920 * 0.2;
+	settings->disp_h = 1080 * 0.2;
 	settings->reflection_depth = REFLECTION_DEPTH;
 }
 
@@ -114,12 +114,12 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	if (scene == NULL)
-		return (free_scene(scene), EXIT_FAILURE);
+		return (close(fd), free_scene(scene), EXIT_FAILURE);
 	close(fd);
 	init_settings(&scene->settings);
 	init_display(&disp, &scene->settings);
 	if (disp.mlx == NULL)
-		return (free_scene(scene), EXIT_FAILURE);
+		return (close(fd), free_scene(scene), EXIT_FAILURE);
 	scene->disp = &disp;
 	setup_hooks(scene);
 	camera_init(&scene->cam, scene);

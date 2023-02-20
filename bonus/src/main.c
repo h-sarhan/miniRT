@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 20:43:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/20 08:24:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,14 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	scene = parse_scene(fd);
 	if (scene == NULL)
-		return (free_scene(scene), EXIT_FAILURE);
+		return (close(fd), free_scene(scene), EXIT_FAILURE);
 	close(fd);
 	init_settings(&scene->settings);
 	sem_unlink("/loading");
 	scene->sem_loading = sem_open("/loading", O_CREAT, 0644, 0);
 	init_display(&disp, &scene->settings);
 	if (disp.mlx == NULL)
-		return (free_scene(scene), EXIT_FAILURE);
+		return (close(fd), free_scene(scene), EXIT_FAILURE);
 	scene->disp = &disp;
 	setup_hooks(scene);
 	camera_init(&scene->cam, scene);
