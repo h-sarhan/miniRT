@@ -1,8 +1,0 @@
-miniRT
-.obj
-libft.a
-.vscode
-*.o
-*.a
-compile_commands.json
-.cache
