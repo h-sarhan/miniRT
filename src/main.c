@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/22 23:08:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/23 15:33:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ void	init_display(t_display *disp, t_settings *settings)
 
 void	init_settings(t_settings *settings)
 {
-	settings->render_scale = 0.6;
-	settings->edit_scale = 0.6;
+	settings->render_scale = 2;
+	settings->edit_scale = 0.8;
 	settings->render_w = 1920 * settings->render_scale;
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
 	settings->edit_h = 1080 * settings->edit_scale;
-	settings->disp_w = 1920 * 0.7;
-	settings->disp_h = 1080 * 0.7;
+	settings->disp_w = 1920 * 0.8;
+	settings->disp_h = 1080 * 0.8;
 	settings->collisions = true;
 	settings->reflection_depth = REFLECTION_DEPTH;
 }
@@ -88,15 +88,15 @@ void	setup_hooks(t_scene *scene)
 	i = 0;
 	while (i < scene->count.shapes && scene->shapes[i].type == PLANE)
 		i++;
-	if (scene->shapes[i].type != PLANE)
-	{
-		scene->shapes[i].props.highlighted = true;
-		scene->shape_idx = i;
-	}
-	if (i == scene->count.shapes)
+	if (i == scene->count.shapes && scene->count.shapes > 0)
 	{
 		scene->shapes[0].props.highlighted = false;
 		scene->shape_idx = -1;
+	}
+	else if (scene->shapes[i].type != PLANE && scene->count.shapes > 0)
+	{
+		scene->shapes[i].props.highlighted = true;
+		scene->shape_idx = i;
 	}
 	mlx_hook(scene->disp->win, 2, (1L << 0), key_press, scene);
 	mlx_hook(scene->disp->win, 3, (1L << 1), key_release, scene);
