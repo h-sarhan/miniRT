@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 14:01:06 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/23 15:33:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:02:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	main(int argc, char **argv)
 	scene->cam.theta = atan(scene->cam.dir.z / scene->cam.dir.x);
 	scene->cam.phi = acos(scene->cam.dir.y);
 	calculate_transforms(scene);
+	collide(scene, true, 10, NULL);
 	draw_scene(scene);
 	mlx_loop(disp.mlx);
 }

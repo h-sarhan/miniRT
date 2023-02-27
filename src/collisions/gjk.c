@@ -6,14 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:23:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/06 13:42:26 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:10:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-extern t_vector *point_to_draw_1;
-extern t_vector *point_to_draw_2;
 
 int	sign(double num)
 {
@@ -172,8 +170,6 @@ t_vector	gjk_support(t_shape *shape1, t_shape *shape2, const t_vector *dir)
 	if (shape2->type == CONE)
 		s2_furthest = cone_furthest_point(&dir2, shape2);
 	sub_vec(&res, &s1_furthest, &s2_furthest);
-	*point_to_draw_1 = s1_furthest;
-	*point_to_draw_2 = s2_furthest;
 	return (res);
 }
 
@@ -371,7 +367,7 @@ bool	gjk(t_shape *s1, t_shape *s2)
 	add_to_simplex(simplex, &support, &simplex_size);
 	negate_vec(&dir, &support);
 	normalize_vec(&dir);
-	int	safety = 100;
+	int	safety = 50;
 	int	i = 0;
 	while (i < safety)
 	{

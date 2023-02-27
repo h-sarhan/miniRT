@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+         #
+#    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/19 23:08:38 by mkhan            ###   ########.fr        #
+#    Updated: 2023/02/27 13:08:03 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 EDIT_MODE_SRC = key_presses.c loop_hook.c mouse_controls.c mouse_utils.c \
 				key_look_at.c key_shape.c key_toggle.c light_controls.c \
-				loop_hook_rotate.c lopp_hook_move.c 
+				loop_hook_rotate.c loop_hook_move.c 
 EDIT_MODE_SRC := $(addprefix edit_mode/, $(EDIT_MODE_SRC))
 
 INTERSECTIONS_SRC = normal.c intersections.c cone_intersection.c \
@@ -42,13 +42,15 @@ SHADING_SRC := $(addprefix shading/, $(SHADING_SRC))
 UI_SRC = arrow.c loading_bar.c marker.c shape_info.c help_menu.c
 UI_SRC := $(addprefix ui/, $(UI_SRC))
 
-UTILS_SRC = color_utils.c free_utils.c intersection_utils.c math_utils.c \
+UTILS_SRC = color_utils.c free_utils.c print_utils.c intersection_utils.c math_utils.c \
 		parse_utils.c free_textures.c color_arithmetic.c
 UTILS_SRC := $(addprefix utils/, $(UTILS_SRC))
 
+COLLISIONS_SRC = collisions.c gjk.c separating_axis.c
+COLLISIONS_SRC := $(addprefix collisions/, $(COLLISIONS_SRC))
 
 SRC = $(EDIT_MODE_SRC) $(INTERSECTIONS_SRC) $(MATH_SRC) $(PARSING_SRC) \
-	$(RENDERER_SRC) $(SHADING_SRC) $(UI_SRC) $(UTILS_SRC) main.c
+	$(RENDERER_SRC) $(SHADING_SRC) $(UI_SRC) $(UTILS_SRC) $(COLLISIONS_SRC) main.c
 SRC := $(addprefix src/, $(SRC))
 
 OBJ_DIR = .obj

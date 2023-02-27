@@ -6,15 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:17:32 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/05 21:04:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:10:31 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mathRT.h"
 #include "miniRT.h"
 
-extern t_vector *point_to_draw_1;
-extern t_vector *point_to_draw_2;
 
 bool	sphere_sphere_collision(const t_shape *sphere1, const t_shape *sphere2)
 {
@@ -272,16 +270,16 @@ bool	box_cylinder_collision(t_shape *box, t_shape *cylinder, bool box_cylinder, 
 	dir.y = 1;
 	if (gjk(box, cylinder) == true)
 	{
-		ft_bzero(&box->props.color, sizeof(t_color));
-		box->props.color.g = 1;
-		ft_bzero(&cylinder->props.color, sizeof(t_color));
-		cylinder->props.color.g = 1;
+		// ft_bzero(&box->props.color, sizeof(t_color));
+		// box->props.color.g = 1;
+		// ft_bzero(&cylinder->props.color, sizeof(t_color));
+		// cylinder->props.color.g = 1;
 		return (true);
 	}
-	ft_bzero(&box->props.color, sizeof(t_color));
-	box->props.color.r = 1;
-	ft_bzero(&cylinder->props.color, sizeof(t_color));
-	cylinder->props.color.r = 1;
+	// ft_bzero(&box->props.color, sizeof(t_color));
+	// box->props.color.r = 1;
+	// ft_bzero(&cylinder->props.color, sizeof(t_color));
+	// cylinder->props.color.r = 1;
 	return (false);
 }
 
@@ -295,12 +293,12 @@ bool	cylinder_cylinder_collision(t_shape *cyl1, t_shape *cyl2, bool resolve)
 	dir.y = 1;
 	if (gjk(cyl1, cyl2) == true)
 	{
-		ft_bzero(&cyl1->props.color, sizeof(t_color));
-		cyl1->props.color.g = 1;
+		// ft_bzero(&cyl1->props.color, sizeof(t_color));
+		// cyl1->props.color.g = 1;
 		return (true);
 	}
-	ft_bzero(&cyl1->props.color, sizeof(t_color));
-	cyl1->props.color.r = 1;
+	// ft_bzero(&cyl1->props.color, sizeof(t_color));
+	// cyl1->props.color.r = 1;
 	return (false);
 }
 
@@ -314,12 +312,12 @@ bool	cone_cone_collision(t_shape *co1, t_shape *co2, bool resolve)
 	dir.y = 1;
 	if (gjk(co1, co2) == true)
 	{
-		ft_bzero(&co1->props.color, sizeof(t_color));
-		co1->props.color.g = 1;
+		// ft_bzero(&co1->props.color, sizeof(t_color));
+		// co1->props.color.g = 1;
 		return (true);
 	}
-	ft_bzero(&co1->props.color, sizeof(t_color));
-	co1->props.color.r = 1;
+	// ft_bzero(&co1->props.color, sizeof(t_color));
+	// co1->props.color.r = 1;
 	return (false);
 }
 
@@ -743,8 +741,6 @@ bool	collide(t_scene *scene, bool resolve, int depth, t_shape *transformed_shape
 				dir.x = 1;
 				// dir.y = 1;
 				normalize_vec(&dir);
-				t_vector furthest_point = cone_furthest_point(&dir, shape1);
-				*point_to_draw_1 = furthest_point;
 				
 			}
 			idx2++;

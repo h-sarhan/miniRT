@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 12:58:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 12:58:51 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/02/27 12:57:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	drag_along_plane(t_scene *scene, t_ray *mouse_selection)
 		- distance_from_origin) / denom;
 	ray_position(&position_on_plane, mouse_selection, t);
 	scene->shapes[scene->shape_idx].origin = position_on_plane;
+	if (scene->settings.collisions == true)
+		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 	calculate_transforms(scene);
 	draw_scene(scene);
 }

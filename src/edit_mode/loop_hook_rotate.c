@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook_rotate.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:24:04 by mkhan             #+#    #+#             */
-/*   Updated: 2023/02/19 22:24:32 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/27 13:06:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ void	transform_object(t_scene *scene)
 		&& (scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
 		scale_cube_sides(scene, &scene->shapes[scene->shape_idx]);
 	rotate_object(scene);
+	collide_after_transform(scene);
 }

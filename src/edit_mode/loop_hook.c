@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhan <mkhan@student.42.fr>                +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 18:50:31 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/02/19 22:25:36 by mkhan            ###   ########.fr       */
+/*   Updated: 2023/02/27 13:12:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,15 @@ int	render_loop(t_scene *scene)
 		draw_scene(scene);
 	}
 	return (0);
+}
+
+void	collide_after_transform(t_scene *scene)
+{
+	if (scene->settings.collisions && (scene->keys_held.w
+			|| scene->keys_held.a || scene->keys_held.s || scene->keys_held.d
+			|| scene->keys_held.up || scene->keys_held.right
+			|| scene->keys_held.q || scene->keys_held.e || scene->keys_held.down
+			|| scene->keys_held.left || scene->keys_held.plus
+			|| scene->keys_held.minus || scene->keys_held.x || scene->keys_held.y || scene->keys_held.z))
+		collide(scene, true, 10, &scene->shapes[scene->shape_idx]);
 }
