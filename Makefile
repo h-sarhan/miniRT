@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/02/27 13:08:03 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/20 12:33:55 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra -Werror -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address,undefined\
 

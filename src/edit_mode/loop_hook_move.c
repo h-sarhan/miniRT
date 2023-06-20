@@ -14,25 +14,33 @@
 
 void	move_cam(t_scene *scene)
 {
-	t_vector	vec;
+	t_vector	vec_x;
+	t_vector		vec_y;
+	t_vector	vec_z;
 
-	ft_bzero(&vec, sizeof(t_vector));
+	ft_bzero(&vec_x, sizeof(t_vector));
+	ft_bzero(&vec_y, sizeof(t_vector));
+	ft_bzero(&vec_z, sizeof(t_vector));
 	if (scene->keys_held.w == true)
-		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, CAM_SPEED);
-	if (scene->keys_held.a == true)
-		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, -CAM_SPEED);
+		sphere_to_xyz(&vec_z, scene->cam.phi, scene->cam.theta, CAM_SPEED);
 	if (scene->keys_held.s == true)
-		sphere_to_xyz(&vec, scene->cam.phi, scene->cam.theta, -CAM_SPEED);
+		sphere_to_xyz(&vec_z, scene->cam.phi, scene->cam.theta, -CAM_SPEED);
+	if (scene->keys_held.a == true)
+		sphere_to_xyz(&vec_x, M_PI_2, scene->cam.theta - M_PI_2, -CAM_SPEED);
 	if (scene->keys_held.d == true)
-		sphere_to_xyz(&vec, M_PI_2, scene->cam.theta - M_PI_2, CAM_SPEED);
+		sphere_to_xyz(&vec_x, M_PI_2, scene->cam.theta - M_PI_2, CAM_SPEED);
 	if (scene->keys_held.q == true)
-		vec.y = 0.35;
+		vec_y.y = 0.35;
 	if (scene->keys_held.e == true)
-		vec.y = -0.35;
+		vec_y.y = -0.35;
 	if (scene->keys_held.w == true || scene->keys_held.a == true
 		|| scene->keys_held.s == true || scene->keys_held.d == true
 		|| scene->keys_held.q == true || scene->keys_held.e == true)
-		add_vec(&scene->cam.position, &scene->cam.position, &vec);
+	{
+		add_vec(&scene->cam.position, &scene->cam.position, &vec_x);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec_y);
+		add_vec(&scene->cam.position, &scene->cam.position, &vec_z);
+	}
 }
 
 void	camera_controls(t_scene *scene)

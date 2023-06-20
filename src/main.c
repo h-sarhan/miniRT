@@ -75,8 +75,8 @@ void	init_settings(t_settings *settings)
 	settings->render_h = 1080 * settings->render_scale;
 	settings->edit_w = 1920 * settings->edit_scale;
 	settings->edit_h = 1080 * settings->edit_scale;
-	settings->disp_w = 1920 * 0.8;
-	settings->disp_h = 1080 * 0.8;
+	settings->disp_w = 1920;
+	settings->disp_h = 1080;
 	settings->collisions = true;
 	settings->reflection_depth = REFLECTION_DEPTH;
 }
