@@ -10,7 +10,7 @@
     Ray Traced 3D Engine Written in C
     <br />
     <br />
-    <a href="https://github.com/h-sarhan/miniRT">hsarhan</a>
+    <a href="https://github.com/h-sarhan">hsarhan</a>
     |
     <a href="https://github.com/Mohammed-Ehsan02">mkhan</a>
   </p>
