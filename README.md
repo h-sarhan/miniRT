@@ -65,3 +65,7 @@ miniRT is a 3D rendering engine based on the ray tracing algorithm. This project
 `WASD + Arrow Keys` to manipulate the camera
 
 `O` to pan to an object
+
+`J` for anti-aliasing
+
+`H` for the rest of the controls
