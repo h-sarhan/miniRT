@@ -20,6 +20,13 @@
 # About
 miniRT is a 3D rendering engine based on the ray tracing algorithm. This project has a big focus on interactivity, you can move, rotate, and scale shapes in real-time with mouse and keyboard support. This project also supports more advanced features such as multi-threaded rendering, texture maps, reflections, anti-aliasing, and even a simple physics engine.
 
+
+## Gallery
+<img src="assets/logo.png" width="100%"/>
+<img src="assets/screenshots/collision.gif" width="100%"/>
+<img src="assets/look-at.gif" width="100%"/>
+
+
 # Features
 ## Mandatory
 
@@ -44,11 +51,6 @@ miniRT is a 3D rendering engine based on the ray tracing algorithm. This project
 * Additional shapes: Cone and cube
 * Reflections
 * Anti Aliasing
-
-## Gallery
-<img src="assets/logo.png" width="100%"/>
-<img src="assets/screenshots/collision.gif" width="100%"/>
-<img src="assets/look-at.gif" width="100%"/>
 
 ## Controls
 
