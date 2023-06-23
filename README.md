@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/h-sarhan/miniRT">
-    <img src="https://github.com/Mohammed-Ehsan02/miniRT/blob/collision/assets/banner.gif" max-width="100%" height="100%"/>
+    <img src="assets/banner.gif" max-width="100%" height="100%"/>
   </a>
 
   <h3 align="center">MiniRT</h3>
