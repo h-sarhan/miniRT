@@ -26,9 +26,9 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o) $(BONUS_SRCS:.c=.o))
 BONUS_OBJS := $(addprefix $(OBJ_DIR)/, $(BONUS_SRCS:.c=.o))
 
 NAME = libft.a
-CC = gcc
+CC = clang
 
-OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
+OPTIMIZATION_FLAGS = -Ofast -march=native -fno-signed-zeros -fno-trapping-math -funroll-loops
 
 CFLAGS =  -Wall -Wextra \
 		$(OPTIMIZATION_FLAGS) \
